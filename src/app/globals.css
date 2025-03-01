@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cl-socialButtons {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.cl-footer > :nth-child(2) > :nth-child(2) > p {
+  display: none;
+}
+
+.cl-headerTitle {
+  font-size: 0px;
+}
+
+.cl-headerTitle::before {
+  content: "Engage Me";
+  font-size: 32px;
+}
