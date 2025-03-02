@@ -3,10 +3,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
   isCreateModalOpen: boolean;
+  isWannaCloseCreateModalOpen: boolean;
 }
 
 const initialState: ModalState = {
   isCreateModalOpen: false,
+  isWannaCloseCreateModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -22,8 +24,12 @@ export const modalsSlice = createSlice({
     toggleCreateModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen;
     },
+    toggle_WannaCloseCreateModal_Modal: (state) => {
+      state.isWannaCloseCreateModalOpen = !state.isWannaCloseCreateModalOpen;
+    },
   },
 });
 
-export const { toggleCreateModal } = modalsSlice.actions;
+export const { toggleCreateModal, toggle_WannaCloseCreateModal_Modal } =
+  modalsSlice.actions;
 export default modalsSlice.reducer;

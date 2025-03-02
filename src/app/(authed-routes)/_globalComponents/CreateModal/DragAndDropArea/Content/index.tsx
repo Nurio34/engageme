@@ -1,13 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { HiOutlinePhotograph } from "react-icons/hi";
-import { FilesType } from "..";
+import { useCreateModalContext } from "../../Context";
 
-function Content({
-  setFiles,
-}: {
-  setFiles: Dispatch<SetStateAction<FilesType>>;
-}) {
+function Content() {
+  const { setFiles } = useCreateModalContext();
+
   return (
     <div className="flex flex-col items-center gap-y-[2vh]">
       <div className=" h-28">
@@ -27,12 +25,13 @@ function Content({
           </div>
         </div>
       </div>
-      <p className="text-2xl">Drag photos and videos here</p>
+      <p className="text-2xl select-none">Drag photos and videos here</p>
       <label htmlFor="files" className="btn btn-info btn-sm text-base-100">
         Select from computer
         <input
           onChange={(e) => {
             const files = e.target.files;
+
             if (files && files.length) {
               const fileValues = Object.values(files);
               const urls: string[] = [];
@@ -40,7 +39,16 @@ function Content({
                 const url = URL.createObjectURL(file);
                 urls.push(url);
               });
-              setFiles({ files, urls });
+              setFiles((prev) => {
+                if (prev.files === null || prev.urls === null) {
+                  return { files: fileValues, urls };
+                }
+
+                return {
+                  files: [...prev.files, ...fileValues],
+                  urls: [...prev.urls, ...urls],
+                };
+              });
             }
           }}
           type="file"

@@ -1,31 +1,22 @@
-import Image from "next/image";
-import { FilesType } from "..";
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Canvas from "./Canvas";
+import PreviousButton from "./PreviousButton";
+import NextButton from "./NextButton";
+import { useCreateModalContext } from "../../Context";
+import SliceIndicator from "./SliceIndicator";
 
-export type CanvasContainerSizeType = {
-  width: number;
-  height: number;
-};
+function Gallery() {
+  const { CanvasContainerRef, files, setCanvasContainerSize } =
+    useCreateModalContext();
 
-function Gallery({ files }: { files: FilesType }) {
-  const CanvasContainerRef = useRef<HTMLDivElement | null>(null);
-  const [size, setSize] = useState<CanvasContainerSizeType>({
-    width: 0,
-    height: 0,
-  });
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+  //! *** set CanvasContainer size ***
   useEffect(() => {
     const handleResize = () => {
       if (CanvasContainerRef.current) {
         const width = CanvasContainerRef.current.getBoundingClientRect().width;
         const height =
           CanvasContainerRef.current.getBoundingClientRect().height;
-        setSize({ width, height });
-        console.log("ok");
+        setCanvasContainerSize({ width, height });
       }
     };
     handleResize();
@@ -35,13 +26,19 @@ function Gallery({ files }: { files: FilesType }) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  //! ***********************************
+  console.log(files);
   return (
     <div
       ref={CanvasContainerRef}
-      className="relative w-full h-full bg-blue-200"
+      className="relative w-full h-full bg-base-100"
     >
-      <Canvas size={size} url={files.urls![currentIndex]} />
+      {files.urls?.map((url, index) => (
+        <Canvas key={index} url={url} index={index} />
+      ))}
+      <SliceIndicator />
+      <PreviousButton />
+      <NextButton />
     </div>
   );
 }
