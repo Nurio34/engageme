@@ -22,7 +22,7 @@ function Client() {
         >
           <CloseButton />
           <div
-            className="xl:w-5/12 md:w-7/12 sm:w-9/12 w-11/12 h-5/6 bg-base-100 rounded-lg overflow-hidden
+            className="relative xl:w-5/12 md:w-7/12 sm:w-9/12 w-11/12 h-5/6 bg-base-100 rounded-lg overflow-hidden
                 flex flex-col
             "
             onMouseDown={(e) => {

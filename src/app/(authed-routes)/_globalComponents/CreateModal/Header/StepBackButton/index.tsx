@@ -1,7 +1,5 @@
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { StepType, useCreateModalContext } from "../../Context";
-import { useAppDispatch } from "@/store/hooks";
-import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
+import { useCreateModalContext } from "../../Context";
 
 function StepBackButton() {
   const { goPrevStep } = useCreateModalContext();

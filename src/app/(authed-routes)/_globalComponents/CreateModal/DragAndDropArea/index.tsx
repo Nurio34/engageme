@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Content from "./Content";
 import Gallery from "./Gallery";
 import { useCreateModalContext } from "../Context";
@@ -14,24 +13,27 @@ function DragAndDropArea() {
       }}
       onDrop={(e) => {
         e.preventDefault();
-        const files = e.dataTransfer.files;
-        const fileValues = Object.values(files);
 
-        const urls: string[] = [];
-        fileValues.forEach((file) => {
-          const url = URL.createObjectURL(file);
-          urls.push(url);
-        });
-        setFiles((prev) => {
-          if (prev.files === null || prev.urls === null) {
-            return { files: fileValues, urls };
-          }
+        if (files.files !== null) {
+          const Files = e.dataTransfer.files;
+          const fileValues = Object.values(Files);
 
-          return {
-            files: [...prev.files, ...fileValues],
-            urls: [...prev.urls, ...urls],
-          };
-        });
+          const urls: string[] = [];
+          fileValues.forEach((file) => {
+            const url = URL.createObjectURL(file);
+            urls.push(url);
+          });
+          setFiles((prev) => {
+            if (prev.files === null || prev.urls === null) {
+              return { files: fileValues, urls };
+            }
+
+            return {
+              files: [...prev.files, ...fileValues],
+              urls: [...prev.urls, ...urls],
+            };
+          });
+        }
       }}
     >
       {files.files ? <Gallery /> : <Content />}

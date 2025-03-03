@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import Canvas from "./Canvas";
 import PreviousButton from "./PreviousButton";
 import NextButton from "./NextButton";
@@ -27,7 +27,7 @@ function Gallery() {
     };
   }, []);
   //! ***********************************
-  console.log(files);
+
   return (
     <div
       ref={CanvasContainerRef}

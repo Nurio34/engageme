@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { useCreateModalContext } from "../../Context";

@@ -28,7 +28,7 @@ function Client() {
           >
             <div className="py-[2.5vh] px-[2vw] md:px-[8vh]">
               <h2 className="text-xl font-semibold">Discard Post?</h2>
-              <p>If you leave, your edits won't be saved.</p>
+              <p>If you leave, your edits won&apos;t be saved.</p>
             </div>
 
             <button

@@ -1,13 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
 
 function NextButton() {
-  const { setCurrentIndex, files } = useCreateModalContext();
+  const { setCurrentIndex, files, setIsAllModalsClosed } =
+    useCreateModalContext();
   const totalMedia = files.files!.length;
 
   const goNextMedia = () => {
     setCurrentIndex((prev) => (prev + 1) % totalMedia);
+    setIsAllModalsClosed(true);
   };
 
   return (

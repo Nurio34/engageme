@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import toast from "react-hot-toast";
 
 export type FilesType = {
   files: File[] | null;
@@ -39,16 +40,26 @@ interface ContextType {
   step: StepType;
   goPrevStep: () => void;
   goNextStep: () => void;
+  isAllModalsClosed: boolean;
+  setIsAllModalsClosed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
+  //! *** files state ***
   const [files, setFiles] = useState<FilesType>({
     files: null,
     urls: null,
   });
 
+  useEffect(() => {
+    if (files.files) {
+      toast.success("New files's been added to Gallery ..");
+    }
+  }, [files]);
+
+  //! ******************
   const [currentIndex, setCurrentIndex] = useState(0);
 
   //! *** CanvasContainer States ***
@@ -98,6 +109,16 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [files]);
   //! ******************
 
+  //! *** Close all action modals when next o prev button clicked ***
+  const [isAllModalsClosed, setIsAllModalsClosed] = useState(false);
+
+  useEffect(() => {
+    if (isAllModalsClosed) {
+      setIsAllModalsClosed(false);
+    }
+  }, [isAllModalsClosed]);
+  //! ***************************************************************
+
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
@@ -128,6 +149,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         step,
         goPrevStep,
         goNextStep,
+        isAllModalsClosed,
+        setIsAllModalsClosed,
       }}
     >
       {children}
