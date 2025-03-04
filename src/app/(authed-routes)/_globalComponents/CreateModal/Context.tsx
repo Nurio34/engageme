@@ -53,7 +53,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     files: null,
     urls: null,
   });
-
   //! ******************
   const [currentIndex, setCurrentIndex] = useState(0);
 

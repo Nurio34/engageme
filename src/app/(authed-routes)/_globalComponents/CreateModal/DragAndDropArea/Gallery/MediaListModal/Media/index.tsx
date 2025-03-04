@@ -32,6 +32,7 @@ function Media({
   const { currentIndex, setCurrentIndex } = useCreateModalContext();
   const [itemIndex, setItemIndex] = useState(index);
   const { oldPosition, newPosition, isDragEnded } = draggingItem;
+  console.log(itemIndex - index);
 
   useEffect(() => {
     if (itemIndex === oldPosition) {
@@ -71,6 +72,7 @@ function Media({
           oldPosition: itemIndex,
           newPosition: itemIndex,
           isDragEnded: false,
+          isDragStarted: true,
         });
       }}
       onDragEnterCapture={(e) => {

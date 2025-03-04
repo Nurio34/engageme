@@ -7,6 +7,7 @@ import Media from "./Media";
 export type DraggingItemType = {
   oldPosition: number;
   newPosition: number;
+  isDragStarted: boolean;
   isDragEnded: boolean;
 };
 
@@ -26,16 +27,33 @@ function MediaListModal() {
   const [draggingItem, setDraggingItem] = useState<DraggingItemType>({
     oldPosition: 0,
     newPosition: 0,
+    isDragStarted: false,
     isDragEnded: true,
   });
 
   const [filesNewOrder, setFilesNewOrder] = useState<FilesNewOrderType>({});
 
   useEffect(() => {
-    if (Object.keys(filesNewOrder).length > 0) {
-      console.log("reorder");
+    if (
+      Object.keys(filesNewOrder).length > 0 &&
+      draggingItem.isDragStarted &&
+      draggingItem.isDragEnded
+    ) {
+      const updatedFiles = Array(files.files!.length).fill("#");
+      Object.entries(filesNewOrder).forEach(([oldLine, newLine]) => {
+        const file = files.files![+oldLine];
+        updatedFiles[newLine] = file;
+      });
+
+      const updatedUrls = Array(files.files!.length).fill("#");
+      Object.entries(filesNewOrder).forEach(([oldLine, newLine]) => {
+        const url = files.urls![+oldLine];
+        updatedUrls[newLine] = url;
+      });
+
+      //todo:setFiles({ files: updatedFiles, urls: updatedUrls });
     }
-  }, [filesNewOrder]);
+  }, [filesNewOrder, draggingItem]);
 
   useEffect(() => {
     if (LiRef.current) {
