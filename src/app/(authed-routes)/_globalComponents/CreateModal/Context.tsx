@@ -11,7 +11,6 @@ import {
   useRef,
   useState,
 } from "react";
-import toast from "react-hot-toast";
 
 export type FilesType = {
   files: File[] | null;
@@ -42,6 +41,8 @@ interface ContextType {
   goNextStep: () => void;
   isAllModalsClosed: boolean;
   setIsAllModalsClosed: React.Dispatch<React.SetStateAction<boolean>>;
+  isListModalOpen: boolean;
+  setIsListModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -52,12 +53,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     files: null,
     urls: null,
   });
-
-  useEffect(() => {
-    if (files.files) {
-      toast.success("New files's been added to Gallery ..");
-    }
-  }, [files]);
 
   //! ******************
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -119,6 +114,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [isAllModalsClosed]);
   //! ***************************************************************
 
+  //! *** Media-list state
+  const [isListModalOpen, setIsListModalOpen] = useState(false);
+  //! ********************
+
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
@@ -130,6 +129,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setCanvasContainerSize({ width: 0, height: 0 });
       setIsResizingStarted(false);
       setStep("new");
+      setIsAllModalsClosed(true);
+      setIsListModalOpen(false);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -151,6 +152,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         goNextStep,
         isAllModalsClosed,
         setIsAllModalsClosed,
+        isListModalOpen,
+        setIsListModalOpen,
       }}
     >
       {children}

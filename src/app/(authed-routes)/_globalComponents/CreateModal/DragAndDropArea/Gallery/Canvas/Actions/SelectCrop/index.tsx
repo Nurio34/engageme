@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import CropModal from "./CropModal";
 import { ActionType } from "../..";
 import { HandleModalsType } from "..";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 function SelectCrop({
   currentAction,
@@ -17,14 +18,17 @@ function SelectCrop({
   setHandleModals: Dispatch<SetStateAction<HandleModalsType>>;
   setRatioState: Dispatch<SetStateAction<number>>;
 }) {
+  const { setIsListModalOpen } = useCreateModalContext();
+
   const isThisCurrentAction = currentAction === "crop";
 
   const handleCurrentAction = () => {
     setHandleModals((prev) => ({
       isCropModalOpen: !prev.isCropModalOpen,
       isZoomModalOpen: false,
-      isListModalOpen: false,
     }));
+
+    setIsListModalOpen(false);
 
     if (isThisCurrentAction) {
       setCurrentAction(null);

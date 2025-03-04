@@ -9,7 +9,6 @@ import { useCreateModalContext } from "../../../../Context";
 export type HandleModalsType = {
   isCropModalOpen: boolean;
   isZoomModalOpen: boolean;
-  isListModalOpen: boolean;
 };
 
 function Actions({
@@ -30,17 +29,17 @@ function Actions({
   const [handleModals, setHandleModals] = useState<HandleModalsType>({
     isCropModalOpen: false,
     isZoomModalOpen: false,
-    isListModalOpen: false,
   });
 
   useEffect(() => {
     if (isAllModalsClosed) {
-      setHandleModals({
-        isCropModalOpen: false,
-        isZoomModalOpen: false,
-        isListModalOpen: false,
+      setHandleModals({ isCropModalOpen: false, isZoomModalOpen: false });
+      setCurrentAction((prev) => {
+        if (prev === "list") {
+          return "list";
+        }
+        return null;
       });
-      setCurrentAction(null);
     }
   }, [isAllModalsClosed]);
 

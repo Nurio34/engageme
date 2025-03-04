@@ -6,8 +6,12 @@ import { useCreateModalContext } from "../../Context";
 import SliceIndicator from "./SliceIndicator";
 
 function Gallery() {
-  const { CanvasContainerRef, files, setCanvasContainerSize } =
-    useCreateModalContext();
+  const {
+    CanvasContainerRef,
+    files,
+    setCanvasContainerSize,
+    setIsListModalOpen,
+  } = useCreateModalContext();
 
   //! *** set CanvasContainer size ***
   useEffect(() => {
@@ -20,6 +24,9 @@ function Gallery() {
       }
     };
     handleResize();
+
+    setIsListModalOpen(false);
+
     window.addEventListener("resize", handleResize);
 
     return () => {

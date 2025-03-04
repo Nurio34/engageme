@@ -1,6 +1,7 @@
 import { CiPlay1 } from "react-icons/ci";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { useCreateModalContext } from "../../Context";
+import toast from "react-hot-toast";
 
 function Content() {
   const { setFiles } = useCreateModalContext();
@@ -48,6 +49,9 @@ function Content() {
                   urls: [...prev.urls, ...urls],
                 };
               });
+              toast.success(
+                `New file${urls.length === 1 ? "'s" : "s'"} been add`
+              );
             }
           }}
           type="file"

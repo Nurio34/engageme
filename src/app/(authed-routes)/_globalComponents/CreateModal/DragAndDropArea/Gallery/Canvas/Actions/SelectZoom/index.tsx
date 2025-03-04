@@ -3,6 +3,7 @@ import { ActionType } from "../..";
 import { Dispatch, SetStateAction } from "react";
 import ZoomModal from "./ZoomModal";
 import { HandleModalsType } from "..";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 function SelectZoom({
   currentAction,
@@ -19,14 +20,17 @@ function SelectZoom({
   scale: number;
   setScale: Dispatch<SetStateAction<number>>;
 }) {
+  const { setIsListModalOpen } = useCreateModalContext();
+
   const isThisCurrentAction = currentAction === "zoom";
 
   const handleCurrentAction = () => {
     setHandleModals((prev) => ({
       isCropModalOpen: false,
       isZoomModalOpen: !prev.isZoomModalOpen,
-      isListModalOpen: false,
     }));
+    setIsListModalOpen(false);
+
     if (isThisCurrentAction) {
       setCurrentAction(null);
     } else {

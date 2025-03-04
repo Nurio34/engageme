@@ -2,7 +2,8 @@ import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import { ActionType } from "../..";
 import { Dispatch, SetStateAction } from "react";
 import { HandleModalsType } from "..";
-import MediaListModal from "./MediaListModal";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
+import MediaListModal from "../../../MediaListModal";
 
 function MediaList({
   currentAction,
@@ -15,14 +16,16 @@ function MediaList({
   handleModals: HandleModalsType;
   setHandleModals: Dispatch<SetStateAction<HandleModalsType>>;
 }) {
+  const { setIsListModalOpen, isListModalOpen } = useCreateModalContext();
+
   const isThisCurrentAction = currentAction === "list";
 
   const handleCurrentAction = () => {
     setHandleModals((prev) => ({
       isCropModalOpen: false,
       isZoomModalOpen: false,
-      isListModalOpen: !prev.isListModalOpen,
     }));
+    setIsListModalOpen((prev) => !prev);
 
     if (isThisCurrentAction) {
       setCurrentAction(null);
@@ -53,7 +56,7 @@ function MediaList({
           }`}
         />
       </button>
-      {handleModals.isListModalOpen && <MediaListModal />}
+      {isListModalOpen && <MediaListModal />}
     </div>
   );
 }
