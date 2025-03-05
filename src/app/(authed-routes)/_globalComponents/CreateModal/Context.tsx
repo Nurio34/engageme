@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadFilesToCloudinary } from "@/actions/cloudinary/uploadFilesToCloudinary";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
 import {
@@ -24,6 +25,16 @@ export type CanvasContainerSizeType = {
 
 export type StepType = "new" | "crop" | "edit" | "post";
 
+export type CanvasType = {
+  ref: HTMLCanvasElement;
+  index: number;
+  isVideo: boolean;
+  position?: {
+    x: number;
+    y: number;
+  };
+};
+
 interface ContextType {
   files: FilesType;
   setFiles: React.Dispatch<React.SetStateAction<FilesType>>;
@@ -43,6 +54,7 @@ interface ContextType {
   setIsAllModalsClosed: React.Dispatch<React.SetStateAction<boolean>>;
   isListModalOpen: boolean;
   setIsListModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  AllCanvases: RefObject<CanvasType[]>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -99,7 +111,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (files.files && files.files.length > 0) {
-      goNextStep();
+      setStep("crop");
     }
   }, [files]);
   //! ******************
@@ -118,6 +130,51 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   //! ********************
 
+  //! *** All Canvas' States ***
+  const AllCanvases = useRef<CanvasType[]>([]);
+
+  useEffect(() => {
+    const getFile = async (Canvas: CanvasType) => {
+      const file = await new Promise((resolve) => {
+        Canvas.ref.toBlob((blob) => {
+          const file = new File([blob!], `canvas_image_${Canvas.index}.png`, {
+            type: "image/png",
+          });
+          resolve(file);
+        }, "image/png");
+      });
+      return file;
+    };
+
+    if (AllCanvases.current && AllCanvases.current.length > 0) {
+      const filesArray: File[] = [];
+      const promises = AllCanvases.current.map((Canvas) => {
+        if (Canvas.isVideo) {
+          return {
+            File: files.files![Canvas.index],
+            position: Canvas.position,
+          };
+        } else {
+          return getFile(Canvas);
+        }
+      });
+
+      Promise.all(promises).then((files) => {
+        files.forEach((file) => {
+          filesArray.push(file as File);
+        });
+        const uploadFilesToCloudinaryAction = async (filesArray: File[]) => {
+          try {
+            console.log(filesArray);
+            const response = await uploadFilesToCloudinary(filesArray);
+            console.log({ response });
+          } catch (error) {}
+        };
+        uploadFilesToCloudinaryAction(filesArray);
+      });
+    }
+  }, [step]);
+
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
@@ -131,6 +188,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setStep("new");
       setIsAllModalsClosed(true);
       setIsListModalOpen(false);
+      AllCanvases.current = [];
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -154,6 +212,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setIsAllModalsClosed,
         isListModalOpen,
         setIsListModalOpen,
+        AllCanvases,
       }}
     >
       {children}

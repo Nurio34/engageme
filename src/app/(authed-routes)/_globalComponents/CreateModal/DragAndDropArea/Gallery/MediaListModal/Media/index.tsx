@@ -8,7 +8,7 @@ import {
 import { useCreateModalContext } from "../../../../Context";
 import Image from "next/image";
 import { IoIosClose } from "react-icons/io";
-import { DraggingItemType } from "..";
+import { DraggingItemType, FilesNewOrderType } from "..";
 
 function Media({
   LiRef,
@@ -27,7 +27,7 @@ function Media({
   fileType: string;
   url: string;
   deleteFile: (index: number) => void;
-  setFilesNewOrder: Dispatch<SetStateAction<{}>>;
+  setFilesNewOrder: Dispatch<SetStateAction<FilesNewOrderType>>;
 }) {
   const { currentIndex, setCurrentIndex } = useCreateModalContext();
   const [itemIndex, setItemIndex] = useState(index);
@@ -73,7 +73,7 @@ function Media({
           isDragEnded: false,
         });
       }}
-      onDragEnterCapture={(e) => {
+      onDragEnterCapture={() => {
         if (oldPosition === itemIndex) return;
 
         setDraggingItem((prev) => ({

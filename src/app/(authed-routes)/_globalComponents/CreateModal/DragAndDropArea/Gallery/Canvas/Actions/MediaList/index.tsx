@@ -8,12 +8,10 @@ import MediaListModal from "../../../MediaListModal";
 function MediaList({
   currentAction,
   setCurrentAction,
-  handleModals,
   setHandleModals,
 }: {
   currentAction: ActionType;
   setCurrentAction: Dispatch<SetStateAction<ActionType>>;
-  handleModals: HandleModalsType;
   setHandleModals: Dispatch<SetStateAction<HandleModalsType>>;
 }) {
   const { setIsListModalOpen, isListModalOpen } = useCreateModalContext();
@@ -21,10 +19,10 @@ function MediaList({
   const isThisCurrentAction = currentAction === "list";
 
   const handleCurrentAction = () => {
-    setHandleModals((prev) => ({
+    setHandleModals({
       isCropModalOpen: false,
       isZoomModalOpen: false,
-    }));
+    });
     setIsListModalOpen((prev) => !prev);
 
     if (isThisCurrentAction) {

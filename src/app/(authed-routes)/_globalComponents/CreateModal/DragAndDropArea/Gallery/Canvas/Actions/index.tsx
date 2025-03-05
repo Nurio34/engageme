@@ -72,7 +72,6 @@ function Actions({
       <MediaList
         currentAction={currentAction}
         setCurrentAction={setCurrentAction}
-        handleModals={handleModals}
         setHandleModals={setHandleModals}
       />
     </div>

@@ -22,8 +22,14 @@ export type MediaSizeType = { width: number; height: number };
 export type ActionType = "crop" | "zoom" | "list" | null;
 
 function Canvas({ url, index }: { url: string; index: number }) {
-  const { canvasContainerSize, currentIndex, setIsResizingStarted, files } =
-    useCreateModalContext();
+  const {
+    canvasContainerSize,
+    currentIndex,
+    setIsResizingStarted,
+    files,
+    step,
+    AllCanvases,
+  } = useCreateModalContext();
   const file = files.files![index];
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -50,6 +56,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
     new_Y: 0,
     old_Y: 0,
   });
+
   //! **********************************
 
   //! *** Actions States ***
@@ -63,7 +70,6 @@ function Canvas({ url, index }: { url: string; index: number }) {
       const canvas = canvasRef.current;
       canvas.width = canvasContainerSize.width;
       canvas.height = canvasContainerSize.height;
-      //? redraw();
     }
   }, [canvasContainerSize]);
   //! **********************************************************
@@ -266,6 +272,28 @@ function Canvas({ url, index }: { url: string; index: number }) {
     }
   }, [resizing, setPosition, mediaSize, url, scale]);
   //! ***********************************************
+
+  //! *** Push canvas to AllCanvas' ref when step === "edit" ***
+  useEffect(() => {
+    if (
+      canvasRef.current &&
+      step === "edit" &&
+      AllCanvases.current.length < files.files!.length
+    ) {
+      AllCanvases.current.push({
+        ref: canvasRef.current,
+        index,
+        isVideo,
+        position: { x: position.old_X, y: position.old_Y },
+      });
+    }
+
+    //** reset AllCanvas' ref when step !== "edit" */
+    if (canvasRef.current && step !== "edit") {
+      AllCanvases.current = [];
+    }
+  }, [step]);
+  //! ***
 
   return (
     <div className={`${currentIndex === index ? "block" : "hidden"}`}>

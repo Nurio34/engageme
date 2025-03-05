@@ -26,14 +26,39 @@ function MediaListModal() {
   const [draggingItem, setDraggingItem] = useState<DraggingItemType>({
     oldPosition: 0,
     newPosition: 0,
-    isDragEnded: true,
+    isDragEnded: false,
   });
+
+  //! *** to fix the reordering issue after drag complate ***
+  const [isReset, setIsReset] = useState(false);
+
+  useEffect(() => {
+    if (draggingItem.isDragEnded) {
+      setIsReset(true);
+    }
+  }, [draggingItem.isDragEnded]);
+
+  useEffect(() => {
+    if (isReset) {
+      setIsReset(false);
+    }
+  }, [isReset]);
+  //! ******************
 
   const [filesNewOrder, setFilesNewOrder] = useState<FilesNewOrderType>({});
 
   useEffect(() => {
     if (Object.keys(filesNewOrder).length > 0) {
-      console.log("reorder");
+      const updatedFiles = Array(files.files!.length).fill("#");
+      const updatedUrls = Array(files.files!.length).fill("#");
+      Object.entries(filesNewOrder).forEach(([oldLine, newLine]) => {
+        const file = files.files![+oldLine];
+        updatedFiles[newLine] = file;
+
+        const url = files.urls![+oldLine];
+        updatedUrls[newLine] = url;
+      });
+      setFiles({ files: updatedFiles, urls: updatedUrls });
     }
   }, [filesNewOrder]);
 
@@ -79,8 +104,8 @@ function MediaListModal() {
               e.stopPropagation();
             }}
           >
-            {files.files &&
-              files.files.map((file, index) => {
+            {!isReset &&
+              files.files!.map((file, index) => {
                 const fileType = file.type.split("/")[0];
                 const url = files.urls![index];
 
