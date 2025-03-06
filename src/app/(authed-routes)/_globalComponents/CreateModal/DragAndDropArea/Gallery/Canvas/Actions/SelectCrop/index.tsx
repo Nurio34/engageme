@@ -11,12 +11,14 @@ function SelectCrop({
   handleModals,
   setHandleModals,
   setRatioState,
+  originalRatioState,
 }: {
   currentAction: ActionType;
   setCurrentAction: Dispatch<SetStateAction<ActionType>>;
   handleModals: HandleModalsType;
   setHandleModals: Dispatch<SetStateAction<HandleModalsType>>;
   setRatioState: Dispatch<SetStateAction<number>>;
+  originalRatioState: number;
 }) {
   const { setIsListModalOpen } = useCreateModalContext();
 
@@ -70,7 +72,10 @@ function SelectCrop({
         </div>
       </button>
       {handleModals.isCropModalOpen && (
-        <CropModal setRatioState={setRatioState} />
+        <CropModal
+          setRatioState={setRatioState}
+          originalRatioState={originalRatioState}
+        />
       )}
     </div>
   );

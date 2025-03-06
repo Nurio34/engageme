@@ -1,6 +1,9 @@
 "use client";
 
-import { uploadFilesToCloudinary } from "@/actions/cloudinary/uploadFilesToCloudinary";
+import {
+  ResponseType,
+  uploadFilesToCloudinary,
+} from "@/actions/cloudinary/uploadFilesToCloudinary";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
 import {
@@ -28,8 +31,42 @@ export type StepType = "new" | "crop" | "edit" | "post";
 export type CanvasType = {
   ref: HTMLCanvasElement;
   index: number;
+  originalSize: {
+    w: number;
+    h: number;
+  };
+  ratio: number;
+  cloudinarySize: {
+    w: number;
+    h: number;
+  };
+  size: {
+    w: number;
+    h: number;
+  };
   isVideo: boolean;
-  position?: {
+  position: {
+    x: number;
+    y: number;
+  };
+};
+
+export type FileObjectType = {
+  File: File;
+  originalSize: {
+    w: number;
+    h: number;
+  };
+  ratio: number;
+  cloudinarySize: {
+    w: number;
+    h: number;
+  };
+  size: {
+    w: number;
+    h: number;
+  };
+  position: {
     x: number;
     y: number;
   };
@@ -130,44 +167,50 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   //! ********************
 
-  //! *** All Canvas' States ***
+  //! *** All Canvas' States && Upload to Cloudinary ***
   const AllCanvases = useRef<CanvasType[]>([]);
+  const [cloudinaryMedias, setCloudinaryMedias] = useState<ResponseType[]>([]);
+  console.log(AllCanvases.current);
+  console.log(cloudinaryMedias);
 
   useEffect(() => {
-    const getFile = async (Canvas: CanvasType) => {
-      const file = await new Promise((resolve) => {
-        Canvas.ref.toBlob((blob) => {
-          const file = new File([blob!], `canvas_image_${Canvas.index}.png`, {
-            type: "image/png",
-          });
-          resolve(file);
-        }, "image/png");
-      });
-      return file;
-    };
+    //! *** turn the image in canvas to File , ... !!! Now i dont use it !!! ***
+    //?const getFile = async (Canvas: CanvasType): Promise<File> => {
+    //?  const file = await new Promise((resolve) => {
+    //?    Canvas.ref.toBlob((blob) => {
+    //?      const file = new File([blob!], `canvas_image_${Canvas.index}.png`, {
+    //?        type: "image/png",
+    //?      });
+    //?      resolve(file);
+    //?    }, "image/png");
+    //?  });
+    //?  return file as File;
+    //?};
+    //! ********************************************************************
 
     if (AllCanvases.current && AllCanvases.current.length > 0) {
-      const filesArray: File[] = [];
-      const promises = AllCanvases.current.map((Canvas) => {
-        if (Canvas.isVideo) {
-          return {
-            File: files.files![Canvas.index],
-            position: Canvas.position,
-          };
-        } else {
-          return getFile(Canvas);
-        }
+      const filesArray: FileObjectType[] = [];
+      const promises = AllCanvases.current.map(async (Canvas) => {
+        return {
+          File: files.files![Canvas.index],
+          cloudinarySize: Canvas.cloudinarySize,
+          originalSize: Canvas.originalSize,
+          ratio: Canvas.ratio,
+          size: Canvas.size,
+          position: Canvas.position,
+        };
       });
 
-      Promise.all(promises).then((files) => {
+      Promise.all(promises).then((files: FileObjectType[]) => {
         files.forEach((file) => {
-          filesArray.push(file as File);
+          filesArray.push(file);
         });
-        const uploadFilesToCloudinaryAction = async (filesArray: File[]) => {
+        const uploadFilesToCloudinaryAction = async (
+          filesArray: FileObjectType[]
+        ) => {
           try {
-            console.log(filesArray);
             const response = await uploadFilesToCloudinary(filesArray);
-            console.log({ response });
+            setCloudinaryMedias(response);
           } catch (error) {}
         };
         uploadFilesToCloudinaryAction(filesArray);
@@ -189,6 +232,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setIsAllModalsClosed(true);
       setIsListModalOpen(false);
       AllCanvases.current = [];
+      setCloudinaryMedias([]);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************

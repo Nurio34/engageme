@@ -14,7 +14,7 @@ function NextButton() {
   return (
     <button
       type="button"
-      className="absolute top-1/2 right-1  z-10
+      className="absolute top-1/2 right-1
         btn btn-ghost hover:btn-outline
       "
       onClick={goNextMedia}

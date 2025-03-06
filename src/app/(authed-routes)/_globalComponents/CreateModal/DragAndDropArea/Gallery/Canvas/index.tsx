@@ -40,6 +40,8 @@ function Canvas({ url, index }: { url: string; index: number }) {
   });
   const [isVideo, setIsVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [originalSize, setOriginalSize] = useState({ w: 0, h: 0 });
+  const [cloudinarySize, setCloudinarySize] = useState({ w: 0, h: 0 });
 
   //! *** handle resizeing the image ***
   const [resizing, setResizing] = useState<ResizingType>({
@@ -60,7 +62,12 @@ function Canvas({ url, index }: { url: string; index: number }) {
   //! **********************************
 
   //! *** Actions States ***
+  const [originalRatioState, setOriginalRatioState] = useState(0);
   const [ratioState, setRatioState] = useState(0);
+
+  useEffect(() => {
+    setRatioState(originalRatioState);
+  }, [originalRatioState]);
   const [scale, setScale] = useState(1);
   //! **********************
 
@@ -84,30 +91,24 @@ function Canvas({ url, index }: { url: string; index: number }) {
       image.onload = () => {
         mediaRef.current = image;
         const originalRatio = image.naturalWidth / image.naturalHeight;
+        setOriginalRatioState(originalRatio);
+        let width, height;
 
-        let width, height, ratio;
-
-        if (ratioState === 0) {
-          ratio = originalRatio;
-        } else {
-          ratio = ratioState;
-        }
-
-        if (ratio <= 1) {
+        if (ratioState <= 1) {
           if (originalRatio <= 1) {
             width = canvasContainerSize.width;
-            height = width / ratio;
+            height = width / ratioState;
           } else {
             height = canvasContainerSize.height;
-            width = height * ratio;
+            width = height * ratioState;
           }
         } else {
           if (originalRatio <= 1) {
             width = canvasContainerSize.width;
-            height = width / ratio;
+            height = width / ratioState;
           } else {
             height = canvasContainerSize.height;
-            width = height * ratio;
+            width = height * ratioState;
           }
         }
 
@@ -122,6 +123,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
         video.onloadedmetadata = () => {
           mediaRef.current = video;
           const originalRatio = video.videoWidth / video.videoHeight;
+          setOriginalRatioState(originalRatio);
 
           let width, height, ratio;
 
@@ -150,6 +152,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
           }
 
           setMediaSize({ width, height });
+
           video.play();
         };
         video.onplay = () => setIsPlaying(true);
@@ -164,6 +167,40 @@ function Canvas({ url, index }: { url: string; index: number }) {
     };
   }, [url, canvasContainerSize, currentIndex, isVideo, ratioState]);
   //! ************************************************
+
+  //! *** adjust image's width and height to be cropable in cloudinary ***
+  useEffect(() => {
+    if (mediaRef.current) {
+      const media = mediaRef.current;
+      let originalWidth: number, originalHeight: number;
+
+      if (media instanceof HTMLImageElement) {
+        originalWidth = media.naturalWidth;
+        originalHeight = media.naturalHeight;
+      } else {
+        originalWidth = media.videoWidth;
+        originalHeight = media.videoHeight;
+      }
+      setOriginalSize({ w: originalWidth, h: originalHeight });
+
+      const mediaWidth = mediaSize.width;
+      const containerWidth = canvasContainerSize.width;
+      const cloudinaryWidth = +(
+        (originalWidth / mediaWidth) *
+        containerWidth
+      ).toFixed();
+
+      const mediaHeight = mediaSize.height;
+      const containerHeight = canvasContainerSize.height;
+      const cloudinaryHeight = +(
+        (originalHeight / mediaHeight) *
+        containerHeight
+      ).toFixed();
+
+      setCloudinarySize({ w: cloudinaryWidth, h: cloudinaryHeight });
+    }
+  }, [mediaSize, ratioState]);
+  //! **************************************************************
 
   //! *** Redraw when position changes ***
   useEffect(() => {
@@ -283,6 +320,13 @@ function Canvas({ url, index }: { url: string; index: number }) {
       AllCanvases.current.push({
         ref: canvasRef.current,
         index,
+        originalSize,
+        ratio: ratioState,
+        cloudinarySize,
+        size: {
+          w: canvasContainerSize.width,
+          h: canvasContainerSize.height,
+        },
         isVideo,
         position: { x: position.old_X, y: position.old_Y },
       });
@@ -353,6 +397,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
       />
       <Actions
         isVideo={isVideo}
+        originalRatioState={originalRatioState}
         setRatioState={setRatioState}
         scale={scale}
         setScale={setScale}

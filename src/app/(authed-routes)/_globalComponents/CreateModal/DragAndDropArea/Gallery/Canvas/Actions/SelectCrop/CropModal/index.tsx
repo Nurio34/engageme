@@ -3,8 +3,10 @@ import { CiImageOn } from "react-icons/ci";
 
 function CropModal({
   setRatioState,
+  originalRatioState,
 }: {
   setRatioState: Dispatch<SetStateAction<number>>;
+  originalRatioState: number;
 }) {
   const [currentCrop, setCurrentCrop] = useState(0);
 
@@ -17,7 +19,7 @@ function CropModal({
         `}
         onClick={() => {
           setCurrentCrop(0);
-          setRatioState(0);
+          setRatioState(originalRatioState);
         }}
       >
         <span>Original</span>

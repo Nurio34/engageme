@@ -13,11 +13,13 @@ export type HandleModalsType = {
 
 function Actions({
   isVideo,
+  originalRatioState,
   setRatioState,
   scale,
   setScale,
 }: {
   isVideo: boolean;
+  originalRatioState: number;
   setRatioState: Dispatch<SetStateAction<number>>;
   scale: number;
   setScale: Dispatch<SetStateAction<number>>;
@@ -56,6 +58,7 @@ function Actions({
           handleModals={handleModals}
           setHandleModals={setHandleModals}
           setRatioState={setRatioState}
+          originalRatioState={originalRatioState}
         />
         {!isVideo && (
           <SelectZoom

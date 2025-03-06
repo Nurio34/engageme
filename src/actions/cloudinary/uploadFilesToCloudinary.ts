@@ -1,5 +1,6 @@
 "use server";
 
+import { FileObjectType } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 
 cloudinary.config({
@@ -8,9 +9,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-type FileWithPosition = { File: File; position: { x: number; y: number } };
-type FileType = File | FileWithPosition;
-
 type EagerType = {
   status: string;
   batch_id: string;
@@ -18,7 +16,7 @@ type EagerType = {
   secure_url: string;
 };
 
-type ResponseType = {
+export type ResponseType = {
   asset_id: string;
   public_id: string;
   version_id: string;
@@ -34,7 +32,7 @@ type ResponseType = {
 };
 
 export const uploadFilesToCloudinary = async (
-  files: FileType[]
+  files: FileObjectType[]
 ): Promise<ResponseType[]> => {
   try {
     const getBuffer = async (file: File): Promise<Buffer> => {
@@ -42,51 +40,50 @@ export const uploadFilesToCloudinary = async (
       return Buffer.from(arrayBuffer);
     };
 
-    const uploadFile = async (file: FileType): Promise<UploadApiResponse> => {
-      if (file instanceof File) {
-        const buffer = await getBuffer(file);
-        return new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              { resource_type: "image", folder: "/Engage-Me" },
-              (error, result) => {
-                if (error) reject(error);
-                else if (!result)
-                  reject(new Error("No result from Cloudinary"));
-                else resolve(result);
-              }
-            )
-            .end(buffer);
-        });
-      } else {
-        const buffer = await getBuffer(file.File);
-        return new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                resource_type: "video",
-                folder: "/Engage-Me",
-                eager: [
-                  {
-                    width: 680,
-                    height: 750,
-                    crop: "crop",
-                    x: +file.position.x.toFixed() * -1,
-                    y: +file.position.y.toFixed() * -1,
-                  },
-                ],
-                eager_async: true,
-              },
-              (error, result) => {
-                if (error) reject(error);
-                else if (!result)
-                  reject(new Error("No result from Cloudinary"));
-                else resolve(result);
-              }
-            )
-            .end(buffer);
-        });
-      }
+    const uploadFile = async (
+      file: FileObjectType
+    ): Promise<UploadApiResponse> => {
+      const buffer = await getBuffer(file.File);
+
+      const fileType = file.File.type.split("/")[0];
+      const paramX = file.cloudinarySize.w / file.size.w;
+      const paramY = file.cloudinarySize.h / file.size.h;
+
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              resource_type: fileType === "image" ? "image" : "video",
+              folder: "/Engage-Me",
+              eager: [
+                {
+                  width: file.cloudinarySize.w,
+                  height:
+                    file.cloudinarySize.h <= file.originalSize.h
+                      ? file.cloudinarySize.h
+                      : undefined,
+                  crop:
+                    file.cloudinarySize.h <= file.originalSize.h
+                      ? "crop"
+                      : "scale",
+                  aspect_ratio:
+                    file.cloudinarySize.h <= file.originalSize.h
+                      ? undefined
+                      : +file.ratio.toFixed(2),
+                  x: (file.position.x * -1 * paramX).toFixed(),
+                  y: (file.position.y * -1 * paramY).toFixed(),
+                },
+              ],
+              eager_async: true, // Process asynchronously
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else if (!result) reject(new Error("No result from Cloudinary"));
+              else resolve(result);
+            }
+          )
+          .end(buffer);
+      });
     };
 
     const uploadPromises = files.map((file) => uploadFile(file));
