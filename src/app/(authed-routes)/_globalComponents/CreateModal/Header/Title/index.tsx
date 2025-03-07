@@ -1,12 +1,19 @@
 import { useCreateModalContext } from "../../Context";
 
 function Title() {
-  const { step } = useCreateModalContext();
+  const { step, cloudinaryMedias } = useCreateModalContext();
 
-  return (
-    <div>
-      {step === "crop" ? "Crop" : step === "edit" ? "Edit" : "Create New Post"}
-    </div>
-  );
+  const { isLoading } = cloudinaryMedias;
+
+  if (step.step === "crop")
+    return <>{isLoading ? "Getting Ready .." : "Crop"}</>;
+
+  if (step.step === "edit") {
+    return <>{isLoading ? "Cropping Medias .." : "Edit"}</>;
+  }
+
+  if (step.step === "post" && isLoading) return "Editing ..";
+
+  return "Create New Post";
 }
 export default Title;

@@ -21,7 +21,7 @@ function PreviousButton() {
     <button
       type="button"
       className="absolute top-1/2 left-1 
-        btn btn-ghost hover:btn-outline
+        btn btn-circle btn-neutral 
       "
       onClick={goPreviousMedia}
     >

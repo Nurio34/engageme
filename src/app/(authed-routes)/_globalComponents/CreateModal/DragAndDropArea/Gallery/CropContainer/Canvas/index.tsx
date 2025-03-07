@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useCreateModalContext } from "../../../Context";
 import Actions from "./Actions";
+import { useCreateModalContext } from "../../../../Context";
 
 export type ResizingType = {
   isStarted: boolean;
@@ -314,7 +314,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
   useEffect(() => {
     if (
       canvasRef.current &&
-      step === "edit" &&
+      step.step === "edit" &&
       AllCanvases.current.length < files.files!.length
     ) {
       AllCanvases.current.push({
@@ -322,6 +322,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
         index,
         originalSize,
         ratio: ratioState,
+        scale,
         cloudinarySize,
         size: {
           w: canvasContainerSize.width,
@@ -330,11 +331,6 @@ function Canvas({ url, index }: { url: string; index: number }) {
         isVideo,
         position: { x: position.old_X, y: position.old_Y },
       });
-    }
-
-    //** reset AllCanvas' ref when step !== "edit" */
-    if (canvasRef.current && step !== "edit") {
-      AllCanvases.current = [];
     }
   }, [step]);
   //! ***

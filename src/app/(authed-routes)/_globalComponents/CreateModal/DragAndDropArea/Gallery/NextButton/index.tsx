@@ -2,8 +2,12 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
 
 function NextButton() {
-  const { setCurrentIndex, files, setIsAllModalsClosed } =
-    useCreateModalContext();
+  const {
+    setCurrentIndex,
+    files,
+    setIsAllModalsClosed,
+    baseCanvasContainerWidth,
+  } = useCreateModalContext();
   const totalMedia = files.files!.length;
 
   const goNextMedia = () => {
@@ -14,12 +18,19 @@ function NextButton() {
   return (
     <button
       type="button"
-      className="absolute top-1/2 right-1
-        btn btn-ghost hover:btn-outline
+      className="absolute top-1/2
+        btn btn-circle btn-neutral 
       "
+      style={{
+        left:
+          baseCanvasContainerWidth === 0
+            ? undefined
+            : baseCanvasContainerWidth - 4 - 48,
+        right: baseCanvasContainerWidth === 0 ? 4 : undefined,
+      }}
       onClick={goNextMedia}
     >
-      <IoIosArrowForward size={32} color="white" />
+      <IoIosArrowForward size={32} />
     </button>
   );
 }

@@ -1,14 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { DeleteMediaType } from "@/actions/cloudinary";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
+  cloudinaryMedias: DeleteMediaType[];
 }
 
 const initialState: ModalState = {
   isCreateModalOpen: false,
   isWannaCloseCreateModalOpen: false,
+  cloudinaryMedias: [],
 };
 
 export const modalsSlice = createSlice({
@@ -27,9 +30,15 @@ export const modalsSlice = createSlice({
     toggle_WannaCloseCreateModal_Modal: (state) => {
       state.isWannaCloseCreateModalOpen = !state.isWannaCloseCreateModalOpen;
     },
+    addCloudinaryMedias: (state, action: PayloadAction<DeleteMediaType[]>) => {
+      state.cloudinaryMedias = action.payload;
+    },
   },
 });
 
-export const { toggleCreateModal, toggle_WannaCloseCreateModal_Modal } =
-  modalsSlice.actions;
+export const {
+  toggleCreateModal,
+  toggle_WannaCloseCreateModal_Modal,
+  addCloudinaryMedias,
+} = modalsSlice.actions;
 export default modalsSlice.reducer;

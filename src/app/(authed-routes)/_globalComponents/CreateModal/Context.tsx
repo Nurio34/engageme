@@ -1,20 +1,27 @@
 "use client";
 
 import {
-  ResponseType,
+  deleteFilesFromCloudinary,
+  MediaType,
   uploadFilesToCloudinary,
-} from "@/actions/cloudinary/uploadFilesToCloudinary";
+} from "@/actions/cloudinary";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
+import {
+  addCloudinaryMedias,
+  toggle_WannaCloseCreateModal_Modal,
+} from "@/store/slices/modals";
 import {
   createContext,
+  Dispatch,
   ReactNode,
   RefObject,
+  SetStateAction,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
+import toast from "react-hot-toast";
 
 export type FilesType = {
   files: File[] | null;
@@ -26,7 +33,12 @@ export type CanvasContainerSizeType = {
   height: number;
 };
 
-export type StepType = "new" | "crop" | "edit" | "post";
+export type StepType = {
+  action: "previous" | "next";
+  step: StepsType;
+};
+
+export type StepsType = "new" | "crop" | "edit" | "post";
 
 export type CanvasType = {
   ref: HTMLCanvasElement;
@@ -36,6 +48,7 @@ export type CanvasType = {
     h: number;
   };
   ratio: number;
+  scale: number;
   cloudinarySize: {
     w: number;
     h: number;
@@ -58,6 +71,7 @@ export type FileObjectType = {
     h: number;
   };
   ratio: number;
+  scale: number;
   cloudinarySize: {
     w: number;
     h: number;
@@ -72,26 +86,31 @@ export type FileObjectType = {
   };
 };
 
+export type CloudinaryMediasType = {
+  isLoading: boolean;
+  medias: MediaType[];
+};
+
 interface ContextType {
   files: FilesType;
-  setFiles: React.Dispatch<React.SetStateAction<FilesType>>;
+  setFiles: Dispatch<SetStateAction<FilesType>>;
   currentIndex: number;
-  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentIndex: Dispatch<SetStateAction<number>>;
   CanvasContainerRef: RefObject<HTMLDivElement | null>;
   canvasContainerSize: CanvasContainerSizeType;
-  setCanvasContainerSize: React.Dispatch<
-    React.SetStateAction<CanvasContainerSizeType>
-  >;
+  setCanvasContainerSize: Dispatch<SetStateAction<CanvasContainerSizeType>>;
   isResizingStarted: boolean;
-  setIsResizingStarted: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsResizingStarted: Dispatch<SetStateAction<boolean>>;
   step: StepType;
   goPrevStep: () => void;
   goNextStep: () => void;
   isAllModalsClosed: boolean;
-  setIsAllModalsClosed: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAllModalsClosed: Dispatch<SetStateAction<boolean>>;
   isListModalOpen: boolean;
-  setIsListModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsListModalOpen: Dispatch<SetStateAction<boolean>>;
   AllCanvases: RefObject<CanvasType[]>;
+  cloudinaryMedias: CloudinaryMediasType;
+  baseCanvasContainerWidth: number;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -114,6 +133,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       width: 0,
       height: 0,
     });
+  const [baseCanvasContainerWidth, setBaseCanvasContainerWidth] = useState(0);
   //! ******************************
 
   //! *** resizing start-end state ***
@@ -121,34 +141,38 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   //! ********************************
 
   //! *** step state ***
-  const [step, setStep] = useState<StepType>("new");
-  const steps: StepType[] = ["new", "crop", "edit", "post"];
+  const [step, setStep] = useState<StepType>({ action: "next", step: "new" });
+  const steps: StepsType[] = ["new", "crop", "edit", "post"];
   const dispatch = useAppDispatch();
 
   const goPrevStep = () => {
-    const prevStepIndex = steps.indexOf(step) - 1;
+    const prevStepIndex = steps.indexOf(step.step) - 1;
 
     if (prevStepIndex < 1) {
       dispatch(toggle_WannaCloseCreateModal_Modal());
       return;
     }
 
-    setStep(steps[prevStepIndex]);
+    setStep({ action: "previous", step: steps[prevStepIndex] });
   };
 
   const goNextStep = () => {
-    const nextStepIndex = steps.indexOf(step) + 1;
+    const nextStepIndex = steps.indexOf(step.step) + 1;
 
     if (nextStepIndex === steps.length) {
       return;
     }
 
-    setStep(steps[nextStepIndex]);
+    if (step.step === "crop") {
+      setBaseCanvasContainerWidth(canvasContainerSize.width);
+    }
+
+    setStep({ action: "next", step: steps[nextStepIndex] });
   };
 
   useEffect(() => {
     if (files.files && files.files.length > 0) {
-      setStep("crop");
+      setStep({ action: "previous", step: "crop" });
     }
   }, [files]);
   //! ******************
@@ -169,26 +193,11 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   //! *** All Canvas' States && Upload to Cloudinary ***
   const AllCanvases = useRef<CanvasType[]>([]);
-  const [cloudinaryMedias, setCloudinaryMedias] = useState<ResponseType[]>([]);
-  console.log(AllCanvases.current);
-  console.log(cloudinaryMedias);
+  const [cloudinaryMedias, setCloudinaryMedias] =
+    useState<CloudinaryMediasType>({ isLoading: false, medias: [] });
 
   useEffect(() => {
-    //! *** turn the image in canvas to File , ... !!! Now i dont use it !!! ***
-    //?const getFile = async (Canvas: CanvasType): Promise<File> => {
-    //?  const file = await new Promise((resolve) => {
-    //?    Canvas.ref.toBlob((blob) => {
-    //?      const file = new File([blob!], `canvas_image_${Canvas.index}.png`, {
-    //?        type: "image/png",
-    //?      });
-    //?      resolve(file);
-    //?    }, "image/png");
-    //?  });
-    //?  return file as File;
-    //?};
-    //! ********************************************************************
-
-    if (AllCanvases.current && AllCanvases.current.length > 0) {
+    if (AllCanvases.current && AllCanvases.current.length) {
       const filesArray: FileObjectType[] = [];
       const promises = AllCanvases.current.map(async (Canvas) => {
         return {
@@ -196,6 +205,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
           cloudinarySize: Canvas.cloudinarySize,
           originalSize: Canvas.originalSize,
           ratio: Canvas.ratio,
+          scale: Canvas.scale,
           size: Canvas.size,
           position: Canvas.position,
         };
@@ -209,12 +219,58 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
           filesArray: FileObjectType[]
         ) => {
           try {
+            setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
             const response = await uploadFilesToCloudinary(filesArray);
-            setCloudinaryMedias(response);
-          } catch (error) {}
+            if (response.status === "error") {
+              toast.error("Something went wrong! Please try again!");
+              return;
+            }
+            setCloudinaryMedias((prev) => ({
+              ...prev,
+              medias: response.medias,
+            }));
+            dispatch(
+              addCloudinaryMedias(
+                response.medias.map((media) => ({
+                  publicId: media.public_id,
+                  type: media.resource_type as "image" | "video",
+                }))
+              )
+            );
+          } catch (_) {
+            toast.error("Something went wrong! Please try again!");
+          } finally {
+            setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));
+          }
         };
         uploadFilesToCloudinaryAction(filesArray);
       });
+      AllCanvases.current = [];
+    }
+
+    if (step.step === "crop" && cloudinaryMedias.medias.length > 0) {
+      const deleteFilesFromCloudinaryAction = async () => {
+        const mediaPublicIds = cloudinaryMedias.medias.map((media) => ({
+          publicId: media.public_id,
+          type: media.resource_type as "image" | "video",
+        }));
+
+        try {
+          setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
+
+          const response = await deleteFilesFromCloudinary(mediaPublicIds);
+
+          if (response === "success") {
+            setCloudinaryMedias((prev) => ({ ...prev, medias: [] }));
+          } else {
+            deleteFilesFromCloudinaryAction();
+          }
+        } catch (error) {
+        } finally {
+          setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));
+        }
+      };
+      deleteFilesFromCloudinaryAction();
     }
   }, [step]);
 
@@ -228,11 +284,12 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       CanvasContainerRef.current = null;
       setCanvasContainerSize({ width: 0, height: 0 });
       setIsResizingStarted(false);
-      setStep("new");
+      setStep({ action: "next", step: "new" });
       setIsAllModalsClosed(true);
       setIsListModalOpen(false);
       AllCanvases.current = [];
-      setCloudinaryMedias([]);
+      setCloudinaryMedias({ isLoading: false, medias: [] });
+      setBaseCanvasContainerWidth(0);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -257,6 +314,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         isListModalOpen,
         setIsListModalOpen,
         AllCanvases,
+        cloudinaryMedias,
+        baseCanvasContainerWidth,
       }}
     >
       {children}

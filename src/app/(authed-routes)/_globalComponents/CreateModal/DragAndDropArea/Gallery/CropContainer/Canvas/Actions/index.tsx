@@ -4,7 +4,7 @@ import MediaList from "./MediaList";
 import SelectCrop from "./SelectCrop";
 import SelectZoom from "./SelectZoom";
 import { ActionType } from "..";
-import { useCreateModalContext } from "../../../../Context";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 export type HandleModalsType = {
   isCropModalOpen: boolean;

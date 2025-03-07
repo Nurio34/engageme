@@ -1,7 +1,7 @@
-import { useCreateModalContext } from "../../../Context";
+import { useCreateModalContext } from "../../../../Context";
 
 function SliceIndicator() {
-  const { isResizingStarted } = useCreateModalContext();
+  const { isResizingStarted, step } = useCreateModalContext();
 
   const totalSlices = Array(9).fill("#");
 

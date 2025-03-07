@@ -1,3 +1,4 @@
+import { deleteFilesFromCloudinary } from "@/actions/cloudinary";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   toggle_WannaCloseCreateModal_Modal,
@@ -5,12 +6,27 @@ import {
 } from "@/store/slices/modals";
 
 function Client() {
-  const { isWannaCloseCreateModalOpen } = useAppSelector((s) => s.modals);
+  const { isWannaCloseCreateModalOpen, cloudinaryMedias } = useAppSelector(
+    (s) => s.modals
+  );
   const dispatch = useAppDispatch();
 
   const closeThisModal = () => dispatch(toggle_WannaCloseCreateModal_Modal());
 
-  const closeCreateModal = () => {
+  const closeCreateModal = async () => {
+    const deleteFilesFromCloudinaryAction = async () => {
+      try {
+        const response = await deleteFilesFromCloudinary(cloudinaryMedias);
+
+        if (response === "success") {
+        } else {
+          deleteFilesFromCloudinaryAction();
+        }
+      } catch (error) {
+      } finally {
+      }
+    };
+    deleteFilesFromCloudinaryAction();
     dispatch(toggleCreateModal());
     closeThisModal();
   };

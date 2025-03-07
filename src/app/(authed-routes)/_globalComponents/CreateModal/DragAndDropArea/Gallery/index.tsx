@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import Canvas from "./Canvas";
 import PreviousButton from "./PreviousButton";
 import NextButton from "./NextButton";
 import { useCreateModalContext } from "../../Context";
-import SliceIndicator from "./SliceIndicator";
+import CropContainer from "./CropContainer";
+import EditContainer from "./EditContainer";
 
 function Gallery() {
   const {
@@ -11,6 +11,7 @@ function Gallery() {
     files,
     setCanvasContainerSize,
     setIsListModalOpen,
+    step,
   } = useCreateModalContext();
 
   //! *** set CanvasContainer size ***
@@ -40,10 +41,8 @@ function Gallery() {
       ref={CanvasContainerRef}
       className="relative w-full h-full bg-base-100"
     >
-      {files.urls?.map((url, index) => (
-        <Canvas key={index} url={url} index={index} />
-      ))}
-      <SliceIndicator />
+      <CropContainer />
+      <EditContainer />
       <PreviousButton />
       <NextButton />
     </div>

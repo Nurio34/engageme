@@ -16,7 +16,7 @@ type EagerType = {
   secure_url: string;
 };
 
-export type ResponseType = {
+export type MediaType = {
   asset_id: string;
   public_id: string;
   version_id: string;
@@ -31,9 +31,19 @@ export type ResponseType = {
   audio?: Record<string, any>;
 };
 
+export type ResponseType = {
+  status: "success" | "error";
+  medias: MediaType[];
+};
+
+export type DeleteMediaType = {
+  publicId: string;
+  type: "image" | "video";
+};
+
 export const uploadFilesToCloudinary = async (
   files: FileObjectType[]
-): Promise<ResponseType[]> => {
+): Promise<ResponseType> => {
   try {
     const getBuffer = async (file: File): Promise<Buffer> => {
       const arrayBuffer = await file.arrayBuffer();
@@ -57,10 +67,10 @@ export const uploadFilesToCloudinary = async (
               folder: "/Engage-Me",
               eager: [
                 {
-                  width: file.cloudinarySize.w,
+                  width: (file.cloudinarySize.w / file.scale).toFixed(),
                   height:
                     file.cloudinarySize.h <= file.originalSize.h
-                      ? file.cloudinarySize.h
+                      ? (file.cloudinarySize.h / file.scale).toFixed()
                       : undefined,
                   crop:
                     file.cloudinarySize.h <= file.originalSize.h
@@ -70,8 +80,15 @@ export const uploadFilesToCloudinary = async (
                     file.cloudinarySize.h <= file.originalSize.h
                       ? undefined
                       : +file.ratio.toFixed(2),
-                  x: (file.position.x * -1 * paramX).toFixed(),
-                  y: (file.position.y * -1 * paramY).toFixed(),
+                  gravity: file.scale > 1 ? "center" : undefined,
+                  x:
+                    file.scale === 1
+                      ? (file.position.x * -1 * paramX).toFixed()
+                      : undefined,
+                  y:
+                    file.scale === 1
+                      ? (file.position.y * -1 * paramY).toFixed()
+                      : undefined,
                 },
               ],
               eager_async: true, // Process asynchronously
@@ -88,7 +105,7 @@ export const uploadFilesToCloudinary = async (
 
     const uploadPromises = files.map((file) => uploadFile(file));
     const results = await Promise.all(uploadPromises);
-    return results.map((result) => ({
+    const medias = results.map((result) => ({
       asset_id: result.asset_id,
       public_id: result.public_id,
       version_id: result.version_id,
@@ -102,8 +119,41 @@ export const uploadFilesToCloudinary = async (
       eager: result.eager,
       audio: result.audio,
     }));
-  } catch (error) {
-    console.error("Error uploading to Cloudinary:", error);
-    throw error;
+    return { status: "success", medias };
+  } catch (_) {
+    return { status: "error", medias: [] };
+  }
+};
+
+export const deleteFilesFromCloudinary = async (
+  publicIds: {
+    publicId: string;
+    type: "image" | "video";
+  }[]
+) => {
+  const deleteFile = async (
+    publicId: string,
+    type: "image" | "video" | "raw"
+  ) => {
+    try {
+      await cloudinary.uploader.destroy(publicId, {
+        resource_type: type,
+      });
+      return "success";
+    } catch (_) {
+      return "error";
+    }
+  };
+
+  try {
+    const deleteResults = await Promise.all(
+      publicIds.map(({ publicId, type }) => deleteFile(publicId, type))
+    );
+
+    return deleteResults.some((result) => result === "error")
+      ? "error"
+      : "success";
+  } catch (_) {
+    return { status: "error" };
   }
 };

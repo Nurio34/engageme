@@ -5,10 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useCreateModalContext } from "../../../../Context";
 import Image from "next/image";
 import { IoIosClose } from "react-icons/io";
 import { DraggingItemType, FilesNewOrderType } from "..";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 function Media({
   LiRef,
