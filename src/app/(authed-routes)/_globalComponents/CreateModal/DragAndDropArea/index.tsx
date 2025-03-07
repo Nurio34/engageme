@@ -4,7 +4,9 @@ import { useCreateModalContext } from "../Context";
 import toast from "react-hot-toast";
 
 function DragAndDropArea() {
-  const { files, setFiles } = useCreateModalContext();
+  const { files, setFiles, step } = useCreateModalContext();
+
+  const dropCondition = step.step === "new" || step.step === "crop";
 
   return (
     <div
@@ -13,28 +15,32 @@ function DragAndDropArea() {
         e.preventDefault();
       }}
       onDrop={(e) => {
-        e.preventDefault();
+        if (dropCondition) {
+          e.preventDefault();
 
-        const Files = e.dataTransfer.files;
-        const fileValues = Object.values(Files);
+          const Files = e.dataTransfer.files;
+          const fileValues = Object.values(Files);
 
-        const urls: string[] = [];
-        fileValues.forEach((file) => {
-          const url = URL.createObjectURL(file);
-          urls.push(url);
-        });
-        setFiles((prev) => {
-          if (prev.files === null || prev.urls === null) {
-            return { files: fileValues, urls };
+          const urls: string[] = [];
+          fileValues.forEach((file) => {
+            const url = URL.createObjectURL(file);
+            urls.push(url);
+          });
+          setFiles((prev) => {
+            if (prev.files === null || prev.urls === null) {
+              return { files: fileValues, urls };
+            }
+
+            return {
+              files: [...prev.files, ...fileValues],
+              urls: [...prev.urls, ...urls],
+            };
+          });
+          if (fileValues.length !== 0) {
+            toast.success(
+              `New file${urls.length === 1 ? "'s" : "s'"} been add`
+            );
           }
-
-          return {
-            files: [...prev.files, ...fileValues],
-            urls: [...prev.urls, ...urls],
-          };
-        });
-        if (fileValues.length !== 0) {
-          toast.success(`New file${urls.length === 1 ? "'s" : "s'"} been add`);
         }
       }}
     >

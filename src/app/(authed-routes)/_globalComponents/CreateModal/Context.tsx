@@ -266,6 +266,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
             deleteFilesFromCloudinaryAction();
           }
         } catch (error) {
+          console.log(error);
+          deleteFilesFromCloudinaryAction();
         } finally {
           setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));
         }

@@ -23,7 +23,8 @@ function Client() {
           deleteFilesFromCloudinaryAction();
         }
       } catch (error) {
-      } finally {
+        console.log(error);
+        deleteFilesFromCloudinaryAction();
       }
     };
     deleteFilesFromCloudinaryAction();

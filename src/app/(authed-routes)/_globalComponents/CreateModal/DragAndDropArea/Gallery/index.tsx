@@ -6,13 +6,8 @@ import CropContainer from "./CropContainer";
 import EditContainer from "./EditContainer";
 
 function Gallery() {
-  const {
-    CanvasContainerRef,
-    files,
-    setCanvasContainerSize,
-    setIsListModalOpen,
-    step,
-  } = useCreateModalContext();
+  const { CanvasContainerRef, setCanvasContainerSize, setIsListModalOpen } =
+    useCreateModalContext();
 
   //! *** set CanvasContainer size ***
   useEffect(() => {
