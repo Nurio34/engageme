@@ -1,14 +1,13 @@
 import { useCreateModalContext } from "../../../../Context";
-import Media from "./Media";
+import MediaContainer from "./MediaContainer";
 
 function Medias() {
-  const { baseCanvasContainerWidth, cloudinaryMedias } =
-    useCreateModalContext();
+  const { cloudinaryMedias } = useCreateModalContext();
 
   return (
-    <div className="h-full" style={{ width: baseCanvasContainerWidth }}>
+    <div className="h-full">
       {cloudinaryMedias.medias.map((media, index) => (
-        <Media key={media.asset_id} index={index} media={media} />
+        <MediaContainer key={media.asset_id} index={index} media={media} />
       ))}
     </div>
   );

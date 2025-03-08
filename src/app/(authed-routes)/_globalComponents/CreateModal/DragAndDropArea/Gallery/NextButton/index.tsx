@@ -1,5 +1,6 @@
 import { IoIosArrowForward } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
+import { useEffect, useState } from "react";
 
 function NextButton() {
   const {
@@ -7,8 +8,21 @@ function NextButton() {
     files,
     setIsAllModalsClosed,
     baseCanvasContainerWidth,
+    canvasContainerSize,
+    step,
   } = useCreateModalContext();
   const totalMedia = files.files!.length;
+  const { width } = canvasContainerSize;
+
+  const [padding, setPadding] = useState(0);
+
+  useEffect(() => {
+    if (step.step === "crop") {
+      setPadding(width);
+    } else {
+      setPadding(baseCanvasContainerWidth);
+    }
+  }, [step, canvasContainerSize]);
 
   const goNextMedia = () => {
     setCurrentIndex((prev) => (prev + 1) % totalMedia);
@@ -22,11 +36,8 @@ function NextButton() {
         btn btn-circle btn-neutral 
       "
       style={{
-        left:
-          baseCanvasContainerWidth === 0
-            ? undefined
-            : baseCanvasContainerWidth - 4 - 48,
-        right: baseCanvasContainerWidth === 0 ? 4 : undefined,
+        left: padding === 0 ? undefined : padding - 4 - 48,
+        right: padding === 0 ? 4 : undefined,
       }}
       onClick={goNextMedia}
     >

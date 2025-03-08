@@ -1,6 +1,5 @@
 import { useCreateModalContext } from "../../../Context";
 import { ContextProvider } from "./Context";
-import EditTab from "./EditTab";
 import Medias from "./Medias";
 
 export type TransformationsType = {
@@ -21,10 +20,7 @@ function EditContainer() {
     <>
       {renderCondition && (
         <ContextProvider>
-          <div className="h-full flex">
-            <Medias />
-            <EditTab />
-          </div>
+          <Medias />
         </ContextProvider>
       )}
     </>
