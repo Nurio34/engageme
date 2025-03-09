@@ -1,7 +1,5 @@
-import { CldImage } from "next-cloudinary";
 import { CurrentTabType } from "..";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { StyleType } from "../../ImageContainer";
 import FilterButton from "./FilterButton";
 
@@ -12,17 +10,24 @@ export type FilterType = {
 
 function FiltersTab({
   currentTab,
-  urlState,
+  url,
   setStyle,
 }: {
   currentTab: CurrentTabType;
-  urlState: string;
+  url: string;
   setStyle: Dispatch<SetStateAction<StyleType>>;
 }) {
   const filters: FilterType[] = [
     {
       name: "Original",
-      style: {},
+      style: {
+        brightness: 1,
+        contrast: 1,
+        blur: 0,
+        sepia: 0,
+        saturate: 1,
+        "hue-rotate": 0,
+      },
     },
     {
       name: "X-Pro II",
@@ -197,6 +202,7 @@ function FiltersTab({
   const [isLoading, setIsLoading] = useState(true);
   const [containerHeight, setContainerHeight] = useState(0);
   const DivRef = useRef<HTMLDivElement | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (DivRef.current) {
@@ -211,12 +217,15 @@ function FiltersTab({
           className="grid grid-cols-[repeat(auto-fit,minmax(88px,1fr))] place-content-start gap-4 p-4 overflow-y-auto"
           style={{ height: containerHeight }}
         >
-          {filters.map((filter) => (
+          {filters.map((filter, index) => (
             <FilterButton
               key={filter.name}
+              index={index}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
-              urlState={urlState}
+              url={url}
               filter={filter}
               setStyle={setStyle}
             />

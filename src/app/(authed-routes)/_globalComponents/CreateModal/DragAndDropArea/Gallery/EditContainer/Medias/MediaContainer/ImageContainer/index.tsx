@@ -5,7 +5,7 @@ import Media from "./Media";
 import EditTab from "../EditTab";
 import { useState } from "react";
 
-export type StyleType = Record<string, string | number>;
+export type StyleType = Record<string, number>;
 
 function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
@@ -13,18 +13,44 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const { url } = eager![0];
 
   const [urlState, setUrlState] = useState(url);
+  const [isNewUrlDownloading, setIsNewUrlDownloading] = useState(true);
 
   //! *** Scale down image to be able to "Enhance" applied ***
   const { newWidth, newHeight } = scaleDown(width, height);
   //! ********************
 
-  const [style, setStyle] = useState<StyleType>({});
+  const [style, setStyle] = useState<StyleType>({
+    brightness: 1,
+    contrast: 1,
+    sepia: 0,
+    saturate: 1,
+    "hue-rotate": 0,
+    blur: 0,
+  });
+
+  const [otherStyle, setOtherStyle] = useState<StyleType>({
+    opacity: 1,
+    depth: 0,
+  });
 
   return (
     currentIndex === index && (
       <div className="h-full flex">
-        <Media urlState={urlState} style={style} />
-        <EditTab urlState={urlState} setStyle={setStyle} />
+        <Media
+          urlState={urlState}
+          style={style}
+          otherStyle={otherStyle}
+          isNewUrlDownloading={isNewUrlDownloading}
+          setIsNewUrlDownloading={setIsNewUrlDownloading}
+        />
+        <EditTab
+          url={url}
+          style={style}
+          setStyle={setStyle}
+          setOtherStyle={setOtherStyle}
+          setUrlState={setUrlState}
+          setIsNewUrlDownloading={setIsNewUrlDownloading}
+        />
       </div>
     )
   );

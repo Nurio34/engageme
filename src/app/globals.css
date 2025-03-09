@@ -20,3 +20,71 @@
   content: "Engage Me";
   font-size: 32px;
 }
+
+/* Remove default styles */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Track Styling (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  background: lightgray; /* Gradient effect */
+  border-radius: 5px;
+}
+
+/* Track Styling (Firefox) */
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  background: lightgray; /* Gradient effect */
+  border-radius: 5px;
+}
+
+/* Thumb Styling (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: black;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  transform: translateY(-8px) translateZ(10px);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: translateY(-8px) scale(1.2);
+}
+
+/* Thumb Styling (Firefox) */
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.EditCanvasContainer {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, var(--depth)) 100%
+  );
+  pointer-events: none;
+}

@@ -8,7 +8,7 @@ function HomePage() {
       <div className="hidden md:grid items-center justify-items-end ">
         <figure className="relative w-[400px] h-[569px] ">
           <Image
-            src={"/hero.webp"}
+            src={"/Hero.webp"}
             fill
             alt="Hero image"
             className="rounded-lg object-cover"

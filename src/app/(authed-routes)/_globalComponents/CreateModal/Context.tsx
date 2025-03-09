@@ -237,7 +237,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
                 }))
               )
             );
-          } catch (_) {
+          } catch (error) {
+            console.log(error);
             toast.error("Something went wrong! Please try again!");
           } finally {
             setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));

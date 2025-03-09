@@ -1,19 +1,34 @@
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { CldImage } from "next-cloudinary";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { StyleType } from "..";
 
-function Media({ urlState, style }: { urlState: string; style: StyleType }) {
-  console.log("render");
+function Media({
+  urlState,
+  style,
+  otherStyle,
+  isNewUrlDownloading,
+  setIsNewUrlDownloading,
+}: {
+  urlState: string;
+  style: StyleType;
+  otherStyle: StyleType;
+  isNewUrlDownloading: boolean;
+  setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
+}) {
   const { baseCanvasContainerWidth, canvasContainerSize } =
     useCreateModalContext();
   const { width, height } = canvasContainerSize;
-  const [isLoading, setIsLoading] = useState(true);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const filterStyle = Object.entries(style)
-    .map(([key, value]) => `${key}(${value})`)
+    .map(
+      ([key, value]) =>
+        `${key}(${key === "sepia" ? value / 10 : value}${
+          key === "hue-rotate" ? "deg" : key === "blur" ? "px" : ""
+        })`
+    )
     .join(" ");
 
   useEffect(() => {
@@ -25,30 +40,45 @@ function Media({ urlState, style }: { urlState: string; style: StyleType }) {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = urlState;
+
     img.onload = () => {
       canvas.width = width;
       canvas.height = height;
       ctx.filter = filterStyle;
+      ctx.globalAlpha = otherStyle.opacity;
       ctx.drawImage(img, 0, 0, width, height);
     };
-  }, [urlState, style, isLoading]);
+  }, [urlState, style, otherStyle, isNewUrlDownloading]);
 
-  return isLoading ? (
+  return isNewUrlDownloading ? (
     <figure
       className={`relative h-full  ${
-        isLoading ? "bg-primary animate-pulse" : ""
+        isNewUrlDownloading ? "bg-base-300 animate-pulse" : ""
       }`}
       style={{ width: baseCanvasContainerWidth }}
-      onLoad={() => setIsLoading(false)}
     >
-      <CldImage src={urlState} preserveTransformations fill alt="image" />
+      <CldImage
+        src={urlState}
+        preserveTransformations
+        fill
+        alt="image"
+        onLoad={() => setIsNewUrlDownloading(false)}
+      />
     </figure>
   ) : (
-    <canvas
-      ref={canvasRef}
-      className={` ${isLoading ? "bg-base-content/60 animate-pulse" : ""}`}
-      style={{ width: baseCanvasContainerWidth }}
-    />
+    <div className="relative">
+      <canvas
+        ref={canvasRef}
+        className={`w-full h-full ${
+          isNewUrlDownloading ? "bg-base-content/60 animate-pulse" : ""
+        }`}
+        style={{ width: baseCanvasContainerWidth }}
+      />
+      <div
+        className="EditCanvasContainer"
+        style={{ "--depth": otherStyle.depth } as React.CSSProperties}
+      ></div>
+    </div>
   );
 }
 

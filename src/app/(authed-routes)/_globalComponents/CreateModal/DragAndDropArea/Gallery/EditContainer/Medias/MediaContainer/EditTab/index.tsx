@@ -5,27 +5,47 @@ import AdjustmentsTab from "./AdjustmentsTab";
 import { StyleType } from "../ImageContainer";
 import TransformationsTab from "./TransformationsTab";
 
-export type CurrentTabType = "filters" | "adjustments" | "transformations";
+export type CurrentTabType =
+  | "filters"
+  | "adjustments"
+  | "transformations"
+  | "ai";
 
 function EditTab({
-  urlState,
+  url,
+  style,
   setStyle,
+  setOtherStyle,
+  setUrlState,
+  setIsNewUrlDownloading,
 }: {
-  urlState: string;
+  url: string;
+  style: StyleType;
   setStyle: Dispatch<SetStateAction<StyleType>>;
+  setOtherStyle: Dispatch<SetStateAction<StyleType>>;
+  setUrlState: Dispatch<SetStateAction<string>>;
+  setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
 }) {
   const [currentTab, setCurrentTab] = useState<CurrentTabType>("filters");
 
   return (
     <div className="grow border-l flex flex-col">
       <EditButtons currentTab={currentTab} setCurrentTab={setCurrentTab} />
-      <FiltersTab
+      <FiltersTab currentTab={currentTab} url={url} setStyle={setStyle} />
+      {
+        <AdjustmentsTab
+          currentTab={currentTab}
+          style={style}
+          setStyle={setStyle}
+          setOtherStyle={setOtherStyle}
+        />
+      }
+      <TransformationsTab
         currentTab={currentTab}
-        urlState={urlState}
-        setStyle={setStyle}
+        url={url}
+        setUrlState={setUrlState}
+        setIsNewUrlDownloading={setIsNewUrlDownloading}
       />
-      <AdjustmentsTab currentTab={currentTab} setStyle={setStyle} />
-      <TransformationsTab currentTab={currentTab} urlState={urlState} />
     </div>
   );
 }

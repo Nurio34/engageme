@@ -9,14 +9,14 @@ function EditButtons({
   setCurrentTab: Dispatch<SetStateAction<CurrentTabType>>;
 }) {
   return (
-    <div className="flex">
+    <div className="flex gap-1">
       <button
         type="button"
         className={`grow py-2 border-b text-sm transition-colors 
             ${
               currentTab === "filters"
                 ? "border-primary text-primary font-semibold"
-                : "text-base-300"
+                : "text-base-content/40 text-xs"
             }
           `}
         onClick={() => setCurrentTab("filters")}
@@ -29,7 +29,7 @@ function EditButtons({
             ${
               currentTab === "adjustments"
                 ? "border-primary text-primary font-semibold"
-                : "text-base-300"
+                : "text-base-content/40 text-xs"
             }
           `}
         onClick={() => setCurrentTab("adjustments")}
@@ -42,12 +42,25 @@ function EditButtons({
             ${
               currentTab === "transformations"
                 ? "border-primary text-primary font-semibold"
-                : "text-base-300"
+                : "text-base-content/40 text-xs"
             }
           `}
         onClick={() => setCurrentTab("transformations")}
       >
         Transformations
+      </button>
+      <button
+        type="button"
+        className={`grow py-2 border-b text-sm transition-colors             
+            ${
+              currentTab === "ai"
+                ? "border-primary text-primary font-semibold"
+                : "text-base-300 text-xs"
+            }
+          `}
+        onClick={() => setCurrentTab("ai")}
+      >
+        AI
       </button>
     </div>
   );

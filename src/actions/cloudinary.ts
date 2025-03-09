@@ -28,7 +28,7 @@ export type MediaType = {
   height: number;
   duration?: number;
   eager?: EagerType[];
-  audio?: Record<string, any>;
+  audio?: Record<string, string | number>;
 };
 
 export type ResponseType = {
@@ -120,7 +120,8 @@ export const uploadFilesToCloudinary = async (
       audio: result.audio,
     }));
     return { status: "success", medias };
-  } catch (_) {
+  } catch (error) {
+    console.log(error);
     return { status: "error", medias: [] };
   }
 };
@@ -140,7 +141,8 @@ export const deleteFilesFromCloudinary = async (
         resource_type: type,
       });
       return "success";
-    } catch (_) {
+    } catch (error) {
+      console.log(error);
       return "error";
     }
   };
@@ -153,7 +155,8 @@ export const deleteFilesFromCloudinary = async (
     return deleteResults.some((result) => result === "error")
       ? "error"
       : "success";
-  } catch (_) {
+  } catch (error) {
+    console.log(error);
     return { status: "error" };
   }
 };
