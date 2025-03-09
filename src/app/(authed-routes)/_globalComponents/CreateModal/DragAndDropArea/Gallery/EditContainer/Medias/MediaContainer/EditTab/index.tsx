@@ -4,6 +4,7 @@ import FiltersTab from "./FiltersTab";
 import AdjustmentsTab from "./AdjustmentsTab";
 import { StyleType } from "../ImageContainer";
 import TransformationsTab from "./TransformationsTab";
+import AITab from "./AITab";
 
 export type CurrentTabType =
   | "filters"
@@ -46,6 +47,7 @@ function EditTab({
         setUrlState={setUrlState}
         setIsNewUrlDownloading={setIsNewUrlDownloading}
       />
+      <AITab currentTab={currentTab} url={url} setUrlState={setUrlState} />
     </div>
   );
 }

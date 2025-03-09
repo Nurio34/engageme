@@ -29,9 +29,27 @@ function TransformationsTab({
       action: {},
     },
     {
-      name: "al dante",
+      name: "Al Dante",
       action: {
         art: "al_dente",
+      },
+    },
+    {
+      name: "athena",
+      action: {
+        art: "athena",
+      },
+    },
+    {
+      name: "audrey",
+      action: {
+        art: "audrey",
+      },
+    },
+    {
+      name: "aurora",
+      action: {
+        art: "aurora",
       },
     },
     {
@@ -41,9 +59,21 @@ function TransformationsTab({
       },
     },
     {
+      name: "eucalyptus",
+      action: {
+        art: "eucalyptus",
+      },
+    },
+    {
       name: "fes",
       action: {
         art: "fes",
+      },
+    },
+    {
+      name: "frost",
+      action: {
+        art: "frost",
       },
     },
     {
@@ -53,9 +83,39 @@ function TransformationsTab({
       },
     },
     {
+      name: "hokusai",
+      action: {
+        art: "hokusai",
+      },
+    },
+    {
+      name: "incognito",
+      action: {
+        art: "incognito",
+      },
+    },
+    {
+      name: "linen",
+      action: {
+        art: "linen",
+      },
+    },
+    {
       name: "peacock",
       action: {
         art: "peacock",
+      },
+    },
+    {
+      name: "primavera",
+      action: {
+        art: "primavera",
+      },
+    },
+    {
+      name: "quartz",
+      action: {
+        art: "quartz",
       },
     },
     {
@@ -65,9 +125,27 @@ function TransformationsTab({
       },
     },
     {
+      name: "refresh",
+      action: {
+        art: "refresh",
+      },
+    },
+    {
       name: "sizzle",
       action: {
         art: "sizzle",
+      },
+    },
+    {
+      name: "sonnet",
+      action: {
+        art: "sonnet",
+      },
+    },
+    {
+      name: "ukulele",
+      action: {
+        art: "ukulele",
       },
     },
     {
@@ -145,58 +223,64 @@ function TransformationsTab({
       }
     };
 
-    const fetchAllImages = async () => {
-      try {
-        const imagePromises = initialTransformations.map(
-          async (transformation) => {
-            const { action } = transformation;
+    initialTransformations.forEach(async (transformation) => {
+      const { action, name } = transformation;
 
-            const modifiedUrl = getCldImageUrl({
-              src: url,
-              preserveTransformations: true,
-              art: action.art as string,
-              blackwhite: action.blackwhite as boolean,
-              cartoonify: action.cartoonify as boolean,
-              negate: action.negate as boolean,
-              oilPaint: action.oilPaint as string,
-              vibrance: action.vibrance as string,
-              vignette: action.vignette as string,
-            });
-            const fetchedUrl = await fetchImage(modifiedUrl);
-            return { ...transformation, url: fetchedUrl };
-          }
+      const modifiedUrl = getCldImageUrl({
+        src: url,
+        preserveTransformations: true,
+        art: action.art as string,
+        blackwhite: action.blackwhite as boolean,
+        cartoonify: action.cartoonify as boolean,
+        negate: action.negate as boolean,
+        oilPaint: action.oilPaint as string,
+        vibrance: action.vibrance as string,
+        vignette: action.vignette as string,
+      });
+      const fetchedUrl = await fetchImage(modifiedUrl);
+
+      setGlobalTransformations((prev) => {
+        const existingIndex = prev.findIndex(
+          (obj) => obj.index === currentIndex
         );
 
-        const updatedTransformations = await Promise.all(imagePromises);
+        if (existingIndex !== -1) {
+          const existingTransformations = prev[existingIndex].transformations;
+          const isDuplicate = existingTransformations.some(
+            (t) =>
+              t.name === name &&
+              JSON.stringify(t.action) === JSON.stringify(action)
+          );
 
-        setGlobalTransformations((prev) => {
-          const exists = prev.some((item) => item.index === currentIndex);
+          if (isDuplicate) return prev;
 
-          if (exists) {
-            return prev;
-          }
-
+          const updatedTransformations = [
+            ...existingTransformations,
+            { action, name, url: fetchedUrl },
+          ];
+          return prev.map((obj, i) =>
+            i === existingIndex
+              ? { ...obj, transformations: updatedTransformations }
+              : obj
+          );
+        } else {
           return [
             ...prev,
-            { index: currentIndex, transformations: updatedTransformations },
+            {
+              index: currentIndex,
+              transformations: [{ action, name, url: fetchedUrl }],
+            },
           ];
-        });
-      } catch (error) {
-        console.log("Error fetching images:", error);
-        fetchAllImages();
-      }
-    };
-
-    if (!currentTransformation) {
-      fetchAllImages();
-    }
+        }
+      });
+    });
   }, [currentIndex]);
 
   return (
     currentTab === "transformations" && (
       <div ref={DivRef} className="h-full">
         <ul
-          className="grid grid-cols-[repeat(auto-fit,minmax(88px,1fr))] place-content-start gap-4 p-4 overflow-y-auto"
+          className="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] place-content-start gap-4 p-4 overflow-y-auto"
           style={{ height: containerHeight }}
         >
           {currentTransformation?.transformations.map(
