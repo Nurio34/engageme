@@ -79,7 +79,6 @@ function MediaListModal() {
       files: prev.files && prev.files.filter((_, ind) => index !== ind),
       urls: prev.urls && prev.urls.filter((_, ind) => index !== ind),
     }));
-
     toast.success("File's been deleted successfully");
   };
 

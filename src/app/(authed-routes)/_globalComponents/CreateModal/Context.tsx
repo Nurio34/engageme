@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  deleteFilesFromCloudinary,
-  MediaType,
-  uploadFilesToCloudinary,
-} from "@/actions/cloudinary";
+import { MediaType } from "@/actions/cloudinary";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   addCloudinaryMedias,
@@ -21,7 +17,8 @@ import {
   useRef,
   useState,
 } from "react";
-import toast from "react-hot-toast";
+import { uploadToCloudinary } from "./apiCalls/uploadToCloudinary";
+import { deleteFromCloudinary } from "./apiCalls/deleteFromCloudinary";
 
 export type FilesType = {
   files: File[] | null;
@@ -198,8 +195,9 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {
-      const filesArray: FileObjectType[] = [];
-      const promises = AllCanvases.current.map(async (Canvas) => {
+      const formData = new FormData();
+
+      const filesArray: FileObjectType[] = AllCanvases.current.map((Canvas) => {
         return {
           File: files.files![Canvas.index],
           cloudinarySize: Canvas.cloudinarySize,
@@ -211,71 +209,49 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         };
       });
 
-      Promise.all(promises).then((files: FileObjectType[]) => {
-        files.forEach((file) => {
-          filesArray.push(file);
-        });
-        const uploadFilesToCloudinaryAction = async (
-          filesArray: FileObjectType[]
-        ) => {
-          try {
-            setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
-            const response = await uploadFilesToCloudinary(filesArray);
-            if (response.status === "error") {
-              toast.error("Something went wrong! Please try again!");
-              return;
-            }
-            setCloudinaryMedias((prev) => ({
-              ...prev,
-              medias: response.medias,
-            }));
-            dispatch(
-              addCloudinaryMedias(
-                response.medias.map((media) => ({
-                  publicId: media.public_id,
-                  type: media.resource_type as "image" | "video",
-                }))
-              )
-            );
-          } catch (error) {
-            console.log(error);
-            toast.error("Something went wrong! Please try again!");
-          } finally {
-            setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));
-          }
-        };
-        uploadFilesToCloudinaryAction(filesArray);
+      filesArray.forEach((fileObject) => {
+        formData.append("files", fileObject.File);
+        formData.append(
+          "cloudinarySize",
+          JSON.stringify(fileObject.cloudinarySize)
+        );
+        formData.append(
+          "originalSize",
+          JSON.stringify(fileObject.originalSize)
+        );
+        formData.append("ratio", JSON.stringify(fileObject.ratio));
+        formData.append("scale", JSON.stringify(fileObject.scale));
+        formData.append("size", JSON.stringify(fileObject.size));
+        formData.append("position", JSON.stringify(fileObject.position));
       });
-      AllCanvases.current = [];
+
+      uploadToCloudinary(formData, setCloudinaryMedias); //TODO : add cloudinaryMedias to cloudinaryMedias in storY
     }
 
     if (step.step === "crop" && cloudinaryMedias.medias.length > 0) {
-      const deleteFilesFromCloudinaryAction = async () => {
-        const mediaPublicIds = cloudinaryMedias.medias.map((media) => ({
-          publicId: media.public_id,
-          type: media.resource_type as "image" | "video",
-        }));
+      const publicIds = cloudinaryMedias.medias.map((media) => ({
+        publicId: media.public_id,
+        type: media.resource_type as "image" | "video",
+      }));
 
-        try {
-          setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
-
-          const response = await deleteFilesFromCloudinary(mediaPublicIds);
-
-          if (response === "success") {
-            setCloudinaryMedias((prev) => ({ ...prev, medias: [] }));
-          } else {
-            deleteFilesFromCloudinaryAction();
-          }
-        } catch (error) {
-          console.log(error);
-          deleteFilesFromCloudinaryAction();
-        } finally {
-          setCloudinaryMedias((prev) => ({ ...prev, isLoading: false }));
-        }
-      };
-      deleteFilesFromCloudinaryAction();
+      deleteFromCloudinary(publicIds, setCloudinaryMedias);
     }
   }, [step]);
+
+  useEffect(() => {
+    AllCanvases.current = [];
+
+    //** add cloudinaryMedias publicIds' and type's to store in case user abort posting medias, so we delete media drom cloudinary  */
+    if (cloudinaryMedias.medias.length) {
+      const publicIds = cloudinaryMedias.medias.map((media) => ({
+        publicId: media.public_id,
+        type: media.resource_type as "image" | "video",
+      }));
+
+      dispatch(addCloudinaryMedias(publicIds));
+      //** ************************************** */
+    }
+  }, [cloudinaryMedias]);
 
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);

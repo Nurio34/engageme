@@ -1,6 +1,6 @@
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { CldImage } from "next-cloudinary";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { StyleType } from "..";
 
 function Media({

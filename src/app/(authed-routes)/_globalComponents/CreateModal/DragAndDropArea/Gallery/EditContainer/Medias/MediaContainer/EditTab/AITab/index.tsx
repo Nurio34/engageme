@@ -13,6 +13,8 @@ function AITab({
   url: string;
   setUrlState: Dispatch<SetStateAction<string>>;
 }) {
+  console.log({ setUrlState });
+
   const AI_Transformations: TransformationType[] = [
     {
       name: "Remove Background",
@@ -53,9 +55,9 @@ function AITab({
         preserveTransformations: true,
         removeBackground: action.removeBackground as boolean,
       });
-      console.log({ modifiedUrl });
       const fetchedUrl = await fetchImage(modifiedUrl);
-      console.log({ fetchedUrl });
+
+      console.log({ name, fetchedUrl });
     });
   }, [currentIndex]);
 

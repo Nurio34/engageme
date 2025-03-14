@@ -1,5 +1,5 @@
-import { CldImage, getCldImageUrl } from "next-cloudinary";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { CldImage } from "next-cloudinary";
+import { Dispatch, SetStateAction } from "react";
 import { TransformationType } from "..";
 
 function TransformationButton({

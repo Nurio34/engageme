@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Theme from "./_globalComponents/Theme";
 import { Toaster } from "react-hot-toast";
+import Ping from "./_globalComponents/Ping/Provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <body className={`antialiased`}>
           <Theme />
           <Toaster />
+          <Ping />
           {children}
         </body>
       </html>
