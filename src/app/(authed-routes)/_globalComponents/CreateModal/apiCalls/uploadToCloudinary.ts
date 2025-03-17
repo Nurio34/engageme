@@ -7,6 +7,7 @@ export const uploadToCloudinary = async (
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>,
   setStep: Dispatch<SetStateAction<StepType>>
 ) => {
+  console.log("uploadToCloudinary()");
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
   setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
@@ -17,7 +18,19 @@ export const uploadToCloudinary = async (
       body: formData,
     });
 
+    if (!response.ok) {
+      toast.error("Something went wrong ! Please tyr again ..");
+      setStep({ action: "previous", step: "crop" });
+      return;
+    }
+
     const { status, medias } = await response.json();
+
+    if (status === "error") {
+      toast.error("Something went wrong ! Please tyr again ..");
+      setStep({ action: "previous", step: "crop" });
+      return;
+    }
 
     setCloudinaryMedias((prev) => ({ ...prev, medias }));
   } catch (error) {

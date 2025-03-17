@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import { CloudinaryMediasType } from "../Context";
-import toast from "react-hot-toast";
 import { DeleteMediaType } from "@/actions/cloudinary";
 
 export const deleteFromCloudinary = async (
   publicIds: DeleteMediaType[],
   setCloudinaryMedias?: Dispatch<SetStateAction<CloudinaryMediasType>>
 ) => {
+  console.log("deleteFromCloudinary()");
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
   if (setCloudinaryMedias)
@@ -32,8 +32,10 @@ export const deleteFromCloudinary = async (
     if (setCloudinaryMedias)
       setCloudinaryMedias!((prev) => ({ ...prev, medias: [] }));
   } catch (error) {
-    toast.error("Unexpected error while deleteFromCloudinary");
     console.log(`Unexpected error while deleteFromCloudinary : `, error);
+    setTimeout(() => {
+      deleteFromCloudinary(publicIds, setCloudinaryMedias);
+    }, 1000);
   } finally {
     if (setCloudinaryMedias)
       setCloudinaryMedias!((prev) => ({ ...prev, isLoading: false }));

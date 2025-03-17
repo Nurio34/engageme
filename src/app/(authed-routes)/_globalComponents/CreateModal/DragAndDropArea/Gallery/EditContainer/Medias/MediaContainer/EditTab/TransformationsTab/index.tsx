@@ -5,7 +5,10 @@ import { getCldImageUrl } from "next-cloudinary";
 import { useEditContext } from "../../../../Context";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
-export type ActionType = Record<string, string | number | boolean>;
+export type ActionType = Record<
+  string,
+  string | number | boolean | string[] | Record<string, string | boolean>
+>;
 export type TransformationType = {
   name: string;
   action: ActionType;

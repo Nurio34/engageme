@@ -1,8 +1,14 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CurrentTabType } from "..";
-import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
-import { getCldImageUrl } from "next-cloudinary";
 import { TransformationType } from "../TransformationsTab";
+import AI_Button from "./AI_Button";
 
 function AITab({
   currentTab,
@@ -13,74 +19,84 @@ function AITab({
   url: string;
   setUrlState: Dispatch<SetStateAction<string>>;
 }) {
-  console.log({ setUrlState });
-
-  const AI_Transformations: TransformationType[] = [
+  const Initial_AI_Transformations = useRef<TransformationType[]>([
     {
       name: "Remove Background",
       action: {
         removeBackground: true,
+        background: "blueviolet",
       },
     },
-  ];
+    {
+      name: "Remove Object",
+      action: {
+        remove: {
+          prompt: " shoes",
+          removeShadow: true,
+        },
+      },
+    },
+    {
+      name: "Replace Background",
+      action: {
+        replaceBackground: "ancient egypt",
+      },
+    },
+  ]);
 
-  const { currentIndex } = useCreateModalContext();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [prompt, setPrompt] = useState("");
 
-  const [containerHeight, setContainerHeight] = useState(0);
-  const DivRef = useRef<HTMLDivElement | null>(null);
+  // const [containerHeight, setContainerHeight] = useState(0);
+  // const DivRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (DivRef.current) {
-      setContainerHeight(DivRef.current.getBoundingClientRect().height);
-    }
-  }, [currentTab]);
+  // useEffect(() => {
+  //   if (DivRef.current) {
+  //     setContainerHeight(DivRef.current.getBoundingClientRect().height);
+  //   }
+  // }, [currentTab]);
 
-  useEffect(() => {
-    const fetchImage = async (modifiedUrl: string) => {
-      try {
-        const response = await fetch(modifiedUrl);
-        const blob = await response.blob();
-        const objectUrl = URL.createObjectURL(blob);
-        return objectUrl;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    AI_Transformations.forEach(async (transformation) => {
-      const { name, action } = transformation;
-
-      const modifiedUrl = getCldImageUrl({
-        src: url,
-        preserveTransformations: true,
-        removeBackground: action.removeBackground as boolean,
-      });
-      const fetchedUrl = await fetchImage(modifiedUrl);
-
-      console.log({ name, fetchedUrl });
-    });
-  }, [currentIndex]);
+  const getPrompt = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const prompt = formData.get("prompt") as string;
+    setPrompt(prompt);
+    e.currentTarget.reset();
+  };
 
   return (
     currentTab === "ai" && (
-      <div ref={DivRef} className="h-full">
-        <ul
-          className="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] place-content-start gap-4 p-4 overflow-y-auto"
-          style={{ height: containerHeight }}
-        >
-          <li className="cursor-pointer">
-            <figure
-              className={`relative w-full aspect-square rounded-md overflow-hidden `}
-            ></figure>
-            <p
-              className={`p-1 text-xs text-center text-base-content/50 capitalize`}
-            >
-              Name
-            </p>
-          </li>
+      <div className="h-full">
+        <ul className="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] place-content-start gap-4 p-4 overflow-y-auto">
+          {Initial_AI_Transformations.current.map((transformation, index) => (
+            <AI_Button
+              key={transformation.name}
+              index={index}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+              transformation={transformation}
+              url={url}
+              setUrlState={setUrlState}
+              prompt={prompt}
+              setPrompt={setPrompt}
+            />
+          ))}
         </ul>
+        <form action="" onSubmit={getPrompt} className="grid p-4 gap-y-4">
+          <textarea
+            name="prompt"
+            id="prompt"
+            rows={3}
+            className="textarea"
+            placeholder="Prompt"
+          ></textarea>
+          <button type="submit" className="btn btn-primary">
+            Prompt It
+          </button>
+        </form>
       </div>
     )
   );
 }
+
 export default AITab;

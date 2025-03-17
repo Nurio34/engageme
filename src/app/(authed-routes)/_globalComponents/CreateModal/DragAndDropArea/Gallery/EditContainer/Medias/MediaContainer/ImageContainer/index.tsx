@@ -17,7 +17,7 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
 
   //! *** Scale down image to be able to "Enhance" applied ***
   const { newWidth, newHeight } = scaleDown(width, height);
-  console.log({ newWidth, newHeight });
+  // TODO:LINT console.log({ newWidth, newHeight });
   //! ********************
 
   const [style, setStyle] = useState<StyleType>({

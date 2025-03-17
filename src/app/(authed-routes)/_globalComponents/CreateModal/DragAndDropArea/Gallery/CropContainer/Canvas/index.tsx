@@ -225,7 +225,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isVideo, isPlaying, position, mediaSize]);
+  }, [isVideo, isPlaying, position, mediaSize, step]);
   //! **************************
 
   //! *** Drawing function using requestAnimationFrame ***

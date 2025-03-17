@@ -4,7 +4,6 @@ import {
   toggleCreateModal,
 } from "@/store/slices/modals";
 import { deleteFromCloudinary } from "../CreateModal/apiCalls/deleteFromCloudinary";
-import { useEffect, useRef } from "react";
 
 function Client() {
   const { isWannaCloseCreateModalOpen, cloudinaryMedias } = useAppSelector(

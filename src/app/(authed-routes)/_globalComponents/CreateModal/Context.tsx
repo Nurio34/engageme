@@ -192,7 +192,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const AllCanvases = useRef<CanvasType[]>([]);
   const [cloudinaryMedias, setCloudinaryMedias] =
     useState<CloudinaryMediasType>({ isLoading: false, medias: [] });
-  console.log(AllCanvases.current);
 
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {

@@ -9,7 +9,7 @@ function CropModal({
 }) {
   return (
     <div
-      className="absolute bottom-full mb-2 bg-base-content text-base-100/50 rounded-md py-1 px-2
+      className="absolute w-40 bottom-full mb-2 bg-base-content text-base-100/50 rounded-md py-1 px-2
         flex items-center gap-x-2
       "
     >
