@@ -2,9 +2,15 @@ import { CiPlay1 } from "react-icons/ci";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { useCreateModalContext } from "../../Context";
 import toast from "react-hot-toast";
+import { useEffect, useRef } from "react";
 
 function Content() {
   const { setFiles } = useCreateModalContext();
+
+  const InputRef = useRef<HTMLLabelElement | null>(null);
+  useEffect(() => {
+    if (InputRef.current) InputRef.current.focus();
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-y-[2vh]">
@@ -26,7 +32,15 @@ function Content() {
         </div>
       </div>
       <p className="text-2xl select-none">Drag photos and videos here</p>
-      <label htmlFor="files" className="btn btn-info btn-sm text-base-100">
+      <label
+        ref={InputRef}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.code === "Space") e.currentTarget.click();
+        }}
+        htmlFor="files"
+        className="btn btn-info btn-sm text-base-100"
+      >
         Select from computer
         <input
           onChange={(e) => {

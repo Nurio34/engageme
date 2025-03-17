@@ -4,6 +4,7 @@ import {
   toggleCreateModal,
 } from "@/store/slices/modals";
 import { deleteFromCloudinary } from "../CreateModal/apiCalls/deleteFromCloudinary";
+import { useEffect, useRef } from "react";
 
 function Client() {
   const { isWannaCloseCreateModalOpen, cloudinaryMedias } = useAppSelector(
@@ -37,7 +38,7 @@ function Client() {
             </div>
 
             <button
-              type="button"
+              tabIndex={0}
               className="w-full text-error border-y py-[1.2vh] font-bold"
               onClick={closeCreateModal}
             >

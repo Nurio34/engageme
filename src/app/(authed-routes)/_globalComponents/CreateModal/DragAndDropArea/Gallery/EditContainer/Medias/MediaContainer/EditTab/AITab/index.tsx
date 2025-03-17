@@ -26,7 +26,7 @@ function AITab({
 
   const { currentIndex } = useCreateModalContext();
 
-  const [containerHeight, setContainerHeight] = useState(100);
+  const [containerHeight, setContainerHeight] = useState(0);
   const DivRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

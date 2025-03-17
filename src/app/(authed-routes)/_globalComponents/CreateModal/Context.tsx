@@ -192,6 +192,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const AllCanvases = useRef<CanvasType[]>([]);
   const [cloudinaryMedias, setCloudinaryMedias] =
     useState<CloudinaryMediasType>({ isLoading: false, medias: [] });
+  console.log(AllCanvases.current);
 
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {
@@ -225,7 +226,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         formData.append("position", JSON.stringify(fileObject.position));
       });
 
-      uploadToCloudinary(formData, setCloudinaryMedias); //TODO : add cloudinaryMedias to cloudinaryMedias in storY
+      uploadToCloudinary(formData, setCloudinaryMedias, setStep); //TODO : add cloudinaryMedias to cloudinaryMedias in storY
     }
 
     if (step.step === "crop" && cloudinaryMedias.medias.length > 0) {
