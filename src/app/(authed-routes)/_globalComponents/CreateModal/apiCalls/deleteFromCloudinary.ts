@@ -6,7 +6,6 @@ export const deleteFromCloudinary = async (
   publicIds: DeleteMediaType[],
   setCloudinaryMedias?: Dispatch<SetStateAction<CloudinaryMediasType>>
 ) => {
-  console.log("deleteFromCloudinary()");
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
   if (setCloudinaryMedias)

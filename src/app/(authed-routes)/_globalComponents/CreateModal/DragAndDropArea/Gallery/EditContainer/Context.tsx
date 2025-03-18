@@ -1,7 +1,14 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useState } from "react";
-import { TransformationType } from "./Medias/MediaContainer/EditTab/TransformationsTab";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
+import { TransformationType } from "./Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
 
 export type GlobalTransformationType = {
   index: number;
@@ -10,8 +17,8 @@ export type GlobalTransformationType = {
 
 interface ContextType {
   globalTransformations: GlobalTransformationType[];
-  setGlobalTransformations: React.Dispatch<
-    React.SetStateAction<GlobalTransformationType[]>
+  setGlobalTransformations: Dispatch<
+    SetStateAction<GlobalTransformationType[]>
   >;
 }
 
@@ -24,7 +31,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <Context.Provider
-      value={{ globalTransformations, setGlobalTransformations }}
+      value={{
+        globalTransformations,
+        setGlobalTransformations,
+      }}
     >
       {children}
     </Context.Provider>

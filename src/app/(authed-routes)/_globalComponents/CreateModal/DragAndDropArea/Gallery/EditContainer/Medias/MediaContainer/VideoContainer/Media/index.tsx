@@ -1,15 +1,29 @@
-import { useState } from "react";
-import { MediaType } from "@/actions/cloudinary";
+import { useEffect, useState } from "react";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
 
-function Media({ media }: { media: MediaType }) {
-  const { baseCanvasContainerWidth } = useCreateModalContext();
-  const [isLoading, setIsLoading] = useState(true);
+function Media({
+  eagerUrl,
+  url,
+  poster,
+}: {
+  eagerUrl: string;
+  url: string;
+  poster: string | undefined;
+}) {
+  const { baseCanvasContainerWidth, cloudinaryMedias } =
+    useCreateModalContext();
+  const [isLoaded, setisLoaded] = useState(false);
+  const [isRendered, setIsRendered] = useState(true);
 
-  const { eager, url, duration } = media;
-  const eagerUrl = eager![0].url;
+  useEffect(() => {
+    setIsRendered(false);
+  }, [cloudinaryMedias]);
+
+  useEffect(() => {
+    if (!isRendered) setIsRendered(true);
+  }, [isRendered]);
 
   const { c, w, h, x, y } = Object.fromEntries(
     eagerUrl
@@ -17,49 +31,25 @@ function Media({ media }: { media: MediaType }) {
       .split(",")
       .map((item) => item.split("_"))
   );
-
-  //! *********************
-  const imageUrls = [];
-  const timeParam = +(duration! / 5).toFixed(0);
-  console.log(timeParam);
-
-  const getImageUrl = () => {
-    eagerUrl
-      .replace("/video/upload/", "/video/upload/so_5/")
-      .replace("mp4", "jpg");
-  };
-
-  let time = 0;
-
-  while (time < duration!) {
-    const imageUrl = eagerUrl
-      .replace("/video/upload/", `/video/upload/so_${time}/`)
-      .replace("mp4", "jpg");
-
-    imageUrls.push(imageUrl);
-    time = time + timeParam;
-  }
-
-  //! ****************
-
-  console.log(imageUrls);
-
   return (
     <div
-      className={`${isLoading ? "bg-base-content/50 animate-pulse" : ""}`}
+      className={`${!isLoaded ? "bg-base-content/50 animate-pulse" : ""}`}
       style={{ width: baseCanvasContainerWidth }}
     >
-      <CldVideoPlayer
-        src={url}
-        transformation={{
-          crop: c,
-          width: w,
-          height: h,
-          x,
-          y,
-        }}
-        onDataLoad={() => setIsLoading(false)}
-      />
+      {isRendered && (
+        <CldVideoPlayer
+          src={url}
+          transformation={{
+            crop: c,
+            width: w,
+            height: h,
+            x,
+            y,
+          }}
+          onDataLoad={() => setisLoaded(true)}
+          poster={poster}
+        />
+      )}
     </div>
   );
 }

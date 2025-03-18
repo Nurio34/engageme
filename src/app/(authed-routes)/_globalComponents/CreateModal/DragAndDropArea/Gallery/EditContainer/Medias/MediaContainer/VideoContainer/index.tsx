@@ -6,11 +6,14 @@ import EditTab from "./EditTab";
 function VideoContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
 
+  const { eager, url, duration, poster, asset_id } = media;
+  const eagerUrl = eager![0].url;
+
   return (
     currentIndex === index && (
       <div className="flex h-full">
-        <Media media={media} />
-        <EditTab />
+        <Media eagerUrl={eagerUrl} url={url} poster={poster} />
+        <EditTab eagerUrl={eagerUrl} duration={duration} asset_id={asset_id} />
       </div>
     )
   );

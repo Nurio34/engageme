@@ -7,13 +7,12 @@ export const uploadToCloudinary = async (
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>,
   setStep: Dispatch<SetStateAction<StepType>>
 ) => {
-  console.log("uploadToCloudinary()");
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
   setCloudinaryMedias((prev) => ({ ...prev, isLoading: true }));
 
   try {
-    const response = await fetch(`${url}/uploadMedias`, {
+    const response = await fetch(`${url}/uploadCropedMedias`, {
       method: "POST",
       body: formData,
     });
