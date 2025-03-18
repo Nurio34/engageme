@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CurrentTabType } from "..";
-import { StyleType } from "../../ImageContainer";
 import Control from "./Control";
+import { StyleType } from "../..";
 
 export type ControlType = {
   label: string;

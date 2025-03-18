@@ -49,19 +49,6 @@ function EditButtons({
       >
         Transformations
       </button>
-      <button
-        type="button"
-        className={`grow py-2 border-b text-sm transition-colors             
-            ${
-              currentTab === "ai"
-                ? "border-primary text-primary font-semibold"
-                : "text-base-300 text-xs"
-            }
-          `}
-        onClick={() => setCurrentTab("ai")}
-      >
-        AI
-      </button>
     </div>
   );
 }

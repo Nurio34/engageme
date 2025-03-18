@@ -2,8 +2,8 @@ import { MediaType } from "@/actions/cloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { scaleDown } from "../utils/scaleDown";
 import Media from "./Media";
-import EditTab from "../EditTab";
 import { useState } from "react";
+import EditTab from "./EditTab";
 
 export type StyleType = Record<string, number>;
 

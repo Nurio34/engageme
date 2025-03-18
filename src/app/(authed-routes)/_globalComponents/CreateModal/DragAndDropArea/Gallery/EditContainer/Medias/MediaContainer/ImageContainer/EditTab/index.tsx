@@ -2,9 +2,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import EditButtons from "./EditButtons";
 import FiltersTab from "./FiltersTab";
 import AdjustmentsTab from "./AdjustmentsTab";
-import { StyleType } from "../ImageContainer";
 import TransformationsTab from "./TransformationsTab";
-import AITab from "./AITab";
+import { StyleType } from "..";
 
 export type CurrentTabType =
   | "filters"
@@ -47,7 +46,6 @@ function EditTab({
         setUrlState={setUrlState}
         setIsNewUrlDownloading={setIsNewUrlDownloading}
       />
-      <AITab currentTab={currentTab} url={url} setUrlState={setUrlState} />
     </div>
   );
 }

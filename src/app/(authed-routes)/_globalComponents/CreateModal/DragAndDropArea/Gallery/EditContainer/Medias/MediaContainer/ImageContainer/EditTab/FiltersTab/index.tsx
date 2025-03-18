@@ -1,7 +1,7 @@
 import { CurrentTabType } from "..";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { StyleType } from "../../ImageContainer";
 import FilterButton from "./FilterButton";
+import { StyleType } from "../..";
 
 export type FilterType = {
   name: string;
