@@ -1,14 +1,14 @@
 import { BsDot } from "react-icons/bs";
 
 function IndicatorPoints({ duration }: { duration: number | undefined }) {
-  console.log(duration);
   const totalIndicator = 9;
+
   return (
     <div className="flex items-center justify-between">
       {Array(totalIndicator)
         .fill("#")
-        .map((indicator, index) => (
-          <div className={`relative`}>
+        .map((_, index) => (
+          <div key={index} className={`relative`}>
             <BsDot
               className={`text-2xl font-bold  ${
                 index % 4 === 0

@@ -1,0 +1,12 @@
+import { LeftControlType } from "..";
+
+function LeftArea({ leftControl }: { leftControl: LeftControlType }) {
+  const { base, left } = leftControl;
+  return (
+    <div
+      className="absolute top-0 left-0 h-full bg-base-content/60"
+      style={{ width: base + left }}
+    />
+  );
+}
+export default LeftArea;
