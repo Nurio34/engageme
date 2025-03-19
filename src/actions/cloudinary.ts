@@ -30,6 +30,8 @@ export type MediaType = {
   eager?: EagerType[];
   audio?: Record<string, string | number>;
   poster?: string;
+  blob?: Blob;
+  transformations?: Record<string, string>;
 };
 
 export type ResponseType = {

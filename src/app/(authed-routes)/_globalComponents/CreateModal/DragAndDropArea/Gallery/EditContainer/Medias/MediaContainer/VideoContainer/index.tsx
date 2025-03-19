@@ -12,8 +12,18 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
   return (
     currentIndex === index && (
       <div className="flex h-full">
-        <Media eagerUrl={eagerUrl} url={url} poster={poster} />
-        <EditTab eagerUrl={eagerUrl} duration={duration} asset_id={asset_id} />
+        <Media
+          eagerUrl={eagerUrl}
+          url={url}
+          poster={poster}
+          asset_id={asset_id}
+        />
+        <EditTab
+          eagerUrl={eagerUrl}
+          url={url}
+          duration={duration}
+          asset_id={asset_id}
+        />
       </div>
     )
   );

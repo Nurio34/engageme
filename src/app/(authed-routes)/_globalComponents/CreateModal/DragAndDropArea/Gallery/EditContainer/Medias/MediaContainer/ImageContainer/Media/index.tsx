@@ -4,20 +4,26 @@ import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { StyleType } from "..";
 
 function Media({
+  asset_id,
   urlState,
   style,
   otherStyle,
   isNewUrlDownloading,
   setIsNewUrlDownloading,
 }: {
+  asset_id: string;
   urlState: string;
   style: StyleType;
   otherStyle: StyleType;
   isNewUrlDownloading: boolean;
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { baseCanvasContainerWidth, canvasContainerSize } =
-    useCreateModalContext();
+  const {
+    baseCanvasContainerWidth,
+    canvasContainerSize,
+    cloudinaryMedias,
+    setCloudinaryMedias,
+  } = useCreateModalContext();
   const { width, height } = canvasContainerSize;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,6 +53,18 @@ function Media({
       ctx.filter = filterStyle;
       ctx.globalAlpha = otherStyle.opacity;
       ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const updatedMedias = cloudinaryMedias.medias.map((mediaObj) => {
+            if (mediaObj.asset_id === asset_id) {
+              return { ...mediaObj, blob };
+            }
+
+            return mediaObj;
+          });
+          setCloudinaryMedias((prev) => ({ ...prev, medias: updatedMedias }));
+        }
+      }, "image/png");
     };
   }, [urlState, style, otherStyle, isNewUrlDownloading]);
 

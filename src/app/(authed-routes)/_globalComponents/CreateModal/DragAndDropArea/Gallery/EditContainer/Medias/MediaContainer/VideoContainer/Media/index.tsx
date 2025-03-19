@@ -7,13 +7,16 @@ function Media({
   eagerUrl,
   url,
   poster,
+  asset_id,
 }: {
   eagerUrl: string;
   url: string;
   poster: string | undefined;
+  asset_id: string;
 }) {
-  const { baseCanvasContainerWidth, cloudinaryMedias } =
+  const { baseCanvasContainerWidth, cloudinaryMedias, setCloudinaryMedias } =
     useCreateModalContext();
+  console.log(cloudinaryMedias);
   const [isLoaded, setisLoaded] = useState(false);
   const [isRendered, setIsRendered] = useState(true);
 
@@ -31,6 +34,30 @@ function Media({
       .split(",")
       .map((item) => item.split("_"))
   );
+  const { so, du } = Object.fromEntries(
+    url
+      .split("/")[6]
+      .split(",")
+      .map((item) => item.split("_"))
+  );
+
+  useEffect(() => {
+    const updatedMedias = cloudinaryMedias.medias.map((mediaObj) => {
+      if (mediaObj.asset_id === asset_id) {
+        return {
+          ...mediaObj,
+          transformations: {
+            ...mediaObj.transformations,
+            start_offset: so,
+            duration: du,
+          },
+        };
+      }
+      return mediaObj;
+    });
+    console.log({ updatedMedias });
+  }, [so, du]);
+
   return (
     <div
       className={`${!isLoaded ? "bg-base-content/50 animate-pulse" : ""}`}
@@ -45,6 +72,8 @@ function Media({
             height: h,
             x,
             y,
+            start_offset: so,
+            duration: du,
           }}
           onDataLoad={() => setisLoaded(true)}
           poster={poster}

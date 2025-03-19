@@ -5,7 +5,7 @@ function RightArea({ rightControl }: { rightControl: RightControlType }) {
 
   return (
     <div
-      className="absolute top-0 right-0 h-full bg-base-content/60"
+      className="absolute top-0 right-0 h-full bg-base-content/60 rounded-tr-lg rounded-br-lg"
       style={{ width: base + right }}
     />
   );

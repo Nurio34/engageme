@@ -4,10 +4,12 @@ import { useGetPosters } from "../hooks/useGetPosters";
 
 function EditTab({
   eagerUrl,
+  url,
   duration,
   asset_id,
 }: {
   eagerUrl: string;
+  url: string;
   duration: number | undefined;
   asset_id: string;
 }) {
@@ -16,7 +18,12 @@ function EditTab({
   return (
     <div className="grow p-4 wf">
       <CoverPhoto posters={posters} asset_id={asset_id} />
-      <TrimVideo posters={posters} duration={duration} />
+      <TrimVideo
+        url={url}
+        posters={posters}
+        duration={duration}
+        asset_id={asset_id}
+      />
     </div>
   );
 }

@@ -9,7 +9,7 @@ export type StyleType = Record<string, number>;
 
 function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
-  const { eager, width, height } = media;
+  const { eager, width, height, asset_id } = media;
   const { url } = eager![0];
 
   const [urlState, setUrlState] = useState(url);
@@ -38,6 +38,7 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
     currentIndex === index && (
       <div className="h-full flex">
         <Media
+          asset_id={asset_id}
           urlState={urlState}
           style={style}
           otherStyle={otherStyle}

@@ -1,5 +1,9 @@
 import { Dispatch, DragEvent, SetStateAction, useEffect } from "react";
-import { CollapseControlType, CursorType, RightControlType } from "..";
+import { CursorType } from "..";
+import {
+  CollapseControlType,
+  RightControlType,
+} from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
 
 function RightControl({
   cursor,
@@ -25,7 +29,7 @@ function RightControl({
       const diff = start - end;
 
       if (base + right < 0) return;
-      if (leftPosition + rightPosition >= containerWidth) return;
+      if (leftPosition + rightPosition + 10 >= containerWidth) return;
 
       setRightControl((prev) => ({ ...prev, right: diff }));
       setCollapseControl((prev) => ({
@@ -42,12 +46,34 @@ function RightControl({
     }
   }, [rightControl]);
 
+  useEffect(() => {
+    if (
+      isThisDragging &&
+      containerWidth !== 0 &&
+      leftPosition + rightPosition + 10 >= containerWidth
+    ) {
+      setCollapseControl((prev) => {
+        setRightControl((p) => ({
+          ...p,
+          isThisDragging: false,
+          base: prev.containerWidth - prev.leftPosition - 20 - p.width,
+          right: 0,
+        }));
+
+        return {
+          ...prev,
+          rightPosition: prev.containerWidth - prev.leftPosition - 20,
+        };
+      });
+    }
+  }, [collapseControl]);
+
   return (
     <div
       className="absolute top-0 h-full rounded-lg w-[10px] bg-base-100
           flex items-center justify-center font-extrabold
       "
-      style={{ width, right: base + right, cursor: "move" }}
+      style={{ width, right: base + right, cursor: "ew-resize" }}
       draggable
       onDragStart={(e: DragEvent<HTMLDivElement>) => {
         e.dataTransfer.setDragImage(new Image(), 0, 0);

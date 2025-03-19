@@ -1,5 +1,9 @@
 import { Dispatch, DragEvent, SetStateAction, useEffect } from "react";
-import { CollapseControlType, CursorType, LeftControlType } from "..";
+import { CursorType } from "..";
+import {
+  CollapseControlType,
+  LeftControlType,
+} from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
 
 function LeftControl({
   cursor,
@@ -24,7 +28,7 @@ function LeftControl({
     if (isThisDragging) {
       const diff = end - start;
       if (base + left < 0) return;
-      if (leftPosition + rightPosition >= containerWidth) return;
+      if (leftPosition + rightPosition + 10 >= containerWidth) return;
 
       setLeftControl((prev) => ({ ...prev, left: diff }));
       setCollapseControl((prev) => ({
@@ -42,17 +46,33 @@ function LeftControl({
   }, [leftControl]);
 
   useEffect(() => {
-    if (leftPosition + rightPosition === containerWidth) {
-      console.log({ base, left, leftPosition });
+    if (
+      isThisDragging &&
+      containerWidth !== 0 &&
+      leftPosition + rightPosition + 10 >= containerWidth
+    ) {
+      setCollapseControl((prev) => {
+        setLeftControl((p) => ({
+          ...p,
+          isThisDragging: false,
+          base: prev.containerWidth - prev.rightPosition - 20 - p.width,
+          left: 0,
+        }));
+
+        return {
+          ...prev,
+          leftPosition: prev.containerWidth - prev.rightPosition - 20,
+        };
+      });
     }
   }, [collapseControl]);
 
   return (
     <div
       className="absolute top-0 h-full rounded-lg bg-base-100
-        flex items-center justify-center font-extrabold 
+        flex items-center justify-center font-extrabold
     "
-      style={{ width, left: base + left, cursor: "" }}
+      style={{ width, left: base + left, cursor: "ew-resize" }}
       draggable
       onDragStart={(e: DragEvent<HTMLDivElement>) => {
         e.dataTransfer.setDragImage(new Image(), 0, 0);

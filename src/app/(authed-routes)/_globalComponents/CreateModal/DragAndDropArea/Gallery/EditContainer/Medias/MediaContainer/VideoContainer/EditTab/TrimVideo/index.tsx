@@ -3,11 +3,15 @@ import IndicatorPoints from "./IndicatorPoints";
 import PosterImage from "./PosterImage";
 
 function TrimVideo({
+  url,
   posters,
   duration,
+  asset_id,
 }: {
+  url: string;
   posters: string[];
   duration: number | undefined;
+  asset_id: string;
 }) {
   return (
     <div>
@@ -21,7 +25,7 @@ function TrimVideo({
             <PosterImage key={poster} poster={poster} />
           ))}
         </div>
-        <Controls />
+        <Controls url={url} duration={duration} asset_id={asset_id} />
       </div>
       <IndicatorPoints duration={duration} />
     </div>

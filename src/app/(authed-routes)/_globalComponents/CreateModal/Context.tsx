@@ -19,6 +19,10 @@ import {
 } from "react";
 import { uploadToCloudinary } from "./apiCalls/uploadToCloudinary";
 import { deleteFromCloudinary } from "./apiCalls/deleteFromCloudinary";
+import {
+  ControlsType,
+  useVideoTrimControls,
+} from "./hooks/useVideoTrimControls";
 
 export type FilesType = {
   files: File[] | null;
@@ -109,6 +113,8 @@ interface ContextType {
   cloudinaryMedias: CloudinaryMediasType;
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>;
   baseCanvasContainerWidth: number;
+  controls: ControlsType[];
+  setControls: Dispatch<SetStateAction<ControlsType[]>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -194,6 +200,58 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [cloudinaryMedias, setCloudinaryMedias] =
     useState<CloudinaryMediasType>({ isLoading: false, medias: [] });
 
+  //** Update cloudinaryMedias, add image media object's blob(created from eager.url), add video media object transformations(created from eager.url) */
+
+  useEffect(() => {
+    const fetchAndProcessMedias = async () => {
+      if (cloudinaryMedias.medias.length === 0) return;
+
+      const urlToFile = async (imageUrl: string) => {
+        try {
+          const response = await fetch(imageUrl);
+          const blob = await response.blob();
+          return blob;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const updatedCloudinaryMedias = await Promise.all(
+        cloudinaryMedias.medias.map(async (mediaObj) => {
+          if (mediaObj.resource_type === "image") {
+            const blob = await urlToFile(mediaObj.eager![0].url);
+            return { ...mediaObj, blob };
+          } else {
+            const eagerUrl = mediaObj.eager![0].url;
+            const {
+              c: crop,
+              w: width,
+              h: height,
+              x,
+              y,
+            } = Object.fromEntries(
+              eagerUrl
+                .split("/")[6]
+                .split(",")
+                .map((item) => item.split("_"))
+            );
+            const transformations = { crop, width, height, x, y };
+            return { ...mediaObj, transformations };
+          }
+        })
+      );
+
+      setCloudinaryMedias((prev) => ({
+        ...prev,
+        medias: updatedCloudinaryMedias,
+      }));
+    };
+
+    fetchAndProcessMedias();
+  }, [cloudinaryMedias]);
+
+  //** --------------------- */
+
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {
       const formData = new FormData();
@@ -253,6 +311,11 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       //** ************************************** */
     }
   }, [cloudinaryMedias]);
+  //! *********************
+
+  //! *** Video Trim Controls ***
+  const { controls, setControls } = useVideoTrimControls(cloudinaryMedias);
+  //! ******************************
 
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
@@ -270,6 +333,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       AllCanvases.current = [];
       setCloudinaryMedias({ isLoading: false, medias: [] });
       setBaseCanvasContainerWidth(0);
+      setControls([]);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -297,6 +361,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         cloudinaryMedias,
         setCloudinaryMedias,
         baseCanvasContainerWidth,
+        controls,
+        setControls,
       }}
     >
       {children}
