@@ -24,7 +24,10 @@ function PosterImage({
           const medias = prev.medias;
           const updatedMedias = medias.map((mediaObj) => {
             if (mediaObj.asset_id === asset_id) {
-              return { ...mediaObj, poster: `${poster}.jpg` };
+              return {
+                ...mediaObj,
+                poster: { url: `${poster}.jpg`, publicId: "" },
+              };
             }
             return mediaObj;
           });

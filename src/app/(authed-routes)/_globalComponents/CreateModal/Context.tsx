@@ -1,11 +1,7 @@
 "use client";
 
 import { MediaType } from "@/actions/cloudinary";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  addCloudinaryMedias,
-  toggle_WannaCloseCreateModal_Modal,
-} from "@/store/slices/modals";
+import { useAppSelector } from "@/store/hooks";
 import {
   createContext,
   Dispatch,
@@ -17,12 +13,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { uploadToCloudinary } from "./apiCalls/uploadToCloudinary";
-import { deleteFromCloudinary } from "./apiCalls/deleteFromCloudinary";
 import {
   ControlsType,
   useVideoTrimControls,
 } from "./hooks/useVideoTrimControls";
+import { useInitialProcess } from "./hooks/useInitialProcess";
+import { useCloudinaryActions } from "./hooks/useCloudinaryActions";
+import { useGlobalCloudinaryMedias } from "./hooks/useGlobalCloudinaryMedias";
+import { useStep } from "./hooks/useStep";
 
 export type FilesType = {
   files: File[] | null;
@@ -89,6 +87,7 @@ export type FileObjectType = {
 
 export type CloudinaryMediasType = {
   isLoading: boolean;
+  isInitialProcessComplated: boolean;
   medias: MediaType[];
 };
 
@@ -144,41 +143,12 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [isResizingStarted, setIsResizingStarted] = useState(false);
   //! ********************************
 
-  //! *** step state ***
-  const [step, setStep] = useState<StepType>({ action: "next", step: "new" });
-  const steps: StepsType[] = ["new", "crop", "edit", "post"];
-  const dispatch = useAppDispatch();
-
-  const goPrevStep = () => {
-    const prevStepIndex = steps.indexOf(step.step) - 1;
-
-    if (prevStepIndex < 1) {
-      dispatch(toggle_WannaCloseCreateModal_Modal());
-      return;
-    }
-
-    setStep({ action: "previous", step: steps[prevStepIndex] });
-  };
-
-  const goNextStep = () => {
-    const nextStepIndex = steps.indexOf(step.step) + 1;
-
-    if (nextStepIndex === steps.length) {
-      return;
-    }
-
-    if (step.step === "crop") {
-      setBaseCanvasContainerWidth(canvasContainerSize.width);
-    }
-
-    setStep({ action: "next", step: steps[nextStepIndex] });
-  };
-
-  useEffect(() => {
-    if (files.files && files.files.length > 0) {
-      setStep({ action: "previous", step: "crop" });
-    }
-  }, [files]);
+  //! *** Step state ***
+  const { step, setStep, goPrevStep, goNextStep } = useStep(
+    setBaseCanvasContainerWidth,
+    canvasContainerSize,
+    files
+  );
   //! ******************
 
   //! *** Close all action modals when next o prev button clicked ***
@@ -195,122 +165,34 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   //! ********************
 
-  //! *** All Canvas' States && Upload to Cloudinary ***
+  //! *** All Canvases states - CloudinaryMedias states && Upload to Cloudinary ***
   const AllCanvases = useRef<CanvasType[]>([]);
   const [cloudinaryMedias, setCloudinaryMedias] =
-    useState<CloudinaryMediasType>({ isLoading: false, medias: [] });
+    useState<CloudinaryMediasType>({
+      isLoading: false,
+      isInitialProcessComplated: false,
+      medias: [],
+    });
+  console.log(cloudinaryMedias);
+  //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
+  //** add video media object transformations(created from eager.url)
+  useInitialProcess(cloudinaryMedias, setCloudinaryMedias);
+  //** ************************************************* */
 
-  //** Update cloudinaryMedias, add image media object's blob(created from eager.url), add video media object transformations(created from eager.url) */
+  //** Call cloudinary functions(upload or delete), depending the step */
+  useCloudinaryActions(
+    AllCanvases,
+    files,
+    cloudinaryMedias,
+    setCloudinaryMedias,
+    step,
+    setStep
+  );
+  //** **************************************************** */
 
-  useEffect(() => {
-    const fetchAndProcessMedias = async () => {
-      if (cloudinaryMedias.medias.length === 0) return;
-
-      const urlToFile = async (imageUrl: string) => {
-        try {
-          const response = await fetch(imageUrl);
-          const blob = await response.blob();
-          return blob;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const updatedCloudinaryMedias = await Promise.all(
-        cloudinaryMedias.medias.map(async (mediaObj) => {
-          if (mediaObj.resource_type === "image") {
-            const blob = await urlToFile(mediaObj.eager![0].url);
-            return { ...mediaObj, blob };
-          } else {
-            const eagerUrl = mediaObj.eager![0].url;
-            const {
-              c: crop,
-              w: width,
-              h: height,
-              x,
-              y,
-            } = Object.fromEntries(
-              eagerUrl
-                .split("/")[6]
-                .split(",")
-                .map((item) => item.split("_"))
-            );
-            const transformations = { crop, width, height, x, y };
-            return { ...mediaObj, transformations };
-          }
-        })
-      );
-
-      setCloudinaryMedias((prev) => ({
-        ...prev,
-        medias: updatedCloudinaryMedias,
-      }));
-    };
-
-    fetchAndProcessMedias();
-  }, [cloudinaryMedias]);
-
-  //** --------------------- */
-
-  useEffect(() => {
-    if (AllCanvases.current && AllCanvases.current.length) {
-      const formData = new FormData();
-
-      const filesArray: FileObjectType[] = AllCanvases.current.map((Canvas) => {
-        return {
-          File: files.files![Canvas.index],
-          cloudinarySize: Canvas.cloudinarySize,
-          originalSize: Canvas.originalSize,
-          ratio: Canvas.ratio,
-          scale: Canvas.scale,
-          size: Canvas.size,
-          position: Canvas.position,
-        };
-      });
-
-      filesArray.forEach((fileObject) => {
-        formData.append("files", fileObject.File);
-        formData.append(
-          "cloudinarySize",
-          JSON.stringify(fileObject.cloudinarySize)
-        );
-        formData.append(
-          "originalSize",
-          JSON.stringify(fileObject.originalSize)
-        );
-        formData.append("ratio", JSON.stringify(fileObject.ratio));
-        formData.append("scale", JSON.stringify(fileObject.scale));
-        formData.append("size", JSON.stringify(fileObject.size));
-        formData.append("position", JSON.stringify(fileObject.position));
-      });
-
-      uploadToCloudinary(formData, setCloudinaryMedias, setStep); //TODO : add cloudinaryMedias to cloudinaryMedias in storY
-    }
-
-    if (step.step === "crop" && cloudinaryMedias.medias.length > 0) {
-      const publicIds = cloudinaryMedias.medias.map((media) => ({
-        publicId: media.public_id,
-        type: media.resource_type as "image" | "video",
-      }));
-
-      deleteFromCloudinary(publicIds, setCloudinaryMedias);
-    }
-  }, [step]);
-
-  useEffect(() => {
-    AllCanvases.current = [];
-
-    //** add cloudinaryMedias publicIds' and type's to store in case user abort posting medias, so we delete media drom cloudinary  */
-    if (cloudinaryMedias.medias.length) {
-      const publicIds = cloudinaryMedias.medias.map((media) => ({
-        publicId: media.public_id,
-        type: media.resource_type as "image" | "video",
-      }));
-
-      dispatch(addCloudinaryMedias(publicIds));
-      //** ************************************** */
-    }
-  }, [cloudinaryMedias]);
+  //** add cloudinaryMedias publicIds' and type's to store in case user abort posting medias, so we delete media drom cloudinary  */
+  useGlobalCloudinaryMedias(AllCanvases, cloudinaryMedias);
+  //** ************************************** */
   //! *********************
 
   //! *** Video Trim Controls ***
@@ -331,7 +213,11 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setIsAllModalsClosed(true);
       setIsListModalOpen(false);
       AllCanvases.current = [];
-      setCloudinaryMedias({ isLoading: false, medias: [] });
+      setCloudinaryMedias({
+        isLoading: false,
+        isInitialProcessComplated: false,
+        medias: [],
+      });
       setBaseCanvasContainerWidth(0);
       setControls([]);
     }

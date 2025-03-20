@@ -1,9 +1,21 @@
-import { Dispatch, DragEvent, SetStateAction, useEffect } from "react";
+import {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { CursorType } from "..";
 import {
   CollapseControlType,
+  ControlsType,
   LeftControlType,
+  RightControlType,
 } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { getControlTimes } from "../utils/getControlTimes";
+import { handleTime } from "../utils/handleTime";
+import CurrentTimeIndicator from "./CurrentTimeIndicator";
+import { PlayerTimeType } from "../../../..";
 
 function LeftControl({
   cursor,
@@ -12,6 +24,10 @@ function LeftControl({
   setLeftControl,
   collapseControl,
   setCollapseControl,
+  duration,
+  rightControl,
+  playerTime,
+  control,
 }: {
   cursor: CursorType;
   setCursor: Dispatch<SetStateAction<CursorType>>;
@@ -19,10 +35,16 @@ function LeftControl({
   setLeftControl: Dispatch<SetStateAction<LeftControlType>>;
   collapseControl: CollapseControlType;
   setCollapseControl: Dispatch<SetStateAction<CollapseControlType>>;
+  duration: number | undefined;
+  rightControl: RightControlType;
+  playerTime: PlayerTimeType;
+  control: ControlsType;
 }) {
   const { start, end } = cursor;
   const { base, left, isThisDragging, width } = leftControl;
   const { containerWidth, leftPosition, rightPosition } = collapseControl;
+
+  const [time, setTime] = useState("00:00");
 
   useEffect(() => {
     if (isThisDragging) {
@@ -67,10 +89,30 @@ function LeftControl({
     }
   }, [collapseControl]);
 
+  useEffect(() => {
+    if (!duration || !collapseControl.containerWidth) return;
+
+    const { startTime } = getControlTimes(
+      duration,
+      collapseControl,
+      leftControl,
+      rightControl
+    );
+
+    const time = handleTime(startTime);
+    setTime(time);
+  }, [
+    leftControl.isThisDragging,
+    rightControl.isThisDragging,
+    duration,
+    collapseControl.containerWidth,
+    cursor,
+  ]);
+
   return (
     <div
       className="absolute top-0 h-full rounded-lg bg-base-100
-        flex items-center justify-center font-extrabold
+        flex items-center justify-center 
     "
       style={{ width, left: base + left, cursor: "ew-resize" }}
       draggable
@@ -92,7 +134,11 @@ function LeftControl({
         setCursor({ start: 0, end: 0 });
       }}
     >
-      |
+      <span className="font-extrabold">|</span>
+      {isThisDragging && (
+        <span className="absolute -top-[15px] text-[10px]">{time}</span>
+      )}
+      <CurrentTimeIndicator playerTime={playerTime} control={control} />
     </div>
   );
 }

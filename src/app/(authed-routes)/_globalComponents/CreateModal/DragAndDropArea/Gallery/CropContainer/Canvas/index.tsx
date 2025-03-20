@@ -153,7 +153,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
 
           setMediaSize({ width, height });
 
-          video.play();
+          if (index === currentIndex) video.play();
         };
         video.onplay = () => setIsPlaying(true);
         video.onpause = () => setIsPlaying(false);

@@ -2,9 +2,17 @@ import { MediaType } from "@/actions/cloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import Media from "./Media";
 import EditTab from "./EditTab";
+import { useState } from "react";
+
+export type PlayerTimeType = { currentTime: number; duration: number };
 
 function VideoContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
+
+  const [playerTime, setPlayerTime] = useState<PlayerTimeType>({
+    currentTime: 0,
+    duration: 0,
+  });
 
   const { eager, url, duration, poster, asset_id } = media;
   const eagerUrl = eager![0].url;
@@ -17,12 +25,15 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
           url={url}
           poster={poster}
           asset_id={asset_id}
+          setPlayerTime={setPlayerTime}
         />
         <EditTab
           eagerUrl={eagerUrl}
           url={url}
           duration={duration}
           asset_id={asset_id}
+          playerTime={playerTime}
+          media={media}
         />
       </div>
     )

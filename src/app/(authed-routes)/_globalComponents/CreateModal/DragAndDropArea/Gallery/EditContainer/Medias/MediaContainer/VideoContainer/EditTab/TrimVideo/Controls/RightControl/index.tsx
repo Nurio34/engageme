@@ -1,9 +1,18 @@
-import { Dispatch, DragEvent, SetStateAction, useEffect } from "react";
+import {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { CursorType } from "..";
 import {
   CollapseControlType,
+  LeftControlType,
   RightControlType,
 } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { getControlTimes } from "../utils/getControlTimes";
+import { handleTime } from "../utils/handleTime";
 
 function RightControl({
   cursor,
@@ -12,6 +21,8 @@ function RightControl({
   setRightControl,
   collapseControl,
   setCollapseControl,
+  duration,
+  leftControl,
 }: {
   cursor: CursorType;
   setCursor: Dispatch<SetStateAction<CursorType>>;
@@ -19,10 +30,14 @@ function RightControl({
   setRightControl: Dispatch<SetStateAction<RightControlType>>;
   collapseControl: CollapseControlType;
   setCollapseControl: Dispatch<SetStateAction<CollapseControlType>>;
+  duration: number | undefined;
+  leftControl: LeftControlType;
 }) {
   const { start, end } = cursor;
   const { base, right, isThisDragging, width } = rightControl;
   const { containerWidth, leftPosition, rightPosition } = collapseControl;
+
+  const [time, setTime] = useState("00:00");
 
   useEffect(() => {
     if (isThisDragging) {
@@ -68,10 +83,29 @@ function RightControl({
     }
   }, [collapseControl]);
 
+  useEffect(() => {
+    if (!duration || !collapseControl.containerWidth) return;
+
+    const { endTime } = getControlTimes(
+      duration,
+      collapseControl,
+      leftControl,
+      rightControl
+    );
+    const time = handleTime(endTime);
+    setTime(time);
+  }, [
+    leftControl.isThisDragging,
+    rightControl.isThisDragging,
+    duration,
+    collapseControl.containerWidth,
+    cursor,
+  ]);
+
   return (
     <div
       className="absolute top-0 h-full rounded-lg w-[10px] bg-base-100
-          flex items-center justify-center font-extrabold
+          flex items-center justify-center 
       "
       style={{ width, right: base + right, cursor: "ew-resize" }}
       draggable
@@ -93,7 +127,10 @@ function RightControl({
         setCursor({ start: 0, end: 0 });
       }}
     >
-      |
+      <span className="font-extrabold">|</span>
+      {isThisDragging && (
+        <span className="absolute -top-[15px] text-[10px]">{time}</span>
+      )}
     </div>
   );
 }

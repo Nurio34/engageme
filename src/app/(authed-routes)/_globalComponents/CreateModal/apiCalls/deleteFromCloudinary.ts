@@ -37,6 +37,10 @@ export const deleteFromCloudinary = async (
     }, 1000);
   } finally {
     if (setCloudinaryMedias)
-      setCloudinaryMedias!((prev) => ({ ...prev, isLoading: false }));
+      setCloudinaryMedias!((prev) => ({
+        ...prev,
+        isLoading: false,
+        isInitialProcessComplated: false,
+      }));
   }
 };

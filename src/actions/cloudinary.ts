@@ -16,6 +16,11 @@ type EagerType = {
   secure_url: string;
 };
 
+export type PosterType = {
+  url: string;
+  publicId: string;
+};
+
 export type MediaType = {
   asset_id: string;
   public_id: string;
@@ -29,9 +34,11 @@ export type MediaType = {
   duration?: number;
   eager?: EagerType[];
   audio?: Record<string, string | number>;
-  poster?: string;
+  poster?: PosterType;
+  posterState?: PosterType;
   blob?: Blob;
   transformations?: Record<string, string>;
+  isAudioAllowed?: boolean;
 };
 
 export type ResponseType = {

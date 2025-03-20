@@ -1,18 +1,19 @@
+import { MediaType } from "@/actions/cloudinary";
 import PosterImage from "./PosterImage";
 import SelectFromComputerButton from "./SelectFromComputerButton";
 
 function CoverPhoto({
   posters,
-  asset_id,
+  media,
 }: {
   posters: string[];
-  asset_id: string;
+  media: MediaType;
 }) {
   return (
     <div>
       <div className="flex justify-between items-center">
         <h2 className="font-bold text-lg">Cover Photo</h2>
-        <SelectFromComputerButton asset_id={asset_id} />
+        <SelectFromComputerButton media={media} />
       </div>
       <ul className="flex h-28 my-4">
         {posters.map((poster, index) => (
@@ -20,7 +21,7 @@ function CoverPhoto({
             key={poster}
             index={index}
             poster={poster}
-            asset_id={asset_id}
+            asset_id={media.asset_id}
           />
         ))}
       </ul>

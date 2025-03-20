@@ -13,6 +13,8 @@ import {
   LeftControlType,
   RightControlType,
 } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { getControlTimes } from "./utils/getControlTimes";
+import { PlayerTimeType } from "../../..";
 
 export type CursorType = { start: number; end: number };
 
@@ -20,19 +22,24 @@ function Controls({
   url,
   duration,
   asset_id,
+  playerTime,
 }: {
   url: string;
   duration: number | undefined;
   asset_id: string;
+  playerTime: PlayerTimeType;
 }) {
   const { setCloudinaryMedias, controls, setControls } =
     useCreateModalContext();
 
-  const control = controls.find((control) => control.assetId === asset_id) || {
-    leftControl: defaultLeftControl,
-    rightControl: defaultRightControl,
-    collapseControl: defaultCollapseControl,
-  };
+  const control =
+    controls.find((control) => control.assetId === asset_id) ||
+    ({
+      assetId: asset_id,
+      leftControl: defaultLeftControl,
+      rightControl: defaultRightControl,
+      collapseControl: defaultCollapseControl,
+    } as ControlsType);
 
   const [cursor, setCursor] = useState<CursorType>({ start: 0, end: 0 });
   const [leftControl, setLeftControl] = useState<LeftControlType>(
@@ -59,21 +66,12 @@ function Controls({
     if (leftControl.isThisDragging || rightControl.isThisDragging) return;
     if (!duration || !collapseControl.containerWidth) return;
 
-    const durationTrack = +duration.toFixed(2);
-
-    const startTimeTrack = +(
-      duration /
-      (collapseControl.containerWidth / (leftControl.base + leftControl.left))
-    ).toFixed(2);
-    const startTime = startTimeTrack < 0 ? 0 : startTimeTrack;
-
-    const endTimeTrack = +(
-      duration -
-      duration /
-        (collapseControl.containerWidth /
-          (rightControl.base + rightControl.right))
-    ).toFixed(2);
-    const endTime = endTimeTrack > durationTrack ? durationTrack : endTimeTrack;
+    const { startTime, endTime } = getControlTimes(
+      duration,
+      collapseControl,
+      leftControl,
+      rightControl
+    );
 
     const updatedDuration = +(endTime - startTime).toFixed(2);
 
@@ -124,6 +122,10 @@ function Controls({
         setLeftControl={setLeftControl}
         collapseControl={collapseControl}
         setCollapseControl={setCollapseControl}
+        duration={duration}
+        rightControl={rightControl}
+        playerTime={playerTime}
+        control={control}
       />
       <RightControl
         cursor={cursor}
@@ -132,6 +134,8 @@ function Controls({
         setRightControl={setRightControl}
         collapseControl={collapseControl}
         setCollapseControl={setCollapseControl}
+        duration={duration}
+        leftControl={leftControl}
       />
       <RightArea rightControl={rightControl} />
     </div>
