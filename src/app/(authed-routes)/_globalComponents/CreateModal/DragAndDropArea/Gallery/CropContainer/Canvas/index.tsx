@@ -33,11 +33,14 @@ function Canvas({ url, index }: { url: string; index: number }) {
   const file = files.files![index];
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const mediaRef = useRef<HTMLImageElement | HTMLVideoElement | null>(null);
+  const [mediaRefState, setMediaRefState] = useState<
+    HTMLImageElement | HTMLVideoElement | null
+  >(null);
   const [mediaSize, setMediaSize] = useState<MediaSizeType>({
     width: 0,
     height: 0,
   });
+
   const [isVideo, setIsVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [originalSize, setOriginalSize] = useState({ w: 0, h: 0 });
@@ -81,97 +84,118 @@ function Canvas({ url, index }: { url: string; index: number }) {
   }, [canvasContainerSize]);
   //! **********************************************************
 
-  //! *** Load the image once when url changes ***
+  //! *** Load the media once when url changes ***
+
   useEffect(() => {
+    if (mediaRefState) return;
+
     const typeOfMedia = file.type.split("/")[0];
 
     if (typeOfMedia === "image") {
       const image = new Image();
       image.src = url;
       image.onload = () => {
-        mediaRef.current = image;
-        const originalRatio = image.naturalWidth / image.naturalHeight;
-        setOriginalRatioState(originalRatio);
-        let width, height;
-
-        if (ratioState <= 1) {
-          if (originalRatio <= 1) {
-            width = canvasContainerSize.width;
-            height = width / ratioState;
-          } else {
-            height = canvasContainerSize.height;
-            width = height * ratioState;
-          }
-        } else {
-          if (originalRatio <= 1) {
-            width = canvasContainerSize.width;
-            height = width / ratioState;
-          } else {
-            height = canvasContainerSize.height;
-            width = height * ratioState;
-          }
-        }
-
-        setMediaSize({ width, height });
+        setMediaRefState(image);
       };
+    } else {
+      const video = document.createElement("video");
+      video.src = url;
+      video.onloadedmetadata = () => {
+        setMediaRefState(video);
+      };
+    }
+  }, [url, currentIndex]);
+
+  useEffect(() => {
+    if (!mediaRefState) return;
+
+    if (mediaRefState instanceof HTMLImageElement) {
+      const originalRatio =
+        mediaRefState.naturalWidth / mediaRefState.naturalHeight;
+      setOriginalRatioState(originalRatio);
+      let width, height;
+
+      if (ratioState <= 1) {
+        if (originalRatio <= 1) {
+          width = canvasContainerSize.width;
+          height = width / ratioState;
+        } else {
+          height = canvasContainerSize.height;
+          width = height * ratioState;
+        }
+      } else {
+        if (originalRatio <= 1) {
+          width = canvasContainerSize.width;
+          height = width / ratioState;
+        } else {
+          height = canvasContainerSize.height;
+          width = height * ratioState;
+        }
+      }
+
+      setMediaSize({ width, height });
     } else {
       if (!isVideo) {
         setIsVideo(true);
       } else {
-        const video = document.createElement("video");
-        video.src = url;
-        video.onloadedmetadata = () => {
-          mediaRef.current = video;
-          const originalRatio = video.videoWidth / video.videoHeight;
-          setOriginalRatioState(originalRatio);
+        const originalRatio =
+          mediaRefState.videoWidth / mediaRefState.videoHeight;
+        setOriginalRatioState(originalRatio);
 
-          let width, height, ratio;
+        let width, height, ratio;
 
-          if (ratioState === 0) {
-            ratio = originalRatio;
+        if (ratioState === 0) {
+          ratio = originalRatio;
+        } else {
+          ratio = ratioState;
+        }
+
+        if (ratio <= 1) {
+          if (originalRatio <= 1) {
+            width = canvasContainerSize.width;
+            height = width / ratio;
           } else {
-            ratio = ratioState;
+            height = canvasContainerSize.height;
+            width = height * ratio;
           }
-
-          if (ratio <= 1) {
-            if (originalRatio <= 1) {
-              width = canvasContainerSize.width;
-              height = width / ratio;
-            } else {
-              height = canvasContainerSize.height;
-              width = height * ratio;
-            }
+        } else {
+          if (originalRatio <= 1) {
+            width = canvasContainerSize.width;
+            height = width / ratio;
           } else {
-            if (originalRatio <= 1) {
-              width = canvasContainerSize.width;
-              height = width / ratio;
-            } else {
-              height = canvasContainerSize.height;
-              width = height * ratio;
-            }
+            height = canvasContainerSize.height;
+            width = height * ratio;
           }
+        }
 
-          setMediaSize({ width, height });
+        setMediaSize({ width, height });
 
-          if (index === currentIndex) video.play();
-        };
-        video.onplay = () => setIsPlaying(true);
-        video.onpause = () => setIsPlaying(false);
-        video.onended = () => setIsPlaying(false);
+        if (index === currentIndex) mediaRefState.play();
+
+        mediaRefState.onplay = () => setIsPlaying(true);
+        mediaRefState.onpause = () => setIsPlaying(false);
+        mediaRefState.onended = () => setIsPlaying(false);
       }
     }
     return () => {
-      if (mediaRef.current instanceof HTMLVideoElement) {
-        mediaRef.current.pause();
+      if (mediaRefState instanceof HTMLVideoElement) {
+        mediaRefState.pause();
       }
     };
-  }, [url, canvasContainerSize, currentIndex, isVideo, ratioState]);
+  }, [
+    url,
+    canvasContainerSize,
+    currentIndex,
+    isVideo,
+    ratioState,
+    mediaRefState,
+  ]);
   //! ************************************************
 
   //! *** adjust image's width and height to be cropable in cloudinary ***
   useEffect(() => {
-    if (mediaRef.current) {
-      const media = mediaRef.current;
+    if (mediaRefState) {
+      const media = mediaRefState;
       let originalWidth: number, originalHeight: number;
 
       if (media instanceof HTMLImageElement) {
@@ -225,12 +249,12 @@ function Canvas({ url, index }: { url: string; index: number }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isVideo, isPlaying, position, mediaSize, step]);
+  }, [isVideo, isPlaying, position, mediaSize]);
   //! **************************
 
   //! *** Drawing function using requestAnimationFrame ***
   const redraw = () => {
-    if (canvasRef.current && mediaRef.current && mediaSize.width > 0) {
+    if (canvasRef.current && mediaRefState && mediaSize.width > 0) {
       const ctx = canvasRef.current.getContext("2d");
       if (ctx) {
         ctx.clearRect(
@@ -240,7 +264,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
           canvasRef.current!.height
         );
         ctx.drawImage(
-          mediaRef.current!,
+          mediaRefState,
           position.old_X + position.new_X,
           position.old_Y + position.new_Y,
           mediaSize.width * scale,
@@ -336,7 +360,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
   //! ***
 
   return (
-    <div className={`${currentIndex === index ? "block" : "hidden"}`}>
+    <div className={`h-full ${currentIndex === index ? "block" : "hidden"}`}>
       <canvas
         ref={canvasRef}
         className={`absolute top-0 left-0

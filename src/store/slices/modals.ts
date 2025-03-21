@@ -6,12 +6,14 @@ interface ModalState {
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
   cloudinaryMedias: DeleteMediaType[];
+  posterImages: string[];
 }
 
 const initialState: ModalState = {
   isCreateModalOpen: false,
   isWannaCloseCreateModalOpen: false,
   cloudinaryMedias: [],
+  posterImages: [],
 };
 
 export const modalsSlice = createSlice({
@@ -33,6 +35,14 @@ export const modalsSlice = createSlice({
     addCloudinaryMedias: (state, action: PayloadAction<DeleteMediaType[]>) => {
       state.cloudinaryMedias = action.payload;
     },
+    addPosterImage: (state, action: PayloadAction<string>) => {
+      state.posterImages.push(action.payload);
+    },
+    removePosterImage: (state, action: PayloadAction<string>) => {
+      state.posterImages = state.posterImages.filter(
+        (id) => id !== action.payload
+      );
+    },
   },
 });
 
@@ -40,5 +50,7 @@ export const {
   toggleCreateModal,
   toggle_WannaCloseCreateModal_Modal,
   addCloudinaryMedias,
+  addPosterImage,
+  removePosterImage,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

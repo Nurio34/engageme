@@ -8,32 +8,22 @@ import {
   useContext,
   useState,
 } from "react";
-import { TransformationType } from "./Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
-
-export type GlobalTransformationType = {
-  index: number;
-  transformations: TransformationType[];
-};
 
 interface ContextType {
-  globalTransformations: GlobalTransformationType[];
-  setGlobalTransformations: Dispatch<
-    SetStateAction<GlobalTransformationType[]>
-  >;
+  count: number;
+  setcount: Dispatch<SetStateAction<number>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
-  const [globalTransformations, setGlobalTransformations] = useState<
-    GlobalTransformationType[]
-  >([]);
+  const [count, setcount] = useState<number>(0);
 
   return (
     <Context.Provider
       value={{
-        globalTransformations,
-        setGlobalTransformations,
+        count,
+        setcount,
       }}
     >
       {children}

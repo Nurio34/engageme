@@ -5,7 +5,6 @@ export const useGetPosters = (
   eagerUrl: string
 ) => {
   const [posters, setPosters] = useState<string[]>([]);
-  const [posterUrls, setPosterUrls] = useState<string[]>([]);
 
   useEffect(() => {
     if (!duration || !eagerUrl) return;
@@ -25,19 +24,6 @@ export const useGetPosters = (
 
     setPosters(newPosters);
   }, [duration, eagerUrl]);
-
-  useEffect(() => {
-    if (posters.length === 0) return;
-
-    const fetchImage = async (posterUrl: string) => {
-      const response = await fetch(posterUrl);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setPosterUrls((prev) => [...prev, url]);
-    };
-
-    posters.forEach((poster) => fetchImage(poster));
-  }, [posters]);
 
   return posters;
 };

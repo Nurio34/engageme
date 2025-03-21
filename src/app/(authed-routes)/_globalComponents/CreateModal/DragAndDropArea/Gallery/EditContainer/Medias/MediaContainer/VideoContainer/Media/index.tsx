@@ -92,7 +92,7 @@ function Media({
   return (
     <div
       className={`${!isLoaded ? "bg-base-content/50 animate-pulse" : ""}`}
-      style={{ width: baseCanvasContainerWidth }}
+      style={{ minWidth: baseCanvasContainerWidth }}
     >
       {isRendered && (
         <CldVideoPlayer

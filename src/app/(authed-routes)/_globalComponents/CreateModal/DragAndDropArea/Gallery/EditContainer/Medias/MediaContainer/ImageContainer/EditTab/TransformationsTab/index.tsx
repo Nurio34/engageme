@@ -195,11 +195,11 @@ function TransformationsTab({
     },
   ];
 
-  const { currentIndex } = useCreateModalContext();
-  const { globalTransformations, setGlobalTransformations } = useEditContext();
-  const currentTransformation = globalTransformations.filter(
+  const { currentIndex, globalTransformations, setGlobalTransformations } =
+    useCreateModalContext();
+  const currentTransformation = globalTransformations.find(
     (item) => item.index === currentIndex
-  )[0];
+  );
 
   const [isLoading, setIsLoading] = useState(true);
   const [containerHeight, setContainerHeight] = useState(100);
@@ -225,6 +225,12 @@ function TransformationsTab({
         fetchImage(modifiedUrl);
       }
     };
+
+    if (
+      currentTransformation?.transformations.length ===
+      initialTransformations.length
+    )
+      return;
 
     initialTransformations.forEach(async (transformation) => {
       const { action, name } = transformation;

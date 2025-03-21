@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import PreviousButton from "./PreviousButton";
 import NextButton from "./NextButton";
 import { useCreateModalContext } from "../../Context";
@@ -6,18 +6,27 @@ import CropContainer from "./CropContainer";
 import EditContainer from "./EditContainer";
 
 function Gallery() {
-  const { CanvasContainerRef, setCanvasContainerSize, setIsListModalOpen } =
-    useCreateModalContext();
+  const {
+    CanvasContainerRef,
+    setCanvasContainerSize,
+    setIsListModalOpen,
+    step,
+  } = useCreateModalContext();
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   //! *** set CanvasContainer size ***
   useEffect(() => {
     const handleResize = () => {
-      if (CanvasContainerRef.current) {
-        const width = CanvasContainerRef.current.getBoundingClientRect().width;
-        const height =
-          CanvasContainerRef.current.getBoundingClientRect().height;
-        setCanvasContainerSize({ width, height });
-      }
+      timeoutRef.current = setTimeout(() => {
+        if (CanvasContainerRef.current && step.step === "crop") {
+          const width =
+            CanvasContainerRef.current.getBoundingClientRect().width;
+          const height =
+            CanvasContainerRef.current.getBoundingClientRect().height;
+          setCanvasContainerSize({ width, height });
+        }
+      }, 1500);
     };
     handleResize();
 
@@ -27,8 +36,12 @@ function Gallery() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, []);
+  }, [step]);
   //! ***********************************
 
   return (

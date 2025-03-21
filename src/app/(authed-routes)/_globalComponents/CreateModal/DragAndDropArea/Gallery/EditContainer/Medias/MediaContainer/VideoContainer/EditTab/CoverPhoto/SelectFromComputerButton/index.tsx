@@ -3,13 +3,15 @@ import { deletePosterImageFromCloudinary } from "@/app/(authed-routes)/_globalCo
 import { uploadPosterImageCloudinary } from "@/app/(authed-routes)/_globalComponents/CreateModal/apiCalls/uploadPosterImageCloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import Loading from "@/app/_globalComponents/Loading";
+import { useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 
 function SelectFromComputerButton({ media }: { media: MediaType }) {
   const { asset_id, posterState } = media;
-
-  const { setCloudinaryMedias } = useCreateModalContext();
+  const { posterImages } = useAppSelector((s) => s.modals);
+  const { setCloudinaryMedias, cloudinaryMedias } = useCreateModalContext();
+  console.log(cloudinaryMedias);
   const [file, setFile] = useState<File | null>(null);
   const [poster, setPoster] = useState<PosterType | undefined>(posterState);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +67,13 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
           className="relative w-4 aspect-square"
           onClick={updateCloudinaryPoster}
         >
-          <Image src={poster.url} fill alt="coverImage" />
+          <Image
+            src={poster.url}
+            fill
+            alt="coverImage"
+            className="object-cover"
+            sizes="5vw"
+          />
         </figure>
       )}
       <label

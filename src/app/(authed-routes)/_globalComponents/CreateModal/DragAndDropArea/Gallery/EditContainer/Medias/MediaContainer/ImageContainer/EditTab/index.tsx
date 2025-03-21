@@ -4,6 +4,7 @@ import FiltersTab from "./FiltersTab";
 import AdjustmentsTab from "./AdjustmentsTab";
 import TransformationsTab from "./TransformationsTab";
 import { StyleType } from "..";
+import { devControls } from "@/devUtils";
 
 export type CurrentTabType =
   | "filters"
@@ -40,12 +41,14 @@ function EditTab({
           setOtherStyle={setOtherStyle}
         />
       }
-      <TransformationsTab
-        currentTab={currentTab}
-        url={url}
-        setUrlState={setUrlState}
-        setIsNewUrlDownloading={setIsNewUrlDownloading}
-      />
+      {devControls.TransformationsTab && (
+        <TransformationsTab
+          currentTab={currentTab}
+          url={url}
+          setUrlState={setUrlState}
+          setIsNewUrlDownloading={setIsNewUrlDownloading}
+        />
+      )}
     </div>
   );
 }

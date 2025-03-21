@@ -21,6 +21,7 @@ import { useInitialProcess } from "./hooks/useInitialProcess";
 import { useCloudinaryActions } from "./hooks/useCloudinaryActions";
 import { useGlobalCloudinaryMedias } from "./hooks/useGlobalCloudinaryMedias";
 import { useStep } from "./hooks/useStep";
+import { TransformationType } from "./DragAndDropArea/Gallery/EditContainer/Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
 
 export type FilesType = {
   files: File[] | null;
@@ -91,6 +92,11 @@ export type CloudinaryMediasType = {
   medias: MediaType[];
 };
 
+export type GlobalTransformationType = {
+  index: number;
+  transformations: TransformationType[];
+};
+
 interface ContextType {
   files: FilesType;
   setFiles: Dispatch<SetStateAction<FilesType>>;
@@ -112,6 +118,10 @@ interface ContextType {
   cloudinaryMedias: CloudinaryMediasType;
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>;
   baseCanvasContainerWidth: number;
+  globalTransformations: GlobalTransformationType[];
+  setGlobalTransformations: Dispatch<
+    SetStateAction<GlobalTransformationType[]>
+  >;
   controls: ControlsType[];
   setControls: Dispatch<SetStateAction<ControlsType[]>>;
 }
@@ -165,6 +175,12 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   //! ********************
 
+  //! *** GlobalTransformation state ***
+  const [globalTransformations, setGlobalTransformations] = useState<
+    GlobalTransformationType[]
+  >([]);
+  //! **********************************
+
   //! *** All Canvases states - CloudinaryMedias states && Upload to Cloudinary ***
   const AllCanvases = useRef<CanvasType[]>([]);
   const [cloudinaryMedias, setCloudinaryMedias] =
@@ -173,7 +189,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       isInitialProcessComplated: false,
       medias: [],
     });
-  console.log(cloudinaryMedias);
+
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
   //** add video media object transformations(created from eager.url)
   useInitialProcess(cloudinaryMedias, setCloudinaryMedias);
@@ -186,7 +202,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     cloudinaryMedias,
     setCloudinaryMedias,
     step,
-    setStep
+    setStep,
+    setGlobalTransformations
   );
   //** **************************************************** */
 
@@ -219,6 +236,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         medias: [],
       });
       setBaseCanvasContainerWidth(0);
+      setGlobalTransformations([]);
       setControls([]);
     }
   }, [isCreateModalOpen]);
@@ -247,6 +265,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         cloudinaryMedias,
         setCloudinaryMedias,
         baseCanvasContainerWidth,
+        globalTransformations,
+        setGlobalTransformations,
         controls,
         setControls,
       }}

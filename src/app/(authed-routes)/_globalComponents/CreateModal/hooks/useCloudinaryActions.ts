@@ -4,6 +4,7 @@ import {
   CloudinaryMediasType,
   FileObjectType,
   FilesType,
+  GlobalTransformationType,
   StepType,
 } from "../Context";
 import { uploadToCloudinary } from "../apiCalls/uploadToCloudinary";
@@ -15,7 +16,8 @@ export const useCloudinaryActions = (
   cloudinaryMedias: CloudinaryMediasType,
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>,
   step: StepType,
-  setStep: Dispatch<SetStateAction<StepType>>
+  setStep: Dispatch<SetStateAction<StepType>>,
+  setGlobalTransformations: Dispatch<SetStateAction<GlobalTransformationType[]>>
 ) => {
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {
@@ -58,6 +60,7 @@ export const useCloudinaryActions = (
         type: media.resource_type as "image" | "video",
       }));
 
+      setGlobalTransformations([]);
       deleteFromCloudinary(publicIds, setCloudinaryMedias);
     }
   }, [step]);

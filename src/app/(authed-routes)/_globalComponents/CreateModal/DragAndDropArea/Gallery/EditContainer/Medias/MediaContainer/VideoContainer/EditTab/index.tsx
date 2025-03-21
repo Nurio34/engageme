@@ -4,6 +4,7 @@ import { useGetPosters } from "../hooks/useGetPosters";
 import { PlayerTimeType } from "..";
 import SoundConfig from "./SoundConfig";
 import { MediaType } from "@/actions/cloudinary";
+import { devControls } from "@/devUtils";
 
 function EditTab({
   eagerUrl,
@@ -20,18 +21,22 @@ function EditTab({
   playerTime: PlayerTimeType;
   media: MediaType;
 }) {
-  const posters = useGetPosters(duration, eagerUrl);
+  const posters = devControls.CoverPhoto
+    ? useGetPosters(duration, eagerUrl)
+    : [];
 
   return (
     <div className="grow p-4 wf">
-      <CoverPhoto posters={posters} media={media} />
-      <TrimVideo
-        url={url}
-        posters={posters}
-        duration={duration}
-        asset_id={asset_id}
-        playerTime={playerTime}
-      />
+      {devControls.CoverPhoto && <CoverPhoto posters={posters} media={media} />}
+      {devControls.CoverPhoto && (
+        <TrimVideo
+          url={url}
+          posters={posters}
+          duration={duration}
+          asset_id={asset_id}
+          playerTime={playerTime}
+        />
+      )}
       <SoundConfig media={media} />
     </div>
   );
