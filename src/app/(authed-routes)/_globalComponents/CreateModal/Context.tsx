@@ -28,6 +28,8 @@ export type FilesType = {
   urls: string[] | null;
 };
 
+export type FilesNewOrderType = { [key: number]: number };
+
 export type CanvasContainerSizeType = {
   width: number;
   height: number;
@@ -100,6 +102,8 @@ export type GlobalTransformationType = {
 interface ContextType {
   files: FilesType;
   setFiles: Dispatch<SetStateAction<FilesType>>;
+  filesNewOrder: FilesNewOrderType;
+  setFilesNewOrder: Dispatch<SetStateAction<FilesNewOrderType>>;
   currentIndex: number;
   setCurrentIndex: Dispatch<SetStateAction<number>>;
   CanvasContainerRef: RefObject<HTMLDivElement | null>;
@@ -134,6 +138,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     files: null,
     urls: null,
   });
+  const [filesNewOrder, setFilesNewOrder] = useState<FilesNewOrderType>({});
+  // console.log(files.files, filesNewOrder);
 
   //! ******************
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -191,7 +197,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     });
 
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
-  //** add video media object transformations(created from eager.url)
+  //** add video media object's blob & transformations(created from eager.url)
   useInitialProcess(cloudinaryMedias, setCloudinaryMedias);
   //** ************************************************* */
 
@@ -207,7 +213,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   );
   //** **************************************************** */
 
-  //** add cloudinaryMedias publicIds' and type's to store in case user abort posting medias, so we delete media drom cloudinary  */
+  //** add cloudinaryMedias publicIds' and type's to store in case user abort posting medias, so we delete media from cloudinary  */
   useGlobalCloudinaryMedias(AllCanvases, cloudinaryMedias);
   //** ************************************** */
   //! *********************
@@ -222,6 +228,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!isCreateModalOpen) {
       setFiles({ files: null, urls: null });
+      setFilesNewOrder({});
       setCurrentIndex(0);
       CanvasContainerRef.current = null;
       setCanvasContainerSize({ width: 0, height: 0 });
@@ -247,6 +254,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         files,
         setFiles,
+        filesNewOrder,
+        setFilesNewOrder,
         currentIndex,
         setCurrentIndex,
         CanvasContainerRef,

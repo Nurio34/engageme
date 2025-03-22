@@ -117,7 +117,7 @@ function RightControl({
       onDrag={(e: DragEvent<HTMLDivElement>) =>
         setCursor((prev) => ({ ...prev, end: e.clientX }))
       }
-      onDragEnd={(e) => {
+      onDragEnd={() => {
         setRightControl((prev) => ({
           ...prev,
           base: prev.base + prev.right,

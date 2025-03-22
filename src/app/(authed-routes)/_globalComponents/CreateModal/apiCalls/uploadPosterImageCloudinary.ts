@@ -5,8 +5,7 @@ import { PosterType } from "@/actions/cloudinary";
 export const uploadPosterImageCloudinary = async (
   file: File,
   setPoster: Dispatch<SetStateAction<PosterType | undefined>>,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  poster: PosterType | undefined
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   const formData = new FormData();
   formData.append("file", file);

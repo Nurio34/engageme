@@ -52,6 +52,7 @@ function PosterImage({
           className={`object-conver ${isHovered ? "rounded-lg" : ""} ${
             index === 0 ? "rounded-tl-lg rounded-bl-lg" : ""
           }${index === 4 ? "rounded-tr-lg rounded-br-lg" : ""}`}
+          sizes="(max-width: 768px) 50vw, 10vw"
         />
         {isHovered && (
           <div

@@ -40,7 +40,12 @@ function MenuItem({ item }: { item: MenuType }) {
           </div>
         ) : (
           <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-            <Image src={item.icon as string} fill alt="profile image" />
+            <Image
+              src={item.icon as string}
+              fill
+              alt="profile image"
+              sizes="5vw"
+            />
           </figure>
         )}
         {item.type === "link" ? (

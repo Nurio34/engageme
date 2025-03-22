@@ -1,12 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 import { CurrentTabType } from "..";
+import { RxThickArrowRight } from "react-icons/rx";
 
 function EditButtons({
   currentTab,
   setCurrentTab,
+  setIsEditTabOpen,
 }: {
   currentTab: CurrentTabType;
   setCurrentTab: Dispatch<SetStateAction<CurrentTabType>>;
+  setIsEditTabOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <div className="flex gap-1">
@@ -48,6 +51,13 @@ function EditButtons({
         onClick={() => setCurrentTab("transformations")}
       >
         Transformations
+      </button>
+      <button
+        type="button"
+        className="md:hidden px-2 bg-base-content rounded-tl-lg rounded-bl-lg"
+        onClick={() => setIsEditTabOpen(false)}
+      >
+        <RxThickArrowRight size={24} className="text-base-100" />
       </button>
     </div>
   );

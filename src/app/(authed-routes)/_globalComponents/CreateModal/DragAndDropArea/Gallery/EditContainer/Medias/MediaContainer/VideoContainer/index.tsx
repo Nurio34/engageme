@@ -14,7 +14,8 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
     duration: 0,
   });
 
-  const { eager, url, duration, poster, asset_id } = media;
+  const { eager, url, duration, poster, asset_id, audio, isAudioAllowed } =
+    media;
   const eagerUrl = eager![0].url;
 
   return (
@@ -26,6 +27,8 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
           poster={poster}
           asset_id={asset_id}
           setPlayerTime={setPlayerTime}
+          audio={audio}
+          isAudioAllowed={isAudioAllowed}
         />
         <EditTab
           eagerUrl={eagerUrl}

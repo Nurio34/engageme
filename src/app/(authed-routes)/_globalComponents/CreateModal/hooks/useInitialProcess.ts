@@ -9,13 +9,16 @@ export const useInitialProcess = (
     const fetchAndProcessMedias = async () => {
       if (cloudinaryMedias.medias.length === 0) return;
 
-      const urlToFile = async (imageUrl: string) => {
-        try {
-          const response = await fetch(imageUrl);
-          const blob = await response.blob();
-          return blob;
-        } catch (error) {
-          console.log(error);
+      const urlToFile = async (url: string): Promise<Blob> => {
+        while (true) {
+          try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to fetch media");
+            return await response.blob();
+          } catch (error) {
+            console.error(`Error fetching media, retrying...`, error);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+          }
         }
       };
 
@@ -25,6 +28,8 @@ export const useInitialProcess = (
             const blob = await urlToFile(mediaObj.eager![0].url);
             return { ...mediaObj, blob };
           } else {
+            const blob = await urlToFile(mediaObj.url);
+
             const eagerUrl = mediaObj.eager![0].url;
             const {
               c: crop,
@@ -39,7 +44,7 @@ export const useInitialProcess = (
                 .map((item) => item.split("_"))
             );
             const transformations = { crop, width, height, x, y };
-            return { ...mediaObj, transformations };
+            return { ...mediaObj, blob, transformations };
           }
         })
       );

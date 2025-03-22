@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { ControlType } from "..";
-import { StyleType } from "../../../ImageContainer";
+import { StyleType } from "../../..";
 
 function Control({
   control,

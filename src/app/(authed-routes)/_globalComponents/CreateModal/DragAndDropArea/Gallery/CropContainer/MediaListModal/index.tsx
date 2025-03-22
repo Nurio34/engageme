@@ -10,8 +10,6 @@ export type DraggingItemType = {
   isDragEnded: boolean;
 };
 
-export type FilesNewOrderType = { [key: number]: number };
-
 function MediaListModal() {
   const {
     files,
@@ -19,9 +17,10 @@ function MediaListModal() {
     canvasContainerSize,
     currentIndex,
     setCurrentIndex,
+    filesNewOrder,
   } = useCreateModalContext();
 
-  const LiRef = useRef<HTMLLIElement[]>([] as HTMLLIElement[]);
+  const LiRef = useRef<HTMLLIElement[] | null[]>([] as HTMLLIElement[]);
 
   const [draggingItem, setDraggingItem] = useState<DraggingItemType>({
     oldPosition: 0,
@@ -45,9 +44,66 @@ function MediaListModal() {
   }, [isReset]);
   //! ******************
 
-  const [filesNewOrder, setFilesNewOrder] = useState<FilesNewOrderType>({});
+  //! *** handle mobile touch events ***
+  const ScrollableContainerRef = useRef<HTMLDivElement | null>(null);
+  const ScrollableUlRef = useRef<HTMLUListElement | null>(null);
+  const [isTouchDragStarted, setIsTouchDragStarted] = useState(false);
+  const [isScrollingStarted, setIsScrollingStarted] = useState(false);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isTouchDragStarted) {
+        e.preventDefault();
+      }
+    };
+
+    const handleScroll = () => {
+      setIsScrollingStarted(true);
+      if (ScrollableContainerRef.current) {
+        setScrollLeft(ScrollableContainerRef.current.scrollLeft);
+      }
+    };
+    const handleScrollEnd = () => {
+      setIsScrollingStarted(false);
+      setIsTouchDragStarted(false);
+    };
+
+    if (ScrollableContainerRef.current) {
+      ScrollableContainerRef.current.addEventListener(
+        "touchmove",
+        handleTouchMove,
+        { passive: false }
+      );
+      ScrollableContainerRef.current.addEventListener("scroll", handleScroll);
+      ScrollableContainerRef.current.addEventListener(
+        "scrollend",
+        handleScrollEnd
+      );
+    }
+
+    return () => {
+      if (ScrollableContainerRef.current) {
+        ScrollableContainerRef.current.removeEventListener(
+          "touchmove",
+          handleTouchMove
+        );
+        ScrollableContainerRef.current.removeEventListener(
+          "scroll",
+          handleScroll
+        );
+        ScrollableContainerRef.current.removeEventListener(
+          "scrollend",
+          handleScrollEnd
+        );
+      }
+    };
+  }, [isTouchDragStarted, isTouchDragStarted]);
+  //! *******************************************************
+
+  useEffect(() => {
+    if (Object.keys(filesNewOrder).length === 0) return;
+
     if (Object.keys(filesNewOrder).length > 0) {
       const updatedFiles = Array(files.files!.length).fill("#");
       const updatedUrls = Array(files.files!.length).fill("#");
@@ -63,8 +119,8 @@ function MediaListModal() {
   }, [filesNewOrder]);
 
   useEffect(() => {
-    if (LiRef.current) {
-      LiRef.current[currentIndex].scrollIntoView();
+    if (LiRef.current.length !== 0) {
+      LiRef.current[currentIndex]?.scrollIntoView({ inline: "center" });
     }
   }, [currentIndex]);
 
@@ -91,21 +147,23 @@ function MediaListModal() {
         }}
       >
         <div
+          ref={ScrollableContainerRef}
           className="flex items-center overflow-x-auto grow"
           style={{
             maxWidth: canvasContainerSize.width - 132,
-            scrollbarWidth: "thin",
           }}
         >
           <ul
+            ref={ScrollableUlRef}
             className="flex gap-2 items-center"
             onDrop={(e) => {
               e.stopPropagation();
             }}
           >
             {!isReset &&
-              files.files!.map((file, index) => {
+              files.files?.map((file, index) => {
                 const fileType = file.type.split("/")[0];
+                console.log(fileType);
                 const url = files.urls![index];
 
                 return (
@@ -118,7 +176,10 @@ function MediaListModal() {
                     fileType={fileType}
                     url={url}
                     deleteFile={deleteFile}
-                    setFilesNewOrder={setFilesNewOrder}
+                    isTouchDragStarted={isTouchDragStarted}
+                    setIsTouchDragStarted={setIsTouchDragStarted}
+                    isScrollingStarted={isScrollingStarted}
+                    scrollLeft={scrollLeft}
                   />
                 );
               })}

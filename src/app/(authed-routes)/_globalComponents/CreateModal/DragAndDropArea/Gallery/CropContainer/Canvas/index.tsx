@@ -36,6 +36,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
   const [mediaRefState, setMediaRefState] = useState<
     HTMLImageElement | HTMLVideoElement | null
   >(null);
+
   const [mediaSize, setMediaSize] = useState<MediaSizeType>({
     width: 0,
     height: 0,
@@ -87,8 +88,6 @@ function Canvas({ url, index }: { url: string; index: number }) {
   //! *** Load the media once when url changes ***
 
   useEffect(() => {
-    if (mediaRefState) return;
-
     const typeOfMedia = file.type.split("/")[0];
 
     if (typeOfMedia === "image") {
@@ -231,7 +230,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
     if (!isVideo || !isPlaying) {
       redraw();
     }
-  }, [position, mediaSize, isVideo, isPlaying, scale]);
+  }, [url, position, mediaSize, isVideo, isPlaying, scale]);
   //! ***********************************
 
   //! *** Redraw when position changes ***
@@ -249,7 +248,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isVideo, isPlaying, position, mediaSize]);
+  }, [url, isVideo, isPlaying, position, mediaSize]);
   //! **************************
 
   //! *** Drawing function using requestAnimationFrame ***

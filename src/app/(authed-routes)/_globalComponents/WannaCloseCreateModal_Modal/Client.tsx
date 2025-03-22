@@ -1,23 +1,26 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+  resterPosterImages,
   toggle_WannaCloseCreateModal_Modal,
   toggleCreateModal,
 } from "@/store/slices/modals";
 import { deleteFromCloudinary } from "../CreateModal/apiCalls/deleteFromCloudinary";
+import { deletePosterImagesFromCloudinary } from "../CreateModal/apiCalls/deletePosterImageFromCloudinary";
 
 function Client() {
-  const { isWannaCloseCreateModalOpen, cloudinaryMedias } = useAppSelector(
-    (s) => s.modals
-  );
+  const { isWannaCloseCreateModalOpen, cloudinaryMedias, posterImages } =
+    useAppSelector((s) => s.modals);
 
   const dispatch = useAppDispatch();
 
   const closeThisModal = () => dispatch(toggle_WannaCloseCreateModal_Modal());
 
   const closeCreateModal = async () => {
+    deletePosterImagesFromCloudinary(posterImages);
     deleteFromCloudinary(cloudinaryMedias);
     dispatch(toggleCreateModal());
     closeThisModal();
+    dispatch(resterPosterImages());
   };
 
   return (

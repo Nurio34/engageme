@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
-import { StyleType } from "../../../ImageContainer";
 import { FilterType } from "..";
+import { StyleType } from "../../..";
 
 function FilterButton({
   index,

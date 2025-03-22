@@ -6,18 +6,18 @@ import CropContainer from "./CropContainer";
 import EditContainer from "./EditContainer";
 
 function Gallery() {
-  const {
-    CanvasContainerRef,
-    setCanvasContainerSize,
-    setIsListModalOpen,
-    step,
-  } = useCreateModalContext();
+  const { CanvasContainerRef, setCanvasContainerSize, step } =
+    useCreateModalContext();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   //! *** set CanvasContainer size ***
   useEffect(() => {
     const handleResize = () => {
+      if (timeoutRef.current) {
+        clearInterval(timeoutRef.current);
+      }
+
       timeoutRef.current = setTimeout(() => {
         if (CanvasContainerRef.current && step.step === "crop") {
           const width =
@@ -29,8 +29,6 @@ function Gallery() {
       }, 1500);
     };
     handleResize();
-
-    setIsListModalOpen(false);
 
     window.addEventListener("resize", handleResize);
 

@@ -32,7 +32,7 @@ function NextButton() {
   return (
     <button
       type="button"
-      className="absolute top-1/2
+      className="absolute top-1/2 z-10
         btn btn-circle btn-neutral 
       "
       style={{

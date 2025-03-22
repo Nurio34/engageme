@@ -1,7 +1,6 @@
 "use server";
 
-import { FileObjectType } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
-import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,

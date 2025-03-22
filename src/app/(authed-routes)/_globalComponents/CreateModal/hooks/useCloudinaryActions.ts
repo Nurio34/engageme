@@ -9,6 +9,8 @@ import {
 } from "../Context";
 import { uploadToCloudinary } from "../apiCalls/uploadToCloudinary";
 import { deleteFromCloudinary } from "../apiCalls/deleteFromCloudinary";
+import { useAppSelector } from "@/store/hooks";
+import { deletePosterImagesFromCloudinary } from "../apiCalls/deletePosterImageFromCloudinary";
 
 export const useCloudinaryActions = (
   AllCanvases: RefObject<CanvasType[]>,
@@ -19,6 +21,8 @@ export const useCloudinaryActions = (
   setStep: Dispatch<SetStateAction<StepType>>,
   setGlobalTransformations: Dispatch<SetStateAction<GlobalTransformationType[]>>
 ) => {
+  const { posterImages } = useAppSelector((s) => s.modals);
+
   useEffect(() => {
     if (AllCanvases.current && AllCanvases.current.length) {
       const formData = new FormData();
@@ -61,6 +65,7 @@ export const useCloudinaryActions = (
       }));
 
       setGlobalTransformations([]);
+      deletePosterImagesFromCloudinary(posterImages);
       deleteFromCloudinary(publicIds, setCloudinaryMedias);
     }
   }, [step]);

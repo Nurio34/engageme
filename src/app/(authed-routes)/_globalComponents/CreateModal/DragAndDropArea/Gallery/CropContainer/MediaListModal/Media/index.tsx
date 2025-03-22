@@ -3,11 +3,12 @@ import {
   RefObject,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import Image from "next/image";
 import { IoIosClose } from "react-icons/io";
-import { DraggingItemType, FilesNewOrderType } from "..";
+import { DraggingItemType } from "..";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 function Media({
@@ -18,20 +19,28 @@ function Media({
   fileType,
   url,
   deleteFile,
-  setFilesNewOrder,
+  isTouchDragStarted,
+  setIsTouchDragStarted,
+  isScrollingStarted,
+  scrollLeft,
 }: {
-  LiRef: RefObject<HTMLLIElement[]>;
+  LiRef: RefObject<HTMLLIElement[] | null[]>;
   index: number;
   draggingItem: DraggingItemType;
   setDraggingItem: Dispatch<SetStateAction<DraggingItemType>>;
   fileType: string;
   url: string;
   deleteFile: (index: number) => void;
-  setFilesNewOrder: Dispatch<SetStateAction<FilesNewOrderType>>;
+  isTouchDragStarted: boolean;
+  setIsTouchDragStarted: Dispatch<SetStateAction<boolean>>;
+  isScrollingStarted: boolean;
+  scrollLeft: number;
 }) {
-  const { currentIndex, setCurrentIndex } = useCreateModalContext();
+  const { currentIndex, setCurrentIndex, files, setFilesNewOrder } =
+    useCreateModalContext();
   const [itemIndex, setItemIndex] = useState(index);
   const { oldPosition, newPosition, isDragEnded } = draggingItem;
+  const holdTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (itemIndex === oldPosition) {
@@ -84,6 +93,51 @@ function Media({
       onDragEndCapture={(e) => {
         e.currentTarget.style.opacity = "1";
         setDraggingItem((prev) => ({ ...prev, isDragEnded: true }));
+        setCurrentIndex(newPosition);
+      }}
+      onTouchStart={() => {
+        if (holdTimeout.current) clearTimeout(holdTimeout.current);
+
+        holdTimeout.current = setTimeout(() => {
+          setDraggingItem({
+            oldPosition: itemIndex,
+            newPosition: itemIndex,
+            isDragEnded: false,
+          });
+          if (!isScrollingStarted) {
+            setIsTouchDragStarted(true);
+          }
+        }, 500);
+      }}
+      onTouchMove={(e) => {
+        if (!isTouchDragStarted || isScrollingStarted) return;
+
+        const touch = e.touches[0];
+        const targetIndex = Math.floor((touch.clientX + scrollLeft) / 104);
+
+        if (targetIndex !== oldPosition) {
+          setDraggingItem((prev) => ({
+            ...prev,
+            newPosition:
+              targetIndex < 0
+                ? 0
+                : targetIndex > files.files!.length - 1
+                ? files.files!.length - 1
+                : targetIndex,
+          }));
+        }
+      }}
+      onTouchEnd={() => {
+        if (isScrollingStarted) return;
+
+        if (holdTimeout.current) clearTimeout(holdTimeout.current);
+
+        setDraggingItem((prev) => ({
+          ...prev,
+          isDragEnded: true,
+        }));
+        setIsTouchDragStarted(false);
+        setCurrentIndex(newPosition);
       }}
     >
       {fileType === "image" ? (
@@ -104,11 +158,11 @@ function Media({
         <button
           type="button"
           className="absolute top-1 right-1 btn btn-xs btn-circle bg-base-content border-base-content"
-          onClick={() => {
+          onClick={(e) => {
             deleteFile(index);
           }}
         >
-          <IoIosClose size={24} className="text-base-100" />
+          <IoIosClose size={36} className="text-base-100" />
         </button>
       )}
     </li>

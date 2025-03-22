@@ -3,15 +3,17 @@ import { deletePosterImageFromCloudinary } from "@/app/(authed-routes)/_globalCo
 import { uploadPosterImageCloudinary } from "@/app/(authed-routes)/_globalComponents/CreateModal/apiCalls/uploadPosterImageCloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import Loading from "@/app/_globalComponents/Loading";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { addPosterImage, removePosterImage } from "@/store/slices/modals";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 
 function SelectFromComputerButton({ media }: { media: MediaType }) {
   const { asset_id, posterState } = media;
+
   const { posterImages } = useAppSelector((s) => s.modals);
-  const { setCloudinaryMedias, cloudinaryMedias } = useCreateModalContext();
-  console.log(cloudinaryMedias);
+  const dispatch = useAppDispatch();
+  const { setCloudinaryMedias } = useCreateModalContext();
   const [file, setFile] = useState<File | null>(null);
   const [poster, setPoster] = useState<PosterType | undefined>(posterState);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +31,20 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
     if (!file) return;
 
     if (poster) {
-      deletePosterImageFromCloudinary(poster);
+      const isAnyIn = posterImages.find((id) => id === poster?.publicId);
+      if (isAnyIn) {
+        dispatch(removePosterImage(poster.publicId));
+      }
+
+      deletePosterImageFromCloudinary(poster.publicId);
     }
 
-    uploadPosterImageCloudinary(file, setPoster, setIsLoading, posterState);
+    uploadPosterImageCloudinary(file, setPoster, setIsLoading);
   }, [file]);
 
   const updateCloudinaryPoster = () => {
+    if (!poster) return;
+
     setCloudinaryMedias((prev) => {
       const updatedMedias = prev.medias.map((mediaObj) => {
         if (mediaObj.asset_id === asset_id) {
@@ -51,11 +60,15 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
 
       return { ...prev, medias: updatedMedias };
     });
+
+    const isAnyIn = posterImages.find((id) => id === poster?.publicId);
+
+    if (!isAnyIn) {
+      dispatch(addPosterImage(poster.publicId));
+    }
   };
 
   useEffect(() => {
-    if (!poster) return;
-
     updateCloudinaryPoster();
   }, [poster]);
 

@@ -124,7 +124,7 @@ function LeftControl({
       onDrag={(e: DragEvent<HTMLDivElement>) =>
         setCursor((prev) => ({ ...prev, end: e.clientX }))
       }
-      onDragEnd={(e) => {
+      onDragEnd={() => {
         setLeftControl((prev) => ({
           ...prev,
           base: prev.base + prev.left,

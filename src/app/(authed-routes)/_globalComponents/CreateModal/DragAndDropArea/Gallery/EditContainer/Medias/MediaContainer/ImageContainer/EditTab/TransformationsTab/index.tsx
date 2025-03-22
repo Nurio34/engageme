@@ -3,7 +3,6 @@ import { CurrentTabType } from "..";
 import TransformationButton from "./TransformationButton";
 import { getCldImageUrl } from "next-cloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
-import { useEditContext } from "../../../../../Context";
 
 export type ActionType = Record<
   string,

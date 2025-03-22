@@ -5,6 +5,7 @@ import AdjustmentsTab from "./AdjustmentsTab";
 import TransformationsTab from "./TransformationsTab";
 import { StyleType } from "..";
 import { devControls } from "@/devUtils";
+import CloseSlider from "./CloseSlider";
 
 export type CurrentTabType =
   | "filters"
@@ -28,19 +29,27 @@ function EditTab({
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
 }) {
   const [currentTab, setCurrentTab] = useState<CurrentTabType>("filters");
+  const [isEditTabOpen, setIsEditTabOpen] = useState(true);
 
   return (
-    <div className="grow border-l flex flex-col">
-      <EditButtons currentTab={currentTab} setCurrentTab={setCurrentTab} />
+    <div
+      className={`absolute right-0 top-0 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col transition-transform
+        ${isEditTabOpen ? "" : "translate-x-full"}  
+      `}
+      style={{ width: "calc(100% - 32px)" }}
+    >
+      <EditButtons
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        setIsEditTabOpen={setIsEditTabOpen}
+      />
       <FiltersTab currentTab={currentTab} url={url} setStyle={setStyle} />
-      {
-        <AdjustmentsTab
-          currentTab={currentTab}
-          style={style}
-          setStyle={setStyle}
-          setOtherStyle={setOtherStyle}
-        />
-      }
+      <AdjustmentsTab
+        currentTab={currentTab}
+        style={style}
+        setStyle={setStyle}
+        setOtherStyle={setOtherStyle}
+      />
       {devControls.TransformationsTab && (
         <TransformationsTab
           currentTab={currentTab}
@@ -49,6 +58,7 @@ function EditTab({
           setIsNewUrlDownloading={setIsNewUrlDownloading}
         />
       )}
+      <CloseSlider />
     </div>
   );
 }

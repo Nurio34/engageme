@@ -11,13 +11,19 @@ function Media({
   poster,
   asset_id,
   setPlayerTime,
+  audio,
+  isAudioAllowed,
 }: {
   eagerUrl: string;
   url: string;
   poster: PosterType | undefined;
   asset_id: string;
   setPlayerTime: Dispatch<SetStateAction<PlayerTimeType>>;
+  audio: Record<string, string | number> | undefined;
+  isAudioAllowed: boolean | undefined;
 }) {
+  const codec = !audio || !isAudioAllowed ? "none" : audio.codec;
+
   const { baseCanvasContainerWidth, cloudinaryMedias, setCloudinaryMedias } =
     useCreateModalContext();
 
@@ -68,13 +74,16 @@ function Media({
   }, [so, du]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && PlayerRef.current) {
       PlayerInterval.current = setInterval(() => {
-        if (PlayerRef.current) {
-          const currentTime = PlayerRef.current.currentTime();
-          const duration = PlayerRef.current.duration();
-          if (typeof currentTime === "number")
-            setPlayerTime({ currentTime, duration });
+        const player = PlayerRef.current;
+        if (!player) return;
+
+        const currentTime = player.currentTime?.();
+        const duration = player.duration?.();
+
+        if (typeof currentTime === "number") {
+          setPlayerTime({ currentTime, duration });
         }
       }, 100);
     } else {
@@ -91,11 +100,14 @@ function Media({
 
   return (
     <div
-      className={`${!isLoaded ? "bg-base-content/50 animate-pulse" : ""}`}
+      className={`${
+        !isLoaded ? "bg-base-content/50 animate-pulse" : "flex items-center"
+      }`}
       style={{ minWidth: baseCanvasContainerWidth }}
     >
       {isRendered && (
         <CldVideoPlayer
+          key={asset_id}
           src={url}
           transformation={{
             crop: c,
@@ -105,6 +117,7 @@ function Media({
             y,
             start_offset: so,
             duration: du,
+            audio_codec: codec,
           }}
           onDataLoad={() => setisLoaded(true)}
           poster={poster?.url}

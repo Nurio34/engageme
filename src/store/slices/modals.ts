@@ -35,6 +35,7 @@ export const modalsSlice = createSlice({
     addCloudinaryMedias: (state, action: PayloadAction<DeleteMediaType[]>) => {
       state.cloudinaryMedias = action.payload;
     },
+
     addPosterImage: (state, action: PayloadAction<string>) => {
       state.posterImages.push(action.payload);
     },
@@ -42,6 +43,9 @@ export const modalsSlice = createSlice({
       state.posterImages = state.posterImages.filter(
         (id) => id !== action.payload
       );
+    },
+    resterPosterImages: (state) => {
+      state.posterImages = [];
     },
   },
 });
@@ -52,5 +56,6 @@ export const {
   addCloudinaryMedias,
   addPosterImage,
   removePosterImage,
+  resterPosterImages,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

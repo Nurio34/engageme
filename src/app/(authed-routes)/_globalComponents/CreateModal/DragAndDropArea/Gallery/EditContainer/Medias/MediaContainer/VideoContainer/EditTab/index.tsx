@@ -21,9 +21,7 @@ function EditTab({
   playerTime: PlayerTimeType;
   media: MediaType;
 }) {
-  const posters = devControls.CoverPhoto
-    ? useGetPosters(duration, eagerUrl)
-    : [];
+  const posters = useGetPosters(duration, eagerUrl);
 
   return (
     <div className="grow p-4 wf">

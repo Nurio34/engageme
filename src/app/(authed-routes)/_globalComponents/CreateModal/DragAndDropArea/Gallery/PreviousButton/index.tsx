@@ -20,7 +20,7 @@ function PreviousButton() {
   return (
     <button
       type="button"
-      className="absolute top-1/2 left-1 
+      className="absolute top-1/2 left-1 z-10
         btn btn-circle btn-neutral 
       "
       onClick={goPreviousMedia}
