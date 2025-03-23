@@ -1,2 +1,2 @@
-4. MEdia list drag event hem bozuk, hem çalışmıyor
-3. Genel kontrolleri yap yeni stepe geçmeden ( Dark mode ve Mobile kontrolleri yap)
+1. Video poster, pc'den seçildikten sonra, currentIndex değşikliğinden sonra geri geldiğinde pc'den seçilene geçiyo
+2. Mobil'de video trim controller'de birbirinin arkasına geçme oluyo

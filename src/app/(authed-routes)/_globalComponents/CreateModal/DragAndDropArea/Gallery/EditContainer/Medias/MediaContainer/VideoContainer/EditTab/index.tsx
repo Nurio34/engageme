@@ -5,6 +5,9 @@ import { PlayerTimeType } from "..";
 import SoundConfig from "./SoundConfig";
 import { MediaType } from "@/actions/cloudinary";
 import { devControls } from "@/devUtils";
+import CloseSlider from "../../ImageContainer/EditTab/CloseSlider";
+import { useRef, useState } from "react";
+import { useEditTabControl } from "../../hooks/useEditTabControl";
 
 function EditTab({
   eagerUrl,
@@ -23,8 +26,27 @@ function EditTab({
 }) {
   const posters = useGetPosters(duration, eagerUrl);
 
+  const EditTabRef = useRef<HTMLDivElement | null>(null);
+  const [isEditRequested, setIsEditRequested] = useState(false);
+
+  const {
+    editTabTranslateX,
+    setEditTabTranslateX,
+    EditTabWidth,
+    touchX,
+    setTouchX,
+  } = useEditTabControl(EditTabRef, isEditRequested);
   return (
-    <div className="grow p-4 wf">
+    <div
+      ref={EditTabRef}
+      className={`absolute right-0 top-0 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col
+        ${touchX.isDragEnd ? "transition-transform" : "transition-none"}  
+      `}
+      style={{
+        width: "calc(100% - 64px)",
+        transform: `translateX(${editTabTranslateX.new}px)`,
+      }}
+    >
       {devControls.CoverPhoto && <CoverPhoto posters={posters} media={media} />}
       {devControls.CoverPhoto && (
         <TrimVideo
@@ -36,6 +58,13 @@ function EditTab({
         />
       )}
       <SoundConfig media={media} />
+      <CloseSlider
+        editTabTranslateX={editTabTranslateX}
+        setEditTabTranslateX={setEditTabTranslateX}
+        EditTabWidth={EditTabWidth}
+        setTouchX={setTouchX}
+        setIsEditRequested={setIsEditRequested}
+      />
     </div>
   );
 }

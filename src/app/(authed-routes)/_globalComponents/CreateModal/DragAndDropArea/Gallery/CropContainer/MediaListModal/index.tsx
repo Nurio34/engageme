@@ -1,4 +1,7 @@
-import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
+import {
+  FilesNewOrderType,
+  useCreateModalContext,
+} from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -18,6 +21,7 @@ function MediaListModal() {
     currentIndex,
     setCurrentIndex,
     filesNewOrder,
+    setFilesNewOrder,
   } = useCreateModalContext();
 
   const LiRef = useRef<HTMLLIElement[] | null[]>([] as HTMLLIElement[]);
@@ -102,21 +106,37 @@ function MediaListModal() {
   //! *******************************************************
 
   useEffect(() => {
-    if (Object.keys(filesNewOrder).length === 0) return;
+    if (Object.keys(filesNewOrder).length !== files.files?.length) return;
 
-    if (Object.keys(filesNewOrder).length > 0) {
-      const updatedFiles = Array(files.files!.length).fill("#");
-      const updatedUrls = Array(files.files!.length).fill("#");
-      Object.entries(filesNewOrder).forEach(([oldLine, newLine]) => {
-        const file = files.files![+oldLine];
-        updatedFiles[newLine] = file;
+    const updatedFiles = Array(files.files!.length).fill("#");
+    const updatedUrls = Array(files.files!.length).fill("#");
+    Object.entries(filesNewOrder).forEach(([oldLine, newLine]) => {
+      const file = files.files![+oldLine];
+      updatedFiles[newLine] = file;
 
-        const url = files.urls![+oldLine];
-        updatedUrls[newLine] = url;
-      });
-      setFiles({ files: updatedFiles, urls: updatedUrls });
-    }
+      const url = files.urls![+oldLine];
+      updatedUrls[newLine] = url;
+    });
+    setFiles({ files: updatedFiles, urls: updatedUrls });
   }, [filesNewOrder]);
+
+  useEffect(() => {
+    if (currentIndex === files.files!.length) {
+      setCurrentIndex(files.files!.length - 1);
+    }
+
+    if (Object.keys(filesNewOrder).length === files.files?.length) return;
+
+    const updatedFilesOrder: FilesNewOrderType = {};
+    if (files.files && files.files.length) {
+      for (let index = 0; index < files.files.length; index++) {
+        updatedFilesOrder[index] = index;
+        setFilesNewOrder(updatedFilesOrder);
+      }
+    } else {
+      setFilesNewOrder({});
+    }
+  }, [files]);
 
   useEffect(() => {
     if (LiRef.current.length !== 0) {
@@ -124,17 +144,13 @@ function MediaListModal() {
     }
   }, [currentIndex]);
 
-  useEffect(() => {
-    if (currentIndex === files.files!.length) {
-      setCurrentIndex(files.files!.length - 1);
-    }
-  }, [files]);
-
   const deleteFile = (index: number) => {
-    setFiles((prev) => ({
-      files: prev.files && prev.files.filter((_, ind) => index !== ind),
-      urls: prev.urls && prev.urls.filter((_, ind) => index !== ind),
-    }));
+    setFiles((prev) => {
+      const files = prev.files && prev.files.filter((_, ind) => index !== ind);
+      const urls = prev.urls && prev.urls.filter((_, ind) => index !== ind);
+
+      return { files, urls };
+    });
     toast.success("File's been deleted successfully");
   };
 
@@ -163,7 +179,6 @@ function MediaListModal() {
             {!isReset &&
               files.files?.map((file, index) => {
                 const fileType = file.type.split("/")[0];
-                console.log(fileType);
                 const url = files.urls![index];
 
                 return (

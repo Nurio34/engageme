@@ -1,4 +1,3 @@
-import { devControls } from "@/devUtils";
 import { useEffect, useState } from "react";
 
 export const useGetPosters = (
@@ -8,8 +7,6 @@ export const useGetPosters = (
   const [posters, setPosters] = useState<string[]>([]);
 
   useEffect(() => {
-    if (devControls.CoverPhoto) return;
-
     if (!duration || !eagerUrl) return;
 
     const totalPosters = 5;

@@ -2,6 +2,7 @@ import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import {
   CanvasType,
   CloudinaryMediasType,
+  EditedMedia,
   FileObjectType,
   FilesType,
   GlobalTransformationType,
@@ -19,7 +20,10 @@ export const useCloudinaryActions = (
   setCloudinaryMedias: Dispatch<SetStateAction<CloudinaryMediasType>>,
   step: StepType,
   setStep: Dispatch<SetStateAction<StepType>>,
-  setGlobalTransformations: Dispatch<SetStateAction<GlobalTransformationType[]>>
+  setGlobalTransformations: Dispatch<
+    SetStateAction<GlobalTransformationType[]>
+  >,
+  setEditedMedias: Dispatch<SetStateAction<EditedMedia[]>>
 ) => {
   const { posterImages } = useAppSelector((s) => s.modals);
 
@@ -67,6 +71,33 @@ export const useCloudinaryActions = (
       setGlobalTransformations([]);
       deletePosterImagesFromCloudinary(posterImages);
       deleteFromCloudinary(publicIds, setCloudinaryMedias);
+    }
+
+    if (step.step === "post") {
+      const editedMedias: EditedMedia[] = cloudinaryMedias.medias.map(
+        (mediaObj) => {
+          const {
+            blob,
+            public_id,
+            resource_type,
+            transformations,
+            audio,
+            isAudioAllowed,
+            poster,
+          } = mediaObj;
+
+          return {
+            blob: blob!,
+            publicId: public_id,
+            type: resource_type as "image" | "video",
+            transformations,
+            audio,
+            isAudioAllowed,
+            posterUrl: poster?.url,
+          };
+        }
+      );
+      setEditedMedias(editedMedias);
     }
   }, [step]);
 };

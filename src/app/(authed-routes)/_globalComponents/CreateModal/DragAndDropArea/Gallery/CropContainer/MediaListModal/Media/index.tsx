@@ -72,7 +72,9 @@ function Media({
       style={{
         transform: `translateX(${(itemIndex - index) * 104}px)`,
       }}
-      onClick={() => setCurrentIndex(index)}
+      onClick={() => {
+        setCurrentIndex(index);
+      }}
       draggable
       onDragStartCapture={(e) => {
         e.currentTarget.style.opacity = "0.01";
@@ -158,11 +160,14 @@ function Media({
         <button
           type="button"
           className="absolute top-1 right-1 btn btn-xs btn-circle bg-base-content border-base-content"
-          onClick={(e) => {
+          onClick={() => {
+            deleteFile(index);
+          }}
+          onTouchEnd={() => {
             deleteFile(index);
           }}
         >
-          <IoIosClose size={36} className="text-base-100" />
+          <IoIosClose size={24} className="text-base-100" />
         </button>
       )}
     </li>

@@ -387,7 +387,6 @@ function Canvas({ url, index }: { url: string; index: number }) {
           setResizing((prev) => ({ ...prev, isStarted: false }));
         }}
         onTouchStart={(e) => {
-          e.preventDefault();
           const touch = e.touches[0];
           setResizing((prev) => ({
             ...prev,
@@ -399,7 +398,6 @@ function Canvas({ url, index }: { url: string; index: number }) {
           }));
         }}
         onTouchMove={(e) => {
-          e.preventDefault();
           if (resizing.isStarted) {
             const touch = e.touches[0];
             setResizing((prev) => ({
@@ -409,8 +407,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
             }));
           }
         }}
-        onTouchEnd={(e) => {
-          e.preventDefault();
+        onTouchEnd={() => {
           setResizing((prev) => ({ ...prev, isStarted: false }));
         }}
       />

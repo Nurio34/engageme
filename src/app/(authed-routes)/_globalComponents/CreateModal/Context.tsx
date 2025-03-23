@@ -99,6 +99,16 @@ export type GlobalTransformationType = {
   transformations: TransformationType[];
 };
 
+export type EditedMedia = {
+  blob: Blob;
+  publicId: string;
+  type: "image" | "video";
+  transformation?: Record<string, string>;
+  audio?: Record<string, string | number>;
+  isAudioAllowed?: boolean;
+  posterUrl?: string;
+};
+
 interface ContextType {
   files: FilesType;
   setFiles: Dispatch<SetStateAction<FilesType>>;
@@ -128,6 +138,8 @@ interface ContextType {
   >;
   controls: ControlsType[];
   setControls: Dispatch<SetStateAction<ControlsType[]>>;
+  editedMedias: EditedMedia[];
+  setEditedMedias: Dispatch<SetStateAction<EditedMedia[]>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -139,7 +151,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     urls: null,
   });
   const [filesNewOrder, setFilesNewOrder] = useState<FilesNewOrderType>({});
-  // console.log(files.files, filesNewOrder);
 
   //! ******************
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -195,6 +206,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       isInitialProcessComplated: false,
       medias: [],
     });
+  const [editedMedias, setEditedMedias] = useState<EditedMedia[]>([]);
+  console.log(editedMedias);
 
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
   //** add video media object's blob & transformations(created from eager.url)
@@ -209,7 +222,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     setCloudinaryMedias,
     step,
     setStep,
-    setGlobalTransformations
+    setGlobalTransformations,
+    setEditedMedias
   );
   //** **************************************************** */
 
@@ -245,6 +259,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setBaseCanvasContainerWidth(0);
       setGlobalTransformations([]);
       setControls([]);
+      setEditedMedias([]);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -278,6 +293,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setGlobalTransformations,
         controls,
         setControls,
+        editedMedias,
+        setEditedMedias,
       }}
     >
       {children}
