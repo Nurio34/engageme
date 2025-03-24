@@ -1,2 +1,4 @@
-1. Video poster, pc'den seçildikten sonra, currentIndex değşikliğinden sonra geri geldiğinde pc'den seçilene geçiyo
-2. Mobil'de video trim controller'de birbirinin arkasına geçme oluyo
+1. create new post step'inde, mobile / desktop görünümlerde edit tab'in uyumsuzluğu var( edit step'deki edit tab'a göre )
+2. on mobile, message onkeypress fonksiyonu işlemiyo
+3. create new post step 2. kez renderlendiğinde, location Loading... olarak kalıyo (hata mesajını gptle)
+4. mobilde location aramada sonuç çıkmıyo

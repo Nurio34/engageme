@@ -5,9 +5,9 @@ import { PlayerTimeType } from "..";
 import SoundConfig from "./SoundConfig";
 import { MediaType } from "@/actions/cloudinary";
 import { devControls } from "@/devUtils";
-import CloseSlider from "../../ImageContainer/EditTab/CloseSlider";
+import CloseSlider from "../../CloseSlider";
 import { useRef, useState } from "react";
-import { useEditTabControl } from "../../hooks/useEditTabControl";
+import { useEditTabControl } from "../../CloseSlider/useEditTabControl";
 
 function EditTab({
   eagerUrl,
@@ -39,7 +39,7 @@ function EditTab({
   return (
     <div
       ref={EditTabRef}
-      className={`absolute right-0 top-0 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col
+      className={`absolute right-0 top-0 p-2 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col
         ${touchX.isDragEnd ? "transition-transform" : "transition-none"}  
       `}
       style={{
@@ -47,8 +47,10 @@ function EditTab({
         transform: `translateX(${editTabTranslateX.new}px)`,
       }}
     >
-      {devControls.CoverPhoto && <CoverPhoto posters={posters} media={media} />}
-      {devControls.CoverPhoto && (
+      {devControls.Video.CoverPhoto && (
+        <CoverPhoto posters={posters} media={media} />
+      )}
+      {devControls.Video.TrimControls && (
         <TrimVideo
           url={url}
           posters={posters}

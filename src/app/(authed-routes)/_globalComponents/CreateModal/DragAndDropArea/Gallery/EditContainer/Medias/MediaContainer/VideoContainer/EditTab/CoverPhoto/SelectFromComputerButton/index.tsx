@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addPosterImage, removePosterImage } from "@/store/slices/modals";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 function SelectFromComputerButton({ media }: { media: MediaType }) {
   const { asset_id, posterState } = media;
@@ -27,22 +28,7 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
     setFile(file);
   };
 
-  useEffect(() => {
-    if (!file) return;
-
-    if (poster) {
-      const isAnyIn = posterImages.find((id) => id === poster?.publicId);
-      if (isAnyIn) {
-        dispatch(removePosterImage(poster.publicId));
-      }
-
-      deletePosterImageFromCloudinary(poster.publicId);
-    }
-
-    uploadPosterImageCloudinary(file, setPoster, setIsLoading);
-  }, [file]);
-
-  const updateCloudinaryPoster = () => {
+  const updateCloudinaryPoster = (poster: PosterType) => {
     if (!poster) return;
 
     setCloudinaryMedias((prev) => {
@@ -69,8 +55,37 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
   };
 
   useEffect(() => {
-    updateCloudinaryPoster();
-  }, [poster]);
+    if (!file) return;
+
+    if (poster) {
+      const isAnyIn = posterImages.find((id) => id === poster?.publicId);
+      if (isAnyIn) {
+        dispatch(removePosterImage(poster.publicId));
+      }
+
+      deletePosterImageFromCloudinary(poster.publicId);
+    }
+
+    const uploadPosterImageCloudinaryAction = async () => {
+      setIsLoading(true);
+      try {
+        const { status, poster } = await uploadPosterImageCloudinary(file);
+        if (status === "error" || !poster) {
+          toast.error("Something went wrong ! Please try again ..");
+          return;
+        }
+        updateCloudinaryPoster(poster);
+        setPoster(poster);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong ! Please try again ..");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    uploadPosterImageCloudinaryAction();
+  }, [file]);
 
   return (
     <div className="flex gap-2">
@@ -78,7 +93,7 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
       {!isLoading && poster && (
         <figure
           className="relative w-4 aspect-square"
-          onClick={updateCloudinaryPoster}
+          onClick={() => updateCloudinaryPoster(poster)}
         >
           <Image
             src={poster.url}

@@ -5,8 +5,8 @@ import AdjustmentsTab from "./AdjustmentsTab";
 import TransformationsTab from "./TransformationsTab";
 import { StyleType } from "..";
 import { devControls } from "@/devUtils";
-import CloseSlider from "./CloseSlider";
-import { useEditTabControl } from "../../hooks/useEditTabControl";
+import CloseSlider from "../../CloseSlider";
+import { useEditTabControl } from "../../CloseSlider/useEditTabControl";
 
 export type CurrentTabType =
   | "filters"

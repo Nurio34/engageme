@@ -79,6 +79,7 @@ export const useCloudinaryActions = (
           const {
             blob,
             public_id,
+            url,
             resource_type,
             transformations,
             audio,
@@ -89,8 +90,9 @@ export const useCloudinaryActions = (
           return {
             blob: blob!,
             publicId: public_id,
+            url,
             type: resource_type as "image" | "video",
-            transformations,
+            transformation: transformations,
             audio,
             isAudioAllowed,
             posterUrl: poster?.url,

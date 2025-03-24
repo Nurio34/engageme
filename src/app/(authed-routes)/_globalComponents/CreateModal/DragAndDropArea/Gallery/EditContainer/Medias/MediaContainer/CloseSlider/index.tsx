@@ -1,8 +1,6 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
-import {
-  EditTabTranslateXType,
-  TouchXType,
-} from "../../../hooks/useEditTabControl";
+import { EditTabTranslateXType, TouchXType } from "./useEditTabControl";
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
 function CloseSlider({
   editTabTranslateX,
@@ -17,6 +15,8 @@ function CloseSlider({
   setTouchX: Dispatch<SetStateAction<TouchXType>>;
   setIsEditRequested: Dispatch<SetStateAction<boolean>>;
 }) {
+  const { step } = useCreateModalContext();
+
   return (
     <div
       className=" md:hidden absolute top-0 left-0 -translate-x-full w-7 h-full bg-base-content rounded-tl-lg rounded-bl-lg
@@ -48,13 +48,15 @@ function CloseSlider({
       {editTabTranslateX.new === EditTabWidth.current && (
         <button
           type="button"
-          className="absolute top-0 left-0 -translate-x-full bg-secondary text-base-100 text-sm font-bold py-1 px-2 rounded-tl-lg rounded-bl-lg"
+          className={`absolute top-0 left-0 -translate-x-full text-base-100 text-sm font-bold py-1 px-2 rounded-tl-lg rounded-bl-lg
+              ${step.step === "edit" ? "bg-secondary" : "bg-accent"}
+          `}
           onClick={() => {
             setIsEditRequested(true);
             setEditTabTranslateX({ old: 0, new: 0 });
           }}
         >
-          Edit
+          {step.step === "edit" ? "Edit" : "Message"}
         </button>
       )}
     </div>

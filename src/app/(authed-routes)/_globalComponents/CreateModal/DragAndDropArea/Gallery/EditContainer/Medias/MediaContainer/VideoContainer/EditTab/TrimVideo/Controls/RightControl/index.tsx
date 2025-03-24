@@ -126,6 +126,30 @@ function RightControl({
         }));
         setCursor({ start: 0, end: 0 });
       }}
+      onTouchStart={(e) => {
+        const touch = e.touches[0];
+
+        setRightControl((prev) => ({ ...prev, isThisDragging: true }));
+        setCursor((prev) => ({
+          ...prev,
+          start: touch.clientX,
+          end: touch.clientX,
+        }));
+      }}
+      onTouchMove={(e) => {
+        const touch = e.touches[0];
+
+        setCursor((prev) => ({ ...prev, end: touch.clientX }));
+      }}
+      onTouchEnd={() => {
+        setRightControl((prev) => ({
+          ...prev,
+          base: prev.base + prev.right,
+          right: 0,
+          isThisDragging: false,
+        }));
+        setCursor({ start: 0, end: 0 });
+      }}
     >
       <span className="font-extrabold">|</span>
       {isThisDragging && (

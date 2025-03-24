@@ -1,7 +1,7 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import { CurrentTabType } from "..";
 import { RxThickArrowRight } from "react-icons/rx";
-import { EditTabTranslateXType } from "../../../hooks/useEditTabControl";
+import { EditTabTranslateXType } from "../../../CloseSlider/useEditTabControl";
 
 function EditButtons({
   currentTab,

@@ -1,4 +1,7 @@
 export const devControls = {
   TransformationsTab: false,
-  CoverPhoto: false,
+  Video: {
+    CoverPhoto: true,
+    TrimControls: true,
+  },
 };

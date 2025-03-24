@@ -102,12 +102,15 @@ export type GlobalTransformationType = {
 export type EditedMedia = {
   blob: Blob;
   publicId: string;
+  url: string;
   type: "image" | "video";
   transformation?: Record<string, string>;
   audio?: Record<string, string | number>;
   isAudioAllowed?: boolean;
   posterUrl?: string;
 };
+
+export type LocationType = { name: string; id: string };
 
 interface ContextType {
   files: FilesType;
@@ -140,6 +143,15 @@ interface ContextType {
   setControls: Dispatch<SetStateAction<ControlsType[]>>;
   editedMedias: EditedMedia[];
   setEditedMedias: Dispatch<SetStateAction<EditedMedia[]>>;
+  message: string;
+  setMessage: Dispatch<SetStateAction<string>>;
+  maxMessageLength: number;
+  isEmojiPickerOpen: boolean;
+  setIsEmojiPickerOpen: Dispatch<SetStateAction<boolean>>;
+  isPlacesModalOpen: boolean;
+  setIsPlacesModalOpen: Dispatch<SetStateAction<boolean>>;
+  location: LocationType;
+  setLocation: Dispatch<SetStateAction<LocationType>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -207,7 +219,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       medias: [],
     });
   const [editedMedias, setEditedMedias] = useState<EditedMedia[]>([]);
-  console.log(editedMedias);
 
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
   //** add video media object's blob & transformations(created from eager.url)
@@ -236,6 +247,15 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const { controls, setControls } = useVideoTrimControls(cloudinaryMedias);
   //! ******************************
 
+  //! *** Post Message state ***
+  const [message, setMessage] = useState("");
+  const maxMessageLength: number = 10;
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [isPlacesModalOpen, setIsPlacesModalOpen] = useState(false);
+  const [location, setLocation] = useState<LocationType>({ name: "", id: "" });
+
+  //! ***************************
+
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
@@ -260,6 +280,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setGlobalTransformations([]);
       setControls([]);
       setEditedMedias([]);
+      setMessage("");
+      setIsEmojiPickerOpen(false);
+      setIsPlacesModalOpen(false);
+      setLocation({ name: "", id: "" });
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -295,6 +319,15 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setControls,
         editedMedias,
         setEditedMedias,
+        message,
+        setMessage,
+        maxMessageLength,
+        isEmojiPickerOpen,
+        setIsEmojiPickerOpen,
+        isPlacesModalOpen,
+        setIsPlacesModalOpen,
+        location,
+        setLocation,
       }}
     >
       {children}
