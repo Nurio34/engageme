@@ -39,18 +39,30 @@ function Media({ media }: { media: EditedMedia }) {
   }, [blob]);
 
   return (
-    <div style={{ width: baseCanvasContainerWidth }}>
+    <div className="h-full" style={{ width: baseCanvasContainerWidth }}>
       {type === "image" ? (
-        <figure className="relative w-full h-full">
-          {imageUrl && <Image src={imageUrl} fill alt="image" />}
+        <figure
+          className="relative w-full h-full"
+          style={{ width: baseCanvasContainerWidth }}
+        >
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              fill
+              alt="image"
+              sizes="(max-width : 768px) 100vw, 50vw"
+            />
+          )}
         </figure>
       ) : (
-        <CldVideoPlayer
-          key={publicId}
-          src={videoUrl}
-          transformation={{ ...transformation, audio_codec: codec }}
-          poster={posterUrl}
-        />
+        <div style={{ width: baseCanvasContainerWidth }}>
+          <CldVideoPlayer
+            key={publicId}
+            src={videoUrl}
+            transformation={{ ...transformation, audio_codec: codec }}
+            poster={posterUrl}
+          />
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,10 @@
-1. create new post step'inde, mobile / desktop görünümlerde edit tab'in uyumsuzluğu var( edit step'deki edit tab'a göre )
-2. on mobile, message onkeypress fonksiyonu işlemiyo
-3. create new post step 2. kez renderlendiğinde, location Loading... olarak kalıyo (hata mesajını gptle)
-4. mobilde location aramada sonuç çıkmıyo
+## Home Page
+
+    1. Mobilde side menu görünümünü yeniden dizayn et.
+
+## Gallery
+
+    1. Galley açıkken aşağı slide'da page refresh'i prevent()
+    2. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+    3. Crop step'te next'e basınca loading ederken renkli loading bar ekle.
+    3.

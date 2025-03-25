@@ -8,8 +8,8 @@ export type StyleType = Record<string, number>;
 
 function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
-  const { eager, asset_id } = media;
-  const { url } = eager![0];
+  const { eager, asset_id, secure_url } = media;
+  const { secure_url: url } = eager![0];
 
   const [urlState, setUrlState] = useState(url);
   const [isNewUrlDownloading, setIsNewUrlDownloading] = useState(true);
@@ -45,7 +45,7 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
           setIsNewUrlDownloading={setIsNewUrlDownloading}
         />
         <EditTab
-          url={url}
+          url={secure_url}
           style={style}
           setStyle={setStyle}
           setOtherStyle={setOtherStyle}

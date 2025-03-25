@@ -1,8 +1,8 @@
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { Dispatch, RefObject, SetStateAction } from "react";
-import { EditTabTranslateXType } from "../../../../../EditContainer/Medias/MediaContainer/CloseSlider/useEditTabControl";
 import { RxThickArrowRight } from "react-icons/rx";
+import { EditTabTranslateXType } from "../../../../EditContainer/Medias/MediaContainer/CloseSlider/useEditTabControl";
 
 function UserInfo({
   setEditTabTranslateX,

@@ -152,6 +152,8 @@ interface ContextType {
   setIsPlacesModalOpen: Dispatch<SetStateAction<boolean>>;
   location: LocationType;
   setLocation: Dispatch<SetStateAction<LocationType>>;
+  count: number;
+  setCount: Dispatch<SetStateAction<number>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -256,6 +258,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   //! ***************************
 
+  const [count, setCount] = useState(0);
+
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
@@ -328,6 +332,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setIsPlacesModalOpen,
         location,
         setLocation,
+        count,
+        setCount,
       }}
     >
       {children}

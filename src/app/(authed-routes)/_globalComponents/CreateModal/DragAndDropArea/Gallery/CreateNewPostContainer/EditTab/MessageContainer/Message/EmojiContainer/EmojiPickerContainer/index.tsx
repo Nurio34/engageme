@@ -1,5 +1,4 @@
 import EmojiIcon from "@/app/_globalComponents/Svg/EmojiIcon";
-import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { RefObject } from "react";
 
@@ -14,14 +13,10 @@ function EmojiPickerContainer({
     setIsEmojiPickerOpen,
     setIsPlacesModalOpen,
   } = useCreateModalContext();
+  console.log(EditTabWidth, setMessage);
 
   const toggleEmojiPicker = () => setIsEmojiPickerOpen((prev) => !prev);
 
-  const handleEmojiClick = (e: EmojiClickData) => {
-    const emoji = e.emoji;
-    setMessage((prev) => `${prev}${emoji}`);
-  };
-  console.log(EditTabWidth.current);
   return (
     <div className="relative">
       <button
@@ -41,11 +36,12 @@ function EmojiPickerContainer({
         `}
         onClick={(e) => e.stopPropagation()}
       >
-        <EmojiPicker
+        {/* <EmojiPicker
+          lazyLoadEmojis
           width={EditTabWidth.current - 32 - 28}
           height={400}
           onEmojiClick={handleEmojiClick}
-        />
+        /> */}
       </div>
     </div>
   );

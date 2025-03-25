@@ -1,7 +1,7 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import Message from "./Message";
 import UserInfo from "./UserInfo";
-import { EditTabTranslateXType } from "../../../../EditContainer/Medias/MediaContainer/CloseSlider/useEditTabControl";
+import { EditTabTranslateXType } from "../../../EditContainer/Medias/MediaContainer/CloseSlider/useEditTabControl";
 
 function MessageContainer({
   EditTabWidth,

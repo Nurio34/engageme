@@ -8,6 +8,7 @@ import { devControls } from "@/devUtils";
 import CloseSlider from "../../CloseSlider";
 import { useRef, useState } from "react";
 import { useEditTabControl } from "../../CloseSlider/useEditTabControl";
+import { RxThickArrowRight } from "react-icons/rx";
 
 function EditTab({
   eagerUrl,
@@ -39,7 +40,7 @@ function EditTab({
   return (
     <div
       ref={EditTabRef}
-      className={`absolute right-0 top-0 p-2 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col
+      className={`absolute right-0 top-0 p-2 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col 
         ${touchX.isDragEnd ? "transition-transform" : "transition-none"}  
       `}
       style={{
@@ -47,6 +48,18 @@ function EditTab({
         transform: `translateX(${editTabTranslateX.new}px)`,
       }}
     >
+      <button
+        type="button"
+        className="md:hidden px-2 bg-base-content rounded-lg self-end"
+        onClick={() =>
+          setEditTabTranslateX({
+            old: EditTabWidth.current,
+            new: EditTabWidth.current,
+          })
+        }
+      >
+        <RxThickArrowRight size={24} className="text-base-100" />
+      </button>
       {devControls.Video.CoverPhoto && (
         <CoverPhoto posters={posters} media={media} />
       )}

@@ -25,12 +25,12 @@ export const useInitialProcess = (
       const updatedCloudinaryMedias = await Promise.all(
         cloudinaryMedias.medias.map(async (mediaObj) => {
           if (mediaObj.resource_type === "image") {
-            const blob = await urlToFile(mediaObj.eager![0].url);
+            const blob = await urlToFile(mediaObj.eager![0].secure_url);
             return { ...mediaObj, blob };
           } else {
-            const blob = await urlToFile(mediaObj.url);
+            const blob = await urlToFile(mediaObj.secure_url);
 
-            const eagerUrl = mediaObj.eager![0].url;
+            const eagerUrl = mediaObj.eager![0].secure_url;
             const {
               c: crop,
               w: width,

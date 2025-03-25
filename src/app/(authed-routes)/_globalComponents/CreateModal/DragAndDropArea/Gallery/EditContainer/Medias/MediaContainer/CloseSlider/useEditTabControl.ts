@@ -28,7 +28,7 @@ export const useEditTabControl = (
       if (EditTabRef.current) {
         const width = EditTabRef.current.getBoundingClientRect().width;
         EditTabWidth.current = width + 28;
-        setEditTabTranslateX({ old: width + 28, new: width + 28 });
+        setEditTabTranslateX({ old: 0, new: 0 });
       }
     };
 

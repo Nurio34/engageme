@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCreateModalContext } from "../../../Context";
 import MediaContainer from "./MediaContainer";
+import EditTab from "./EditTab";
 
 function CreateNewPostContainer() {
   const { step, editedMedias } = useCreateModalContext();
@@ -16,12 +17,15 @@ function CreateNewPostContainer() {
   }, [isRender]);
 
   const renderCondition = step.step === "post" && isRender;
-
   return (
-    renderCondition &&
-    editedMedias.map((media, index) => (
-      <MediaContainer key={media.publicId} media={media} index={index} />
-    ))
+    renderCondition && (
+      <div className="w-full h-full md:flex">
+        {editedMedias.map((media, index) => (
+          <MediaContainer key={media.publicId} media={media} index={index} />
+        ))}
+        <EditTab />
+      </div>
+    )
   );
 }
 export default CreateNewPostContainer;

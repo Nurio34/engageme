@@ -30,7 +30,6 @@ function EditTab({
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
 }) {
   const [currentTab, setCurrentTab] = useState<CurrentTabType>("filters");
-
   const EditTabRef = useRef<HTMLDivElement | null>(null);
   const [isEditRequested, setIsEditRequested] = useState(false);
 
