@@ -22,6 +22,7 @@ import { useCloudinaryActions } from "./hooks/useCloudinaryActions";
 import { useGlobalCloudinaryMedias } from "./hooks/useGlobalCloudinaryMedias";
 import { useStep } from "./hooks/useStep";
 import { TransformationType } from "./DragAndDropArea/Gallery/EditContainer/Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
+import { useMessage } from "./hooks/useMessage";
 
 export type FilesType = {
   files: File[] | null;
@@ -108,6 +109,17 @@ export type EditedMedia = {
   audio?: Record<string, string | number>;
   isAudioAllowed?: boolean;
   posterUrl?: string;
+  altText?: string;
+};
+
+export type AltTextType = {
+  publicId: string;
+  altText: string;
+};
+
+export type SettingsType = {
+  isCountsVisible: boolean;
+  isCommentingAllowed: boolean;
 };
 
 export type LocationType = { name: string; id: string };
@@ -143,6 +155,10 @@ interface ContextType {
   setControls: Dispatch<SetStateAction<ControlsType[]>>;
   editedMedias: EditedMedia[];
   setEditedMedias: Dispatch<SetStateAction<EditedMedia[]>>;
+  altTexts: AltTextType[];
+  setAltTexts: Dispatch<SetStateAction<AltTextType[]>>;
+  settings: SettingsType;
+  setSettings: Dispatch<SetStateAction<SettingsType>>;
   message: string;
   setMessage: Dispatch<SetStateAction<string>>;
   maxMessageLength: number;
@@ -221,6 +237,23 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       medias: [],
     });
   const [editedMedias, setEditedMedias] = useState<EditedMedia[]>([]);
+  const {
+    message,
+    setMessage,
+    maxMessageLength,
+    isEmojiPickerOpen,
+    setIsEmojiPickerOpen,
+    isPlacesModalOpen,
+    setIsPlacesModalOpen,
+    location,
+    setLocation,
+  } = useMessage();
+
+  const [altTexts, setAltTexts] = useState<AltTextType[]>([]);
+  const [settings, setSettings] = useState<SettingsType>({
+    isCountsVisible: true,
+    isCommentingAllowed: true,
+  });
 
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
   //** add video media object's blob & transformations(created from eager.url)
@@ -249,15 +282,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const { controls, setControls } = useVideoTrimControls(cloudinaryMedias);
   //! ******************************
 
-  //! *** Post Message state ***
-  const [message, setMessage] = useState("");
-  const maxMessageLength: number = 10;
-  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-  const [isPlacesModalOpen, setIsPlacesModalOpen] = useState(false);
-  const [location, setLocation] = useState<LocationType>({ name: "", id: "" });
-
-  //! ***************************
-
   const [count, setCount] = useState(0);
 
   //! *** when create modal closed, reset context ***
@@ -284,6 +308,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setGlobalTransformations([]);
       setControls([]);
       setEditedMedias([]);
+      setAltTexts([]);
       setMessage("");
       setIsEmojiPickerOpen(false);
       setIsPlacesModalOpen(false);
@@ -323,6 +348,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setControls,
         editedMedias,
         setEditedMedias,
+        altTexts,
+        setAltTexts,
+        settings,
+        setSettings,
         message,
         setMessage,
         maxMessageLength,

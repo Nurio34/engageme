@@ -18,6 +18,12 @@ function Media({ media }: { media: EditedMedia }) {
     isAudioAllowed,
   } = media;
 
+  const { altTexts } = useCreateModalContext();
+
+  const altText = altTexts.find(
+    (altObj) => altObj.publicId === publicId
+  )?.altText;
+
   const codec =
     isAudioAllowed === undefined || isAudioAllowed === true
       ? audio?.codec
@@ -49,7 +55,7 @@ function Media({ media }: { media: EditedMedia }) {
             <Image
               src={imageUrl}
               fill
-              alt="image"
+              alt={altText || "image"}
               sizes="(max-width : 768px) 100vw, 50vw"
             />
           )}

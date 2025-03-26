@@ -56,9 +56,7 @@ function CloseSlider({
             setEditTabTranslateX({ old: 0, new: 0 });
           }}
         >
-          {step.step === "edit"
-            ? "Edit"
-            : `Message - ${editTabTranslateX.old} / ${editTabTranslateX.new}`}
+          {step.step === "edit" ? "Edit" : `Message`}
         </button>
       )}
     </div>

@@ -25,93 +25,183 @@ function TransformationsTab({
   setUrlState: Dispatch<SetStateAction<string>>;
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
 }) {
-  const initialTransformations: TransformationType[] = [
+  // const initialTransformations: TransformationType[] = [
+  //   {
+  //     name: "original",
+  //     action: {},
+  //   },
+  //   {
+  //     name: "Al Dante",
+  //     action: {
+  //       art: "al_dente",
+  //     },
+  //   },
+  //   {
+  //     name: "athena",
+  //     action: {
+  //       art: "athena",
+  //     },
+  //   },
+  //   {
+  //     name: "audrey",
+  //     action: {
+  //       art: "audrey",
+  //     },
+  //   },
+  //   {
+  //     name: "aurora",
+  //     action: {
+  //       art: "aurora",
+  //     },
+  //   },
+  //   {
+  //     name: "daguerre",
+  //     action: {
+  //       art: "daguerre",
+  //     },
+  //   },
+  //   {
+  //     name: "eucalyptus",
+  //     action: {
+  //       art: "eucalyptus",
+  //     },
+  //   },
+  //   {
+  //     name: "fes",
+  //     action: {
+  //       art: "fes",
+  //     },
+  //   },
+  //   {
+  //     name: "frost",
+  //     action: {
+  //       art: "frost",
+  //     },
+  //   },
+  //   {
+  //     name: "hairspray",
+  //     action: {
+  //       art: "hairspray",
+  //     },
+  //   },
+  //   {
+  //     name: "hokusai",
+  //     action: {
+  //       art: "hokusai",
+  //     },
+  //   },
+  //   {
+  //     name: "incognito",
+  //     action: {
+  //       art: "incognito",
+  //     },
+  //   },
+  //   {
+  //     name: "linen",
+  //     action: {
+  //       art: "linen",
+  //     },
+  //   },
+  //   {
+  //     name: "peacock",
+  //     action: {
+  //       art: "peacock",
+  //     },
+  //   },
+  //   {
+  //     name: "primavera",
+  //     action: {
+  //       art: "primavera",
+  //     },
+  //   },
+  //   {
+  //     name: "quartz",
+  //     action: {
+  //       art: "quartz",
+  //     },
+  //   },
+  //   {
+  //     name: "red rock",
+  //     action: {
+  //       art: "red_rock",
+  //     },
+  //   },
+  //   {
+  //     name: "refresh",
+  //     action: {
+  //       art: "refresh",
+  //     },
+  //   },
+  //   {
+  //     name: "sizzle",
+  //     action: {
+  //       art: "sizzle",
+  //     },
+  //   },
+  //   {
+  //     name: "sonnet",
+  //     action: {
+  //       art: "sonnet",
+  //     },
+  //   },
+  //   {
+  //     name: "ukulele",
+  //     action: {
+  //       art: "ukulele",
+  //     },
+  //   },
+  //   {
+  //     name: "zorro",
+  //     action: {
+  //       art: "zorro",
+  //     },
+  //   },
+  //   {
+  //     name: "black & white",
+  //     action: {
+  //       blackwhite: true,
+  //     },
+  //   },
+  //   {
+  //     name: "cartoonify",
+  //     action: {
+  //       cartoonify: true,
+  //     },
+  //   },
+  //   {
+  //     name: "negate",
+  //     action: {
+  //       negate: true,
+  //     },
+  //   },
+  //   {
+  //     name: "oil paint",
+  //     action: {
+  //       oilPaint: "100",
+  //     },
+  //   },
+  //   {
+  //     name: "vibrance",
+  //     action: {
+  //       vibrance: "100",
+  //     },
+  //   },
+  //   {
+  //     name: "vignette",
+  //     action: {
+  //       vignette: "100",
+  //     },
+  //   },
+  // ];
+  const optimizedTransformations: TransformationType[] = [
     {
       name: "original",
       action: {},
     },
     {
-      name: "Al Dante",
-      action: {
-        art: "al_dente",
-      },
-    },
-    {
-      name: "athena",
-      action: {
-        art: "athena",
-      },
-    },
-    {
-      name: "audrey",
-      action: {
-        art: "audrey",
-      },
-    },
-    {
-      name: "aurora",
-      action: {
-        art: "aurora",
-      },
-    },
-    {
-      name: "daguerre",
-      action: {
-        art: "daguerre",
-      },
-    },
-    {
       name: "eucalyptus",
       action: {
         art: "eucalyptus",
-      },
-    },
-    {
-      name: "fes",
-      action: {
-        art: "fes",
-      },
-    },
-    {
-      name: "frost",
-      action: {
-        art: "frost",
-      },
-    },
-    {
-      name: "hairspray",
-      action: {
-        art: "hairspray",
-      },
-    },
-    {
-      name: "hokusai",
-      action: {
-        art: "hokusai",
-      },
-    },
-    {
-      name: "incognito",
-      action: {
-        art: "incognito",
-      },
-    },
-    {
-      name: "linen",
-      action: {
-        art: "linen",
-      },
-    },
-    {
-      name: "peacock",
-      action: {
-        art: "peacock",
-      },
-    },
-    {
-      name: "primavera",
-      action: {
-        art: "primavera",
       },
     },
     {
@@ -124,36 +214,6 @@ function TransformationsTab({
       name: "red rock",
       action: {
         art: "red_rock",
-      },
-    },
-    {
-      name: "refresh",
-      action: {
-        art: "refresh",
-      },
-    },
-    {
-      name: "sizzle",
-      action: {
-        art: "sizzle",
-      },
-    },
-    {
-      name: "sonnet",
-      action: {
-        art: "sonnet",
-      },
-    },
-    {
-      name: "ukulele",
-      action: {
-        art: "ukulele",
-      },
-    },
-    {
-      name: "zorro",
-      action: {
-        art: "zorro",
       },
     },
     {
@@ -180,12 +240,7 @@ function TransformationsTab({
         oilPaint: "100",
       },
     },
-    {
-      name: "vibrance",
-      action: {
-        vibrance: "100",
-      },
-    },
+
     {
       name: "vignette",
       action: {
@@ -204,7 +259,7 @@ function TransformationsTab({
   const [containerHeight, setContainerHeight] = useState(100);
   const DivRef = useRef<HTMLDivElement | null>(null);
 
-  const [currentInd, setCurrentInd] = useState(0);
+  const [currentName, setCurrentName] = useState("original");
 
   useEffect(() => {
     if (DivRef.current) {
@@ -227,11 +282,11 @@ function TransformationsTab({
 
     if (
       currentTransformation?.transformations.length ===
-      initialTransformations.length
+      optimizedTransformations.length
     )
       return;
 
-    initialTransformations.forEach(async (transformation) => {
+    optimizedTransformations.forEach(async (transformation) => {
       const { action, name } = transformation;
 
       const modifiedUrl = getCldImageUrl({
@@ -295,9 +350,8 @@ function TransformationsTab({
             (transformation, index) => (
               <TransformationButton
                 key={index}
-                index={index}
-                currentInd={currentInd}
-                setCurrentInd={setCurrentInd}
+                currentName={currentName}
+                setCurrentName={setCurrentName}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 transformation={transformation}

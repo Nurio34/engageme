@@ -3,19 +3,17 @@ import { Dispatch, SetStateAction } from "react";
 import { TransformationType } from "..";
 
 function TransformationButton({
+  currentName,
+  setCurrentName,
   isLoading,
-  index,
-  currentInd,
-  setCurrentInd,
   setIsLoading,
   transformation,
   setUrlState,
   setIsNewUrlDownloading,
 }: {
+  currentName: string;
+  setCurrentName: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
-  index: number;
-  currentInd: number;
-  setCurrentInd: Dispatch<SetStateAction<number>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   transformation: TransformationType;
   setUrlState: Dispatch<SetStateAction<string>>;
@@ -25,13 +23,13 @@ function TransformationButton({
 
   if (!url) return;
 
-  const isCurrent = currentInd === index;
+  const isCurrent = currentName === name;
 
   return (
     <li
       className="cursor-pointer"
       onClick={() => {
-        setCurrentInd(index);
+        setCurrentName(name);
         setIsNewUrlDownloading(true);
         setUrlState(url);
       }}

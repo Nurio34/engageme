@@ -4,7 +4,4 @@
 
 ## Gallery
 
-    1. Galley açıkken aşağı slide'da page refresh'i prevent()
-    2. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
-    3. Crop step'te next'e basınca loading ederken renkli loading bar ekle.
-    3.
+    1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.

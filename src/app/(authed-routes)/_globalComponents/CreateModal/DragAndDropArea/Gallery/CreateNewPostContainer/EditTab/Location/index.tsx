@@ -4,6 +4,8 @@ import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import MarkIcon from "@/app/_globalComponents/Svg/MarkIcon";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 
+const libraries: "places"[] = ["places"]; // ✅ Define outside
+
 export type LocationType = {
   lat: number;
   lng: number;
@@ -115,7 +117,7 @@ function Location({ EditTabWidth }: { EditTabWidth: RefObject<number> }) {
   // ✅ Load Google Maps API once
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    libraries: ["places"],
+    libraries,
   });
 
   if (loadError) {
@@ -142,7 +144,7 @@ function Location({ EditTabWidth }: { EditTabWidth: RefObject<number> }) {
           <input
             ref={InputRef}
             type="text"
-            className={`grow outline-none disabled:bg-transparent
+            className={`outline-none disabled:bg-transparent
               ${
                 location.name.trim() !== ""
                   ? "cursor-not-allowed font-bold"
@@ -182,7 +184,7 @@ function Location({ EditTabWidth }: { EditTabWidth: RefObject<number> }) {
       />
 
       <ul
-        className={`absolute shadow-sm shadow-base-content rounded-lg transition-all duration-500 
+        className={`absolute z-10 shadow-sm shadow-base-content bg-base-100 rounded-lg transition-all duration-500 
               ${
                 placesModalRenderCondition
                   ? "h-52 overflow-auto opacity-100"

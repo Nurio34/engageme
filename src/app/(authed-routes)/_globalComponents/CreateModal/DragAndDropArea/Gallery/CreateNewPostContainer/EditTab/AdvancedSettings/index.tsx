@@ -1,9 +1,9 @@
 import Chevron from "@/app/_globalComponents/Svg/Chevron";
 import { useEffect, useRef, useState } from "react";
-import Description from "./Description";
-import Images from "./Images";
+import CountsSettings from "./CountsSettings";
+import CommentsSettings from "./CommentsSettings";
 
-function Accesibility() {
+function AdvancedSettings() {
   const [isTabOpen, setIsTabOpen] = useState(false);
   const chevronRotate = isTabOpen ? 0 : 180;
 
@@ -18,26 +18,26 @@ function Accesibility() {
 
   return (
     <div className="px-4 py-2">
-      <button
-        type="button"
-        className="w-full flex items-center justify-between"
+      <div
+        className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsTabOpen((prev) => !prev)}
       >
-        <p className={`${isTabOpen ? "font-semibold" : ""}`}>Accesibility</p>
+        <p className={`${isTabOpen ? "font-semibold" : ""}`}>
+          Advanced Settings
+        </p>
         <Chevron rotate={chevronRotate} />
-      </button>
+      </div>
       <div
         ref={ContainerRef}
-        className="overflow-hidden transition-all duration-500"
+        className="py-2 overflow-hidden transition-all duration-500"
         style={{
           height: isTabOpen ? containerHeight : 0,
         }}
       >
-        <Description />
-        <Images />
+        <CountsSettings />
+        <CommentsSettings />
       </div>
     </div>
   );
 }
-
-export default Accesibility;
+export default AdvancedSettings;

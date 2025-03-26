@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageContainer from "./MessageContainer";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { useEditTabControl } from "../../EditContainer/Medias/MediaContainer/CloseSlider/useEditTabControl";
@@ -6,6 +6,7 @@ import CloseSlider from "../../EditContainer/Medias/MediaContainer/CloseSlider";
 import Location from "./Location";
 import AddCollaborators from "./AddCollaborators";
 import Accesibility from "./Accesibility";
+import AdvancedSettings from "./AdvancedSettings";
 
 function EditTab() {
   const { setIsEmojiPickerOpen, setIsPlacesModalOpen } =
@@ -21,6 +22,14 @@ function EditTab() {
     touchX,
     setTouchX,
   } = useEditTabControl(EditTabRef, isEditRequested);
+
+  const ContainerRef = useRef<HTMLDivElement | null>(null);
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  useEffect(() => {
+    if (ContainerRef.current)
+      setContainerHeight(ContainerRef.current.getBoundingClientRect().height);
+  }, []);
 
   return (
     <div
@@ -41,20 +50,29 @@ function EditTab() {
         setIsPlacesModalOpen(false);
       }}
     >
-      <CloseSlider
-        editTabTranslateX={editTabTranslateX}
-        setEditTabTranslateX={setEditTabTranslateX}
-        EditTabWidth={EditTabWidth}
-        setTouchX={setTouchX}
-        setIsEditRequested={setIsEditRequested}
-      />
-      <MessageContainer
-        EditTabWidth={EditTabWidth}
-        setEditTabTranslateX={setEditTabTranslateX}
-      />
-      <Location EditTabWidth={EditTabWidth} />
-      <AddCollaborators />
-      <Accesibility />
+      <div
+        ref={ContainerRef}
+        className="h-full overflow-auto"
+        style={{
+          maxHeight: containerHeight === 0 ? undefined : containerHeight,
+        }}
+      >
+        <CloseSlider
+          editTabTranslateX={editTabTranslateX}
+          setEditTabTranslateX={setEditTabTranslateX}
+          EditTabWidth={EditTabWidth}
+          setTouchX={setTouchX}
+          setIsEditRequested={setIsEditRequested}
+        />
+        <MessageContainer
+          EditTabWidth={EditTabWidth}
+          setEditTabTranslateX={setEditTabTranslateX}
+        />
+        <Location EditTabWidth={EditTabWidth} />
+        <AddCollaborators />
+        <Accesibility />
+        <AdvancedSettings />
+      </div>
     </div>
   );
 }
