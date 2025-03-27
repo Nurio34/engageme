@@ -29,6 +29,8 @@ function NextButton() {
     setIsAllModalsClosed(true);
   };
 
+  if (step.step === "sharing") return;
+
   return (
     <button
       type="button"

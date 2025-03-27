@@ -2,7 +2,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
 
 function PreviousButton() {
-  const { setCurrentIndex, files, setIsAllModalsClosed } =
+  const { setCurrentIndex, files, setIsAllModalsClosed, step } =
     useCreateModalContext();
   const totalMedia = files.files!.length;
 
@@ -16,6 +16,8 @@ function PreviousButton() {
     });
     setIsAllModalsClosed(true);
   };
+
+  if (step.step === "sharing") return;
 
   return (
     <button

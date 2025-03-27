@@ -41,7 +41,7 @@ export type StepType = {
   step: StepsType;
 };
 
-export type StepsType = "new" | "crop" | "edit" | "post";
+export type StepsType = "new" | "crop" | "edit" | "post" | "sharing";
 
 export type CanvasType = {
   ref: HTMLCanvasElement;
@@ -105,10 +105,10 @@ export type EditedMedia = {
   publicId: string;
   url: string;
   type: "image" | "video";
-  transformation?: Record<string, string>;
+  transformation?: Record<string, string | undefined>;
   audio?: Record<string, string | number>;
   isAudioAllowed?: boolean;
-  posterUrl?: string;
+  poster?: { publicId?: string; url?: string };
   altText?: string;
 };
 

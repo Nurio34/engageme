@@ -57,7 +57,7 @@ function EditButtons({
       </button>
       <button
         type="button"
-        className="md:hidden px-2 bg-base-content rounded-tl-lg rounded-bl-lg"
+        className="lg:hidden px-2 bg-base-content rounded-tl-lg rounded-bl-lg"
         onClick={() =>
           setEditTabTranslateX({
             old: EditTabWidth.current,

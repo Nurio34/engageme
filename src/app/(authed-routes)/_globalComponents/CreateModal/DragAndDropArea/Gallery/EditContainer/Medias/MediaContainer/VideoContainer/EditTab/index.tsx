@@ -40,7 +40,7 @@ function EditTab({
   return (
     <div
       ref={EditTabRef}
-      className={`absolute right-0 top-0 p-2 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col 
+      className={`absolute lg:relative right-0 top-0 p-2 bg-base-100 z-20  h-full md:grow border-l flex flex-col 
         ${touchX.isDragEnd ? "transition-transform" : "transition-none"}  
       `}
       style={{
@@ -50,7 +50,7 @@ function EditTab({
     >
       <button
         type="button"
-        className="md:hidden px-2 bg-base-content rounded-lg self-end"
+        className="lg:hidden px-2 bg-base-content rounded-lg self-end"
         onClick={() =>
           setEditTabTranslateX({
             old: EditTabWidth.current,

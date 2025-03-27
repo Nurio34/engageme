@@ -44,7 +44,7 @@ function EditTab({
   return (
     <div
       ref={EditTabRef}
-      className={`absolute right-0 top-0 bg-base-100 z-20 md:relative h-full md:grow border-l flex flex-col
+      className={`absolute lg:relative right-0 top-0 bg-base-100 z-20 h-full md:grow border-l flex flex-col
         ${
           isEditRequested && touchX.isDragEnd
             ? "transition-transform"

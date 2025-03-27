@@ -19,7 +19,7 @@ function CloseSlider({
 
   return (
     <div
-      className=" md:hidden absolute top-0 left-0 -translate-x-full w-7 h-full bg-base-content rounded-tl-lg rounded-bl-lg
+      className=" lg:hidden absolute top-0 left-0 -translate-x-full w-7 h-full bg-base-content rounded-tl-lg rounded-bl-lg
         flex justify-center items-center gap-1
       "
       onTouchStart={(e) => {

@@ -16,6 +16,7 @@ export const useGetPosters = (
     for (let i = 0; i < totalPosters; i++) {
       const time = i * timeParam;
       const imageUrl = eagerUrl
+        .replace("http://", "https://")
         .replace("/video/upload/", `/video/upload/so_${time}/`)
         .replace("mp4", "jpg");
 

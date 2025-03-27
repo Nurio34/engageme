@@ -5,6 +5,7 @@ import { useCreateModalContext } from "../../Context";
 import CropContainer from "./CropContainer";
 import EditContainer from "./EditContainer";
 import CreateNewPostContainer from "./CreateNewPostContainer";
+import Sharing from "./Sharing";
 
 function Gallery() {
   const { CanvasContainerRef, setCanvasContainerSize, step } =
@@ -51,6 +52,7 @@ function Gallery() {
       <CropContainer />
       <EditContainer />
       <CreateNewPostContainer />
+      {step.step === "sharing" && <Sharing />}
       <PreviousButton />
       <NextButton />
     </div>

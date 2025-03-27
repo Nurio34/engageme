@@ -95,7 +95,7 @@ export const useCloudinaryActions = (
             transformation: transformations,
             audio,
             isAudioAllowed,
-            posterUrl: poster?.url,
+            poster: { publicId: poster?.publicId, url: poster?.url },
           };
         }
       );

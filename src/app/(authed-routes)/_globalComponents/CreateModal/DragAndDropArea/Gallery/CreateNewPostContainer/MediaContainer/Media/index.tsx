@@ -12,7 +12,7 @@ function Media({ media }: { media: EditedMedia }) {
     blob,
     url: videoUrl,
     transformation,
-    posterUrl,
+    poster,
     publicId,
     audio,
     isAudioAllowed,
@@ -66,7 +66,7 @@ function Media({ media }: { media: EditedMedia }) {
             key={publicId}
             src={videoUrl}
             transformation={{ ...transformation, audio_codec: codec }}
-            poster={posterUrl}
+            poster={poster?.url}
           />
         </div>
       )}

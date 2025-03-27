@@ -1,0 +1,30 @@
+.GradientCircle {
+  background-image: conic-gradient(
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5,
+    #962fbf,
+    #d62976,
+    #fa7e1e,
+    #feda75
+  );
+  position: relative;
+  animation: spin 2s linear infinite;
+  animation-play-state: var(--animationState);
+}
+
+.GradientCircle::before {
+  content: "";
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  inset: 4px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}

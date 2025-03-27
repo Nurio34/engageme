@@ -14,7 +14,7 @@ export const useStep = (
   files: FilesType
 ) => {
   const [step, setStep] = useState<StepType>({ action: "next", step: "new" });
-  const steps: StepsType[] = ["new", "crop", "edit", "post"];
+  const steps: StepsType[] = ["new", "crop", "edit", "post", "sharing"];
   const dispatch = useAppDispatch();
 
   const goPrevStep = () => {

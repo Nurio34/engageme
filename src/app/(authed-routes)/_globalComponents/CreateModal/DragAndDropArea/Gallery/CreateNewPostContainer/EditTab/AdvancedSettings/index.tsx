@@ -17,7 +17,7 @@ function AdvancedSettings() {
   }, [isTabOpen]);
 
   return (
-    <div className="px-4 py-2">
+    <div className="px-4 py-2 border-b-2">
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsTabOpen((prev) => !prev)}
@@ -29,7 +29,7 @@ function AdvancedSettings() {
       </div>
       <div
         ref={ContainerRef}
-        className="py-2 overflow-hidden transition-all duration-500"
+        className="overflow-hidden transition-all duration-500"
         style={{
           height: isTabOpen ? containerHeight : 0,
         }}

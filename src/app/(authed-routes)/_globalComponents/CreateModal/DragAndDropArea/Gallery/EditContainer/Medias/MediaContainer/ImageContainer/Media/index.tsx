@@ -46,13 +46,32 @@ function Media({
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = urlState;
+    img.style.opacity = "0.1";
 
     img.onload = () => {
       canvas.width = width;
       canvas.height = height;
       ctx.filter = filterStyle;
+
       ctx.globalAlpha = otherStyle.opacity;
       ctx.drawImage(img, 0, 0, width, height);
+
+      const gradient = ctx.createRadialGradient(
+        width / 2, // x center
+        height / 2, // y center
+        width / 4, // inner radius (adjust as needed)
+        width / 2, // outer radius x
+        height / 2, // outer radius y
+        Math.max(width, height) / 2 // outer radius (adjust as needed)
+      );
+
+      gradient.addColorStop(0.5, "rgba(255, 255, 255, 0)"); // Center is transparent
+      gradient.addColorStop(1, `rgba(255, 255, 255, ${otherStyle.depth})`); // Outer part uses depth
+
+      // Apply gradient overlay
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
       canvas.toBlob((blob) => {
         if (blob) {
           const updatedMedias = cloudinaryMedias.medias.map((mediaObj) => {
@@ -92,10 +111,6 @@ function Media({
         }`}
         style={{ width: baseCanvasContainerWidth }}
       />
-      <div
-        className="EditCanvasContainer"
-        style={{ "--depth": otherStyle.depth } as React.CSSProperties}
-      ></div>
     </div>
   );
 }

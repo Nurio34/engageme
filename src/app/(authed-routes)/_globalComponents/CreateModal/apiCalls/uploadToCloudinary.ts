@@ -18,7 +18,7 @@ export const uploadToCloudinary = async (
     });
 
     if (!response.ok) {
-      toast.error("Something went wrong ! Please tyr again ..");
+      toast.error("Something went wrong ! Please tyr again..");
       setStep({ action: "previous", step: "crop" });
       return;
     }
@@ -26,7 +26,7 @@ export const uploadToCloudinary = async (
     const { status, medias } = await response.json();
 
     if (status === "error") {
-      toast.error("Something went wrong ! Please tyr again ..");
+      toast.error("Something went wrong ! Please tyr again..");
       setStep({ action: "previous", step: "crop" });
       return;
     }

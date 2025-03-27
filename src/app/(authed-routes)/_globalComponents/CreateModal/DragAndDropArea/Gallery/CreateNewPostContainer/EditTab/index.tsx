@@ -7,6 +7,7 @@ import Location from "./Location";
 import AddCollaborators from "./AddCollaborators";
 import Accesibility from "./Accesibility";
 import AdvancedSettings from "./AdvancedSettings";
+import VideoInfo from "./VideoInfo";
 
 function EditTab() {
   const { setIsEmojiPickerOpen, setIsPlacesModalOpen } =
@@ -34,7 +35,7 @@ function EditTab() {
   return (
     <div
       ref={EditTabRef}
-      className={`absolute md:relative right-0 top-0 bg-base-100 z-20 w-full h-full border-l flex flex-col
+      className={`absolute lg:relative right-0 top-0 bg-base-100 z-20 w-full h-full border-l flex flex-col
       ${
         isEditRequested && touchX.isDragEnd
           ? "transition-transform"
@@ -72,6 +73,7 @@ function EditTab() {
         <AddCollaborators />
         <Accesibility />
         <AdvancedSettings />
+        <VideoInfo />
       </div>
     </div>
   );

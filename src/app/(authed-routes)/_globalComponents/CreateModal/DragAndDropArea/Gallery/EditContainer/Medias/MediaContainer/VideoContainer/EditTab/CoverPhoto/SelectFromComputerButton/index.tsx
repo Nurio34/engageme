@@ -2,7 +2,7 @@ import { MediaType, PosterType } from "@/actions/cloudinary";
 import { deletePosterImageFromCloudinary } from "@/app/(authed-routes)/_globalComponents/CreateModal/apiCalls/deletePosterImageFromCloudinary";
 import { uploadPosterImageCloudinary } from "@/app/(authed-routes)/_globalComponents/CreateModal/apiCalls/uploadPosterImageCloudinary";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
-import Loading from "@/app/_globalComponents/Loading";
+import Loading from "@/app/_globalComponents/LoadingComponents/Loading";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addPosterImage, removePosterImage } from "@/store/slices/modals";
 import Image from "next/image";
@@ -71,14 +71,14 @@ function SelectFromComputerButton({ media }: { media: MediaType }) {
       try {
         const { status, poster } = await uploadPosterImageCloudinary(file);
         if (status === "error" || !poster) {
-          toast.error("Something went wrong ! Please try again ..");
+          toast.error("Something went wrong ! Please try again..");
           return;
         }
         updateCloudinaryPoster(poster);
         setPoster(poster);
       } catch (error) {
         console.log(error);
-        toast.error("Something went wrong ! Please try again ..");
+        toast.error("Something went wrong ! Please try again..");
       } finally {
         setIsLoading(false);
       }

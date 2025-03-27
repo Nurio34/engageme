@@ -25,7 +25,7 @@ function UserInfo({
       </div>
       <button
         type="button"
-        className="md:hidden px-2 py-1 bg-base-content rounded-lg"
+        className="lg:hidden px-2 py-1 bg-base-content rounded-lg"
         onClick={() =>
           setEditTabTranslateX({
             old: EditTabWidth.current,

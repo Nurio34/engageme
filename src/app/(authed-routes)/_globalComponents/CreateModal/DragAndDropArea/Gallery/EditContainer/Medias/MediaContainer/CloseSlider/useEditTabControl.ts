@@ -1,3 +1,4 @@
+import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { RefObject, useEffect, useRef, useState } from "react";
 
 export type EditTabTranslateXType = {
@@ -11,6 +12,8 @@ export const useEditTabControl = (
   EditTabRef: RefObject<HTMLDivElement | null>,
   isEditRequested: boolean
 ) => {
+  const { step, currentIndex } = useCreateModalContext();
+
   const EditTabWidth = useRef(0);
   const [editTabTranslateX, setEditTabTranslateX] =
     useState<EditTabTranslateXType>({
@@ -28,7 +31,15 @@ export const useEditTabControl = (
       if (EditTabRef.current) {
         const width = EditTabRef.current.getBoundingClientRect().width;
         EditTabWidth.current = width + 28;
-        setEditTabTranslateX({ old: 0, new: 0 });
+
+        if (step.step === "post") {
+          setEditTabTranslateX({ old: 0, new: 0 });
+        } else {
+          setEditTabTranslateX({
+            old: EditTabWidth.current,
+            new: EditTabWidth.current,
+          });
+        }
       }
     };
 
@@ -39,7 +50,7 @@ export const useEditTabControl = (
     return () => {
       window.addEventListener("resize", handleEditTabWidth);
     };
-  }, []);
+  }, [step, currentIndex]);
 
   useEffect(() => {
     const { start, end, isDragEnd } = touchX;
@@ -66,7 +77,7 @@ export const useEditTabControl = (
   useEffect(() => {
     const handleResize = () => {
       const innerWidth = window.innerWidth;
-      if (innerWidth > 768) {
+      if (innerWidth > 1024) {
         setEditTabTranslateX({ old: 0, new: 0 });
       }
     };

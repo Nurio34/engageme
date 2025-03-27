@@ -1,7 +1,9 @@
 ## Home Page
 
     1. Mobilde side menu görünümünü yeniden dizayn et.
+    2. Kullanıcı başka bir sayfaya geçerkenki sürede gösterilcek bir LoadingIndicator oluşur(next/routes , router.events.on(off))
+    3. Vercel - SpeedInsights kur
 
 ## Gallery
-
+    1.Vignate adjustment sonraki stepe geçmiyo
     1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.

@@ -1,10 +1,12 @@
-import Loading from "@/app/_globalComponents/Loading";
+import Loading from "@/app/_globalComponents/LoadingComponents/Loading";
 import { useCreateModalContext } from "../../Context";
 
 function StepNextButton() {
-  const { goNextStep, cloudinaryMedias } = useCreateModalContext();
+  const { goNextStep, cloudinaryMedias, step } = useCreateModalContext();
 
   const { isLoading } = cloudinaryMedias;
+
+  if (step.step === "sharing") return;
 
   return (
     <>
@@ -16,7 +18,7 @@ function StepNextButton() {
           className="font-semibold text-info text-sm"
           onClick={goNextStep}
         >
-          Next
+          {step.step === "post" ? "Share" : "Next"}
         </button>
       )}
     </>
