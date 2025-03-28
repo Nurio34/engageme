@@ -12,6 +12,7 @@ export default function RootLayout({
       <SideMenu />
       <CreateModal />
       <WannaCloseCreateModal_Modal />
+
       {children}
     </main>
   );

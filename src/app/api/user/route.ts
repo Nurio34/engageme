@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   if (!clerkUser) return NextResponse.json({ status: "fail" }, { status: 401 });
 
   const { id: userId, username, imageUrl: avatar, emailAddresses } = clerkUser;
-  //   console.log({ userId, fullName, avatar, emailAddresses });
 
   let user;
   try {

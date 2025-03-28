@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const protectedRoutes = createRouteMatcher(["/home"]);
+const protectedRoutes = createRouteMatcher(["/home", "/onboarding"]);
 const unprotectedRoutes = ["/", "/sign-in(.*)", "/sign-up(.*)"];
 
 export default clerkMiddleware(async (auth, req) => {
@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
 
   //! *** When client "authenticated", prevent client to navigate to "unprotectedRoutes" ***
   if (userId && unprotectedRoutes.includes(pathname)) {
-    const redirectUrl = new URL("/home", req.nextUrl.origin);
+    const redirectUrl = new URL("/onboarding", req.nextUrl.origin);
     return Response.redirect(redirectUrl, 302);
   }
   //! ***************************************

@@ -4,6 +4,7 @@ import "./globals.css";
 import Theme from "./_globalComponents/Theme";
 import { Toaster } from "react-hot-toast";
 import Ping from "./_globalComponents/Ping/Provider";
+import RoutingAnimationBar from "./_globalComponents/RoutingAnimationBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ export default function RootLayout({
           <Theme />
           <Toaster />
           <Ping />
+          <RoutingAnimationBar />
           {children}
         </body>
       </html>

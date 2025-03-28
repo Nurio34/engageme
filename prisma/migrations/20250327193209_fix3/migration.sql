@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Location" ALTER COLUMN "locationId" DROP NOT NULL,
-ALTER COLUMN "name" DROP NOT NULL;

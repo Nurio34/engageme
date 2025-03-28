@@ -1,4 +1,8 @@
 function Explore() {
-  return <div>Explore</div>;
+  return (
+    <div>
+      <p>Explore</p>
+    </div>
+  );
 }
 export default Explore;

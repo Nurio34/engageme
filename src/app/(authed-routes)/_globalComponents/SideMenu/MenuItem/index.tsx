@@ -8,6 +8,7 @@ import { createAction } from "./actions/createAction";
 import { searchAction } from "./actions/searchAction";
 import { notificationsAction } from "./actions/notificationsAction";
 import { useAppDispatch } from "@/store/hooks";
+import { started } from "@/store/slices/routing";
 
 function MenuItem({ item }: { item: MenuType }) {
   const path = usePathname();
@@ -49,7 +50,13 @@ function MenuItem({ item }: { item: MenuType }) {
           </figure>
         )}
         {item.type === "link" ? (
-          <Link href={item.href!} className="w-full">
+          <Link
+            href={item.href!}
+            className="w-full"
+            onClick={() => {
+              if (!isCurrentPath) dispatch(started());
+            }}
+          >
             {item.name}
           </Link>
         ) : (
