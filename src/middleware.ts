@@ -5,7 +5,7 @@ const unprotectedRoutes = ["/", "/sign-in(.*)", "/sign-up(.*)"];
 
 export default clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;
-  const { userId, sessionClaims } = await auth();
+  const { userId } = await auth();
 
   //! *** Protect "protectedRoutes" ***
   if (protectedRoutes(req)) {
@@ -20,7 +20,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
   //! ***************************************
 
-  const role = sessionClaims?.metadata.role;
+  // const role = sessionClaims?.metadata.role;
 
   // //! *** When login or signup, Give client "user" role ***
   // if (userId && !role) {

@@ -90,9 +90,9 @@ function Media({
   return isNewUrlDownloading ? (
     <figure
       className={`relative h-full  ${
-        isNewUrlDownloading ? "bg-base-300 animate-pulse" : ""
+        isNewUrlDownloading ? "bg-base-content/70 animate-pulse" : ""
       }`}
-      style={{ width: baseCanvasContainerWidth }}
+      style={{ minWidth: baseCanvasContainerWidth }}
     >
       <CldImage
         src={urlState}
@@ -100,6 +100,7 @@ function Media({
         fill
         alt="image"
         onLoad={() => setIsNewUrlDownloading(false)}
+        sizes="(max-width:1024px) 100vw, 50vw"
       />
     </figure>
   ) : (

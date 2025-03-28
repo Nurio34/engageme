@@ -4,7 +4,7 @@ import MediaContainer from "./MediaContainer";
 import EditTab from "./EditTab";
 
 function CreateNewPostContainer() {
-  const { step, editedMedias } = useCreateModalContext();
+  const { step, editedMedias, setIsShared } = useCreateModalContext();
 
   const [isRender, setIsRender] = useState(true);
 
@@ -15,6 +15,10 @@ function CreateNewPostContainer() {
   useEffect(() => {
     if (!isRender) setIsRender(true);
   }, [isRender]);
+
+  useEffect(() => {
+    setIsShared(false);
+  }, []);
 
   const renderCondition = step.step === "post" && isRender;
   return (

@@ -168,8 +168,8 @@ interface ContextType {
   setIsPlacesModalOpen: Dispatch<SetStateAction<boolean>>;
   location: LocationType;
   setLocation: Dispatch<SetStateAction<LocationType>>;
-  count: number;
-  setCount: Dispatch<SetStateAction<number>>;
+  isShared: boolean;
+  setIsShared: Dispatch<SetStateAction<boolean>>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
@@ -251,9 +251,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [altTexts, setAltTexts] = useState<AltTextType[]>([]);
   const [settings, setSettings] = useState<SettingsType>({
-    isCountsVisible: true,
-    isCommentingAllowed: true,
+    isCountsVisible: false,
+    isCommentingAllowed: false,
   });
+  const [isShared, setIsShared] = useState(false);
 
   //** Update cloudinaryMedias, add image media object's blob(created from eager.url),
   //** add video media object's blob & transformations(created from eager.url)
@@ -281,8 +282,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   //! *** Video Trim Controls ***
   const { controls, setControls } = useVideoTrimControls(cloudinaryMedias);
   //! ******************************
-
-  const [count, setCount] = useState(0);
 
   //! *** when create modal closed, reset context ***
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
@@ -313,6 +312,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       setIsEmojiPickerOpen(false);
       setIsPlacesModalOpen(false);
       setLocation({ name: "", id: "" });
+      setIsShared(false);
     }
   }, [isCreateModalOpen]);
   //! ***********************************************
@@ -361,8 +361,8 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         setIsPlacesModalOpen,
         location,
         setLocation,
-        count,
-        setCount,
+        isShared,
+        setIsShared,
       }}
     >
       {children}

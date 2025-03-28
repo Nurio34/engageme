@@ -3,13 +3,14 @@ import { PostType, UpdatedMedia } from "..";
 import { useCreateModalContext } from "../../../../Context";
 
 export const usePost = (
-  updatedMedias: UpdatedMedia[],
+  updatedMediasState: UpdatedMedia[],
   setPost: Dispatch<SetStateAction<PostType>>
 ) => {
   const { message, location, settings } = useCreateModalContext();
 
   useEffect(() => {
-    if (updatedMedias.length === 0) return;
-    setPost({ medias: updatedMedias, message, location, settings });
-  }, [updatedMedias]);
+    if (updatedMediasState.length === 0) return;
+    setPost({ medias: updatedMediasState, message, location, settings });
+    console.log("usePost() success");
+  }, [updatedMediasState]);
 };

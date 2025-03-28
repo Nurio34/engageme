@@ -16,14 +16,14 @@ export type TransformationType = {
 
 function TransformationsTab({
   currentTab,
-  url,
   setUrlState,
   setIsNewUrlDownloading,
+  eagerUrl,
 }: {
   currentTab: CurrentTabType;
-  url: string;
   setUrlState: Dispatch<SetStateAction<string>>;
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
+  eagerUrl: string;
 }) {
   // const initialTransformations: TransformationType[] = [
   //   {
@@ -290,7 +290,7 @@ function TransformationsTab({
       const { action, name } = transformation;
 
       const modifiedUrl = getCldImageUrl({
-        src: url,
+        src: eagerUrl,
         preserveTransformations: true,
         art: action.art as string,
         blackwhite: action.blackwhite as boolean,
@@ -300,6 +300,7 @@ function TransformationsTab({
         vibrance: action.vibrance as string,
         vignette: action.vignette as string,
       });
+
       const fetchedUrl = await fetchImage(modifiedUrl);
 
       setGlobalTransformations((prev) => {

@@ -4,10 +4,14 @@ import {
   SettingsType,
   useCreateModalContext,
 } from "../../../Context";
-import { useState } from "react";
 import { useUploadEditedImages } from "./hooks/useUploadEditedImages";
+import { useEffect, useState } from "react";
 import { useUpdateMedias } from "./hooks/useUpdateMedias";
 import { usePost } from "./hooks/usePost";
+import { useSavePost } from "./hooks/useSavePost";
+import AnimatedCheckIcon from "@/app/_globalComponents/Svg/AnimatedCheckIcon";
+import { useAppDispatch } from "@/store/hooks";
+import { toggleCreateModal } from "@/store/slices/modals";
 
 export type UpdatedMedia = {
   publicId: string;
@@ -27,20 +31,46 @@ export type PostType = {
 };
 
 function Sharing() {
-  const { editedMedias, altTexts } = useCreateModalContext();
+  const { editedMedias, altTexts, isShared, step } = useCreateModalContext();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [updatedMedias, setUpdatedMedias] = useState<UpdatedMedia[]>([]);
+  const dispatch = useAppDispatch();
+
+  const [updatedMediasState, setUpdatedMediasState] = useState<UpdatedMedia[]>(
+    []
+  );
   const [post, setPost] = useState<PostType>({} as PostType);
-  console.log(post);
 
-  const updatedImages = useUploadEditedImages(editedMedias);
-  useUpdateMedias(updatedImages, editedMedias, setUpdatedMedias, altTexts);
-  usePost(updatedMedias, setPost);
+  const { isComplated, updatedImages } = useUploadEditedImages(editedMedias);
+  useUpdateMedias(
+    updatedImages,
+    isComplated,
+    editedMedias,
+    setUpdatedMediasState,
+    altTexts,
+    updatedMediasState
+  );
+  usePost(updatedMediasState, setPost);
+  useSavePost(post);
+
+  useEffect(() => {
+    if (step.step === "sharing" && isShared) {
+      setTimeout(() => {
+        dispatch(toggleCreateModal());
+      }, 1500);
+    }
+  }, [step, isShared]);
 
   return (
-    <div className="h-full flex justify-center items-center">
-      <GradientCircle isLoading={isLoading} />
+    <div className="h-full flex flex-col gap-y-2 justify-center items-center">
+      <div className="relative">
+        <GradientCircle isLoading={!isShared} />
+        {isShared && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <AnimatedCheckIcon />
+          </div>
+        )}
+      </div>
+      {isShared && <p>Your post has been shared</p>}
     </div>
   );
 }

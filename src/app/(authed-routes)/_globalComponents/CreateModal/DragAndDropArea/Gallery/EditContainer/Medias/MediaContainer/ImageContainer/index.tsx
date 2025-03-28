@@ -9,9 +9,9 @@ export type StyleType = Record<string, number>;
 function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const { currentIndex } = useCreateModalContext();
   const { eager, asset_id, secure_url } = media;
-  const { secure_url: url } = eager![0];
+  const { secure_url: eagerUrl } = eager![0];
 
-  const [urlState, setUrlState] = useState(url);
+  const [urlState, setUrlState] = useState(eagerUrl);
   const [isNewUrlDownloading, setIsNewUrlDownloading] = useState(true);
 
   //! *** Scale down image to be able to "Enhance" applied ***
@@ -51,6 +51,7 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
           setOtherStyle={setOtherStyle}
           setUrlState={setUrlState}
           setIsNewUrlDownloading={setIsNewUrlDownloading}
+          eagerUrl={eagerUrl}
         />
       </div>
     )

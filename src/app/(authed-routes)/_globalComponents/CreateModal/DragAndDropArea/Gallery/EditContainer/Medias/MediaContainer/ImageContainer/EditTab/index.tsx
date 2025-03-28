@@ -21,6 +21,7 @@ function EditTab({
   setOtherStyle,
   setUrlState,
   setIsNewUrlDownloading,
+  eagerUrl,
 }: {
   url: string;
   style: StyleType;
@@ -28,6 +29,7 @@ function EditTab({
   setOtherStyle: Dispatch<SetStateAction<StyleType>>;
   setUrlState: Dispatch<SetStateAction<string>>;
   setIsNewUrlDownloading: Dispatch<SetStateAction<boolean>>;
+  eagerUrl: string;
 }) {
   const [currentTab, setCurrentTab] = useState<CurrentTabType>("filters");
   const EditTabRef = useRef<HTMLDivElement | null>(null);
@@ -72,9 +74,9 @@ function EditTab({
       {devControls.TransformationsTab && (
         <TransformationsTab
           currentTab={currentTab}
-          url={url}
           setUrlState={setUrlState}
           setIsNewUrlDownloading={setIsNewUrlDownloading}
+          eagerUrl={eagerUrl}
         />
       )}
       <CloseSlider
