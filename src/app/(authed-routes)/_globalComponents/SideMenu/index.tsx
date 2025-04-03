@@ -9,6 +9,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { JSX } from "react";
 import ProviderComponent from "./MenuItem/Provider";
+import InstagramLogoIcon from "@/app/_globalComponents/Svg/InstagramLogoIcon";
 
 export type MenuType = {
   name: string;
@@ -84,9 +85,23 @@ async function SideMenu() {
   ];
 
   return (
-    <nav className="min-w-80 min-h-screen px-[1vw] border-r">
-      <div className=" text-2xl py-[4vh]">Engage Me</div>
-      <ul className="space-y-[2vh]">
+    <nav
+      className="md:px-4 md:py-2 border-t md:border-t-0 md:border-r
+        fixed bottom-0 md:relative 
+        min-w-full md:min-w-0 lg:min-w-56 md:min-h-screen
+      "
+    >
+      <div
+        className="hidden lg:flex justify-center lg:justify-start
+          text-2xl pt-6 pb-9 
+        "
+      >
+        <div className="block lg:hidden">
+          <InstagramLogoIcon />
+        </div>
+        <div className="hidden lg:block">Engage Me</div>
+      </div>
+      <ul className="flex justify-evenly md:block md:space-y-[2vh]">
         {menu.map((item) => (
           <ProviderComponent key={item.name} item={item} />
         ))}

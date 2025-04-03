@@ -34,11 +34,12 @@ function Client() {
       >
         <CloseButton />
         <div
-          className={`relative transition-all w-full md:min-w-[734px] lg:max-h-[778.04px]
-              ${tabRenderCond ? " lg:w-11/12 xl:w-7/12" : "lg:w-7/12"}
-               h-full lg:h-5/6 bg-base-100 lg:rounded-lg overflow-hidden
-              flex flex-col
-            `}
+          className={`relative transition-all  bg-base-100 lg:rounded-lg overflow-hidden
+            min-w-full lg:min-w-[734px] 
+            ${tabRenderCond ? "md:w-10/12 xl:w-8/12" : ""}
+            h-full lg:max-h-[777.38px]
+            flex flex-col
+          `}
           onMouseDown={(e) => {
             e.stopPropagation();
           }}

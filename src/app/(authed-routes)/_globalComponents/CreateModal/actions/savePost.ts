@@ -23,8 +23,9 @@ export const savePost = async (
           create: medias.map((media) => ({
             publicId: media.publicId,
             url: media.url,
-            altText: media.altText,
-            isAudioAllowed: media.isAudioAllowed,
+            type: media.type,
+            altText: media?.altText,
+            isAudioAllowed: media?.isAudioAllowed,
             poster: media.poster && {
               create: {
                 publicId: media.poster?.publicId,
@@ -55,7 +56,7 @@ export const savePost = async (
           },
         },
       },
-    }); // post is not seen to make db query
+    });
 
     if (!response) {
       return { status: "fail" };

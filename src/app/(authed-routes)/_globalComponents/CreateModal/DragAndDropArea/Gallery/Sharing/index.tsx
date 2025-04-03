@@ -38,7 +38,9 @@ function Sharing() {
   const [updatedMediasState, setUpdatedMediasState] = useState<UpdatedMedia[]>(
     []
   );
+
   const [post, setPost] = useState<PostType>({} as PostType);
+  console.log(post);
 
   const { isComplated, updatedImages } = useUploadEditedImages(editedMedias);
   useUpdateMedias(

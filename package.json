@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "cloudinary": "^2.5.1",
     "dompurify": "^3.2.3",
+    "express-rate-limit": "^7.5.0",
     "framer-motion": "^12.6.2",
     "next": "15.1.4",
     "next-cloudinary": "^6.16.0",

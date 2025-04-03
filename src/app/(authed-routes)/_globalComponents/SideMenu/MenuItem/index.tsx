@@ -25,46 +25,73 @@ function MenuItem({ item }: { item: MenuType }) {
   return (
     <li
       key={item.name}
-      className="p-1 transition-all hover:bg-base-300 rounded-md"
+      className={`p-1 transition-all hover:bg-base-300 rounded-md
+                ${
+                  item.name === "Search" || item.name == "Notifications"
+                    ? "hidden md:block"
+                    : ""
+                }  ü
+      `}
     >
-      <div className="flex items-center gap-x-[1vw]">
-        {item.iconType === "icon" ? (
-          <div
-            className=" text-3xl"
-            style={{
-              filter: isCurrentPath
-                ? "drop-shadow(0 0 0px black) drop-shadow(0 0 0px black) drop-shadow(0 0 0px black)"
-                : undefined,
-            }}
-          >
-            {item.icon}
-          </div>
-        ) : (
-          <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-            <Image
-              src={item.icon as string}
-              fill
-              alt="profile image"
-              sizes="5vw"
-            />
-          </figure>
-        )}
+      <div className={`flex items-center gap-x-[1vw] p-1`}>
         {item.type === "link" ? (
           <Link
             href={item.href!}
-            className="w-full"
+            className="w-full flex items-center justify-center lg:justify-start gap-x-2"
             onClick={() => {
               if (!isCurrentPath) dispatch(started());
             }}
           >
-            {item.name}
+            {item.iconType === "icon" ? (
+              <div
+                className=" text-3xl"
+                style={{
+                  filter: isCurrentPath
+                    ? "drop-shadow(0 0 0px black) drop-shadow(0 0 0px black) drop-shadow(0 0 0px black)"
+                    : undefined,
+                }}
+              >
+                {item.icon}
+              </div>
+            ) : (
+              <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
+                <Image
+                  src={item.icon as string}
+                  fill
+                  alt="profile image"
+                  sizes="5vw"
+                />
+              </figure>
+            )}
+            <span className="hidden lg:block"> {item.name}</span>
           </Link>
         ) : (
           <button
-            className="w-full text-start"
+            className="w-full flex items-center justify-center lg:justify-start gap-x-2"
             onClick={() => action(dispatch)}
           >
-            {item.name}
+            {item.iconType === "icon" ? (
+              <div
+                className=" text-3xl"
+                style={{
+                  filter: isCurrentPath
+                    ? "drop-shadow(0 0 0px black) drop-shadow(0 0 0px black) drop-shadow(0 0 0px black)"
+                    : undefined,
+                }}
+              >
+                {item.icon}
+              </div>
+            ) : (
+              <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
+                <Image
+                  src={item.icon as string}
+                  fill
+                  alt="profile image"
+                  sizes="5vw"
+                />
+              </figure>
+            )}
+            <span className="hidden lg:block"> {item.name}</span>
           </button>
         )}
       </div>

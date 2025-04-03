@@ -27,18 +27,25 @@ model Post {
   location    Location?  // Optional one-to-one relation with Location
   settings    Settings?  // Optional one-to-one relation with Settings
   createdAt   DateTime   @default(now())
+  updatedAt   DateTime    @default(now())
 }
 
 model Media {
   id             String    @id @default(cuid())
   publicId       String
   url            String
+  type           MediaType
   altText        String?
   isAudioAllowed Boolean?
   poster         Poster?   // Optional one-to-one relation with Poster
   transformation Transformation? // Optional one-to-one relation with Transformation
   post           Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId         String    // Foreign key to Post
+}
+
+enum MediaType {
+  image
+  video
 }
 
 model Poster {

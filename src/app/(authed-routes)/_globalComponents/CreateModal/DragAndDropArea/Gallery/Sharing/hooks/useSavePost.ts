@@ -10,6 +10,7 @@ export const useSavePost = (post: PostType) => {
     const isPostCreated = Object.keys(post).length > 0;
 
     if (!isPostCreated) return;
+    console.log("useSavePost() succes");
 
     const savePostAction = async () => {
       try {

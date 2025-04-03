@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
+  isMobile: boolean;
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
   cloudinaryMedias: DeleteMediaType[];
@@ -10,6 +11,7 @@ interface ModalState {
 }
 
 const initialState: ModalState = {
+  isMobile: false,
   isCreateModalOpen: false,
   isWannaCloseCreateModalOpen: false,
   cloudinaryMedias: [],
@@ -20,12 +22,9 @@ export const modalsSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    //increment: (state) => {
-    //  state.value += 1;
-    //},
-    //incrementByAmount: (state, action: PayloadAction<number>) => {
-    //  state.value += action.payload;
-    //}
+    toggleIsMobile: (state, action: PayloadAction<boolean>) => {
+      state.isMobile = !state.isMobile;
+    },
     toggleCreateModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen;
     },
@@ -51,6 +50,7 @@ export const modalsSlice = createSlice({
 });
 
 export const {
+  toggleIsMobile,
   toggleCreateModal,
   toggle_WannaCloseCreateModal_Modal,
   addCloudinaryMedias,
