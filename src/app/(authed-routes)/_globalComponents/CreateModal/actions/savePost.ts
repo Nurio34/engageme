@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { PostType } from "../DragAndDropArea/Gallery/Sharing";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export const savePost = async (
   post: PostType
@@ -13,6 +13,7 @@ export const savePost = async (
   if (!user) redirect("/home");
 
   const { medias, message, location, settings } = post;
+  console.log(post);
 
   try {
     const response = await prisma.post.create({
@@ -24,6 +25,8 @@ export const savePost = async (
             publicId: media.publicId,
             url: media.url,
             type: media.type,
+            width: media?.width,
+            height: media?.height,
             altText: media?.altText,
             isAudioAllowed: media?.isAudioAllowed,
             poster: media.poster && {
@@ -62,7 +65,7 @@ export const savePost = async (
       return { status: "fail" };
     }
 
-    revalidateTag("user");
+    revalidateTag("posts");
     return { status: "success" };
   } catch (error) {
     console.log(error);

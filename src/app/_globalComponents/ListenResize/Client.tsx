@@ -1,18 +1,22 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleIsMobile } from "@/store/slices/modals";
+import { setDevice } from "@/store/slices/modals";
 import { useEffect } from "react";
 
 function ListenResizeClient() {
-  const { isMobile } = useAppSelector((s) => s.modals);
+  const { device } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
+  console.log(device);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1024 && isMobile) {
-        dispatch(toggleIsMobile(false));
-      }
-      if (window.innerWidth <= 1023 && !isMobile) {
-        dispatch(toggleIsMobile(true));
+      console.log(window.innerWidth);
+
+      if (window.innerWidth <= 767) {
+        dispatch(setDevice("mobile"));
+      } else if (window.innerWidth >= 1024) {
+        dispatch(setDevice("desktop"));
+      } else {
+        dispatch(setDevice("tablet"));
       }
     };
 
@@ -21,7 +25,7 @@ function ListenResizeClient() {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [isMobile]);
+  }, []);
 
   return <div hidden />;
 }

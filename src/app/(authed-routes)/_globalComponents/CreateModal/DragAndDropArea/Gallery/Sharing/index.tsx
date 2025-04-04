@@ -21,6 +21,8 @@ export type UpdatedMedia = {
   poster?: { publicId?: string; url?: string };
   transformation?: Record<string, string | undefined>;
   isAudioAllowed?: boolean;
+  width?: number;
+  height?: number;
 };
 
 export type PostType = {
@@ -40,7 +42,6 @@ function Sharing() {
   );
 
   const [post, setPost] = useState<PostType>({} as PostType);
-  console.log(post);
 
   const { isComplated, updatedImages } = useUploadEditedImages(editedMedias);
   useUpdateMedias(
@@ -51,6 +52,7 @@ function Sharing() {
     altTexts,
     updatedMediasState
   );
+
   usePost(updatedMediasState, setPost);
   useSavePost(post);
 

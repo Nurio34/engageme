@@ -1,27 +1,22 @@
-import { getPosts } from "@/app/actions/post/getPosts";
 import Header from "./Header";
 import Posts from "./Posts";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { getPosts } from "@/app/api/post/handler/getPosts";
 
 async function PostsContainer({ variant }: { variant: string | undefined }) {
-  const user = await currentUser();
+  const { status, posts } = await getPosts(variant);
 
-  if (!user) redirect("/");
-
-  const { id } = user;
-
-  const posts = await fetch(`${process.env.SITE_URL}/api/post`, {
-    headers: {
-      "request-secret": process.env.REQUEST_SECRET!,
-    },
-    next: { tags: ["posts"] },
-  });
+  if (status === "fail")
+    return (
+      <div>
+        <p>There is an error</p>
+        <button type="button"></button>
+      </div>
+    );
 
   return (
-    <main>
+    <main className="flex flex-col items-center">
       <Header />
-      <Posts />
+      <Posts posts={posts} />
     </main>
   );
 }

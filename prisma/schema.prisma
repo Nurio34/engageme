@@ -35,6 +35,8 @@ model Media {
   publicId       String
   url            String
   type           MediaType
+  width          Int?
+  height         Int?
   altText        String?
   isAudioAllowed Boolean?
   poster         Poster?   // Optional one-to-one relation with Poster

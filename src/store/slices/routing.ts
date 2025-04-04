@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { boolean } from "zod";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface RoutingState {
   isRouting: boolean;

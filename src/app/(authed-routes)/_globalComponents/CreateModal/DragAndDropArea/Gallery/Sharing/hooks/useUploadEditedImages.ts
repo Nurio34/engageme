@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 export type UpdatedImageType = {
   publicId: string;
   url: string;
+  width: number;
+  height: number;
 };
 
 export const useUploadEditedImages = (editedMedias: EditedMedia[]) => {

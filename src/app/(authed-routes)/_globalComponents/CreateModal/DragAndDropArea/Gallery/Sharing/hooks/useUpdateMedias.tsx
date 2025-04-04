@@ -29,6 +29,8 @@ export const useUpdateMedias = (
           type,
           altText: altTexts.find((altObj) => altObj.publicId === publicId)
             ?.altText,
+          width: updatedImage.width,
+          height: updatedImage.height,
         };
       return { publicId, url, type, poster, transformation, isAudioAllowed };
     });

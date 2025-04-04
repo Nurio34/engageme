@@ -27,7 +27,7 @@ function Client() {
     <>
       {isWannaCloseCreateModalOpen && (
         <div
-          className="fixed w-screen h-screen top-0 left-0 bg-base-content/70 text-center"
+          className="fixed z-10 w-screen h-screen top-0 left-0 bg-base-content/70 text-center"
           onClick={closeThisModal}
         >
           <div

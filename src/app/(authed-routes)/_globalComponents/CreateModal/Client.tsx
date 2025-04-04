@@ -25,7 +25,7 @@ function Client() {
   return (
     isCreateModalOpen && (
       <div
-        className="fixed top-0 left-0 w-screen h-screen bg-base-content/70
+        className="fixed z-10 top-0 left-0 w-screen h-screen bg-base-content/70
               flex flex-col justify-center items-center
           "
         onMouseDown={() => {

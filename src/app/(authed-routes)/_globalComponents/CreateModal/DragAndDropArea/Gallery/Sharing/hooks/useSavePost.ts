@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { PostType } from "..";
 import { savePost } from "../../../../actions/savePost";
 import { useCreateModalContext } from "../../../../Context";

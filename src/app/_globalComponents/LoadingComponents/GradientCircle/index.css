@@ -20,7 +20,7 @@
   position: absolute;
   background-color: white;
   border-radius: 50%;
-  inset: 4px;
+  inset: calc(1px * var(--inset));
 }
 
 @keyframes spin {

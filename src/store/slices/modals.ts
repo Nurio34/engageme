@@ -2,8 +2,10 @@ import { DeleteMediaType } from "@/actions/cloudinary";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { PayloadAction } from "@reduxjs/toolkit";
 
+type DeviceType = "mobile" | "tablet" | "desktop";
+
 interface ModalState {
-  isMobile: boolean;
+  device: DeviceType;
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
   cloudinaryMedias: DeleteMediaType[];
@@ -11,7 +13,7 @@ interface ModalState {
 }
 
 const initialState: ModalState = {
-  isMobile: false,
+  device: "desktop",
   isCreateModalOpen: false,
   isWannaCloseCreateModalOpen: false,
   cloudinaryMedias: [],
@@ -22,8 +24,8 @@ export const modalsSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    toggleIsMobile: (state, action: PayloadAction<boolean>) => {
-      state.isMobile = !state.isMobile;
+    setDevice: (state, action: PayloadAction<DeviceType>) => {
+      state.device = action.payload;
     },
     toggleCreateModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen;
@@ -50,7 +52,7 @@ export const modalsSlice = createSlice({
 });
 
 export const {
-  toggleIsMobile,
+  setDevice,
   toggleCreateModal,
   toggle_WannaCloseCreateModal_Modal,
   addCloudinaryMedias,

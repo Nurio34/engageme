@@ -1,9 +1,12 @@
+    2. api call yada server actionslara redis-rate-limiter koy (varsa hepsini kapsıcak tek bir rate limiter yap)
+    3. Vercel - SpeedInsights kur
+
 ## Home Page
 
-    1. Onboard sayfası yap, handleUser'ı home page yerine orda hallet
-    1. Mobilde side menu görünümünü yeniden dizayn et.
-    3. Vercel - SpeedInsights kur
+    1. mobile, tablet ve desktop görünümleri yap
 
 ## Gallery
 
+    1. CreateModel açık ike body.style.overflow="hidden" yap
+    2. Post stepte layoutta uyumsuzluk var.
     3. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.

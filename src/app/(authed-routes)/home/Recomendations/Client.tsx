@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/store/hooks";
 
 function RecomendationsClient() {
-  const { isMobile } = useAppSelector((s) => s.modals);
+  const { device } = useAppSelector((s) => s.modals);
 
-  if (isMobile) return;
+  if (device !== "desktop") return;
 
   return <aside>RecomendationsClient</aside>;
 }

@@ -86,14 +86,14 @@ async function SideMenu() {
 
   return (
     <nav
-      className="md:px-4 md:py-2 border-t md:border-t-0 md:border-r
-        fixed bottom-0 md:relative 
-        min-w-full md:min-w-0 lg:min-w-56 md:min-h-screen
+      className="md:px-4 md:py-2 border-t md:border-t-0 md:border-r bg-base-100 md:bg-transparent
+        fixed z-10 bottom-0 md:relative 
+        min-w-full md:min-w-max lg:min-w-56 md:min-h-screen
       "
     >
       <div
-        className="hidden lg:flex justify-center lg:justify-start
-          text-2xl pt-6 pb-9 
+        className="hidden md:flex justify-center lg:justify-start
+          text-2xl pt-6 pb-16 
         "
       >
         <div className="block lg:hidden">
