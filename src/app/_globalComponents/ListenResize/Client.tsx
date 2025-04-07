@@ -1,16 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { setDevice } from "@/store/slices/modals";
 import { useEffect } from "react";
 
 function ListenResizeClient() {
-  const { device } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
-  console.log(device);
 
   useEffect(() => {
     const handleResize = () => {
-      console.log(window.innerWidth);
-
       if (window.innerWidth <= 767) {
         dispatch(setDevice("mobile"));
       } else if (window.innerWidth >= 1024) {

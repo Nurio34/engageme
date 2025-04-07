@@ -3,11 +3,14 @@
 import { store } from "@/store";
 import { Provider } from "react-redux";
 import Client from "./Client";
+import { Suspense } from "react";
 
 function RoutingAnimationBar() {
   return (
     <Provider store={store}>
-      <Client />
+      <Suspense>
+        <Client />
+      </Suspense>
     </Provider>
   );
 }

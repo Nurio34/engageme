@@ -13,7 +13,7 @@ export const savePost = async (
   if (!user) redirect("/home");
 
   const { medias, message, location, settings } = post;
-  console.log(post);
+  console.log(medias, message, location, settings);
 
   try {
     const response = await prisma.post.create({

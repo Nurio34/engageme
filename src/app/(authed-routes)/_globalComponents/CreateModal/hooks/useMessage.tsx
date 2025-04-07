@@ -3,7 +3,7 @@ import { LocationType } from "../Context";
 
 export const useMessage = () => {
   const [message, setMessage] = useState("");
-  const maxMessageLength: number = 10;
+  const maxMessageLength: number = 2200;
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isPlacesModalOpen, setIsPlacesModalOpen] = useState(false);
   const [location, setLocation] = useState<LocationType>({ name: "", id: "" });

@@ -1,15 +1,52 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit";
+import { NextResponse } from "next/server";
 
+//! *** Route Protection Configs ***
 const protectedRoutes = createRouteMatcher(["/home", "/onboarding"]);
 const unprotectedRoutes = ["/", "/sign-in(.*)", "/sign-up(.*)"];
+//! *********************************
+
+//! *** Rate Limit Configs ***
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+
+const limiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.fixedWindow(100, "3600s"),
+  analytics: true,
+});
+//! ******************************
 
 export default clerkMiddleware(async (auth, req) => {
-  const pathname = req.nextUrl.pathname;
-  const { userId } = await auth();
-
   //! *** Protect "protectedRoutes" ***
   if (protectedRoutes(req)) {
     await auth.protect();
+  }
+  //! ********************
+
+  const { userId } = await auth();
+  const pathname = req.nextUrl.pathname;
+
+  //! *** Rate Limiter ***
+  const { success, reset, remaining } = await limiter.limit(userId!);
+  console.log(success);
+
+  if (!success) {
+    return new NextResponse(
+      JSON.stringify({ error: "Too many requests", reset }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "X-RateLimit-Remaining": String(remaining),
+          "X-RateLimit-Reset": String(reset),
+        },
+      }
+    );
   }
   //! ********************
 
@@ -19,25 +56,6 @@ export default clerkMiddleware(async (auth, req) => {
     return Response.redirect(redirectUrl, 302);
   }
   //! ***************************************
-
-  // const role = sessionClaims?.metadata.role;
-
-  // //! *** When login or signup, Give client "user" role ***
-  // if (userId && !role) {
-  //   try {
-  //     const clerk = await clerkClient();
-
-  //     await clerk.users.updateUser(userId, {
-  //       publicMetadata: {
-  //         ...sessionClaims?.metadata,
-  //         role: "user",
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error("Error updating user role:", error);
-  //   }
-  // }
-  // //! **************************************************
 });
 
 export const config = {

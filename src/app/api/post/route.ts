@@ -15,7 +15,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const posts: PrismaPostType[] = await prisma.post.findMany({
       include: {
         user: true,
-        medias: true,
+        medias: {
+          include: {
+            poster: true,
+            transformation: true,
+          },
+        },
         location: true,
         settings: true,
       },

@@ -1,7 +1,7 @@
-import { Media } from "@prisma/client";
 import Image from "next/image";
+import { PrismaMediaType } from "@/../prisma/types/post";
 
-function ImageMedia({ media }: { media: Media }) {
+function ImageMedia({ media }: { media: PrismaMediaType }) {
   const { url, altText, width, height } = media;
 
   const aspectRatio = width! / height!;

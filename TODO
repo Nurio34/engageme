@@ -1,9 +1,7 @@
-    2. api call yada server actionslara redis-rate-limiter koy (varsa hepsini kapsıcak tek bir rate limiter yap)
     3. Vercel - SpeedInsights kur
 
 ## Home Page
 
-    1. public/dev/SearchParams-Error problemini çöz
     1. mobile, tablet ve desktop görünümleri yap
 
 ## Gallery

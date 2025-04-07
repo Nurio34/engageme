@@ -4,7 +4,7 @@ import Medias from "./Medias";
 
 function Post({ post }: { post: PrismaPostType }) {
   return (
-    <section className="min-w-full md:min-w-[468px] py-10 border-b-2">
+    <section className="w-full md:w-[468px] py-10 border-b-2">
       <Header post={post} />
       <Medias post={post} />
     </section>
