@@ -6,6 +6,7 @@ import {
   Settings,
   Transformation,
   User,
+  PostLike,
 } from "@prisma/client";
 
 export type PrismaPostType = Post & {
@@ -13,9 +14,10 @@ export type PrismaPostType = Post & {
   medias: PrismaMediaType[];
   location?: Location | null;
   settings?: Settings | null;
+  likes: PostLike[];
 };
 
 export type PrismaMediaType = Media & {
-  poster: Poster;
-  transformation: Transformation;
+  poster: Poster | null;
+  transformation: Transformation | null;
 };

@@ -1,12 +1,22 @@
 import { PrismaPostType } from "../../../../../../../prisma/types/post";
+import ActionButtons from "./ActionButtons";
+import AddComment from "./AddComment";
+import Description from "./Description";
 import Header from "./Header";
 import Medias from "./Medias";
+import TotalComments from "./TotalComments";
+import TotalLikes from "./TotalLikes";
 
 function Post({ post }: { post: PrismaPostType }) {
   return (
-    <section className="w-full md:w-[468px] py-10 border-b-2">
+    <section className="w-full md:w-[468px] py-4 border-b-2">
       <Header post={post} />
       <Medias post={post} />
+      <ActionButtons post={post} />
+      <TotalLikes post={post} />
+      <Description post={post} />
+      <TotalComments />
+      <AddComment />
     </section>
   );
 }

@@ -23,6 +23,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
         location: true,
         settings: true,
+        likes: true,
       },
       orderBy: {
         updatedAt: "desc",

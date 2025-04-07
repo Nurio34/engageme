@@ -1,7 +1,7 @@
 import EmojiIcon from "@/app/_globalComponents/Svg/EmojiIcon";
 import { useCreateModalContext } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
 import { RefObject } from "react";
-import emojis from "./emojis";
+import Picker from "@/lib/emoji/picker";
 
 function EmojiPickerContainer({
   EditTabWidth,
@@ -44,15 +44,7 @@ function EmojiPickerContainer({
         style={{ width: EditTabWidth.current - 32 - 28 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {emojis.map((emoji) => (
-          <button
-            type="button"
-            key={emoji.id}
-            onClick={() => setMessage((prev) => prev + emoji.emoji)}
-          >
-            {emoji.emoji}
-          </button>
-        ))}
+        <Picker setMessage={setMessage} />
       </div>
     </div>
   );

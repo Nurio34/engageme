@@ -6,6 +6,10 @@
   overscroll-behavior: none;
 }
 
+textarea {
+  field-sizing: content;
+}
+
 .cl-socialButtons {
   display: grid;
   grid-template-columns: 1fr;

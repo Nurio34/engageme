@@ -10,6 +10,7 @@ interface ModalState {
   isWannaCloseCreateModalOpen: boolean;
   cloudinaryMedias: DeleteMediaType[];
   posterImages: string[];
+  isPickerOpen: boolean;
 }
 
 const initialState: ModalState = {
@@ -18,6 +19,7 @@ const initialState: ModalState = {
   isWannaCloseCreateModalOpen: false,
   cloudinaryMedias: [],
   posterImages: [],
+  isPickerOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -48,6 +50,9 @@ export const modalsSlice = createSlice({
     resterPosterImages: (state) => {
       state.posterImages = [];
     },
+    togglePicker: (state) => {
+      state.isPickerOpen = !state.isPickerOpen;
+    },
   },
 });
 
@@ -59,5 +64,6 @@ export const {
   addPosterImage,
   removePosterImage,
   resterPosterImages,
+  togglePicker,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

@@ -8,7 +8,7 @@ function ImageMedia({ media }: { media: PrismaMediaType }) {
 
   return (
     <figure
-      className="relative w-full rounded-md overflow-hidden"
+      className="relative w-full max-h-[585px] rounded-md overflow-hidden"
       style={{ aspectRatio }}
     >
       <Image src={url} alt={altText || "image"} fill />

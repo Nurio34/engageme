@@ -14,6 +14,7 @@ model User {
   name      String
   avatar    String?
   posts     Post[]   // One-to-many relation with Post
+  postLikes PostLike[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -22,10 +23,11 @@ model Post {
   id          String     @id @default(cuid())
   message     String
   user        User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId String     // Foreign key to User
-  medias      Media[]    // One-to-many relation with Media
-  location    Location?  // Optional one-to-one relation with Location
-  settings    Settings?  // Optional one-to-one relation with Settings
+  userId String     
+  medias      Media[]    
+  location    Location?  
+  settings    Settings?  
+  likes       PostLike[] 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime    @default(now())
 }
@@ -39,10 +41,10 @@ model Media {
   height         Int?
   altText        String?
   isAudioAllowed Boolean?
-  poster         Poster?   // Optional one-to-one relation with Poster
-  transformation Transformation? // Optional one-to-one relation with Transformation
+  poster         Poster?   
+  transformation Transformation? 
   post           Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId         String    // Foreign key to Post
+  postId         String    
 }
 
 enum MediaType {
@@ -55,7 +57,7 @@ model Poster {
   publicId String?
   url      String?
   media    Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
-  mediaId  String  @unique // Foreign key to Media, one-to-one
+  mediaId  String  @unique 
 }
 
 model Transformation {
@@ -66,7 +68,7 @@ model Transformation {
   x       String
   y       String
   media   Media  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
-  mediaId String @unique // Foreign key to Media, one-to-one
+  mediaId String @unique 
 }
 
 model Location {
@@ -74,7 +76,7 @@ model Location {
   locationId String?
   name       String?
   post       Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId     String @unique // Foreign key to Post, one-to-one
+  postId     String @unique 
 }
 
 model Settings {
@@ -82,5 +84,17 @@ model Settings {
   isCommentingAllowed Boolean
   isCountsVisible     Boolean
   post                Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId              String @unique // Foreign key to Post, one-to-one
+  postId              String @unique 
+}
+
+model PostLike {
+  id        String @id @default(cuid())
+  post      Post @relation(fields: [postId],references: [id], onDelete: Cascade)
+  postId    String
+  user      User @relation(fields: [userId],references: [userId])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId,postId])
+  @@index([id,userId])
 }
