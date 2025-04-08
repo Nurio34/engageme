@@ -13,7 +13,7 @@ function SlidePrevious({
     medias.length > 1 && (
       <button
         type="button"
-        className="absolute top-1/2 left-2 -translate-y-1/2 z-10 bg-base-100 text-base-content w-8 aspect-square rounded-full flex items-center justify-center"
+        className="absolute top-1/2 left-2 -translate-y-1/2 bg-base-100 text-base-content w-8 aspect-square rounded-full flex items-center justify-center"
         onClick={() =>
           setCurrentIndex((prev) => {
             if (prev === 0) return medias.length - 1;

@@ -12,11 +12,13 @@ function Post({ post }: { post: PrismaPostType }) {
     <section className="w-full md:w-[468px] py-4 border-b-2">
       <Header post={post} />
       <Medias post={post} />
-      <ActionButtons post={post} />
-      <TotalLikes post={post} />
-      <Description post={post} />
-      <TotalComments />
-      <AddComment />
+      <div className="px-2 md:px-0">
+        <ActionButtons post={post} />
+        <TotalLikes post={post} />
+        <Description post={post} />
+        <TotalComments />
+        <AddComment post={post} />
+      </div>
     </section>
   );
 }

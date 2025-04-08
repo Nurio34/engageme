@@ -8,28 +8,31 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  email     String   @unique
-  name      String
-  avatar    String?
-  posts     Post[]   // One-to-many relation with Post
-  postLikes PostLike[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  email         String   @unique
+  name          String
+  avatar        String?
+  posts         Post[]   // One-to-many relation with Post
+  postLikes     PostLike[]
+  postComments  PostComment[]
+  commentLikes  PostCommentLike[]
+  createdAt     DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
 }
 
 model Post {
   id          String     @id @default(cuid())
   message     String
   user        User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId String     
+  userId      String     
   medias      Media[]    
   location    Location?  
   settings    Settings?  
   likes       PostLike[] 
+  comments    PostComment[]
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime    @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
 }
 
 model Media {
@@ -96,5 +99,27 @@ model PostLike {
   createdAt DateTime @default(now())
 
   @@unique([userId,postId])
+  @@index([id,userId])
+}
+
+model PostComment {
+  id      String @id @default(cuid())
+  comment String
+  likes   PostCommentLike[]
+  postId  String
+  post    Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  userId  String
+  user    User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
+}
+
+model PostCommentLike {
+  id        String @id @default(cuid())
+  userId    String
+  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentId String
+  comment   PostComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+  @@unique([userId,commentId])
   @@index([id,userId])
 }

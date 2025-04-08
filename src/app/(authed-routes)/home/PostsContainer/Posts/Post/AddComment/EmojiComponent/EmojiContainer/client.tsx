@@ -28,6 +28,7 @@ function Client({
       <button
         type="button"
         aria-label="Emoji icon"
+        className="grid place-content-center"
         onClick={togglePickerFunction}
       >
         <EmojiIcon />

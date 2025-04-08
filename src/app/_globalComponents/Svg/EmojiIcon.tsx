@@ -2,7 +2,7 @@ const EmojiIcon = () => {
   return (
     <svg
       aria-label="Emoji"
-      className="w-5 h-5 fill-gray-500" // Tailwind for width, height, and color
+      className="w-4 h-4 fill-gray-500" // Tailwind for width, height, and color
       role="img"
       viewBox="0 0 24 24"
     >

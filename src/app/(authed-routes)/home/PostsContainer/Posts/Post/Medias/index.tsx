@@ -33,7 +33,8 @@ function Medias({ post }: { post: PrismaPostType }) {
   return (
     <div
       ref={MediasContainerRef}
-      className="relative mt-2 overflow-hidden shadow-md rounded-lg"
+      className="relative mt-2 overflow-hidden shadow-md md:rounded-lg"
+      onContextMenu={(e) => e.preventDefault()}
     >
       <MediasSlide
         currentIndex={currentIndex}

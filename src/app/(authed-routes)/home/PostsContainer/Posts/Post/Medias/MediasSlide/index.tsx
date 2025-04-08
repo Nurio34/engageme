@@ -18,13 +18,18 @@ function MediasSlide({
         transform: `translateX(${currentIndex * mediasContainerWidth * -1}px)`,
       }}
     >
-      {medias.map((media) => {
+      {medias.map((media, index) => {
         const { type } = media;
 
         return type === "image" ? (
           <ImageMedia key={media.id} media={media} />
         ) : (
-          <VideoMedia key={media.id} media={media} />
+          <VideoMedia
+            key={media.id}
+            media={media}
+            index={index}
+            currentIndex={currentIndex}
+          />
         );
       })}
     </div>

@@ -1,10 +1,22 @@
 "use client";
 
 import { PrismaMediaType } from "@/../prisma/types/post";
+import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
+import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
 import { useEffect, useRef, useState } from "react";
+import { MdAudiotrack } from "react-icons/md";
 
-function VideoMedia({ media }: { media: PrismaMediaType }) {
-  const { url, poster, transformation } = media;
+function VideoMedia({
+  media,
+  index,
+  currentIndex,
+}: {
+  media: PrismaMediaType;
+  index: number;
+  currentIndex: number;
+}) {
+  const { url, poster, transformation, isAudioAllowed } = media;
+
   const { width, height, x, y } = transformation!;
   const aspectRatio = +width / +height;
 
@@ -15,6 +27,36 @@ function VideoMedia({ media }: { media: PrismaMediaType }) {
   });
   const updatedY = +y / (+width / containerSize.width);
   const updatedX = +x / (+height / containerSize.height);
+
+  const VideoRef = useRef<HTMLVideoElement | null>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (currentIndex === index) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (VideoRef.current) {
+      VideoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  useEffect(() => {
+    if (VideoRef.current) {
+      const player = VideoRef.current;
+
+      if (isPlaying) {
+        player.play();
+      } else {
+        player.pause();
+      }
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
     if (ContainerRef.current) {
@@ -28,25 +70,42 @@ function VideoMedia({ media }: { media: PrismaMediaType }) {
   return (
     <div
       ref={ContainerRef}
-      className="relative w-full max-h-[585px]  bg-red-50"
+      className="relative min-w-full max-w-[485px] max-h-[585px] bg-red-50 cursor-pointer"
       style={{ aspectRatio }}
+      onClick={() => setIsPlaying((prev) => !prev)}
     >
       <video
-        src={url}
+        ref={VideoRef}
+        src={url.replace("http://", "https://")}
         className="PostVideo w-full h-full"
         style={
           {
             objectFit: "cover",
-            objectPosition: `${updatedX ? updatedX * -1 + "px" : "center"} ${
-              updatedY ? updatedY * -1 + "px" : "center"
-            }`,
+            objectPosition: `${
+              updatedX > 0 ? updatedX * -1 + "px" : "center"
+            } ${updatedY > 0 ? updatedY * -1 + "px" : "center"}`,
           } as React.CSSProperties
         }
         muted
-        autoPlay
         loop
         poster={poster?.url || ""}
-      ></video>
+      />
+      <button
+        type="button"
+        className="absolute bottom-6 right-4 z-10 w-7 p-2 aspect-square rounded-full overflow-hidden bg-base-content/50 text-base-100 grid place-content-center"
+        onClick={() => setIsMuted((prev) => !prev)}
+      >
+        {isAudioAllowed === false ? (
+          <div className="relative">
+            <MdAudiotrack />
+            <div className="absolute border-l-2 border-base-content h-full -scale-y-125 -rotate-45 z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
+          </div>
+        ) : isMuted ? (
+          <MutedAudioIcon />
+        ) : (
+          <PlayingAudioIcon />
+        )}
+      </button>
     </div>
   );
 }
