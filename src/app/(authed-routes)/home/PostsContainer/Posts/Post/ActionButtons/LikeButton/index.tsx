@@ -1,78 +1,37 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
-import { useUser } from "@clerk/nextjs";
-import { likeThePost } from "@/app/actions/post/like/likeThePost";
-import toast from "react-hot-toast";
-import { removeLike } from "@/app/actions/post/like/removeLike";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import "./index.css";
+import { getLikesOfThePost } from "@/app/api/like/handler/getLikesOfThePost";
+import { currentUser } from "@clerk/nextjs/server";
+import { removeLike } from "@/app/actions/post/like/removeLike";
+import { likeThePost } from "@/app/actions/post/like/likeThePost";
 
-function Client({ post }: { post: PrismaPostType }) {
-  const { user } = useUser();
-  const { likes } = post;
+async function LikeButton({ post }: { post: PrismaPostType }) {
+  const user = await currentUser();
 
-  const [isLiked, setIsLiked] = useState(false);
+  if (!user) return <FaRegHeart size={24} />;
 
-  const likeThePostAction = async () => {
-    try {
-      const { status } = await likeThePost(post.id);
+  const { status, isPostLiked } = await getLikesOfThePost(post.id, user.id);
 
-      if (status === "fail")
-        return toast.error(
-          "Something went wrong while liking the post ! Please try again.."
-        );
+  if (status === "fail") return <FaRegHeart size={24} />;
 
-      setIsLiked(true);
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        "Unexpected error while liking the post ! Please try again.."
-      );
-    }
-  };
-  const removeLikeAction = async () => {
-    try {
-      const { status } = await removeLike(post.id);
-
-      if (status === "fail")
-        return toast.error(
-          "Something went wrong while removing like from the post ! Please try again.."
-        );
-
-      setIsLiked(false);
-    } catch (error) {
-      console.log(error);
-      return toast.error(
-        "Unexpected error while removing like from the post ! Please try again.."
-      );
-    }
-  };
-
-  const likeAction = () => (isLiked ? removeLikeAction() : likeThePostAction());
-
-  useEffect(() => {
-    const userId = user?.id;
-
-    if (!userId) return;
-
-    const isLiked = likes.some((likeObj) => likeObj.userId === userId);
-    setIsLiked(isLiked);
-  }, [user]);
+  if (isPostLiked)
+    return (
+      <form action={removeLike} className="flex items-center">
+        <input type="hidden" name="postId" value={post.id} />
+        <button type="submit" className="RemoveLike">
+          <FaHeart size={24} color="red" />
+        </button>
+      </form>
+    );
 
   return (
-    <button type="button" onClick={likeAction}>
-      {isLiked ? (
-        <FaHeart size={24} color="red" className="AnimateLike" />
-      ) : (
-        <FaRegHeart
-          size={24}
-          onMouseEnter={(e) => e.currentTarget.classList.remove("AnimateLike")}
-          onMouseLeave={(e) => e.currentTarget.classList.add("AnimateLike")}
-        />
-      )}
-    </button>
+    <form action={likeThePost} className="flex items-center">
+      <input type="hidden" name="postId" value={post.id} />
+      <button type="submit" className="Like">
+        <FaRegHeart size={24} />
+      </button>
+    </form>
   );
 }
-export default Client;
+export default LikeButton;

@@ -28,7 +28,7 @@ function VideoMedia({ media }: { media: PrismaMediaType }) {
   return (
     <div
       ref={ContainerRef}
-      className="relative w-full max-h-[585px] overflow-hidden bg-red-50"
+      className="relative w-full max-h-[585px]  bg-red-50"
       style={{ aspectRatio }}
     >
       <video
@@ -37,10 +37,14 @@ function VideoMedia({ media }: { media: PrismaMediaType }) {
         style={
           {
             objectFit: "cover",
-            objectPosition: `-${updatedX}px -${updatedY}px`,
+            objectPosition: `${updatedX ? updatedX * -1 + "px" : "center"} ${
+              updatedY ? updatedY * -1 + "px" : "center"
+            }`,
           } as React.CSSProperties
         }
-        controls
+        muted
+        autoPlay
+        loop
         poster={poster?.url || ""}
       ></video>
     </div>

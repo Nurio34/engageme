@@ -1,8 +1,4 @@
-.AnimateLike {
-  animation: atack 0.6s ease-in-out forwards;
-}
-
-@keyframes atack {
+@keyframes pulseBounce {
   33% {
     transform: scale(1.15);
   }
@@ -12,4 +8,9 @@
   100% {
     transform: scale(1);
   }
+}
+
+.Like:not(:hover),
+.RemoveLike {
+  animation: pulseBounce 0.6s ease-in-out forwards;
 }

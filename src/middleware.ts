@@ -16,7 +16,7 @@ const redis = new Redis({
 
 const limiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.fixedWindow(100, "3600s"),
+  limiter: Ratelimit.fixedWindow(1000, "3600s"),
   analytics: true,
 });
 //! ******************************
