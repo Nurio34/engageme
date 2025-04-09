@@ -93,7 +93,11 @@ function VideoMedia({
       <button
         type="button"
         className="absolute bottom-6 right-4 z-10 w-7 p-2 aspect-square rounded-full overflow-hidden bg-base-content/50 text-base-100 grid place-content-center"
-        onClick={() => setIsMuted((prev) => !prev)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMuted((prev) => !prev);
+        }}
+        disabled={isAudioAllowed === false}
       >
         {isAudioAllowed === false ? (
           <div className="relative">

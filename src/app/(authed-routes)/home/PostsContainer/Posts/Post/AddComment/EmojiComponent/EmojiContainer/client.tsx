@@ -34,7 +34,7 @@ function Client({
         <EmojiIcon />
       </button>
       {isPickerVisible && isPickerOpen && (
-        <div className="absolute bottom-7 w-80 aspect-square overflow-auto bg-base-100 shadow-xl rounded-lg">
+        <div className="absolute bottom-7 right-0 lg:left-0 w-80 aspect-square overflow-auto bg-base-100 shadow-xl rounded-lg">
           <Picker setMessage={setComment} />
         </div>
       )}

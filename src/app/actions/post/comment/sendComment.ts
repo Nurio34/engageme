@@ -3,6 +3,7 @@
 import { SentCommentType } from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/AddComment/client";
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 
 export const sendComment = async (
   prevState: { status: string; comment: SentCommentType },
@@ -25,6 +26,8 @@ export const sendComment = async (
     });
 
     if (!response) return { status: "fail", comment: { id: "", comment: "" } };
+
+    revalidateTag(`postComments`);
     return {
       status: "success",
       comment: { id: response.id, comment: response.comment },

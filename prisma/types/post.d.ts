@@ -7,6 +7,8 @@ import {
   Transformation,
   User,
   PostLike,
+  PostComment,
+  PostCommentLike,
 } from "@prisma/client";
 
 export type PrismaPostType = Post & {
@@ -20,4 +22,8 @@ export type PrismaPostType = Post & {
 export type PrismaMediaType = Media & {
   poster: Poster | null;
   transformation: Transformation | null;
+};
+
+export type PrismaPostCommentWithLikes = PostComment & {
+  likes: PostCommentLike[];
 };

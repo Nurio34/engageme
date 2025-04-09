@@ -7,6 +7,7 @@ import Ping from "./_globalComponents/Ping/Provider";
 import RoutingAnimationBar from "./_globalComponents/RoutingAnimationBar";
 import ListenResize from "./_globalComponents/ListenResize";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ScrollBlocker from "./_globalComponents/ScrollBlocker";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,6 +28,7 @@ export default function RootLayout({
           <Ping />
           <ListenResize />
           <RoutingAnimationBar />
+          <ScrollBlocker />
           <SpeedInsights />
           {children}
         </body>

@@ -4,6 +4,7 @@ import AddComment from "./AddComment";
 import Description from "./Description";
 import Header from "./Header";
 import Medias from "./Medias";
+import PostModal from "./PostModal";
 import TotalComments from "./TotalComments";
 import TotalLikes from "./TotalLikes";
 
@@ -16,9 +17,10 @@ function Post({ post }: { post: PrismaPostType }) {
         <ActionButtons post={post} />
         <TotalLikes post={post} />
         <Description post={post} />
-        <TotalComments />
+        <TotalComments post={post} />
         <AddComment post={post} />
       </div>
+      <PostModal />
     </section>
   );
 }
