@@ -1,8 +1,8 @@
-import { getComments } from "@/app/api/comment/handlers/getComments";
+import { getCommentsOfThePost } from "@/app/api/comment/handlers/getCommentsOfThePost";
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
 
 async function TotalComments({ post }: { post: PrismaPostType }) {
-  const { status, comments } = await getComments(post.id);
+  const { status, postComments } = await getCommentsOfThePost(post.id);
 
   if (status === "fail")
     return (
@@ -11,7 +11,7 @@ async function TotalComments({ post }: { post: PrismaPostType }) {
 
   return (
     <button type="button" className="mt-2 text-sm text-base-content/50">
-      View all {comments.length} comments
+      View all {postComments.length} comments
     </button>
   );
 }

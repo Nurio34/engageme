@@ -2,7 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostType } from "../../../../../prisma/types/post";
 
 export const getPosts = async (
-  variant: string | undefined
+  variant?: string
 ): Promise<{ status: "success" | "fail"; posts: PrismaPostType[] }> => {
   try {
     const user = await currentUser();

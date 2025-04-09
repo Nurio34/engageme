@@ -1,10 +1,15 @@
-import CommentIcon from "@/app/_globalComponents/Svg/CommentIcon";
+"use client";
 
-function CommentButton() {
+import { store } from "@/store";
+import { Provider } from "react-redux";
+import Client from "./Client";
+import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
+
+function CommentButton({ post }: { post: PrismaPostType }) {
   return (
-    <button type="button">
-      <CommentIcon />
-    </button>
+    <Provider store={store}>
+      <Client post={post} />
+    </Provider>
   );
 }
 export default CommentButton;

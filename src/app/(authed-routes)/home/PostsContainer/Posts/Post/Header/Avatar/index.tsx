@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function Avatar({ avatar }: { avatar: string | null }) {
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer">
       <GradientCircle isLoading={false} width={44} inset={2} />
       <figure
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2

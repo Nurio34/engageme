@@ -2,12 +2,16 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  console.log("getLikesOfThePost()");
+  if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
+    return NextResponse.json({ status: "fail" }, { status: 401 });
+  }
 
   const postId = req.nextUrl.searchParams.get("postId");
   const userId = req.nextUrl.searchParams.get("userId");
 
   if (postId && userId) {
+    console.log("getLikesOfThePost()");
+
     try {
       const postLikesResponse = prisma.postLike.findMany({ where: { postId } });
       const isPostLikedResponse = prisma.postLike.findUnique({

@@ -7,7 +7,12 @@ function RemoveLike() {
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" className="RemoveLike" disabled={pending}>
+    <button
+      type="submit"
+      className="RemoveLike"
+      disabled={pending}
+      title="Remove Like"
+    >
       <FaHeart size={24} color="red" />
     </button>
   );

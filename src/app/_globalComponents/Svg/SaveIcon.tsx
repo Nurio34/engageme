@@ -1,7 +1,7 @@
 const SaveIcon = () => {
   return (
     <svg
-      aria-label="Kaydet"
+      aria-label="Save"
       fill="currentColor"
       height="24"
       width="24"
@@ -9,7 +9,7 @@ const SaveIcon = () => {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>Kaydet</title>
+      <title>Save</title>
       <polygon
         fill="none"
         points="20 21 12 13.44 4 21 4 3 20 3 20 21"

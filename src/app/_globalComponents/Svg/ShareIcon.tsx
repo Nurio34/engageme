@@ -1,7 +1,7 @@
 const ShareIcon = () => {
   return (
     <svg
-      aria-label="Paylaş"
+      aria-label="Share"
       fill="currentColor"
       height="24"
       role="img"
@@ -9,7 +9,7 @@ const ShareIcon = () => {
       width="24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>Paylaş</title>
+      <title>Share</title>
       <line
         fill="none"
         stroke="currentColor"

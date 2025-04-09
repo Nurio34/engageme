@@ -20,7 +20,7 @@ function Post({ post }: { post: PrismaPostType }) {
         <TotalComments post={post} />
         <AddComment post={post} />
       </div>
-      <PostModal />
+      <PostModal post={post} />
     </section>
   );
 }

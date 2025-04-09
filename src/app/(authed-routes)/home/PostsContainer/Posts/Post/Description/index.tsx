@@ -16,7 +16,7 @@ function Description({ post }: { post: PrismaPostType }) {
   }, [isMessageLongThan100]);
 
   return (
-    <div className="mt-2 text-sm">
+    <div className="grow mt-2 text-sm">
       <p className={`font-semibold mr-2 ${message ? "float-left" : ""}`}>
         {name}
       </p>

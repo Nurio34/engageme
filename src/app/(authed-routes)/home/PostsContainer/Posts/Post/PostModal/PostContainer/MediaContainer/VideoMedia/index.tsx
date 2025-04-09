@@ -1,36 +1,47 @@
-"use client";
-
-import { PrismaMediaType } from "@/../prisma/types/post";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { PrismaMediaType } from "../../../../../../../../../../../prisma/types/post";
+import { MdAudiotrack } from "react-icons/md";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
-import { useEffect, useRef, useState } from "react";
-import { MdAudiotrack } from "react-icons/md";
 
 function VideoMedia({
-  media,
   index,
+  media,
+  containerHeight,
+  setContainerWidth,
   currentIndex,
+  setSlideArray,
 }: {
-  media: PrismaMediaType;
   index: number;
+  media: PrismaMediaType;
+  containerHeight: number;
+  setContainerWidth: Dispatch<SetStateAction<number>>;
   currentIndex: number;
+  setSlideArray: Dispatch<SetStateAction<number[]>>;
 }) {
-  const { url, poster, transformation, isAudioAllowed } = media;
-
+  const { url, transformation, isAudioAllowed, poster } = media;
   const { width, height, x, y } = transformation!;
-  const aspectRatio = +width / +height;
 
-  const ContainerRef = useRef<HTMLDivElement | null>(null);
-  const [containerSize, setContainerSize] = useState({
-    width: 0,
-    height: 0,
-  });
-  const updatedY = +y / (+width / containerSize.width);
-  const updatedX = +x / (+height / containerSize.height);
+  const aspectRatio = (+width + +x) / (+height + +y);
+  const updatedWidth = containerHeight * aspectRatio;
 
   const VideoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (currentIndex === index) {
+      console.log({ width, height, x, y, aspectRatio });
+
+      setContainerWidth(updatedWidth);
+    }
+  }, [currentIndex, updatedWidth]);
+
+  useEffect(() => {
+    if (updatedWidth === 0) return;
+
+    setSlideArray((prev) => [...prev, updatedWidth]);
+  }, [updatedWidth]);
 
   useEffect(() => {
     if (currentIndex === index) {
@@ -58,37 +69,19 @@ function VideoMedia({
     }
   }, [isPlaying]);
 
-  useEffect(() => {
-    if (ContainerRef.current) {
-      setContainerSize({
-        width: ContainerRef.current.getBoundingClientRect().width,
-        height: ContainerRef.current.getBoundingClientRect().height,
-      });
-    }
-  }, []);
-
   return (
     <div
-      ref={ContainerRef}
-      className="relative min-w-full max-w-[485px] max-h-[585px] cursor-pointer"
-      style={{ aspectRatio }}
-      onClick={() => setIsPlaying((prev) => !prev)}
+      className="relative"
+      style={{ minWidth: updatedWidth, height: containerHeight }}
     >
       <video
         ref={VideoRef}
-        src={url.replace("http://", "https://")}
-        className="PostVideo w-full h-full"
-        style={
-          {
-            objectFit: "cover",
-            objectPosition: `${
-              updatedX > 0 ? updatedX * -1 + "px" : "center"
-            } ${updatedY > 0 ? updatedY * -1 + "px" : "center"}`,
-          } as React.CSSProperties
-        }
+        src={url}
+        className="w-full h-full object-cover cursor-pointer"
         muted
         loop
         poster={poster?.url || ""}
+        onClick={() => setIsPlaying((prev) => !prev)}
       />
       <button
         type="button"

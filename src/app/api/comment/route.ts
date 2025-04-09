@@ -2,34 +2,43 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
+  if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
+    return NextResponse.json({ status: "fail" }, { status: 401 });
+  }
+
   const postId = req.nextUrl.searchParams.get("post");
   const userId = req.nextUrl.searchParams.get("user");
 
   if (postId && userId) {
+    console.log("getPostComments()...");
+
     try {
-      const comments = await prisma.postComment.findMany({
+      const postComments = await prisma.postComment.findMany({
         where: { postId },
         orderBy: { createdAt: "asc" },
         include: { likes: true },
       });
 
-      const sortedComments = [
-        ...comments.filter((c) => c.userId === userId),
-        ...comments.filter((c) => c.userId !== userId),
+      const sortedPostComments = [
+        ...postComments.filter((c) => c.userId === userId),
+        ...postComments.filter((c) => c.userId !== userId),
       ];
 
       return NextResponse.json(
-        { status: "success", comments: sortedComments },
+        { status: "success", postComments: sortedPostComments },
         { status: 200 }
       );
     } catch (error) {
       console.log(error);
       return NextResponse.json(
-        { status: "fail", comments: [] },
+        { status: "fail", postComments: [] },
         { status: 500 }
       );
     }
   }
 
-  return NextResponse.json({ status: "fail", comments: [] }, { status: 400 });
+  return NextResponse.json(
+    { status: "fail", postComments: [] },
+    { status: 400 }
+  );
 };

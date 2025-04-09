@@ -11,7 +11,13 @@ export const getLikesOfThePost = async (
   try {
     const response = await fetch(
       `${process.env.SITE_URL}/api/like?postId=${postId}&userId=${userId}`,
-      { next: { tags: [`likes-${postId}`], revalidate: 120 } }
+
+      {
+        headers: {
+          "request-secret": process.env.REQUEST_SECRET!,
+        },
+        next: { tags: [`likes-${postId}`], revalidate: 3600 },
+      }
     );
     const data = await response.json();
 
