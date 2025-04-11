@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 function Theme() {
   const [theme, setTheme] = useState("light");
+  const [isMounted, setIsMounted] = useState(false); // 🧠 Track mount status
 
   // Set theme from localStorage once the component is mounted on the client side
   useEffect(() => {
@@ -12,15 +13,18 @@ function Theme() {
     if (themeStorage) {
       setTheme(JSON.parse(themeStorage)); // Set theme from localStorage
     }
+    setIsMounted(true); // ✅ Only render UI after this
   }, []); // This will run once when the component mounts
 
   // Update localStorage and HTML data-theme attribute when the theme changes
   useEffect(() => {
-    if (theme) {
+    if (isMounted) {
       localStorage.setItem("theme", JSON.stringify(theme));
-      document.querySelector("html")?.setAttribute("data-theme", theme); // Apply theme to HTML
+      document.querySelector("html")?.setAttribute("data-theme", theme);
     }
-  }, [theme]);
+  }, [theme, isMounted]);
+
+  if (!isMounted) return <div hidden />;
 
   return (
     <ClerkLoaded>

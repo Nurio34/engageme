@@ -23,6 +23,7 @@ export type PrismaMediaType = Media & {
   transformation: Transformation | null;
 };
 
-export type PrismaPostCommentWithLikes = PostComment & {
+export type PrismaPostComment_WithLikes_withUser = PostComment & {
   likes: PostCommentLike[];
+  user: User;
 };

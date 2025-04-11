@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
 import { getLikesOfThePost } from "@/app/api/like/handler/getLikesOfThePost";
+import { fancyNumber } from "@/utils/fancyNumebr";
 
 async function TotalLikes({ post }: { post: PrismaPostType }) {
   const user = await currentUser();
@@ -13,7 +14,7 @@ async function TotalLikes({ post }: { post: PrismaPostType }) {
 
   return (
     <p className="text-sm font-semibold">
-      {postLikes.length} {postLikes.length > 1 ? "likes" : "like"}
+      {fancyNumber(postLikes.length)} {postLikes.length > 1 ? "likes" : "like"}
     </p>
   );
 }

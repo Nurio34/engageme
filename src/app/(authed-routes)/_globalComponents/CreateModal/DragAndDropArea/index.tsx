@@ -20,7 +20,6 @@ function DragAndDropArea() {
 
           const Files = e.dataTransfer.files;
 
-          console.log(Files);
           const fileValues = Object.values(Files);
 
           const urls: string[] = [];

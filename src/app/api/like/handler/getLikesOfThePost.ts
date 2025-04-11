@@ -10,7 +10,7 @@ export const getLikesOfThePost = async (
 }> => {
   try {
     const response = await fetch(
-      `${process.env.SITE_URL}/api/like?postId=${postId}&userId=${userId}`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/like?postId=${postId}&userId=${userId}`,
 
       {
         headers: {

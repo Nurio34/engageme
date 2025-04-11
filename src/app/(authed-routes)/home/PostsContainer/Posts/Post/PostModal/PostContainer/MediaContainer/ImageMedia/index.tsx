@@ -20,12 +20,11 @@ function ImageMedia({
   const { url, altText, width, height } = media;
 
   const aspectRatio = width! / height!;
+
   const updatedWidth = containerHeight * aspectRatio;
 
   useEffect(() => {
     if (currentIndex === index) {
-      console.log({ width, height });
-
       setContainerWidth(updatedWidth);
     }
   }, [currentIndex, updatedWidth]);

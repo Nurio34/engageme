@@ -1,6 +1,6 @@
 import { PostLike } from "@prisma/client";
 import {
-  PrismaPostCommentWithLikes,
+  PrismaPostComment_WithLikes_withUser,
   PrismaPostType,
 } from "../../../../../../../../prisma/types/post";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -16,7 +16,7 @@ function Client({
   post: PrismaPostType;
   postLikes: PostLike[];
   isPostLiked: boolean;
-  postComments: PrismaPostCommentWithLikes[];
+  postComments: PrismaPostComment_WithLikes_withUser[];
 }) {
   const { postModal } = useAppSelector((s) => s.homePage);
   const { postId, isOpen } = postModal;

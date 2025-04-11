@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
+import Name from "../Header/Name";
 
 function Description({ post }: { post: PrismaPostType }) {
   const { user, message } = post;
@@ -16,11 +17,15 @@ function Description({ post }: { post: PrismaPostType }) {
   }, [isMessageLongThan100]);
 
   return (
-    <div className="grow mt-2 text-sm">
-      <p className={`font-semibold mr-2 ${message ? "float-left" : ""}`}>
-        {name}
-      </p>
-      <div className={`${isTruncated ? "flex" : ""}`}>
+    <div
+      className="grow mt-2 text-sm
+        flex
+      "
+    >
+      <div className={`mr-2 ${message ? "float-left" : ""}`}>
+        <Name name={name} />
+      </div>
+      <div className={` grow ${isTruncated ? "flex" : ""}`}>
         <p
           className={`${isTruncated ? "truncate" : ""}`}
           style={{ width: isTruncated ? "200px" : "100%" }}

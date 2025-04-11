@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
       const postComments = await prisma.postComment.findMany({
         where: { postId },
         orderBy: { createdAt: "asc" },
-        include: { likes: true },
+        include: { likes: true, user: true },
       });
 
       const sortedPostComments = [

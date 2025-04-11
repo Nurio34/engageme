@@ -1,11 +1,11 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaPostCommentWithLikes } from "../../../../../prisma/types/post";
+import { PrismaPostComment_WithLikes_withUser } from "../../../../../prisma/types/post";
 
 export const getCommentsOfThePost = async (
   postId: string
 ): Promise<{
   status: "success" | "fail";
-  postComments: PrismaPostCommentWithLikes[];
+  postComments: PrismaPostComment_WithLikes_withUser[];
 }> => {
   try {
     const user = await currentUser();
@@ -14,7 +14,7 @@ export const getCommentsOfThePost = async (
     const userId = user.id;
 
     const response = await fetch(
-      `${process.env.SITE_URL}/api/comment?post=${postId}&user=${userId}`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/comment?post=${postId}&user=${userId}`,
       {
         headers: {
           "request-secret": process.env.REQUEST_SECRET!,

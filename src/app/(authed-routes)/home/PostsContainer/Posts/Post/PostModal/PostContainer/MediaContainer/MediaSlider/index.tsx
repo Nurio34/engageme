@@ -18,7 +18,6 @@ function MediaSlider({
 }) {
   const [slideArray, setSlideArray] = useState<number[]>([]);
   const [slide, setSlide] = useState(0);
-  console.log({ slideArray, slide });
 
   useEffect(() => {
     const slideAmount = slideArray.reduce((sum, amount, ind) => {

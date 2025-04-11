@@ -4,6 +4,11 @@ import { MdAudiotrack } from "react-icons/md";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
 
+type ObjectPositionType = {
+  x: string;
+  y: string;
+};
+
 function VideoMedia({
   index,
   media,
@@ -22,8 +27,12 @@ function VideoMedia({
   const { url, transformation, isAudioAllowed, poster } = media;
   const { width, height, x, y } = transformation!;
 
-  const aspectRatio = (+width + +x) / (+height + +y);
+  const aspectRatio = +width / +height;
   const updatedWidth = containerHeight * aspectRatio;
+  const [objectPosition, setObjectPosition] = useState<ObjectPositionType>({
+    x: "0px",
+    y: "0px",
+  });
 
   const VideoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -31,8 +40,6 @@ function VideoMedia({
 
   useEffect(() => {
     if (currentIndex === index) {
-      console.log({ width, height, x, y, aspectRatio });
-
       setContainerWidth(updatedWidth);
     }
   }, [currentIndex, updatedWidth]);
@@ -41,6 +48,12 @@ function VideoMedia({
     if (updatedWidth === 0) return;
 
     setSlideArray((prev) => [...prev, updatedWidth]);
+
+    const objXParam = updatedWidth / +width;
+    const objX = +x === 0 ? "center" : +x * objXParam * -1 + "px";
+    const objYParam = containerHeight / +height;
+    const objY = +y === 0 ? "center" : +y * objYParam * -1 + "px";
+    setObjectPosition({ x: objX, y: objY });
   }, [updatedWidth]);
 
   useEffect(() => {
@@ -77,7 +90,14 @@ function VideoMedia({
       <video
         ref={VideoRef}
         src={url}
-        className="w-full h-full object-cover cursor-pointer"
+        className={` ${
+          +x === 0 && +y === 0
+            ? "w-full h-full"
+            : +x === 0
+            ? "w-full "
+            : "h-full"
+        } object-cover cursor-pointer`}
+        style={{ objectPosition: `${objectPosition.x} ${objectPosition.y}` }}
         muted
         loop
         poster={poster?.url || ""}

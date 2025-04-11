@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import Client from "./Client";
 import { store } from "@/store";
 import {
-  PrismaPostCommentWithLikes,
+  PrismaPostComment_WithLikes_withUser,
   PrismaPostType,
 } from "../../../../../../../../prisma/types/post";
 import { PostLike } from "@prisma/client";
@@ -18,7 +18,7 @@ function ProviderComponent({
   post: PrismaPostType;
   postLikes: PostLike[];
   isPostLiked: boolean;
-  postComments: PrismaPostCommentWithLikes[];
+  postComments: PrismaPostComment_WithLikes_withUser[];
 }) {
   return (
     <Provider store={store}>

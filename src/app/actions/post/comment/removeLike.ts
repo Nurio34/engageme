@@ -2,22 +2,27 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { PostCommentLike } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 
 export const removeLike = async (
   commentId: string
-): Promise<{ status: "success" | "fail" }> => {
+): Promise<{
+  status: "success" | "fail";
+  postCommentLike?: PostCommentLike;
+}> => {
   try {
     const user = await currentUser();
     if (!user) return { status: "fail" };
 
     const userId = user.id;
 
-    const response = await prisma.postCommentLike.delete({
+    const postCommentLike = await prisma.postCommentLike.delete({
       where: { userId_commentId: { userId, commentId } },
     });
-    if (!response) return { status: "fail" };
+    if (!postCommentLike) return { status: "fail" };
 
-    return { status: "success" };
+    return { status: "success", postCommentLike };
   } catch (error) {
     console.log(error);
     return { status: "fail" };

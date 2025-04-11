@@ -10,7 +10,7 @@ export const getPosts = async (
     if (!user) return { status: "fail", posts: [] };
 
     const response = await fetch(
-      `${process.env.SITE_URL}/api/post?variant=${variant}`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/post?variant=${variant}`,
       {
         headers: {
           "request-secret": process.env.REQUEST_SECRET!,

@@ -2,15 +2,20 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-  if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
+  if (
+    req.headers.get("request-secret") !== process.env.REQUEST_SECRET! &&
+    req.headers.get("request-secret") !==
+      process.env.NEXT_PUBLIC_REQUEST_SECRET!
+  ) {
     return NextResponse.json({ status: "fail" }, { status: 401 });
   }
 
   const postId = req.nextUrl.searchParams.get("postId");
+  const commentId = req.nextUrl.searchParams.get("commentId");
   const userId = req.nextUrl.searchParams.get("userId");
 
   if (postId && userId) {
-    console.log("getLikesOfThePost()");
+    console.log("getLikesOfThePost()...");
 
     try {
       const postLikesResponse = prisma.postLike.findMany({ where: { postId } });
@@ -36,5 +41,34 @@ export const GET = async (req: NextRequest) => {
     }
   }
 
-  return NextResponse.json({ status: "fail", postLikes: [] }, { status: 400 });
+  if (commentId && userId) {
+    console.log("getLikesOfTheComment()...");
+
+    try {
+      const commentLikesResponse = prisma.postCommentLike.findMany({
+        where: { commentId },
+      });
+      const isCommentLikedResponse = prisma.postCommentLike.findUnique({
+        where: { userId_commentId: { userId, commentId } },
+      });
+
+      const [commentLikes, isCommentLiked] = await prisma.$transaction([
+        commentLikesResponse,
+        isCommentLikedResponse,
+      ]);
+
+      return NextResponse.json(
+        { status: "success", commentLikes, isCommentLiked: !!isCommentLiked },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json(
+        { status: "fail", commentLikes: [], isCommentLiked: false },
+        { status: 500 }
+      );
+    }
+  }
+
+  return NextResponse.json({ status: "fail" }, { status: 400 });
 };
