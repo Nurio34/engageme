@@ -1,10 +1,11 @@
     1. PWA yap
+    2. clerk'e normal login yapınca app hata veriyo
 
 ## Home Page
 
-    1. post created at zamanına util function yaz
     2.Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
     user profilini gösteren bi modal göster
+    2. Comments sortBy "Meta Verified"a göre sortlama pending...
 
 ## Gallery
 

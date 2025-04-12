@@ -1,22 +1,8 @@
-import { PostLike } from "@prisma/client";
-import {
-  PrismaPostComment_WithLikes_withUser,
-  PrismaPostType,
-} from "../../../../../../../../../prisma/types/post";
+import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
 import MediaContainer from "./MediaContainer";
 import InfoContainer from "./InfoContainer";
 
-function PostContainer({
-  post,
-  postLikes,
-  isPostLiked,
-  postComments,
-}: {
-  post: PrismaPostType;
-  postLikes: PostLike[];
-  isPostLiked: boolean;
-  postComments: PrismaPostComment_WithLikes_withUser[];
-}) {
+function PostContainer({ post }: { post: PrismaPostType }) {
   const { medias } = post;
 
   return (
@@ -26,12 +12,7 @@ function PostContainer({
       onClick={(e) => e.stopPropagation()}
     >
       <MediaContainer medias={medias} />
-      <InfoContainer
-        post={post}
-        isPostLiked={isPostLiked}
-        postLikes={postLikes}
-        postComments={postComments}
-      />
+      <InfoContainer post={post} />
     </div>
   );
 }

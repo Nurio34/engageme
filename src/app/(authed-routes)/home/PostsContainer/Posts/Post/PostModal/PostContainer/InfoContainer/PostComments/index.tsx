@@ -1,17 +1,29 @@
 import { useEffect, useRef, useState } from "react";
-import { PrismaPostComment_WithLikes_withUser } from "../../../../../../../../../../../prisma/types/post";
+import { PrismaPostCommentType } from "../../../../../../../../../../../prisma/types/post";
 import PostComment from "./PostComment";
+import { useUser } from "@clerk/nextjs";
+import { SortByType } from "..";
 
 function PostComments({
-  postComments,
+  comments,
   isTruncated,
+  textAreaHeight,
+  sortBy,
 }: {
-  postComments: PrismaPostComment_WithLikes_withUser[];
+  comments: PrismaPostCommentType[];
   isTruncated: boolean;
+  textAreaHeight: number;
+  sortBy: SortByType;
 }) {
+  const { user } = useUser();
+  const userId = user?.id;
+
+  const [sortedComments, setSortedComments] = useState<PrismaPostCommentType[]>(
+    []
+  );
+
   const CommentsContainerRef = useRef<HTMLDivElement | null>(null);
   const [containerHeight, setContainerHeight] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -19,15 +31,28 @@ function PostComments({
       setContainerHeight(
         CommentsContainerRef.current.getBoundingClientRect().height
       );
-  }, [isTruncated, reRender]);
+  }, [isTruncated, reRender, textAreaHeight]);
 
   useEffect(() => {
     if (!isTruncated) setReRender(true);
   }, [isTruncated]);
 
   useEffect(() => {
+    setReRender(true);
+  }, [textAreaHeight]);
+
+  useEffect(() => {
     if (reRender) setReRender(false);
   }, [reRender]);
+
+  useEffect(() => {
+    if (sortBy === "For You")
+      setSortedComments([
+        ...comments.filter((commentObj) => commentObj.userId === userId),
+        ...comments.filter((commentObj) => commentObj.userId !== userId),
+      ]);
+    else if (sortBy === "Most Recent") setSortedComments(comments);
+  }, [sortBy, comments]);
 
   return (
     <div ref={CommentsContainerRef} className="grow">
@@ -36,7 +61,7 @@ function PostComments({
           className="overflow-x-hidden overflow-y-auto"
           style={{ height: containerHeight, maxHeight: containerHeight }}
         >
-          {postComments.map((postComment) => (
+          {sortedComments.map((postComment) => (
             <PostComment key={postComment.id} postComment={postComment} />
           ))}
         </ul>

@@ -1,39 +1,47 @@
 "use server";
 
-import { SentCommentType } from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/AddComment/client";
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { revalidateTag } from "next/cache";
+import { PrismaPostCommentType } from "../../../../../prisma/types/post";
+import { PostComment } from "@prisma/client";
 
 export const sendComment = async (
-  prevState: { status: string; comment: SentCommentType },
+  prevState: { status: string; postComment?: PrismaPostCommentType },
   formData: FormData
-): Promise<{ status: "success" | "fail"; comment: SentCommentType }> => {
+): Promise<{
+  status: "success" | "fail";
+  postComment?: PrismaPostCommentType;
+}> => {
   try {
     const user = await currentUser();
-    if (!user) return { status: "fail", comment: { id: "", comment: "" } };
+    if (!user)
+      return { status: "fail", postComment: {} as PrismaPostCommentType };
 
     const userId = user.id;
     const postId = formData.get("postId") as string;
     const comment = formData.get("comment") as string;
 
-    const response = await prisma.postComment.create({
+    const postComment = await prisma.postComment.create({
       data: {
         userId,
         postId,
         comment,
       },
+      include: {
+        user: true,
+        likes: true,
+      },
     });
 
-    if (!response) return { status: "fail", comment: { id: "", comment: "" } };
+    if (!postComment)
+      return { status: "fail", postComment: {} as PrismaPostCommentType };
 
-    revalidateTag(`postComments`);
     return {
       status: "success",
-      comment: { id: response.id, comment: response.comment },
+      postComment,
     };
   } catch (error) {
     console.log(error);
-    return { status: "fail", comment: { id: "", comment: "" } };
+    return { status: "fail", postComment: {} as PrismaPostCommentType };
   }
 };

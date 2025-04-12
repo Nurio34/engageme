@@ -16,6 +16,8 @@ export type PrismaPostType = Post & {
   medias: PrismaMediaType[];
   location?: Location | null;
   settings?: Settings | null;
+  likes: PostLike[];
+  comments: PrismaPostCommentType[];
 };
 
 export type PrismaMediaType = Media & {
@@ -23,7 +25,7 @@ export type PrismaMediaType = Media & {
   transformation: Transformation | null;
 };
 
-export type PrismaPostComment_WithLikes_withUser = PostComment & {
-  likes: PostCommentLike[];
+export type PrismaPostCommentType = PostComment & {
   user: User;
+  likes: PostCommentLike[];
 };

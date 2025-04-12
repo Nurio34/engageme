@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  PrismaMediaType,
-  PrismaPostType,
-} from "../../../../../../../../../../prisma/types/post";
-import ImageMedia from "./ImageMedia";
-import VideoMedia from "./VideoMedia";
+import { PrismaMediaType } from "../../../../../../../../../../prisma/types/post";
 import MediaSlider from "./MediaSlider";
 import SlideNext from "./SlideButtons/SlideNext";
 import SlidePrevious from "./SlideButtons/SlidePrevious";
@@ -42,7 +37,6 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
         containerHeight={containerHeight}
         setContainerWidth={setContainerWidth}
         currentIndex={currentIndex}
-        containerWidth={containerWidth}
       />
       <SlideNext setCurrentIndex={setCurrentIndex} medias={medias} />
       <SlidePrevious setCurrentIndex={setCurrentIndex} medias={medias} />

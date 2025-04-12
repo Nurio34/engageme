@@ -1,67 +1,36 @@
-import { likeComment } from "@/app/actions/post/comment/likeComment";
-import { removeLike } from "@/app/actions/post/comment/removeLike";
-import { useUser } from "@clerk/nextjs";
-import { PostCommentLike } from "@prisma/client";
-import { Dispatch, SetStateAction, useState } from "react";
+import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
 
 function LikeTheCommentButton({
-  isCommentLiked,
-  commentId,
-  setIsCommentLiked,
-  setCommentLikes,
+  postComment,
 }: {
-  isCommentLiked: boolean;
-  commentId: string;
-  setIsCommentLiked: Dispatch<SetStateAction<boolean>>;
-  setCommentLikes: Dispatch<SetStateAction<PostCommentLike[]>>;
+  postComment: PrismaPostCommentType;
 }) {
-  const { user: clerkUser } = useUser();
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    isCommentLiked,
+    likeCommentAction,
+    removeLikeFromTheCommentAction,
+    isLoading_LikeComment,
+  } = usePostsContext();
+  const isCommentLikedState = isCommentLiked(
+    postComment.postId,
+    postComment.id
+  );
 
-  const likeTheComment = async () => {
-    setIsLoading(true);
-
-    try {
-      const { status, postCommentLike } = await likeComment(commentId);
-      console.log(postCommentLike);
-
-      if (status === "success" && postCommentLike) {
-        setIsCommentLiked(true);
-        setCommentLikes((prev) => [...prev, postCommentLike]);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const removeLikeFromTheComment = async () => {
-    setIsLoading(true);
-
-    try {
-      const { status, postCommentLike } = await removeLike(commentId);
-      console.log(postCommentLike);
-
-      if (status === "success" && postCommentLike && clerkUser) {
-        setIsCommentLiked(false);
-        setCommentLikes((prev) =>
-          prev.filter((likeObj) => likeObj.userId !== clerkUser.id)
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   const handleCommentLike = () =>
-    isCommentLiked ? removeLikeFromTheComment() : likeTheComment();
+    isCommentLikedState
+      ? removeLikeFromTheCommentAction(postComment.postId, postComment.id)
+      : likeCommentAction(postComment.postId, postComment.id);
 
   return (
-    <button type="button" onClick={handleCommentLike} disabled={isLoading}>
-      {isCommentLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+    <button
+      type="button"
+      className="mt-1"
+      onClick={handleCommentLike}
+      disabled={isLoading_LikeComment}
+    >
+      {isCommentLikedState ? <FaHeart color="red" /> : <FaRegHeart />}
     </button>
   );
 }

@@ -17,12 +17,12 @@ function CommentContainer({
   commentLikes: PostCommentLike[];
 }) {
   return (
-    <div className="grow">
+    <div className="overflow-auto">
       <div>
         <div className="float-left mr-2">
           <Name name={name} />
         </div>
-        <p>{comment}</p>
+        <p className="break-words">{comment}</p>
       </div>
       <div className="flex items-center gap-x-3 py-1">
         <CreatedAt updatedAt={updatedAt} />

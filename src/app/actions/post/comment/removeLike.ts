@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PostCommentLike } from "@prisma/client";
-import { revalidateTag } from "next/cache";
 
 export const removeLike = async (
   commentId: string

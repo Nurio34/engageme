@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PostCommentLike } from "@prisma/client";
-import { revalidateTag } from "next/cache";
 
 export const likeComment = async (
   commentId: string
@@ -16,11 +15,16 @@ export const likeComment = async (
     if (!user) return { status: "fail" };
 
     const userId = user.id;
+    console.log({ userId, commentId });
 
     const postCommentLike = await prisma.postCommentLike.create({
-      data: { userId, commentId },
+      data: {
+        userId,
+        commentId,
+      },
     });
 
+    console.log({ postCommentLike });
     if (!postCommentLike) return { status: "fail" };
 
     return { status: "success", postCommentLike };

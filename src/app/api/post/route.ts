@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaPostType } from "../../../../prisma/types/post";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  console.log("getPosts() ...");
-
-  // const variant = req.nextUrl.searchParams.get("variant"); //! "followings" || undefined
+  console.log("getPosts()...");
 
   if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
     return NextResponse.json({ status: "fail" }, { status: 401 });
   }
+
+  // const variant = req.nextUrl.searchParams.get("variant"); //! "followings" || undefined
 
   try {
     const posts: PrismaPostType[] = await prisma.post.findMany({
@@ -23,6 +23,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
         location: true,
         settings: true,
+        likes: true,
+        comments: {
+          include: {
+            user: true,
+            likes: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
       orderBy: {
         updatedAt: "desc",

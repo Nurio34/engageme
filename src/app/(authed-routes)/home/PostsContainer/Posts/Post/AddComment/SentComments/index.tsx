@@ -1,20 +1,27 @@
 import { useUser } from "@clerk/nextjs";
-import { SentCommentType } from "../client";
 import Comment from "./Comment";
+import { PostComment } from "@prisma/client";
+import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
 
-function SentComments({ sentComments }: { sentComments: SentCommentType[] }) {
+function SentComments({
+  sentComments,
+  post,
+}: {
+  sentComments: PostComment[];
+  post: PrismaPostType;
+}) {
   const { user } = useUser();
   const username = user?.username;
 
   return (
-    <div className="mt-2 text-sm">
-      {sentComments.map((comment, index) => {
+    <div className="mt-2 text-sm space-y-1">
+      {sentComments.map((comment) => {
         return (
           <Comment
             key={comment.id}
             comment={comment}
-            index={index}
             username={username}
+            post={post}
           />
         );
       })}

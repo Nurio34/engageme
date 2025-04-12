@@ -8,13 +8,11 @@ function MediaSlider({
   containerHeight,
   setContainerWidth,
   currentIndex,
-  containerWidth,
 }: {
   medias: PrismaMediaType[];
   containerHeight: number;
   setContainerWidth: Dispatch<SetStateAction<number>>;
   currentIndex: number;
-  containerWidth: number;
 }) {
   const [slideArray, setSlideArray] = useState<number[]>([]);
   const [slide, setSlide] = useState(0);

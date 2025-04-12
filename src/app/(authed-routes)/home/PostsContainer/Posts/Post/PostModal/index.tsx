@@ -1,29 +1,26 @@
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
-import { currentUser } from "@clerk/nextjs/server";
-import { getLikesOfThePost } from "@/app/api/like/handler/getLikesOfThePost";
-import { getCommentsOfThePost } from "@/app/api/comment/handlers/getCommentsOfThePost";
-import ProviderComponent from "./Provider";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setPostModal } from "@/store/slices/homePage";
+import PostContainer from "./PostContainer";
 
-async function PostModal({ post }: { post: PrismaPostType }) {
-  const user = await currentUser();
-  if (!user) return;
+function PostModal({ post }: { post: PrismaPostType }) {
+  const { postModal } = useAppSelector((s) => s.homePage);
+  const { postId, isOpen } = postModal;
 
-  const { status, postLikes, isPostLiked } = await getLikesOfThePost(
-    post.id,
-    user.id
-  );
-  if (status === "fail") return;
-
-  const { status: status2, postComments } = await getCommentsOfThePost(post.id);
-  if (status2 === "fail") return;
+  const dispatch = useAppDispatch();
 
   return (
-    <ProviderComponent
-      post={post}
-      postLikes={postLikes}
-      isPostLiked={isPostLiked}
-      postComments={postComments}
-    />
+    post.id === postId &&
+    isOpen && (
+      <div
+        className="fixed z-10 top-0 left-0 w-screen h-screen bg-base-content/70
+          flex justify-center items-center
+        "
+        onClick={() => dispatch(setPostModal({ isOpen: false, postId: "" }))}
+      >
+        <PostContainer post={post} />
+      </div>
+    )
   );
 }
 export default PostModal;

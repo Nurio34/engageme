@@ -4,25 +4,25 @@ function TextArea({
   togglePickerFunction,
   comment,
   setComment,
-  isPending,
+  isLoading,
 }: {
   togglePickerFunction: () => void;
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
-  isPending: boolean;
+  isLoading: boolean;
 }) {
   return (
     <textarea
       name="comment"
       rows={1}
       className={`grow text-sm mt-2 resize-none  outline-none
-        ${isPending ? "text-base-content/50" : ""}  
+        ${isLoading ? "text-base-content/50" : ""}  
       `}
       placeholder="Add a comment.."
       onFocus={togglePickerFunction}
       value={comment}
       onChange={(e) => setComment(e.target.value)}
-      disabled={isPending}
+      disabled={isLoading}
     />
   );
 }

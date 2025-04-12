@@ -7,6 +7,10 @@ export async function POST(req: Request) {
   const clerkUser = await req.json();
   if (!clerkUser) return NextResponse.json({ status: "fail" }, { status: 401 });
 
+  if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
+    return NextResponse.json({ status: "fail" }, { status: 401 });
+  }
+
   const { id: userId, username, imageUrl: avatar, emailAddresses } = clerkUser;
 
   let user;

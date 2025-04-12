@@ -1,18 +1,20 @@
-import { getCommentsOfThePost } from "@/app/api/comment/handlers/getCommentsOfThePost";
+import { useAppDispatch } from "@/store/hooks";
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
 import { fancyNumber } from "@/utils/fancyNumebr";
+import { setPostModal } from "@/store/slices/homePage";
 
-async function TotalComments({ post }: { post: PrismaPostType }) {
-  const { status, postComments } = await getCommentsOfThePost(post.id);
+function TotalComments({ post }: { post: PrismaPostType }) {
+  const { comments } = post;
 
-  if (status === "fail")
-    return (
-      <p className="mt-2 text-sm text-base-content/50">View all comments</p>
-    );
+  const dispatch = useAppDispatch();
 
   return (
-    <button type="button" className="mt-2 text-sm text-base-content/50">
-      View all {fancyNumber(postComments.length)} comments
+    <button
+      type="button"
+      className="mt-2 text-sm text-base-content/50"
+      onClick={() => dispatch(setPostModal({ isOpen: true, postId: post.id }))}
+    >
+      View all {fancyNumber(comments.length)} comments
     </button>
   );
 }

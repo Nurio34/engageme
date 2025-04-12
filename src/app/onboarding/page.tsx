@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { handleUser } from "../api/user/handleUser";
+import { handleUser } from "../api/user/handler/handleUser";
 
 async function Onboarding() {
   const { status } = await handleUser();

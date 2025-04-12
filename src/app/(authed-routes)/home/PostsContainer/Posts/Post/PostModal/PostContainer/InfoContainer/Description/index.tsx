@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import Name from "../../../../Header/Name";
 
@@ -25,7 +25,6 @@ function Description({
   return (
     <div
       className="grow mt-2 text-sm
-        flex
       "
     >
       <div className={`mr-2 ${message ? "float-left" : ""}`}>
@@ -38,7 +37,7 @@ function Description({
         >
           {message}
         </p>
-        {
+        {isMessageLongThan100 && (
           <button
             type="button"
             className="text-base-content/50"
@@ -49,7 +48,7 @@ function Description({
           >
             {isTruncated ? "more" : "less"}
           </button>
-        }
+        )}
       </div>
     </div>
   );

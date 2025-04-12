@@ -6,11 +6,11 @@ import { togglePicker } from "@/store/slices/modals";
 function EmojiComponent({
   comment,
   setComment,
-  isPending,
+  isLoading,
 }: {
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
-  isPending: boolean;
+  isLoading: boolean;
 }) {
   const dispatch = useAppDispatch();
 
@@ -21,7 +21,7 @@ function EmojiComponent({
           type="submit"
           className="text-info text-sm font-semibold"
           onClick={() => dispatch(togglePicker())}
-          disabled={isPending}
+          disabled={isLoading}
         >
           Post
         </button>

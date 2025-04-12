@@ -2,7 +2,7 @@
 
 import CommentIcon from "@/app/_globalComponents/Svg/CommentIcon";
 import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { setPostModal } from "@/store/slices/homePage";
 
 function Client({ post }: { post: PrismaPostType }) {

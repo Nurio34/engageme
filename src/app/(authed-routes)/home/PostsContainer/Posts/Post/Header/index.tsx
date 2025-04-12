@@ -4,20 +4,16 @@ import Avatar from "./Avatar";
 import CreatedAt from "./CreatedAt";
 import Name from "./Name";
 import ActionsContainer from "./ActionsContainer";
-import { currentUser } from "@clerk/nextjs/server";
 
-async function Header({ post }: { post: PrismaPostType }) {
-  const user = await currentUser();
-  if (!user) return;
-
-  const { username, imageUrl } = user;
-  const { updatedAt } = post;
+function Header({ post }: { post: PrismaPostType }) {
+  const { updatedAt, user } = post;
+  const { avatar, name } = user;
 
   return (
     <div className="flex justify-start items-center gap-3 px-2 md:px-0">
-      <Avatar avatar={imageUrl} />
+      <Avatar avatar={avatar} />
       <div className="flex items-center ">
-        <Name name={username!} />
+        <Name name={name} />
         <LuDot />
         <CreatedAt updatedAt={updatedAt} />
       </div>
