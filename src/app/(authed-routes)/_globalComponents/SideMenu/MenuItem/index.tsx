@@ -9,8 +9,14 @@ import { searchAction } from "./actions/searchAction";
 import { notificationsAction } from "./actions/notificationsAction";
 import { useAppDispatch } from "@/store/hooks";
 import { started } from "@/store/slices/routing";
+import { useUser } from "@clerk/nextjs";
+import { moreAction } from "./actions/moreAction";
 
 function MenuItem({ item }: { item: MenuType }) {
+  const { user } = useUser();
+
+  const { username, imageUrl } = user!;
+
   const path = usePathname();
   const isCurrentPath = path === item.href;
   const action =
@@ -18,25 +24,29 @@ function MenuItem({ item }: { item: MenuType }) {
       ? notificationsAction
       : item.name === "Search"
       ? searchAction
-      : createAction;
+      : item.name === "Create"
+      ? createAction
+      : moreAction;
 
   const dispatch = useAppDispatch();
 
   return (
     <li
       key={item.name}
-      className={`p-1 transition-all hover:bg-base-300 rounded-md
+      className={`p-1 transition-all hover:bg-base-300 rounded-md mb-3
                 ${
                   item.name === "Search" || item.name == "Notifications"
                     ? "hidden md:block"
                     : ""
-                }  ü
+                }
+                ${item.name === "Threads" ? "mt-auto" : ""}
+                ${isCurrentPath ? "font-extrabold" : ""}
       `}
     >
       <div className={`flex items-center gap-x-[1vw] p-1`}>
         {item.type === "link" ? (
           <Link
-            href={item.href!}
+            href={item.name === "Profile" ? username! : item.href!}
             className="w-full flex items-center justify-center lg:justify-start gap-x-2"
             onClick={() => {
               if (!isCurrentPath) dispatch(started());
@@ -55,12 +65,7 @@ function MenuItem({ item }: { item: MenuType }) {
               </div>
             ) : (
               <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-                <Image
-                  src={item.icon as string}
-                  fill
-                  alt="profile image"
-                  sizes="5vw"
-                />
+                <Image src={imageUrl} fill alt="profile image" sizes="5vw" />
               </figure>
             )}
             <span className="hidden lg:block"> {item.name}</span>
