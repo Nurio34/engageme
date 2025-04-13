@@ -95,37 +95,42 @@ function SideMenu() {
   const [navWidth, setNavWidth] = useState(0);
 
   useEffect(() => {
-    if (NavRef.current)
-      setNavWidth(NavRef.current.getBoundingClientRect().width);
+    const handleResize = () => {
+      if (NavRef.current)
+        setNavWidth(NavRef.current.getBoundingClientRect().width);
+    };
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
-    <div style={{ minWidth: navWidth }}>
-      <nav
-        ref={NavRef}
-        className="md:px-4 md:py-2 border-t md:border-t-0 md:border-r bg-base-100 md:bg-transparent
+    <nav
+      ref={NavRef}
+      className="md:px-4 md:py-2 border-t md:border-t-0 md:border-r bg-base-100 md:bg-transparent
           fixed z-10 bottom-0 
           min-w-full md:min-w-max lg:min-w-56 md:h-screen
           flex flex-col justify-between
         "
-      >
-        <div
-          className="hidden md:flex justify-center items-center lg:justify-start
+    >
+      <div
+        className="hidden md:flex justify-center items-center lg:justify-start
             text-2xl h-24
           "
-        >
-          <div className="block lg:hidden">
-            <InstagramLogoIcon />
-          </div>
-          <div className="hidden lg:block lg:grow">Engage Me</div>
+      >
+        <div className="block lg:hidden">
+          <InstagramLogoIcon />
         </div>
-        <ul className="md:grow flex md:flex-col justify-evenly md:justify-start ">
-          {menu.map((item) => (
-            <ProviderComponent key={item.name} item={item} />
-          ))}
-        </ul>
-      </nav>
-    </div>
+        <div className="hidden lg:block lg:grow">Engage Me</div>
+      </div>
+      <ul className="md:grow flex md:flex-col justify-evenly md:justify-start ">
+        {menu.map((item) => (
+          <ProviderComponent key={item.name} item={item} />
+        ))}
+      </ul>
+    </nav>
   );
 }
 export default SideMenu;

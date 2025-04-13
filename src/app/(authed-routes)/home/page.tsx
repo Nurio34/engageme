@@ -10,7 +10,7 @@ async function HomePage({
 
   return (
     <div
-      className="grow md:grid lg:grid-cols-[1fr,319px] gap-x-16
+      className="col-start-2 col-end-3 md:grid lg:grid-cols-[1fr,319px] gap-x-16
         md:px-16 md:py-6
       "
     >

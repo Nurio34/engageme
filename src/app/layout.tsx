@@ -8,6 +8,7 @@ import RoutingAnimationBar from "./_globalComponents/RoutingAnimationBar";
 import ListenResize from "./_globalComponents/ListenResize";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ScrollBlocker from "./_globalComponents/ScrollBlocker";
+import StoreUser from "./_globalComponents/StoreUser";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <RoutingAnimationBar />
           <ScrollBlocker />
           <SpeedInsights />
+          <StoreUser />
           {children}
         </body>
       </html>

@@ -10,7 +10,12 @@ function Avatar({ avatar }: { avatar: string | null }) {
         w-9 aspect-square rounded-full overflow-hidden
       "
       >
-        <Image src={avatar || "/placeholders/avatar.webp"} alt="avatar" fill />
+        <Image
+          src={avatar || "/placeholders/avatar.webp"}
+          alt="avatar"
+          fill
+          sizes="(min-width=1024) 100vw,50vw "
+        />
       </figure>
     </div>
   );

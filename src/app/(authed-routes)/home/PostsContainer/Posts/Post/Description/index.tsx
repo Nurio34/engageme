@@ -19,7 +19,6 @@ function Description({ post }: { post: PrismaPostType }) {
   return (
     <div
       className="grow mt-2 text-sm
-        flex
       "
     >
       <div className={`mr-2 ${message ? "float-left" : ""}`}>

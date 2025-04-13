@@ -3,10 +3,12 @@ import ImageMedia from "../ImageMedia";
 import VideoMedia from "../VideoMedia";
 
 function MediasSlide({
+  index,
   currentIndex,
   mediasContainerWidth,
   medias,
 }: {
+  index: number;
   currentIndex: number;
   mediasContainerWidth: number;
   medias: PrismaMediaType[];
@@ -18,16 +20,16 @@ function MediasSlide({
         transform: `translateX(${currentIndex * mediasContainerWidth * -1}px)`,
       }}
     >
-      {medias.map((media, index) => {
+      {medias.map((media, ind) => {
         const { type } = media;
 
         return type === "image" ? (
-          <ImageMedia key={media.id} media={media} />
+          <ImageMedia key={media.id} index={index} media={media} />
         ) : (
           <VideoMedia
             key={media.id}
             media={media}
-            index={index}
+            index={ind}
             currentIndex={currentIndex}
           />
         );

@@ -3,6 +3,7 @@ import modalsSlice from "./slices/modals";
 import pingSlice from "./slices/ping";
 import routingSlice from "./slices/routing";
 import homePageSlice from "./slices/homePage";
+import userSlice from "./slices/user";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     ping: pingSlice,
     routing: routingSlice,
     homePage: homePageSlice,
+    user: userSlice,
   },
 });
 

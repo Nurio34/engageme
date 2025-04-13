@@ -1,24 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { MenuType } from "..";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createAction } from "./actions/createAction";
 import { searchAction } from "./actions/searchAction";
 import { notificationsAction } from "./actions/notificationsAction";
-import { useAppDispatch } from "@/store/hooks";
-import { started } from "@/store/slices/routing";
-import { useUser } from "@clerk/nextjs";
 import { moreAction } from "./actions/moreAction";
+import LinkComponent from "./LinkComponent";
+import ButtonComponent from "./ButtonComponent";
 
 function MenuItem({ item }: { item: MenuType }) {
-  const { user } = useUser();
-
-  const { username, imageUrl } = user!;
-
-  const path = usePathname();
-  const isCurrentPath = path === item.href;
   const action =
     item.name === "Notifications"
       ? notificationsAction
@@ -28,76 +19,50 @@ function MenuItem({ item }: { item: MenuType }) {
       ? createAction
       : moreAction;
 
-  const dispatch = useAppDispatch();
-
+  const path = usePathname();
+  const isCurrentPath = path === item.href;
   return (
     <li
       key={item.name}
       className={`p-1 transition-all hover:bg-base-300 rounded-md mb-3
                 ${
-                  item.name === "Search" || item.name == "Notifications"
+                  item.name === "Search" ||
+                  item.name == "Notifications" ||
+                  item.name == "Threads" ||
+                  item.name == "More"
                     ? "hidden md:block"
                     : ""
                 }
                 ${item.name === "Threads" ? "mt-auto" : ""}
                 ${isCurrentPath ? "font-extrabold" : ""}
+                ${
+                  item.name == "Home"
+                    ? "order-1 md:order-1"
+                    : item.name == "Explore"
+                    ? "order-2 md:order-2"
+                    : item.name == "Reels"
+                    ? "order-3 md:order-3"
+                    : item.name == "Messages"
+                    ? "order-5 md:order-4"
+                    : item.name == "Create"
+                    ? "order-4 md:order-5"
+                    : "order-6 md:order-6"
+                }
       `}
     >
       <div className={`flex items-center gap-x-[1vw] p-1`}>
         {item.type === "link" ? (
-          <Link
-            href={item.name === "Profile" ? username! : item.href!}
-            className="w-full flex items-center justify-center lg:justify-start gap-x-2"
-            onClick={() => {
-              if (!isCurrentPath) dispatch(started());
-            }}
-          >
-            {item.iconType === "icon" ? (
-              <div
-                className=" text-3xl"
-                style={{
-                  filter: isCurrentPath
-                    ? "drop-shadow(0 0 0px black) drop-shadow(0 0 0px black) drop-shadow(0 0 0px black)"
-                    : undefined,
-                }}
-              >
-                {item.icon}
-              </div>
-            ) : (
-              <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-                <Image src={imageUrl} fill alt="profile image" sizes="5vw" />
-              </figure>
-            )}
-            <span className="hidden lg:block"> {item.name}</span>
-          </Link>
+          <LinkComponent
+            item={item}
+            action={action}
+            isCurrentPath={isCurrentPath}
+          />
         ) : (
-          <button
-            className="w-full flex items-center justify-center lg:justify-start gap-x-2"
-            onClick={() => action(dispatch)}
-          >
-            {item.iconType === "icon" ? (
-              <div
-                className=" text-3xl"
-                style={{
-                  filter: isCurrentPath
-                    ? "drop-shadow(0 0 0px black) drop-shadow(0 0 0px black) drop-shadow(0 0 0px black)"
-                    : undefined,
-                }}
-              >
-                {item.icon}
-              </div>
-            ) : (
-              <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-                <Image
-                  src={item.icon as string}
-                  fill
-                  alt="profile image"
-                  sizes="5vw"
-                />
-              </figure>
-            )}
-            <span className="hidden lg:block"> {item.name}</span>
-          </button>
+          <ButtonComponent
+            item={item}
+            action={action}
+            isCurrentPath={isCurrentPath}
+          />
         )}
       </div>
     </li>

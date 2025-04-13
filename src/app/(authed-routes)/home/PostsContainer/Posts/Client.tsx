@@ -6,6 +6,8 @@ import { usePostsContext } from "./Context";
 function PostsClient() {
   const { postsState } = usePostsContext();
 
-  return postsState.map((post) => <Post key={post.id} post={post} />);
+  return postsState.map((post, index) => (
+    <Post key={post.id} index={index} post={post} />
+  ));
 }
 export default PostsClient;

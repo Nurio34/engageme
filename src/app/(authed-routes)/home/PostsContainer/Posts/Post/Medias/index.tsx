@@ -7,7 +7,7 @@ import SlidePrevious from "./SlideButtons/SlidePrevious";
 import SlideNext from "./SlideButtons/SlideNext";
 import SlideIndicator from "./SlideButtons/SlideIndicator";
 
-function Medias({ post }: { post: PrismaPostType }) {
+function Medias({ index, post }: { index: number; post: PrismaPostType }) {
   const { medias } = post;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,6 +37,7 @@ function Medias({ post }: { post: PrismaPostType }) {
       onContextMenu={(e) => e.preventDefault()}
     >
       <MediasSlide
+        index={index}
         currentIndex={currentIndex}
         mediasContainerWidth={mediasContainerWidth}
         medias={medias}

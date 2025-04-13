@@ -8,11 +8,11 @@ import PostModal from "./PostModal";
 import TotalComments from "./TotalComments";
 import TotalLikes from "./TotalLikes";
 
-function Post({ post }: { post: PrismaPostType }) {
+function Post({ index, post }: { index: number; post: PrismaPostType }) {
   return (
     <section className="w-full md:w-[468px] py-4 border-b-2">
       <Header post={post} />
-      <Medias post={post} />
+      <Medias index={index} post={post} />
       <div className="px-2 md:px-0">
         <ActionButtons post={post} />
         <TotalLikes post={post} />

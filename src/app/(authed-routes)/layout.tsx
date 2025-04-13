@@ -8,12 +8,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex">
+    <div className="grid md:grid-cols-[84px,1fr] lg:grid-cols-[227px,1fr]">
       <SideMenu />
       <CreateModal />
       <WannaCloseCreateModal_Modal />
 
       {children}
-    </main>
+    </div>
   );
 }
