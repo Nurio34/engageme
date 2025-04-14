@@ -59,6 +59,7 @@ function Actions({
           setHandleModals={setHandleModals}
           setRatioState={setRatioState}
           originalRatioState={originalRatioState}
+          isVideo={isVideo}
         />
         {!isVideo && (
           <SelectZoom

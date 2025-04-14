@@ -3,18 +3,19 @@
 import { Provider } from "react-redux";
 import Client from "./Client";
 import { store } from "@/store";
-import { User } from "@clerk/nextjs/server";
 
 function ProviderComponent({
+  id,
   username,
   imageUrl,
 }: {
+  id: string;
   username: string | null;
   imageUrl: string;
 }) {
   return (
     <Provider store={store}>
-      <Client username={username} imageUrl={imageUrl} />
+      <Client id={id} username={username} imageUrl={imageUrl} />
     </Provider>
   );
 }

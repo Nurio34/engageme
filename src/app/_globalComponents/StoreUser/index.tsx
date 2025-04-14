@@ -6,8 +6,8 @@ async function StoreUser() {
 
   if (!user) return;
 
-  const { username, imageUrl } = user;
+  const { id, username, imageUrl } = user;
 
-  return <ProviderComponent username={username} imageUrl={imageUrl} />;
+  return <ProviderComponent id={id} username={username} imageUrl={imageUrl} />;
 }
 export default StoreUser;

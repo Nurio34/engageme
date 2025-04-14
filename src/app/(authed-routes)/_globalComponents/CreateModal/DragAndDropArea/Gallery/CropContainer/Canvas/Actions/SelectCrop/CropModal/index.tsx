@@ -4,9 +4,11 @@ import { CiImageOn } from "react-icons/ci";
 function CropModal({
   setRatioState,
   originalRatioState,
+  isVideo,
 }: {
   setRatioState: Dispatch<SetStateAction<number>>;
   originalRatioState: number;
+  isVideo: boolean;
 }) {
   const [currentCrop, setCurrentCrop] = useState(0);
 
@@ -29,47 +31,59 @@ function CropModal({
         type="button"
         className={`flex items-center gap-x-2 border-b px-4 py-3
             ${currentCrop === 1 ? "text-base-100" : ""}    
+            ${isVideo ? "cursor-not-allowed" : ""}
         `}
         onClick={() => {
+          if (isVideo) return;
           setCurrentCrop(1);
           setRatioState(1);
         }}
       >
-        <span>1:1</span>
+        <span className={`${isVideo ? "text-base-300/10" : ""}`}>1:1</span>
         <span
-          className={`block w-6 border rounded-[3px]`}
+          className={`block w-6 border rounded-[3px]
+            ${isVideo ? "border-base-300/10" : ""}
+          `}
           style={{ aspectRatio: 1 }}
         ></span>
       </button>
       <button
         type="button"
         className={`flex items-center gap-x-2 border-b px-4 py-3
-            ${currentCrop === 2 ? "text-base-100" : ""}    
+            ${currentCrop === 2 ? "text-base-100" : ""}   
+             ${isVideo ? "cursor-not-allowed" : ""} 
         `}
         onClick={() => {
+          if (isVideo) return;
           setCurrentCrop(2);
           setRatioState(4 / 5);
         }}
       >
-        <span> 4:5</span>
+        <span className={`${isVideo ? "text-base-300/10" : ""}`}> 4:5</span>
         <span
-          className={`block w-6 border rounded-[3px]`}
+          className={`block w-6 border rounded-[3px] ${
+            isVideo ? "border-base-300/10" : ""
+          }`}
           style={{ aspectRatio: 4 / 5 }}
         ></span>
       </button>
       <button
         type="button"
         className={`flex items-center gap-x-2 px-4 py-3
-            ${currentCrop === 3 ? "text-base-100" : ""}    
+            ${currentCrop === 3 ? "text-base-100" : ""}  
+             ${isVideo ? "cursor-not-allowed" : ""}  
         `}
         onClick={() => {
+          if (isVideo) return;
           setCurrentCrop(3);
           setRatioState(16 / 9);
         }}
       >
-        <span>16:9</span>
+        <span className={`${isVideo ? "text-base-300/10" : ""}`}>16:9</span>
         <span
-          className={`block w-6 border rounded-[3px]`}
+          className={`block w-6 border rounded-[3px] ${
+            isVideo ? "border-base-300/10" : ""
+          }`}
           style={{ aspectRatio: 16 / 9 }}
         ></span>
       </button>

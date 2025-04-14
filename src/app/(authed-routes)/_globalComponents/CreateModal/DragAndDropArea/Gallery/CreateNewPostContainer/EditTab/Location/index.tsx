@@ -144,7 +144,7 @@ function Location({ EditTabWidth }: { EditTabWidth: RefObject<number> }) {
           <input
             ref={InputRef}
             type="text"
-            className={`outline-none disabled:bg-transparent
+            className={`outline-none bg-transparent
               ${
                 location.name.trim() !== ""
                   ? "cursor-not-allowed font-bold"

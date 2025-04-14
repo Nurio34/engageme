@@ -2,16 +2,13 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { MenuType } from "../..";
-import { AppDispatch } from "@/store";
 import { started } from "@/store/slices/routing";
 
 function LinkComponent({
   item,
-  action,
   isCurrentPath,
 }: {
   item: MenuType;
-  action: (dispatch: AppDispatch) => void;
   isCurrentPath: boolean;
 }) {
   const { username, avatar } = useAppSelector((s) => s.user);

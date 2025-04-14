@@ -50,58 +50,58 @@ export type DeleteMediaType = {
   type: "image" | "video";
 };
 
-export const uploadFileToCloudinary = async (file: File) => {
-  try {
-    const getBuffer = async (file: File): Promise<Buffer> => {
-      const arrayBuffer = await file.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      return buffer;
-    };
+// export const uploadFileToCloudinary = async (file: File) => {
+//   try {
+//     const getBuffer = async (file: File): Promise<Buffer> => {
+//       const arrayBuffer = await file.arrayBuffer();
+//       const buffer = Buffer.from(arrayBuffer);
+//       return buffer;
+//     };
 
-    const buffer = await getBuffer(file);
+//     const buffer = await getBuffer(file);
 
-    const response = await cloudinary.uploader
-      .upload_stream({
-        resource_type: "image",
-      })
-      .end(buffer);
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-};
+//     const response = await cloudinary.uploader
+//       .upload_stream({
+//         resource_type: "image",
+//       })
+//       .end(buffer);
+//     console.log(response);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-export const deleteFilesFromCloudinary = async (
-  publicIds: {
-    publicId: string;
-    type: "image" | "video";
-  }[]
-) => {
-  const deleteFile = async (
-    publicId: string,
-    type: "image" | "video" | "raw"
-  ) => {
-    try {
-      await cloudinary.uploader.destroy(publicId, {
-        resource_type: type,
-      });
-      return "success";
-    } catch (error) {
-      console.log(error);
-      return "error";
-    }
-  };
+// export const deleteFilesFromCloudinary = async (
+//   publicIds: {
+//     publicId: string;
+//     type: "image" | "video";
+//   }[]
+// ) => {
+//   const deleteFile = async (
+//     publicId: string,
+//     type: "image" | "video" | "raw"
+//   ) => {
+//     try {
+//       await cloudinary.uploader.destroy(publicId, {
+//         resource_type: type,
+//       });
+//       return "success";
+//     } catch (error) {
+//       console.log(error);
+//       return "error";
+//     }
+//   };
 
-  try {
-    const deleteResults = await Promise.all(
-      publicIds.map(({ publicId, type }) => deleteFile(publicId, type))
-    );
+//   try {
+//     const deleteResults = await Promise.all(
+//       publicIds.map(({ publicId, type }) => deleteFile(publicId, type))
+//     );
 
-    return deleteResults.some((result) => result === "error")
-      ? "error"
-      : "success";
-  } catch (error) {
-    console.log(error);
-    return { status: "error" };
-  }
-};
+//     return deleteResults.some((result) => result === "error")
+//       ? "error"
+//       : "success";
+//   } catch (error) {
+//     console.log(error);
+//     return { status: "error" };
+//   }
+// };

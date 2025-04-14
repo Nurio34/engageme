@@ -1,27 +1,22 @@
-import "./index.css";
+"use client";
+
+import { Provider } from "react-redux";
+import Client from "./Client";
+import { store } from "@/store";
 
 function GradientCircle({
   isLoading,
   width,
   inset,
 }: {
-  isLoading: boolean;
+  isLoading?: boolean;
   width?: number;
   inset?: number;
 }) {
-  const animationState = isLoading ? "running" : "paused";
-
   return (
-    <div
-      className="GradientCircle w-24 aspect-square rounded-full"
-      style={
-        {
-          "--animationState": animationState,
-          "--inset": inset || 4,
-          width,
-        } as React.CSSProperties
-      }
-    />
+    <Provider store={store}>
+      <Client isLoading={isLoading} width={width} inset={inset} />
+    </Provider>
   );
 }
 export default GradientCircle;

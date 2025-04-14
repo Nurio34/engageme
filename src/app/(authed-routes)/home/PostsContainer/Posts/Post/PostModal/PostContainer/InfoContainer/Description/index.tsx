@@ -20,7 +20,7 @@ function Description({
 
   useEffect(() => {
     if (isMessageLongThan100) setIsTruncated(true);
-  }, [isMessageLongThan100]);
+  }, [setIsTruncated, isMessageLongThan100]);
 
   return (
     <div

@@ -23,7 +23,7 @@ function MediaSlider({
       return sum;
     }, 0);
     setSlide(slideAmount);
-  }, [currentIndex]);
+  }, [currentIndex, slideArray]);
 
   return (
     <div

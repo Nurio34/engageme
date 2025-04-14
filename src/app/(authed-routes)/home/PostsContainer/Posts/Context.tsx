@@ -2,7 +2,6 @@
 
 import {
   createContext,
-  FormEvent,
   ReactNode,
   useContext,
   useEffect,
@@ -12,16 +11,17 @@ import {
   PrismaPostCommentType,
   PrismaPostType,
 } from "../../../../../../prisma/types/post";
-import { useUser } from "@clerk/nextjs";
 import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
+import { useAppSelector } from "@/store/hooks";
+import { PostCommentLike, PostLike } from "@prisma/client";
 
 interface PostsContextType {
   postsState: PrismaPostType[];
   setPostsState: React.Dispatch<React.SetStateAction<PrismaPostType[]>>;
   isPostLiked: (postId: string) => boolean;
   likeThePostAction: (postId: string) => Promise<string | undefined>;
-  removeLikeFromThePostAction: (postId: string) => Promise<string | undefined>;
+  removeLikeFromThePostAction: (like: PostLike) => Promise<string | undefined>;
   isLoading_LikePost: boolean;
   addComment: (postId: string, postComment: PrismaPostCommentType) => void;
   isCommentLiked: (postId: string, commentId: string) => boolean;
@@ -31,7 +31,7 @@ interface PostsContextType {
   ) => Promise<string | undefined>;
   removeLikeFromTheCommentAction: (
     postId: string,
-    commentId: string
+    commentLike: PostCommentLike
   ) => Promise<string | undefined>;
   isLoading_LikeComment: boolean;
 }
@@ -45,8 +45,7 @@ export const PostsProvider = ({
   children: ReactNode;
   posts: PrismaPostType[];
 }) => {
-  const { user } = useUser();
-  const userId = user?.id;
+  const { id } = useAppSelector((s) => s.user);
 
   const [postsState, setPostsState] = useState<PrismaPostType[]>([]);
 
@@ -59,9 +58,7 @@ export const PostsProvider = ({
     likeThePostAction,
     removeLikeFromThePostAction,
     isLoading_LikePost,
-  } = usePostLike(postsState, setPostsState, userId);
-
-  //! *** comments ***
+  } = usePostLike(postsState, setPostsState, id);
 
   const {
     addComment,
@@ -69,9 +66,7 @@ export const PostsProvider = ({
     likeCommentAction,
     removeLikeFromTheCommentAction,
     isLoading_LikeComment,
-  } = usePostComment(setPostsState, postsState, userId);
-
-  //! *****************
+  } = usePostComment(setPostsState, postsState, id);
 
   return (
     <Context.Provider

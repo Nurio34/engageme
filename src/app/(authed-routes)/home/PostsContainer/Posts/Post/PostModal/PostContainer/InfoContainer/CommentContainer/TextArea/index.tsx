@@ -1,22 +1,20 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePicker } from "@/store/slices/modals";
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 
 function TextArea({
   comment,
   setComment,
   setTextAreaHeight,
-  isLoading,
+  isPending,
 }: {
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
   setTextAreaHeight: Dispatch<SetStateAction<number>>;
-  isLoading: boolean;
+  isPending: boolean;
 }) {
   const { isPickerOpen } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
-  const { isLoading_SendComment } = usePostsContext();
 
   const TextAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [areaWidth, setAreaWidth] = useState(0);
@@ -40,7 +38,7 @@ function TextArea({
     observer.observe(TextAreaRef.current);
 
     return () => observer.disconnect();
-  }, []);
+  }, [setTextAreaHeight]);
 
   const togglePickerFunction = () => {
     if (isPickerOpen) dispatch(togglePicker());
@@ -53,14 +51,14 @@ function TextArea({
       id="comment"
       rows={1}
       className={`grow max-h-20 resize-none outline-none text-sm ${
-        isLoading ? "text-base-content/50" : ""
+        isPending ? "text-base-content/50" : ""
       }`}
       style={{ maxWidth: areaWidth > 0 ? areaWidth : undefined }}
       placeholder="Add a comment..."
       value={comment}
       onChange={(e) => setComment(e.target.value)}
       onFocus={togglePickerFunction}
-      disabled={isLoading_SendComment}
+      disabled={isPending}
     />
   );
 }

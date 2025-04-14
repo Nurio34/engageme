@@ -1,13 +1,15 @@
 import { useUser } from "@clerk/nextjs";
 import Comment from "./Comment";
-import { PostComment } from "@prisma/client";
-import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
+import {
+  PrismaPostCommentType,
+  PrismaPostType,
+} from "../../../../../../../../../prisma/types/post";
 
 function SentComments({
   sentComments,
   post,
 }: {
-  sentComments: PostComment[];
+  sentComments: PrismaPostCommentType[];
   post: PrismaPostType;
 }) {
   const { user } = useUser();

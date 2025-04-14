@@ -2,9 +2,17 @@ import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { usePostsContext } from "../../../Context";
 import "./index.css";
+import { useAppSelector } from "@/store/hooks";
 
 function LikeButton({ post }: { post: PrismaPostType }) {
-  const { id } = post;
+  const { id, likes } = post;
+
+  const { id: userId } = useAppSelector((s) => s.user);
+
+  const like = likes.find(
+    (likeObj) => likeObj.postId === id && likeObj.userId === userId
+  );
+
   const {
     isPostLiked,
     likeThePostAction,
@@ -15,7 +23,9 @@ function LikeButton({ post }: { post: PrismaPostType }) {
   const isPostLikedState = isPostLiked(id);
 
   const handleLike = () =>
-    isPostLikedState ? removeLikeFromThePostAction(id) : likeThePostAction(id);
+    isPostLikedState
+      ? removeLikeFromThePostAction(like!)
+      : likeThePostAction(id);
 
   return (
     <button type="button" onClick={handleLike} disabled={isLoading_LikePost}>

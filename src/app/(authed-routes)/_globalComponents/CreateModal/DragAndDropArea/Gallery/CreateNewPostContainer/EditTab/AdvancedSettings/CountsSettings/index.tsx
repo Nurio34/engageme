@@ -12,7 +12,7 @@ function CountsSettings() {
 
   useEffect(() => {
     setSettings((prev) => ({ ...prev, isCountsVisible: isChecked! }));
-  }, [isChecked]);
+  }, [setSettings, isChecked]);
 
   return (
     <div className="py-2">

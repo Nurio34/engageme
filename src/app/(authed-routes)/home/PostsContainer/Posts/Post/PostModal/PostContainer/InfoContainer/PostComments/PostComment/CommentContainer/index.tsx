@@ -19,10 +19,10 @@ function CommentContainer({
   return (
     <div className="overflow-auto">
       <div>
-        <div className="float-left mr-2">
+        <div className="float-left mr-2 text-sm">
           <Name name={name} />
         </div>
-        <p className="break-words">{comment}</p>
+        <p className="break-words text-sm">{comment}</p>
       </div>
       <div className="flex items-center gap-x-3 py-1">
         <CreatedAt updatedAt={updatedAt} />

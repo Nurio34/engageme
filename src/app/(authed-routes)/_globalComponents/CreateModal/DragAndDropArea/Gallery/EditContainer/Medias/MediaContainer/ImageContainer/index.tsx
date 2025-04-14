@@ -14,11 +14,6 @@ function ImageContainer({ index, media }: { index: number; media: MediaType }) {
   const [urlState, setUrlState] = useState(eagerUrl);
   const [isNewUrlDownloading, setIsNewUrlDownloading] = useState(true);
 
-  //! *** Scale down image to be able to "Enhance" applied ***
-  // const { newWidth, newHeight } = scaleDown(width, height);
-  // // LINT console.log({ newWidth, newHeight });
-  //! ********************
-
   const [style, setStyle] = useState<StyleType>({
     brightness: 1,
     contrast: 1,

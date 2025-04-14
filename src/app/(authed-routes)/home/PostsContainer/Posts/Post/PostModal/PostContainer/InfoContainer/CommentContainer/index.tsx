@@ -12,6 +12,7 @@ import TextArea from "./TextArea";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import ActionIndicator from "../../../../AddComment/ActionIndicator";
 import { sendComment } from "@/app/actions/post/comment/sendComment";
+import { useAppSelector } from "@/store/hooks";
 
 function CommentContainer({
   post,
@@ -20,6 +21,9 @@ function CommentContainer({
   post: PrismaPostType;
   setTextAreaHeight: Dispatch<SetStateAction<number>>;
 }) {
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
   const { addComment } = usePostsContext();
 
   const [comment, setComment] = useState("");
@@ -37,20 +41,20 @@ function CommentContainer({
   return (
     <form
       action={formAction}
-      className="relative border-t-2 p-4 py-3
+      className="relative border-t-2 px-2 md:px-4 py-3
         flex items-center gap-x-3
       "
     >
       <input type="hidden" name="postId" value={post.id} />
-      <EmojiContainer setComment={setComment} />
+      {isDesktop && <EmojiContainer setComment={setComment} />}
       <TextArea
         comment={comment}
         setComment={setComment}
         setTextAreaHeight={setTextAreaHeight}
-        isLoading={isPending}
+        isPending={isPending}
       />
       <PostButton comment={comment} />
-      <ActionIndicator isLoading={isPending} />
+      <ActionIndicator isPending={isPending} />
     </form>
   );
 }

@@ -72,6 +72,7 @@ function Canvas({ url, index }: { url: string; index: number }) {
   useEffect(() => {
     setRatioState(originalRatioState);
   }, [originalRatioState]);
+
   const [scale, setScale] = useState(1);
   //! **********************
 

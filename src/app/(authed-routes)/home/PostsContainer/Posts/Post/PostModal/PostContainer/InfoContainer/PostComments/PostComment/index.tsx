@@ -9,7 +9,7 @@ function PostComment({ postComment }: { postComment: PrismaPostCommentType }) {
 
   return (
     <li className="py-3">
-      <div className="grid grid-cols-[auto,1fr,auto] items-start gap-x-3">
+      <div className="grid grid-cols-[auto,1fr,auto] items-start gap-x-1 lg:gap-x-3 pr-2 lg:pr-0">
         <Avatar avatar={avatar} />
         <CommentContainer
           name={name}

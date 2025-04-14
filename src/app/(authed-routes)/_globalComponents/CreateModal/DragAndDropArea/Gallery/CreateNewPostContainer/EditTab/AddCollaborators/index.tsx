@@ -8,7 +8,7 @@ function AddCollaborators() {
         name="collaborators"
         id="collaborators"
         placeholder="Add Collaborators"
-        className="outline-none"
+        className="outline-none bg-transparent"
       />
       <CollaboratorsIcon />
     </div>

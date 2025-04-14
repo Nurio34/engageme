@@ -14,8 +14,6 @@ function EmojiPickerContainer({
     setIsEmojiPickerOpen,
     setIsPlacesModalOpen,
   } = useCreateModalContext();
-  //todo:eslint
-  // console.log(EditTabWidth, setMessage);
 
   const toggleEmojiPicker = () => setIsEmojiPickerOpen((prev) => !prev);
 

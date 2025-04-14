@@ -12,6 +12,7 @@ function SelectCrop({
   setHandleModals,
   setRatioState,
   originalRatioState,
+  isVideo,
 }: {
   currentAction: ActionType;
   setCurrentAction: Dispatch<SetStateAction<ActionType>>;
@@ -19,6 +20,7 @@ function SelectCrop({
   setHandleModals: Dispatch<SetStateAction<HandleModalsType>>;
   setRatioState: Dispatch<SetStateAction<number>>;
   originalRatioState: number;
+  isVideo: boolean;
 }) {
   const { setIsListModalOpen } = useCreateModalContext();
 
@@ -75,6 +77,7 @@ function SelectCrop({
         <CropModal
           setRatioState={setRatioState}
           originalRatioState={originalRatioState}
+          isVideo={isVideo}
         />
       )}
     </div>

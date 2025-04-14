@@ -1,17 +1,20 @@
 import { Dispatch, SetStateAction } from "react";
 import EmojiContainer from "./EmojiContainer";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePicker } from "@/store/slices/modals";
 
 function EmojiComponent({
   comment,
   setComment,
-  isLoading,
+  isPending,
 }: {
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
-  isLoading: boolean;
+  isPending: boolean;
 }) {
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
   const dispatch = useAppDispatch();
 
   return (
@@ -21,12 +24,12 @@ function EmojiComponent({
           type="submit"
           className="text-info text-sm font-semibold"
           onClick={() => dispatch(togglePicker())}
-          disabled={isLoading}
+          disabled={isPending}
         >
           Post
         </button>
       )}
-      <EmojiContainer setComment={setComment} />
+      {isDesktop && <EmojiContainer setComment={setComment} />}
     </div>
   );
 }

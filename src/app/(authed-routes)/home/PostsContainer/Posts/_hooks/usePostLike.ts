@@ -8,32 +8,39 @@ import { removeLike } from "@/app/actions/post/like/removeLike";
 export const usePostLike = (
   postsState: PrismaPostType[],
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
-  userId: string | undefined
+  userId: string
 ) => {
   const [isLoading_LikePost, setIsLoading_LikePost] = useState(false);
 
-  const likeThePostAction = async (postId: string) => {
+  async function likeThePostAction(postId: string) {
     setIsLoading_LikePost(true);
+    const id = crypto.randomUUID();
+    const newLike = { id, createdAt: new Date(), postId, userId };
+    addLikeToPostLikes(newLike);
+
     try {
       const { status, postLike } = await likeThePost(postId);
 
-      if (status === "fail" || !postLike)
+      if (status === "fail" || !postLike) {
+        removeLikeFromPostLikes(newLike);
+
         return toast.error(
           "Something went wrong while liking the post ! Please try again..."
         );
-
-      addLikeToPostLikes(postLike);
+      }
     } catch (error) {
       console.log(error);
+      removeLikeFromPostLikes(newLike);
+
       return toast.error(
         "Unexpected error while liking the post ! Please try again..."
       );
     } finally {
       setIsLoading_LikePost(false);
     }
-  };
+  }
 
-  const addLikeToPostLikes = (like: PostLike) =>
+  async function addLikeToPostLikes(like: PostLike) {
     setPostsState((pre) =>
       pre.map((postObj) =>
         postObj.id === like.postId
@@ -41,29 +48,35 @@ export const usePostLike = (
           : postObj
       )
     );
+  }
 
-  const removeLikeFromThePostAction = async (postId: string) => {
+  async function removeLikeFromThePostAction(like: PostLike) {
     setIsLoading_LikePost(true);
-    try {
-      const { status, postLike } = await removeLike(postId);
+    removeLikeFromPostLikes(like);
 
-      if (status === "fail" || !postLike)
+    try {
+      const { status, postLike } = await removeLike(like.postId);
+
+      if (status === "fail" || !postLike) {
+        addLikeToPostLikes(like);
         return toast.error(
           "Something went wrong while removing like from the post ! Please try again..."
         );
+      }
 
       removeLikeFromPostLikes(postLike);
     } catch (error) {
       console.log(error);
+      addLikeToPostLikes(like);
       return toast.error(
         "Unexpected error while removing like from the post ! Please try again..."
       );
     } finally {
       setIsLoading_LikePost(false);
     }
-  };
+  }
 
-  const removeLikeFromPostLikes = (like: PostLike) =>
+  async function removeLikeFromPostLikes(like: PostLike) {
     setPostsState((pre) =>
       pre.map((postObj) =>
         postObj.id === like.postId
@@ -74,6 +87,7 @@ export const usePostLike = (
           : postObj
       )
     );
+  }
 
   const isPostLiked = (postId: string): boolean => {
     const post = postsState.find((postObj) => postObj.id === postId);

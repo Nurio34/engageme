@@ -38,7 +38,7 @@ function VideoMedia({
     } else {
       setIsPlaying(false);
     }
-  }, [currentIndex]);
+  }, [index, currentIndex]);
 
   useEffect(() => {
     if (VideoRef.current) {

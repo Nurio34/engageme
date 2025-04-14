@@ -3,6 +3,7 @@ import { PrismaMediaType } from "../../../../../../../../../../../prisma/types/p
 import { MdAudiotrack } from "react-icons/md";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
+import { useAppSelector } from "@/store/hooks";
 
 type ObjectPositionType = {
   x: string;
@@ -34,7 +35,11 @@ function VideoMedia({
     y: "0px",
   });
 
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
   const VideoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoWidth, setVideoWidth] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -45,16 +50,17 @@ function VideoMedia({
   }, [currentIndex, updatedWidth]);
 
   useEffect(() => {
-    if (updatedWidth === 0) return;
+    if (videoWidth === 0) return;
+    if (index === 0) setSlideArray([]);
 
-    setSlideArray((prev) => [...prev, updatedWidth]);
+    setSlideArray((prev) => [...prev, videoWidth]);
 
-    const objXParam = updatedWidth / +width;
+    const objXParam = videoWidth / +width;
     const objX = +x === 0 ? "center" : +x * objXParam * -1 + "px";
     const objYParam = containerHeight / +height;
     const objY = +y === 0 ? "center" : +y * objYParam * -1 + "px";
     setObjectPosition({ x: objX, y: objY });
-  }, [updatedWidth]);
+  }, [videoWidth]);
 
   useEffect(() => {
     if (currentIndex === index) {
@@ -82,22 +88,34 @@ function VideoMedia({
     }
   }, [isPlaying]);
 
+  useEffect(() => {
+    if (VideoRef.current)
+      setVideoWidth(VideoRef.current.getBoundingClientRect().width);
+  }, [updatedWidth, device, currentIndex]);
+
   return (
     <div
       className="relative"
-      style={{ minWidth: updatedWidth, height: containerHeight }}
+      style={{
+        minWidth: isDesktop ? updatedWidth : "100%",
+        height: containerHeight,
+      }}
     >
       <video
         ref={VideoRef}
-        src={url}
+        src={url.replace("http://", "https://")}
         className={` ${
           +x === 0 && +y === 0
             ? "w-full h-full"
             : +x === 0
             ? "w-full "
             : "h-full"
-        } object-cover cursor-pointer`}
-        style={{ objectPosition: `${objectPosition.x} ${objectPosition.y}` }}
+        }
+        object-cover cursor-pointer`}
+        style={{
+          maxWidth: isDesktop ? containerHeight : undefined,
+          objectPosition: `${objectPosition.x} ${objectPosition.y}`,
+        }}
         muted
         loop
         poster={poster?.url || ""}

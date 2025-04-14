@@ -2,6 +2,7 @@ import {
   EditedMedia,
   useCreateModalContext,
 } from "@/app/(authed-routes)/_globalComponents/CreateModal/Context";
+import { useAppSelector } from "@/store/hooks";
 import { CldVideoPlayer } from "next-cloudinary";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -28,6 +29,9 @@ function Media({ media }: { media: EditedMedia }) {
     isAudioAllowed === undefined || isAudioAllowed === true
       ? audio?.codec
       : "none";
+
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
 
   const { baseCanvasContainerWidth } = useCreateModalContext();
 
@@ -61,7 +65,13 @@ function Media({ media }: { media: EditedMedia }) {
           )}
         </figure>
       ) : (
-        <div style={{ width: baseCanvasContainerWidth }}>
+        <div
+          className="overflow-hidden"
+          style={{
+            width: baseCanvasContainerWidth,
+            maxHeight: isDesktop ? "690.62px" : "calc(100vh - 43.38px)",
+          }}
+        >
           <CldVideoPlayer
             key={publicId}
             src={videoUrl}

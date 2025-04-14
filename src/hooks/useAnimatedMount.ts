@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
-export const animatedMount = (condition: boolean) => {
+export const useAnimatedMount = (condition: boolean) => {
   const [isMounted, setIsMounted] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const style = showModal
-    ? "opacity-100 translate-y-0"
-    : "opacity-0 translate-y-10";
+
+  const style = {
+    transform: showModal ? "translateY(0%)" : "translateY(50%)",
+    opacity: showModal ? 1 : 0,
+  };
 
   useEffect(() => {
     if (condition) {

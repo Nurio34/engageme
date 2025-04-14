@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { PrismaPostCommentType } from "../../../../../../../../../../../prisma/types/post";
 import PostComment from "./PostComment";
-import { useUser } from "@clerk/nextjs";
 import { SortByType } from "..";
+import { useAppSelector } from "@/store/hooks";
+import NoCommentsPlaceholder from "./NoCommentsPlaceholder";
 
 function PostComments({
   comments,
@@ -15,8 +16,10 @@ function PostComments({
   textAreaHeight: number;
   sortBy: SortByType;
 }) {
-  const { user } = useUser();
-  const userId = user?.id;
+  const { id } = useAppSelector((s) => s.user);
+  const { device } = useAppSelector((s) => s.modals);
+  const { type, height } = device;
+  const isDesktop = type === "desktop";
 
   const [sortedComments, setSortedComments] = useState<PrismaPostCommentType[]>(
     []
@@ -31,15 +34,15 @@ function PostComments({
       setContainerHeight(
         CommentsContainerRef.current.getBoundingClientRect().height
       );
-  }, [isTruncated, reRender, textAreaHeight]);
+  }, [isTruncated, reRender, textAreaHeight, device]);
 
   useEffect(() => {
     if (!isTruncated) setReRender(true);
   }, [isTruncated]);
 
   useEffect(() => {
-    setReRender(true);
-  }, [textAreaHeight]);
+    if (isDesktop) setReRender(true);
+  }, [textAreaHeight, isDesktop]);
 
   useEffect(() => {
     if (reRender) setReRender(false);
@@ -48,24 +51,28 @@ function PostComments({
   useEffect(() => {
     if (sortBy === "For You")
       setSortedComments([
-        ...comments.filter((commentObj) => commentObj.userId === userId),
-        ...comments.filter((commentObj) => commentObj.userId !== userId),
+        ...comments.filter((commentObj) => commentObj.userId === id),
+        ...comments.filter((commentObj) => commentObj.userId !== id),
       ]);
     else if (sortBy === "Most Recent") setSortedComments(comments);
-  }, [sortBy, comments]);
+  }, [id, sortBy, comments]);
 
   return (
-    <div ref={CommentsContainerRef} className="grow">
+    <div ref={CommentsContainerRef} className="grow relative">
       {!reRender && (
         <ul
           className="overflow-x-hidden overflow-y-auto"
-          style={{ height: containerHeight, maxHeight: containerHeight }}
+          style={{
+            height: isDesktop ? containerHeight : height - 305,
+            maxHeight: isDesktop ? containerHeight : height - 305,
+          }}
         >
           {sortedComments.map((postComment) => (
             <PostComment key={postComment.id} postComment={postComment} />
           ))}
         </ul>
       )}
+      <NoCommentsPlaceholder commentsAmount={sortedComments.length} />
     </div>
   );
 }

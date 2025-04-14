@@ -1,6 +1,7 @@
 import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
+import { useAppSelector } from "@/store/hooks";
 
 function LikeTheCommentButton({
   postComment,
@@ -13,6 +14,13 @@ function LikeTheCommentButton({
     removeLikeFromTheCommentAction,
     isLoading_LikeComment,
   } = usePostsContext();
+
+  const { id } = useAppSelector((s) => s.user);
+
+  const commentLike = postComment.likes.find(
+    (likeObj) => likeObj.commentId === postComment.id && likeObj.userId === id
+  );
+
   const isCommentLikedState = isCommentLiked(
     postComment.postId,
     postComment.id
@@ -20,7 +28,7 @@ function LikeTheCommentButton({
 
   const handleCommentLike = () =>
     isCommentLikedState
-      ? removeLikeFromTheCommentAction(postComment.postId, postComment.id)
+      ? removeLikeFromTheCommentAction(postComment.postId, commentLike!)
       : likeCommentAction(postComment.postId, postComment.id);
 
   return (

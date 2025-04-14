@@ -11,7 +11,7 @@ import { removeLike } from "@/app/actions/post/comment/removeLike";
 export const usePostComment = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
   postsState: PrismaPostType[],
-  userId: string | undefined
+  userId: string
 ) => {
   const [isLoading_LikeComment, setIsLoading_LikeComment] = useState(false);
 
@@ -24,32 +24,29 @@ export const usePostComment = (
       )
     );
 
-  const isCommentLiked = (postId: string, commentId: string): boolean => {
-    const post = postsState.find((postObj) => postObj.id === postId);
-    if (!post) return false;
-
-    const comment = post.comments.find(
-      (commentObj) => commentObj.id === commentId
-    );
-    if (!comment) return false;
-
-    return comment.likes.some((likeObj) => likeObj.userId === userId);
-  };
-
   const likeCommentAction = async (postId: string, commentId: string) => {
+    const id = crypto.randomUUID();
+    const newCommentLike = {
+      id,
+      userId,
+      commentId,
+    };
+    addLikeToTheComment(postId, commentId, newCommentLike);
+
     try {
       setIsLoading_LikeComment(true);
 
       const { status, postCommentLike } = await likeComment(commentId);
 
-      if (status === "fail" || !postCommentLike)
+      if (status === "fail" || !postCommentLike) {
+        removeLikeFromTheComment(postId, commentId, newCommentLike);
         return toast.error(
           "Something went wrong while liking the comment ! Please try again..."
         );
-
-      addLikeToTheComment(postId, commentId, postCommentLike);
+      }
     } catch (error) {
       console.log(error);
+      removeLikeFromTheComment(postId, commentId, newCommentLike);
       toast.error(
         "Unexpected error while liking the comment ! Please try again..."
       );
@@ -83,20 +80,25 @@ export const usePostComment = (
 
   const removeLikeFromTheCommentAction = async (
     postId: string,
-    commentId: string
+    commentLike: PostCommentLike
   ) => {
+    const { commentId } = commentLike;
+
     try {
       setIsLoading_LikeComment(true);
+      removeLikeFromTheComment(postId, commentId, commentLike);
 
       const { status, postCommentLike } = await removeLike(commentId);
-      if (status === "fail" || !postCommentLike)
+      if (status === "fail" || !postCommentLike) {
+        addLikeToTheComment(postId, commentId, commentLike);
         return toast.error(
           "Something went wrong while removing likefrom the comment ! Please try again..."
         );
-
-      removeLikeFromTheComment(postId, commentId, postCommentLike);
+      }
     } catch (error) {
       console.log(error);
+      addLikeToTheComment(postId, commentId, commentLike);
+
       toast.error(
         "Unexpected error while removing likefrom the comment ! Please try again..."
       );
@@ -129,6 +131,18 @@ export const usePostComment = (
           : postObj
       )
     );
+
+  const isCommentLiked = (postId: string, commentId: string): boolean => {
+    const post = postsState.find((postObj) => postObj.id === postId);
+    if (!post) return false;
+
+    const comment = post.comments.find(
+      (commentObj) => commentObj.id === commentId
+    );
+    if (!comment) return false;
+
+    return comment.likes.some((likeObj) => likeObj.userId === userId);
+  };
 
   return {
     addComment,

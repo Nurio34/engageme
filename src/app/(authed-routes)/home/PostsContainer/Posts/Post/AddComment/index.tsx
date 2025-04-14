@@ -48,14 +48,14 @@ function AddComment({ post }: { post: PrismaPostType }) {
           togglePickerFunction={togglePickerFunction}
           comment={comment}
           setComment={setComment}
-          isLoading={isPending}
+          isPending={isPending}
         />
         <EmojiComponent
           comment={comment}
           setComment={setComment}
-          isLoading={isPending}
+          isPending={isPending}
         />
-        <ActionIndicator isLoading={isPending} />
+        <ActionIndicator isPending={isPending} />
       </form>
     </div>
   );

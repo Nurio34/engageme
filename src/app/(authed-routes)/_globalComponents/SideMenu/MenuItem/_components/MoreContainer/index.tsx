@@ -3,11 +3,11 @@ import ReportIcon from "@/app/_globalComponents/Svg/MoreSvgs/ReportIcon";
 import SettingsIcon from "@/app/_globalComponents/Svg/MoreSvgs/SettingsIcon";
 import ThemeIcon from "@/app/_globalComponents/Svg/MoreSvgs/ThemeIcon";
 import { useAppSelector } from "@/store/hooks";
-import { JSX, useEffect, useRef, useState } from "react";
+import { JSX } from "react";
 import MoreItem from "./MoreItem";
 import SavedIcon from "@/app/_globalComponents/Svg/MoreSvgs/SavedIcon";
-import { animatedMount } from "@/lib/animatedMount";
 import UnmountHandler from "./UnmountHandler";
+import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 
 export type MoreItemType = {
   name: string;
@@ -65,13 +65,14 @@ function MoreContainer() {
 
   const { isMoreModalOpen } = useAppSelector((s) => s.modals);
 
-  const { isMounted, style } = animatedMount(isMoreModalOpen);
+  const { isMounted, style } = useAnimatedMount(isMoreModalOpen);
 
   return (
     <>
       {isMounted && (
         <ul
-          className={`absolute z-20 w-64 bottom-10 py-4 bg-base-100 text-base-content shadow-[0px_2px_10px_-2px] rounded-lg transition-all duration-300 transform ${style} `}
+          className={`absolute z-20 w-64 bottom-10 py-4 bg-base-100 text-base-content shadow-[0px_2px_10px_-2px] rounded-lg transition-all`}
+          style={{ ...style }}
         >
           {moreItems.map((item) => (
             <MoreItem key={item.name} item={item} />

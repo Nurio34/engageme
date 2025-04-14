@@ -37,7 +37,7 @@ function TextArea() {
       <textarea
         name="message"
         id="message"
-        className="resize-none w-full min-h-44 outline-none"
+        className="resize-none w-full min-h-44 outline-none bg-transparent "
         placeholder="Type your message ..."
         value={message}
         onChange={handleChange}

@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
 import Avatar from "../../../Header/Avatar";
 import Header from "./Header";
@@ -24,7 +23,7 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
   const [sortBy, setSortBy] = useState<SortByType>("For You");
 
   return (
-    <div className="w-[500px] flex flex-col">
+    <div className="lg:w-[500px] flex flex-col">
       <Header post={post} />
       <div
         className="grow w-full
@@ -32,7 +31,7 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
         "
       >
         <div
-          className=" px-4 py-3
+          className=" px-1 lg:px-4 py-1 lg:py-3
             flex flex-col
           "
         >
@@ -55,7 +54,7 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
             sortBy={sortBy}
           />
         </div>
-        <div className="border-t-2 px-4 pb-2">
+        <div className="border-t-2 px-2 lg:px-4 py-1 lg:pb-2">
           <ActionButtons post={post} />
           <TotalLikes post={post} />
           <CreatedAtLong updatedAt={updatedAt} />

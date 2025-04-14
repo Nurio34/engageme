@@ -4,6 +4,7 @@ import { CldVideoPlayer, CloudinaryVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
 import { PlayerTimeType } from "..";
 import { PosterType } from "@/actions/cloudinary";
+import { useAppSelector } from "@/store/hooks";
 
 function Media({
   eagerUrl,
@@ -23,6 +24,9 @@ function Media({
   isAudioAllowed: boolean | undefined;
 }) {
   const codec = !audio || !isAudioAllowed ? "none" : audio.codec;
+
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
 
   const { baseCanvasContainerWidth, cloudinaryMedias, setCloudinaryMedias } =
     useCreateModalContext();
@@ -96,14 +100,17 @@ function Media({
     return () => {
       if (PlayerInterval.current) clearInterval(PlayerInterval.current);
     };
-  }, [isRendered, isPlaying]);
+  }, [setPlayerTime, isRendered, isPlaying]);
 
   return (
     <div
-      className={`${
+      className={` overflow-hidden ${
         !isLoaded ? "bg-base-content/50 animate-pulse" : "flex items-center"
       }`}
-      style={{ minWidth: baseCanvasContainerWidth }}
+      style={{
+        minWidth: baseCanvasContainerWidth,
+        maxHeight: isDesktop ? "690.62px" : "calc(100vh - 43.38px)",
+      }}
     >
       {isRendered && (
         <CldVideoPlayer

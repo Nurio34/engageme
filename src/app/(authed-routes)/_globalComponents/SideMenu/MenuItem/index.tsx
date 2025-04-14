@@ -52,11 +52,7 @@ function MenuItem({ item }: { item: MenuType }) {
     >
       <div className={`flex items-center gap-x-[1vw] p-1`}>
         {item.type === "link" ? (
-          <LinkComponent
-            item={item}
-            action={action}
-            isCurrentPath={isCurrentPath}
-          />
+          <LinkComponent item={item} isCurrentPath={isCurrentPath} />
         ) : (
           <ButtonComponent
             item={item}

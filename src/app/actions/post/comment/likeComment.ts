@@ -15,7 +15,6 @@ export const likeComment = async (
     if (!user) return { status: "fail" };
 
     const userId = user.id;
-    console.log({ userId, commentId });
 
     const postCommentLike = await prisma.postCommentLike.create({
       data: {
@@ -24,7 +23,6 @@ export const likeComment = async (
       },
     });
 
-    console.log({ postCommentLike });
     if (!postCommentLike) return { status: "fail" };
 
     return { status: "success", postCommentLike };

@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostCommentType } from "../../../../../prisma/types/post";
-import { PostComment } from "@prisma/client";
 
 export const sendComment = async (
   prevState: { status: string; postComment?: PrismaPostCommentType },

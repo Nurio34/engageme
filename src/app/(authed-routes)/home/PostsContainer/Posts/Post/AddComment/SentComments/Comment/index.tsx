@@ -1,14 +1,17 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { PostComment } from "@prisma/client";
-import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
+import {
+  PrismaPostCommentType,
+  PrismaPostType,
+} from "../../../../../../../../../../prisma/types/post";
 import { usePostsContext } from "../../../../Context";
+import { useAppSelector } from "@/store/hooks";
 
 function Comment({
   comment,
   username,
   post,
 }: {
-  comment: PostComment;
+  comment: PrismaPostCommentType;
   username: string | null | undefined;
   post: PrismaPostType;
 }) {
@@ -18,11 +21,22 @@ function Comment({
     removeLikeFromTheCommentAction,
     isLoading_LikeComment,
   } = usePostsContext();
+
+  const { id } = useAppSelector((s) => s.user);
+
+  const theComment = post.comments.find(
+    (commentObj) => commentObj.id === comment.id
+  );
+  if (!theComment) return;
+  const commentLike = theComment.likes.find(
+    (likeObj) => likeObj.commentId === comment.id && likeObj.userId === id
+  );
+
   const isCommentLikedState = isCommentLiked(post.id, comment.id);
 
   const handleCommentLike = () =>
     isCommentLikedState
-      ? removeLikeFromTheCommentAction(post.id, comment.id)
+      ? removeLikeFromTheCommentAction(post.id, commentLike!)
       : likeCommentAction(post.id, comment.id);
 
   return (

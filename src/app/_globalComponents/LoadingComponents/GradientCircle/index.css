@@ -11,19 +11,19 @@
     #feda75
   );
   position: relative;
-  animation: spin 2s linear infinite;
+  animation: spin-1 2s linear infinite;
   animation-play-state: var(--animationState);
 }
 
 .GradientCircle::before {
   content: "";
   position: absolute;
-  background-color: white;
+  background-color: var(--bg);
   border-radius: 50%;
   inset: calc(1px * var(--inset));
 }
 
-@keyframes spin {
+@keyframes spin-1 {
   to {
     transform: rotate(1turn);
   }

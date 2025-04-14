@@ -1,9 +1,13 @@
-    1. PWA yap
-    2. clerk'e normal login yapınca app hata veriyo
+## App
+
+    2. PWA yap
 
 ## Home Page
 
-    2.Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
+    1. post veya comment likeladığın zaman isLoading sırasında diğer postların veya commentlerin like buttonları da disabled oluyo. Sadece
+    like'ladağımın disabled olması lazım.
+    1. comment'leri useOptimistic.
+    1. Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
     user profilini gösteren bi modal göster
     2. Comments sortBy "Meta Verified"a göre sortlama pending...
 
