@@ -35,18 +35,21 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
             flex flex-col
           "
         >
-          <div className="flex items-start gap-4">
-            <Avatar avatar={avatar} />
-            <div>
-              <Description
-                post={post}
-                isTruncated={isTruncated}
-                setIsTruncated={setIsTruncated}
-              />
-              <CreatedAt updatedAt={updatedAt} />
-              <SortComments sortBy={sortBy} setSortBy={setSortBy} />
+          {post.comments.length > 0 && (
+            <div className="flex items-start gap-4">
+              <Avatar avatar={avatar} />
+
+              <div>
+                <Description
+                  post={post}
+                  isTruncated={isTruncated}
+                  setIsTruncated={setIsTruncated}
+                />
+                <CreatedAt updatedAt={updatedAt} />
+                <SortComments sortBy={sortBy} setSortBy={setSortBy} />
+              </div>
             </div>
-          </div>
+          )}
           <PostComments
             comments={comments}
             isTruncated={isTruncated}

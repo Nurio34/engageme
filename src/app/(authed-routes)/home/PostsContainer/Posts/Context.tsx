@@ -2,23 +2,35 @@
 
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  RefObject,
+  SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
   PrismaPostCommentType,
   PrismaPostType,
+  PrismaReplyCommentType,
 } from "../../../../../../prisma/types/post";
 import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
 import { useAppSelector } from "@/store/hooks";
 import { PostCommentLike, PostLike } from "@prisma/client";
 
+export type CommentReplyType = {
+  isReply: boolean;
+  replyToId?: string;
+  replyToName?: string;
+  isReplyToReply: boolean;
+  count: number;
+};
 interface PostsContextType {
   postsState: PrismaPostType[];
-  setPostsState: React.Dispatch<React.SetStateAction<PrismaPostType[]>>;
+  setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>;
   isPostLiked: (postId: string) => boolean;
   likeThePostAction: (postId: string) => Promise<string | undefined>;
   removeLikeFromThePostAction: (like: PostLike) => Promise<string | undefined>;
@@ -34,6 +46,10 @@ interface PostsContextType {
     commentLike: PostCommentLike
   ) => Promise<string | undefined>;
   isLoading_LikeComment: boolean;
+  CommentAreaRef: RefObject<HTMLTextAreaElement | null>;
+  commentReply: CommentReplyType;
+  setCommentReply: Dispatch<SetStateAction<CommentReplyType>>;
+  addReply: (postId: string, replyComment: PrismaReplyCommentType) => void;
 }
 
 const Context = createContext<PostsContextType | undefined>(undefined);
@@ -45,7 +61,8 @@ export const PostsProvider = ({
   children: ReactNode;
   posts: PrismaPostType[];
 }) => {
-  const { id } = useAppSelector((s) => s.user);
+  const { id: userId } = useAppSelector((s) => s.user);
+  const { postModal } = useAppSelector((s) => s.homePage);
 
   const [postsState, setPostsState] = useState<PrismaPostType[]>([]);
 
@@ -58,7 +75,7 @@ export const PostsProvider = ({
     likeThePostAction,
     removeLikeFromThePostAction,
     isLoading_LikePost,
-  } = usePostLike(postsState, setPostsState, id);
+  } = usePostLike(postsState, setPostsState, userId);
 
   const {
     addComment,
@@ -66,7 +83,54 @@ export const PostsProvider = ({
     likeCommentAction,
     removeLikeFromTheCommentAction,
     isLoading_LikeComment,
-  } = usePostComment(setPostsState, postsState, id);
+  } = usePostComment(setPostsState, postsState, userId);
+
+  //! *** commentReply state ***
+  const CommentAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [commentReply, setCommentReply] = useState<CommentReplyType>({
+    isReply: false,
+    replyToId: undefined,
+    replyToName: undefined,
+    isReplyToReply: false,
+    count: 0,
+  });
+  //! **************************
+  console.log(commentReply);
+
+  //! *** reply functions ***
+  const addReply = (postId: string, replyComment: PrismaReplyCommentType) =>
+    setPostsState((prev) =>
+      prev.map((postObj) =>
+        postObj.id === postId
+          ? {
+              ...postObj,
+              comments: postObj.comments.map((commentObj) =>
+                commentObj.id === replyComment.commentId
+                  ? {
+                      ...commentObj,
+                      replies: [...commentObj.replies, replyComment],
+                    }
+                  : commentObj
+              ),
+            }
+          : postObj
+      )
+    );
+  //! ***********************
+
+  //! *** reset when postModal closed ***
+  useEffect(() => {
+    if (!postModal.isOpen) {
+      setCommentReply({
+        isReply: false,
+        replyToId: undefined,
+        replyToName: undefined,
+        isReplyToReply: false,
+        count: 0,
+      });
+    }
+  }, [postModal.isOpen]);
+  //! ***********************************
 
   return (
     <Context.Provider
@@ -82,6 +146,10 @@ export const PostsProvider = ({
         likeCommentAction,
         removeLikeFromTheCommentAction,
         isLoading_LikeComment,
+        CommentAreaRef,
+        commentReply,
+        setCommentReply,
+        addReply,
       }}
     >
       {children}

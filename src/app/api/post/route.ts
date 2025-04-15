@@ -28,6 +28,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           include: {
             user: true,
             likes: true,
+            replies: {
+              include: {
+                likes: true,
+                user: true,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",

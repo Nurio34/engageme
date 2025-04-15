@@ -22,6 +22,7 @@ function AddComment({ post }: { post: PrismaPostType }) {
   const [comment, setComment] = useState("");
   const [state, formAction, isPending] = useActionState(sendComment, {
     status: "fail",
+    isReply: false,
   });
   const [sentComments, setSentComments] = useState<PrismaPostCommentType[]>([]);
 

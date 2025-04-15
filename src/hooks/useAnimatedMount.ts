@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useAnimatedMount = (condition: boolean) => {
+export const useAnimatedMount = (condition: boolean, type?: string) => {
   const [isMounted, setIsMounted] = useState(false);
   const [showModal, setShowModal] = useState(false);
 

@@ -16,13 +16,6 @@ function TextArea() {
     setMessage(value);
   };
 
-  // const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-  //   if (message.length !== maxMessageLength) return;
-
-  //   const key = e.code;
-  //   if (key === "Backspace") setMessage(message.slice(0, maxMessageLength - 1));
-  // };
-
   const handleOnInput = (e: FormEvent<HTMLTextAreaElement>) => {
     if (message.length !== maxMessageLength) return;
 

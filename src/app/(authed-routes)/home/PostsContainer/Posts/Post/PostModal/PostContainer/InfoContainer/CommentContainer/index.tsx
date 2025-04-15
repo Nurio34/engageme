@@ -1,18 +1,19 @@
 import {
   Dispatch,
+  FormEvent,
   SetStateAction,
-  useActionState,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import EmojiContainer from "./EmojiContainer";
 import PostButton from "./PostButton";
-import { usePostsContext } from "../../../../../Context";
+import { CommentReplyType, usePostsContext } from "../../../../../Context";
 import TextArea from "./TextArea";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import ActionIndicator from "../../../../AddComment/ActionIndicator";
-import { sendComment } from "@/app/actions/post/comment/sendComment";
 import { useAppSelector } from "@/store/hooks";
+import { useSendComment } from "./_hooks/useSendComment";
 
 function CommentContainer({
   post,
@@ -24,19 +25,38 @@ function CommentContainer({
   const { device } = useAppSelector((s) => s.modals);
   const isDesktop = device.type === "desktop";
 
-  const { addComment } = usePostsContext();
+  const { commentReply, CommentAreaRef } = usePostsContext();
 
-  const [comment, setComment] = useState("");
-  const [state, formAction, isPending] = useActionState(sendComment, {
-    status: "fail",
-  });
+  //! *** replyToNameState ***
+  const [commentReplyState, setCommentReplyState] =
+    useState<CommentReplyType>(commentReply);
+  const { replyToName, isReply, replyToId } = commentReplyState;
+  const ReplyToNameRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (state.status === "fail" || !state.postComment) return;
+    setCommentReplyState(commentReply);
+  }, [commentReply.count]);
 
-    addComment(post.id, state.postComment);
-    setComment("");
-  }, [state]);
+  useEffect(() => {
+    if (replyToName?.length === 0 && CommentAreaRef.current)
+      CommentAreaRef.current.focus();
+  }, [replyToName]);
+
+  useEffect(() => {
+    if (replyToName !== undefined && replyToName === commentReply.replyToName)
+      setCommentReplyState((prev) => ({ ...prev, isReply: true }));
+    else
+      setCommentReplyState((prev) => ({
+        ...prev,
+        isReply: false,
+      }));
+  }, [replyToName]);
+
+  //! ***********************
+
+  const { comment, setComment, formAction, isPending } = useSendComment(
+    post.id
+  );
 
   return (
     <form
@@ -46,12 +66,69 @@ function CommentContainer({
       "
     >
       <input type="hidden" name="postId" value={post.id} />
+      <input type="hidden" name="isReply" value={isReply ? 1 : 0} />
+      <input type="hidden" name="replyToId" value={replyToId} />
       {isDesktop && <EmojiContainer setComment={setComment} />}
+      {replyToName && (
+        <div className="float-start flex items-center">
+          <span
+            className={`${
+              replyToName === commentReply.replyToName ? "text-info" : ""
+            }`}
+          >
+            @
+          </span>
+          <input
+            ref={ReplyToNameRef}
+            type="text"
+            name="replyToName"
+            id="replyToName"
+            autoCorrect="off"
+            className={`outline-none ${
+              replyToName === commentReply.replyToName ? "text-info" : ""
+            }`}
+            style={{
+              width: `${replyToName && replyToName.length}ch`,
+            }}
+            value={`${replyToName}`}
+            onInput={(e: FormEvent<HTMLInputElement>) => {
+              const nativeEvent = e.nativeEvent as InputEvent;
+              const inputType = nativeEvent.inputType;
+
+              if (inputType === "deleteContentBackward") {
+                setCommentReplyState((prev) => ({
+                  ...prev,
+                  replyToName: prev.replyToName?.slice(
+                    0,
+                    prev.replyToName.length - 1
+                  ),
+                }));
+                return;
+              }
+
+              const value = e.currentTarget.value;
+              if (
+                commentReply.replyToName === replyToName &&
+                CommentAreaRef.current
+              ) {
+                CommentAreaRef.current.focus();
+                setComment((prev) => prev + nativeEvent.data!);
+              } else
+                setCommentReplyState((prev) => ({
+                  ...prev,
+                  replyToName: value,
+                }));
+            }}
+          />
+        </div>
+      )}
+
       <TextArea
         comment={comment}
         setComment={setComment}
         setTextAreaHeight={setTextAreaHeight}
         isPending={isPending}
+        ReplyToNameRef={ReplyToNameRef}
       />
       <PostButton comment={comment} />
       <ActionIndicator isPending={isPending} />

@@ -17,8 +17,10 @@ model User {
   postLikes     PostLike[]
   postComments  PostComment[]
   commentLikes  PostCommentLike[]
+  replies       ReplyComment[]
+  replyLikes    ReplyCommentLike[]
   createdAt     DateTime @default(now())
-  updatedAt   DateTime @updatedAt @default(now())
+  updatedAt     DateTime @updatedAt @default(now())
 }
 
 model Post {
@@ -106,6 +108,7 @@ model PostComment {
   id      String @id @default(cuid())
   comment String
   likes   PostCommentLike[]
+  replies ReplyComment[]
   postId  String
   post    Post @relation(fields: [postId],references: [id],onDelete: Cascade)
   userId  String
@@ -120,6 +123,29 @@ model PostCommentLike {
   user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentId String
   comment   PostComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+  @@unique([userId,commentId])
+  @@index([id,userId])
+}
+
+model ReplyComment {
+  id                String  @id @default(cuid())
+  comment           String
+  likes             ReplyCommentLike[]
+  commentId         String
+  postComment       PostComment @relation(fields: [commentId],references: [id], onDelete: Cascade) 
+  userId            String
+  user              User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt  @default(now())
+
+}
+
+model ReplyCommentLike {
+  id        String @id @default(cuid())
+  userId    String
+  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentId String
+  comment   ReplyComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
   @@unique([userId,commentId])
   @@index([id,userId])
 }
