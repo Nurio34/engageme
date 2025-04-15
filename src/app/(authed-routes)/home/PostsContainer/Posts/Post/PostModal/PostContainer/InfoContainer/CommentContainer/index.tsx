@@ -130,7 +130,7 @@ function CommentContainer({
         isPending={isPending}
         ReplyToNameRef={ReplyToNameRef}
       />
-      <PostButton comment={comment} />
+      <PostButton comment={comment} isPending={isPending} />
       <ActionIndicator isPending={isPending} />
     </form>
   );

@@ -65,7 +65,7 @@ function MoreContainer() {
 
   const { isMoreModalOpen } = useAppSelector((s) => s.modals);
 
-  const { isMounted, style } = useAnimatedMount(isMoreModalOpen);
+  const { isMounted, style } = useAnimatedMount(isMoreModalOpen, "translateY");
 
   return (
     <>

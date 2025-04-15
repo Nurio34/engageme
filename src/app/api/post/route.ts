@@ -33,6 +33,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 likes: true,
                 user: true,
               },
+              orderBy: {
+                createdAt: "desc",
+              },
             },
           },
           orderBy: {

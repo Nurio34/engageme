@@ -1,11 +1,14 @@
-import Loading from "@/app/_globalComponents/LoadingComponents/Loading";
 import ViewButton from "./ViewButton";
 import TotalReplies from "./TotalReplies";
-import { PrismaPostCommentType } from "../../../../../../../../../../../../../../prisma/types/post";
-import Avatar from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/Avatar";
+import {
+  PrismaPostCommentType,
+  PrismaReplyCommentType,
+} from "../../../../../../../../../../../../../../prisma/types/post";
 import Reply from "./Reply";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
+import ShowMoreRepliesButton from "./ShowMoreRepliesButton";
+import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 
 function RepliesContainer({
   postComment,
@@ -15,8 +18,23 @@ function RepliesContainer({
   const { replies } = postComment;
   const isAnyReply = replies.length > 0;
 
+  const { repliedCommentId } = usePostsContext();
+
   const [isRepliesVisible, setIsRepliesVisible] = useState(false);
-  const { isMounted, style } = useAnimatedMount(isRepliesVisible);
+  const { isMounted, style } = useAnimatedMount(isRepliesVisible, "scaleY");
+
+  const [shownReplies, setShownReplies] = useState<PrismaReplyCommentType[]>(
+    []
+  );
+  const [shownRepliesAmount, setShownRepliesAmount] = useState(5);
+
+  useEffect(() => {
+    setShownReplies(replies.slice(0, shownRepliesAmount));
+  }, [shownRepliesAmount, replies]);
+
+  useEffect(() => {
+    if (repliedCommentId === postComment.id) setIsRepliesVisible(true);
+  }, [repliedCommentId]);
 
   return (
     isAnyReply && (
@@ -25,18 +43,23 @@ function RepliesContainer({
           <ViewButton
             isRepliesVisible={isRepliesVisible}
             setIsRepliesVisible={setIsRepliesVisible}
+            setShownRepliesAmount={setShownRepliesAmount}
           />
           <TotalReplies totalReplies={replies.length} />
-          {/* <div className="ml-2">
-          <Loading size={5} />
-          </div> */}
         </div>
         {isMounted && (
-          <ul className="my-4 space-y-4 transition-all" style={{ ...style }}>
-            {replies.map((reply) => (
-              <Reply key={reply.id} reply={reply} />
-            ))}
-          </ul>
+          <>
+            <ul className="my-4 space-y-4 transition-all " style={{ ...style }}>
+              {shownReplies.map((reply) => (
+                <Reply key={reply.id} reply={reply} />
+              ))}
+            </ul>
+            <ShowMoreRepliesButton
+              setShownRepliesAmount={setShownRepliesAmount}
+              totalRepliesAmount={replies.length}
+              shownRepliesAmount={shownReplies.length}
+            />
+          </>
         )}
       </div>
     )

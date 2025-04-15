@@ -2,7 +2,6 @@ import CreatedAt from "../../../../../../Header/CreatedAt";
 import Name from "../../../../../../Header/Name";
 import TotalCommentLikes from "./TotalCommentLikes";
 import ReplyTheComment from "./ReplyTheComment";
-import RepliesContainer from "./RepliesContainer";
 import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
 
 function CommentContainer({
@@ -11,6 +10,7 @@ function CommentContainer({
   postComment: PrismaPostCommentType;
 }) {
   const { user, comment, updatedAt, likes, id } = postComment;
+
   return (
     <div className="overflow-auto">
       <div>

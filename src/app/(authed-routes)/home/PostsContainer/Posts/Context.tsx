@@ -49,6 +49,8 @@ interface PostsContextType {
   CommentAreaRef: RefObject<HTMLTextAreaElement | null>;
   commentReply: CommentReplyType;
   setCommentReply: Dispatch<SetStateAction<CommentReplyType>>;
+  repliedCommentId: string;
+  setRepliedCommentId: Dispatch<SetStateAction<string>>;
   addReply: (postId: string, replyComment: PrismaReplyCommentType) => void;
 }
 
@@ -98,6 +100,7 @@ export const PostsProvider = ({
   console.log(commentReply);
 
   //! *** reply functions ***
+  const [repliedCommentId, setRepliedCommentId] = useState("");
   const addReply = (postId: string, replyComment: PrismaReplyCommentType) =>
     setPostsState((prev) =>
       prev.map((postObj) =>
@@ -108,7 +111,7 @@ export const PostsProvider = ({
                 commentObj.id === replyComment.commentId
                   ? {
                       ...commentObj,
-                      replies: [...commentObj.replies, replyComment],
+                      replies: [replyComment, ...commentObj.replies],
                     }
                   : commentObj
               ),
@@ -128,6 +131,7 @@ export const PostsProvider = ({
         isReplyToReply: false,
         count: 0,
       });
+      setRepliedCommentId("");
     }
   }, [postModal.isOpen]);
   //! ***********************************
@@ -149,6 +153,8 @@ export const PostsProvider = ({
         CommentAreaRef,
         commentReply,
         setCommentReply,
+        repliedCommentId,
+        setRepliedCommentId,
         addReply,
       }}
     >

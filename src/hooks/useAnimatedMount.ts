@@ -1,13 +1,36 @@
 import { useEffect, useState } from "react";
 
-export const useAnimatedMount = (condition: boolean, type?: string) => {
+type TypeType = "translateY" | "translateX" | "scaleY" | "scaleX";
+
+export const useAnimatedMount = (condition: boolean, type: TypeType) => {
   const [isMounted, setIsMounted] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [style, setStyle] = useState({});
 
-  const style = {
-    transform: showModal ? "translateY(0%)" : "translateY(50%)",
-    opacity: showModal ? 1 : 0,
-  };
+  useEffect(() => {
+    if (type === "translateY")
+      setStyle({
+        transform: showModal ? "translateY(0%)" : "translateY(50%)",
+        opacity: showModal ? 1 : 0,
+      });
+    else if (type === "translateX")
+      setStyle({
+        transform: showModal ? "translateX(0%)" : "translateX(50%)",
+        opacity: showModal ? 1 : 0,
+      });
+    else if (type === "scaleY")
+      setStyle({
+        transformOrigin: "top",
+        transform: showModal ? "scaleY(1)" : "scaleY(0)",
+        opacity: showModal ? 1 : 0,
+      });
+    else if (type === "scaleX")
+      setStyle({
+        transformOrigin: "left",
+        transform: showModal ? "scaleX(1)" : "scaleX(0)",
+        opacity: showModal ? 1 : 0,
+      });
+  }, [type, showModal]);
 
   useEffect(() => {
     if (condition) {
