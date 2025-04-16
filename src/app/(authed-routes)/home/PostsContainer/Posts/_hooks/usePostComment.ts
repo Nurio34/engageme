@@ -13,8 +13,6 @@ export const usePostComment = (
   postsState: PrismaPostType[],
   userId: string
 ) => {
-  const [isLoading_LikeComment, setIsLoading_LikeComment] = useState(false);
-
   const addComment = (postId: string, postComment: PrismaPostCommentType) =>
     setPostsState((prev) =>
       prev.map((postObj) =>
@@ -24,7 +22,11 @@ export const usePostComment = (
       )
     );
 
-  const likeCommentAction = async (postId: string, commentId: string) => {
+  const likeCommentAction = async (
+    postId: string,
+    commentId: string,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) => {
     const id = crypto.randomUUID();
     const newCommentLike = {
       id,
@@ -34,7 +36,7 @@ export const usePostComment = (
     addLikeToTheComment(postId, commentId, newCommentLike);
 
     try {
-      setIsLoading_LikeComment(true);
+      setIsLoading(true);
 
       const { status, postCommentLike } = await likeComment(commentId);
 
@@ -51,7 +53,7 @@ export const usePostComment = (
         "Unexpected error while liking the comment ! Please try again..."
       );
     } finally {
-      setIsLoading_LikeComment(false);
+      setIsLoading(false);
     }
   };
 
@@ -80,12 +82,13 @@ export const usePostComment = (
 
   const removeLikeFromTheCommentAction = async (
     postId: string,
-    commentLike: PostCommentLike
+    commentLike: PostCommentLike,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => {
     const { commentId } = commentLike;
 
     try {
-      setIsLoading_LikeComment(true);
+      setIsLoading(true);
       removeLikeFromTheComment(postId, commentId, commentLike);
 
       const { status, postCommentLike } = await removeLikeFromComment(
@@ -105,7 +108,7 @@ export const usePostComment = (
         "Unexpected error while removing likefrom the comment ! Please try again..."
       );
     } finally {
-      setIsLoading_LikeComment(false);
+      setIsLoading(false);
     }
   };
 
@@ -151,6 +154,5 @@ export const usePostComment = (
     isCommentLiked,
     likeCommentAction,
     removeLikeFromTheCommentAction,
-    isLoading_LikeComment,
   };
 };

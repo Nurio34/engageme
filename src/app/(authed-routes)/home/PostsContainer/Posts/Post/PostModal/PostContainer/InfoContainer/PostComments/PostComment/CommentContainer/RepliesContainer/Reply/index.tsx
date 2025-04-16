@@ -7,7 +7,7 @@ import Name from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/Na
 import CreatedAt from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/CreatedAt";
 import TotalCommentLikes from "../../TotalCommentLikes";
 import ReplyTheComment from "../../ReplyTheComment";
-import LikeTheReplyButton from "./LikeTheReplyButton";
+import LikeReplyButton from "./LikeTReplyButton";
 
 function Reply({
   postComment,
@@ -16,7 +16,7 @@ function Reply({
   postComment: PrismaPostCommentType;
   reply: PrismaReplyCommentType;
 }) {
-  const { user, comment, createdAt, likes, replyToName } = reply;
+  const { user, comment, createdAt, likes, replyToName, id, commentId } = reply;
 
   return (
     <li className="flex items-start gap-x-2">
@@ -44,7 +44,11 @@ function Reply({
           />
         </div>
       </div>
-      <LikeTheReplyButton />
+      <LikeReplyButton
+        reply={reply}
+        postComment={postComment}
+        commentId={commentId}
+      />
     </li>
   );
 }

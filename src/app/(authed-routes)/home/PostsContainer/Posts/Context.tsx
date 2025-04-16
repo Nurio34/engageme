@@ -19,8 +19,12 @@ import {
 import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
 import { useAppSelector } from "@/store/hooks";
-import { PostCommentLike, PostLike } from "@prisma/client";
+import { PostCommentLike, PostLike, ReplyCommentLike } from "@prisma/client";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
+import { likeReply } from "@/app/actions/post/reply/likeReply";
+import toast from "react-hot-toast";
+import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
+import { useReply } from "./_hooks/useReply";
 
 export type CommentReplyType = {
   isReply: boolean;
@@ -46,19 +50,38 @@ interface PostsContextType {
   isCommentLiked: (postId: string, commentId: string) => boolean;
   likeCommentAction: (
     postId: string,
-    commentId: string
+    commentId: string,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   removeLikeFromTheCommentAction: (
     postId: string,
-    commentLike: PostCommentLike
+    commentLike: PostCommentLike,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
-  isLoading_LikeComment: boolean;
   CommentAreaRef: RefObject<HTMLTextAreaElement | null>;
   commentReply: CommentReplyType;
   setCommentReply: Dispatch<SetStateAction<CommentReplyType>>;
   repliedCommentId: string;
   setRepliedCommentId: Dispatch<SetStateAction<string>>;
   addReply: (postId: string, replyComment: PrismaReplyCommentType) => void;
+  isReplyLiked: (
+    postId: string,
+    commentId: string,
+    replyId: string
+  ) => boolean | undefined;
+  likeTheReplyAction: (
+    postId: string,
+    commentId: string,
+    replyId: string,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) => Promise<string | undefined>;
+  removeLikeFromReplyAction: (
+    setIsLoading: Dispatch<SetStateAction<boolean>>,
+    postId: string,
+    commentId: string,
+    replyId: string,
+    like: ReplyCommentLike
+  ) => Promise<string | undefined>;
 }
 
 const Context = createContext<PostsContextType | undefined>(undefined);
@@ -93,41 +116,19 @@ export const PostsProvider = ({
     isCommentLiked,
     likeCommentAction,
     removeLikeFromTheCommentAction,
-    isLoading_LikeComment,
   } = usePostComment(setPostsState, postsState, userId);
 
-  //! *** commentReply state ***
-  const CommentAreaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [commentReply, setCommentReply] = useState<CommentReplyType>({
-    isReply: false,
-    replyToId: "",
-    replyToName: "",
-    isReplyToReply: false,
-    count: 0,
-  });
-  //! **************************
-
-  //! *** reply functions ***
-  const [repliedCommentId, setRepliedCommentId] = useState("");
-  const addReply = (postId: string, replyComment: PrismaReplyCommentType) =>
-    setPostsState((prev) =>
-      prev.map((postObj) =>
-        postObj.id === postId
-          ? {
-              ...postObj,
-              comments: postObj.comments.map((commentObj) =>
-                commentObj.id === replyComment.commentId
-                  ? {
-                      ...commentObj,
-                      replies: [...commentObj.replies, replyComment],
-                    }
-                  : commentObj
-              ),
-            }
-          : postObj
-      )
-    );
-  //! ***********************
+  const {
+    setCommentReply,
+    setRepliedCommentId,
+    CommentAreaRef,
+    commentReply,
+    repliedCommentId,
+    addReply,
+    isReplyLiked,
+    likeTheReplyAction,
+    removeLikeFromReplyAction,
+  } = useReply(setPostsState, userId, postsState);
 
   //! *** reset when postModal closed ***
   useEffect(() => {
@@ -162,13 +163,15 @@ export const PostsProvider = ({
         isCommentLiked,
         likeCommentAction,
         removeLikeFromTheCommentAction,
-        isLoading_LikeComment,
         CommentAreaRef,
         commentReply,
         setCommentReply,
         repliedCommentId,
         setRepliedCommentId,
         addReply,
+        isReplyLiked,
+        likeTheReplyAction,
+        removeLikeFromReplyAction,
       }}
     >
       {children}

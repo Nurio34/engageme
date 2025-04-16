@@ -40,15 +40,6 @@ export const sendComment = async (
     const isReplyToReplyState = isReplyToReply === "1";
     const replyToName = formData.get("replyToName") as string;
 
-    console.log({
-      userId,
-      postId,
-      comment,
-      isReplyState,
-      replyToId,
-      isReplyToReplyState,
-    });
-
     if (!isReplyState) {
       const postComment = await prisma.postComment.create({
         data: {
