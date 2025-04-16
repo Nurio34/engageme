@@ -6,7 +6,7 @@ import {
 import toast from "react-hot-toast";
 import { likeComment } from "@/app/actions/post/comment/likeComment";
 import { PostCommentLike } from "@prisma/client";
-import { removeLike } from "@/app/actions/post/comment/removeLike";
+import { removeLikeFromComment } from "@/app/actions/post/comment/removeLikeFromComment";
 
 export const usePostComment = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
@@ -88,7 +88,9 @@ export const usePostComment = (
       setIsLoading_LikeComment(true);
       removeLikeFromTheComment(postId, commentId, commentLike);
 
-      const { status, postCommentLike } = await removeLike(commentId);
+      const { status, postCommentLike } = await removeLikeFromComment(
+        commentId
+      );
       if (status === "fail" || !postCommentLike) {
         addLikeToTheComment(postId, commentId, commentLike);
         return toast.error(

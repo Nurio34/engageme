@@ -22,7 +22,11 @@ function CommentContainer({
       <div className="flex items-center gap-x-3 py-1">
         <CreatedAt updatedAt={updatedAt} />
         <TotalCommentLikes commentLikes={likes} />
-        <ReplyTheComment id={id} name={user.name} isReplyToReply={false} />
+        <ReplyTheComment
+          commentId={id}
+          name={user.name}
+          isReplyToReply={false}
+        />
       </div>
     </div>
   );

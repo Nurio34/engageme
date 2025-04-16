@@ -11,7 +11,7 @@ import {
   ControlsType,
   LeftControlType,
   RightControlType,
-} from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+} from "@/app/(authed-routes)/_globalComponents/CreateModal/_hooks/useVideoTrimControls";
 import { getControlTimes } from "../utils/getControlTimes";
 import { handleTime } from "../utils/handleTime";
 import CurrentTimeIndicator from "./CurrentTimeIndicator";

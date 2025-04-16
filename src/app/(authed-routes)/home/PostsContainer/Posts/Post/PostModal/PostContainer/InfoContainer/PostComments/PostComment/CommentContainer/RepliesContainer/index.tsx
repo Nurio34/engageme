@@ -51,7 +51,7 @@ function RepliesContainer({
           <>
             <ul className="my-4 space-y-4 transition-all " style={{ ...style }}>
               {shownReplies.map((reply) => (
-                <Reply key={reply.id} reply={reply} />
+                <Reply key={reply.id} postComment={postComment} reply={reply} />
               ))}
             </ul>
             <ShowMoreRepliesButton

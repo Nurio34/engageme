@@ -2,7 +2,7 @@ import {
   CollapseControlType,
   LeftControlType,
   RightControlType,
-} from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+} from "@/app/(authed-routes)/_globalComponents/CreateModal/_hooks/useVideoTrimControls";
 
 export const getControlTimes = (
   duration: number,

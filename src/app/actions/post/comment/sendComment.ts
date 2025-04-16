@@ -36,6 +36,18 @@ export const sendComment = async (
     const isReply = formData.get("isReply") as string;
     const isReplyState = isReply === "1";
     const replyToId = formData.get("replyToId") as string;
+    const isReplyToReply = formData.get("isReplyToReply") as string;
+    const isReplyToReplyState = isReplyToReply === "1";
+    const replyToName = formData.get("replyToName") as string;
+
+    console.log({
+      userId,
+      postId,
+      comment,
+      isReplyState,
+      replyToId,
+      isReplyToReplyState,
+    });
 
     if (!isReplyState) {
       const postComment = await prisma.postComment.create({
@@ -69,30 +81,58 @@ export const sendComment = async (
         isReply: isReplyState,
       };
     } else {
-      const replyComment = await prisma.replyComment.create({
-        data: {
-          commentId: replyToId,
-          userId,
-          comment,
-        },
-        include: {
-          user: true,
-          likes: true,
-        },
-      });
+      if (!isReplyToReplyState) {
+        const replyComment = await prisma.replyComment.create({
+          data: {
+            commentId: replyToId,
+            userId,
+            comment,
+          },
+          include: {
+            user: true,
+            likes: true,
+          },
+        });
 
-      if (!replyComment)
+        if (!replyComment)
+          return {
+            status: "fail",
+            replyComment: {} as PrismaReplyCommentType,
+            isReply: isReplyState,
+          };
+
         return {
-          status: "fail",
-          replyComment: {} as PrismaReplyCommentType,
+          status: "success",
+          replyComment,
           isReply: isReplyState,
         };
+      } else {
+        const replyComment = await prisma.replyComment.create({
+          data: {
+            commentId: replyToId,
+            userId,
+            comment,
+            replyToName,
+          },
+          include: {
+            user: true,
+            likes: true,
+          },
+        });
 
-      return {
-        status: "success",
-        replyComment,
-        isReply: isReplyState,
-      };
+        if (!replyComment)
+          return {
+            status: "fail",
+            replyComment: {} as PrismaReplyCommentType,
+            isReply: isReplyState,
+          };
+
+        return {
+          status: "success",
+          replyComment,
+          isReply: isReplyState,
+        };
+      }
     }
   } catch (error) {
     console.log(error);

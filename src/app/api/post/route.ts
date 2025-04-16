@@ -34,12 +34,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 user: true,
               },
               orderBy: {
-                createdAt: "desc",
+                createdAt: "asc",
               },
             },
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         },
       },

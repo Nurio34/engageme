@@ -23,7 +23,9 @@ function PostContainer({ post }: { post: PrismaPostType }) {
         height: isDesktop ? "calc(100% - 64px)" : undefined,
         aspectRatio: isDesktop ? undefined : aspectRatio!,
       }}
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        if (isDesktop) e.stopPropagation();
+      }}
     >
       <MediaContainer medias={medias} />
       <InfoContainer post={post} />

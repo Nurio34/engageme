@@ -20,17 +20,24 @@ import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
 import { useAppSelector } from "@/store/hooks";
 import { PostCommentLike, PostLike } from "@prisma/client";
+import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
 
 export type CommentReplyType = {
   isReply: boolean;
-  replyToId?: string;
-  replyToName?: string;
+  replyToId: string;
+  replyToName: string;
   isReplyToReply: boolean;
   count: number;
 };
+
 interface PostsContextType {
   postsState: PrismaPostType[];
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>;
+  isDragging: boolean;
+  isFading: boolean;
+  x: number;
+  y: number;
+  setPointer: Dispatch<SetStateAction<PointerType>>;
   isPostLiked: (postId: string) => boolean;
   likeThePostAction: (postId: string) => Promise<string | undefined>;
   removeLikeFromThePostAction: (like: PostLike) => Promise<string | undefined>;
@@ -72,6 +79,8 @@ export const PostsProvider = ({
     setPostsState(posts);
   }, [posts]);
 
+  const { isDragging, isFading, x, y, setPointer } = useDragAndFade();
+
   const {
     isPostLiked,
     likeThePostAction,
@@ -91,13 +100,12 @@ export const PostsProvider = ({
   const CommentAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [commentReply, setCommentReply] = useState<CommentReplyType>({
     isReply: false,
-    replyToId: undefined,
-    replyToName: undefined,
+    replyToId: "",
+    replyToName: "",
     isReplyToReply: false,
     count: 0,
   });
   //! **************************
-  console.log(commentReply);
 
   //! *** reply functions ***
   const [repliedCommentId, setRepliedCommentId] = useState("");
@@ -111,7 +119,7 @@ export const PostsProvider = ({
                 commentObj.id === replyComment.commentId
                   ? {
                       ...commentObj,
-                      replies: [replyComment, ...commentObj.replies],
+                      replies: [...commentObj.replies, replyComment],
                     }
                   : commentObj
               ),
@@ -126,8 +134,8 @@ export const PostsProvider = ({
     if (!postModal.isOpen) {
       setCommentReply({
         isReply: false,
-        replyToId: undefined,
-        replyToName: undefined,
+        replyToId: "",
+        replyToName: "",
         isReplyToReply: false,
         count: 0,
       });
@@ -141,6 +149,11 @@ export const PostsProvider = ({
       value={{
         postsState,
         setPostsState,
+        isDragging,
+        isFading,
+        x,
+        y,
+        setPointer,
         likeThePostAction,
         removeLikeFromThePostAction,
         isLoading_LikePost,

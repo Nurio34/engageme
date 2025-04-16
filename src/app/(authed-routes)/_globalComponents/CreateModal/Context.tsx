@@ -16,13 +16,13 @@ import {
 import {
   ControlsType,
   useVideoTrimControls,
-} from "./hooks/useVideoTrimControls";
-import { useInitialProcess } from "./hooks/useInitialProcess";
-import { useCloudinaryActions } from "./hooks/useCloudinaryActions";
-import { useGlobalCloudinaryMedias } from "./hooks/useGlobalCloudinaryMedias";
-import { useStep } from "./hooks/useStep";
+} from "./_hooks/useVideoTrimControls";
+import { useInitialProcess } from "./_hooks/useInitialProcess";
+import { useCloudinaryActions } from "./_hooks/useCloudinaryActions";
+import { useGlobalCloudinaryMedias } from "./_hooks/useGlobalCloudinaryMedias";
+import { useStep } from "./_hooks/useStep";
 import { TransformationType } from "./DragAndDropArea/Gallery/EditContainer/Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
-import { useMessage } from "./hooks/useMessage";
+import { useMessage } from "./_hooks/useMessage";
 
 export type FilesType = {
   files: File[] | null;

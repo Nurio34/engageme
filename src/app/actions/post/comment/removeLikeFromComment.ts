@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PostCommentLike } from "@prisma/client";
 
-export const removeLike = async (
+export const removeLikeFromComment = async (
   commentId: string
 ): Promise<{
   status: "success" | "fail";

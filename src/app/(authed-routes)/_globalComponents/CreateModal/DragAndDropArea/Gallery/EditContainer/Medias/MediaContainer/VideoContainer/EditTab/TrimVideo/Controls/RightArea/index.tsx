@@ -1,4 +1,4 @@
-import { RightControlType } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { RightControlType } from "@/app/(authed-routes)/_globalComponents/CreateModal/_hooks/useVideoTrimControls";
 
 function RightArea({ rightControl }: { rightControl: RightControlType }) {
   const { base, right } = rightControl;

@@ -54,7 +54,14 @@ function PostComments({
         ...comments.filter((commentObj) => commentObj.userId === id),
         ...comments.filter((commentObj) => commentObj.userId !== id),
       ]);
-    else if (sortBy === "Most Recent") setSortedComments(comments);
+    else if (sortBy === "Most Recent") {
+      setSortedComments(
+        [...comments].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      );
+    }
   }, [id, sortBy, comments]);
 
   return (

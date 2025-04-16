@@ -1,4 +1,4 @@
-import { LeftControlType } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { LeftControlType } from "@/app/(authed-routes)/_globalComponents/CreateModal/_hooks/useVideoTrimControls";
 
 function LeftArea({ leftControl }: { leftControl: LeftControlType }) {
   const { base, left } = leftControl;

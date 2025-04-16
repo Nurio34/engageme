@@ -1,4 +1,4 @@
-import { ControlsType } from "@/app/(authed-routes)/_globalComponents/CreateModal/hooks/useVideoTrimControls";
+import { ControlsType } from "@/app/(authed-routes)/_globalComponents/CreateModal/_hooks/useVideoTrimControls";
 import { PlayerTimeType } from "../../../../..";
 
 function CurrentTimeIndicator({

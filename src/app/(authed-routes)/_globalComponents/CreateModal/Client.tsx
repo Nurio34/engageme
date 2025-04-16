@@ -5,10 +5,12 @@ import DragAndDropArea from "./DragAndDropArea";
 import Header from "./Header";
 import { useCreateModalContext } from "./Context";
 import { usePreventRefresh } from "@/hooks/usePreventRefresh";
+import { useCustomNativeBackButton } from "./_hooks/useCustomNativeBackButton";
 
 function Client() {
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
   usePreventRefresh(isCreateModalOpen);
+  useCustomNativeBackButton();
 
   const dispatch = useAppDispatch();
 

@@ -130,6 +130,7 @@ model PostCommentLike {
 model ReplyComment {
   id                String  @id @default(cuid())
   comment           String
+  replyToName       String?
   likes             ReplyCommentLike[]
   commentId         String
   postComment       PostComment @relation(fields: [commentId],references: [id], onDelete: Cascade) 

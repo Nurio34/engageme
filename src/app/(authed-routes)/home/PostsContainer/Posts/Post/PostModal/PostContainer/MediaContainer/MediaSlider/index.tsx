@@ -2,6 +2,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PrismaMediaType } from "../../../../../../../../../../../prisma/types/post";
 import ImageMedia from "../ImageMedia";
 import VideoMedia from "../VideoMedia";
+import { usePostsContext } from "../../../../../Context";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setPostModal } from "@/store/slices/homePage";
 
 function MediaSlider({
   medias,
@@ -14,8 +17,14 @@ function MediaSlider({
   setContainerWidth: Dispatch<SetStateAction<number>>;
   currentIndex: number;
 }) {
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+  const dispatch = useAppDispatch();
+
   const [slideArray, setSlideArray] = useState<number[]>([]);
   const [slide, setSlide] = useState(0);
+
+  const { isDragging, setPointer } = usePostsContext();
 
   useEffect(() => {
     const slideAmount = slideArray.reduce((sum, amount, ind) => {
@@ -30,6 +39,58 @@ function MediaSlider({
       className="flex transition-transform duration-500"
       style={{
         transform: `translateX(-${slide}px)`,
+      }}
+      onMouseDown={(e) => {
+        setPointer((prev) => ({
+          ...prev,
+          start_x: e.clientX,
+          start_y: e.clientY,
+          isDragging: true,
+          end_x: e.clientX,
+          end_y: e.clientY,
+        }));
+      }}
+      onMouseMove={(e) => {
+        if (isDragging)
+          setPointer((prev) => ({
+            ...prev,
+            end_x: e.clientX,
+            end_y: e.clientY,
+          }));
+      }}
+      onMouseUp={() => {
+        setPointer((prev) => ({
+          ...prev,
+          isDragging: false,
+        }));
+      }}
+      onTouchStart={(e) => {
+        const { clientX, clientY } = e.touches[0];
+        if (isDesktop) dispatch(setPostModal({ isOpen: false, postId: "" }));
+        setPointer((prev) => ({
+          ...prev,
+          start_x: clientX,
+          start_y: clientY,
+          isDragging: true,
+          end_x: clientX,
+          end_y: clientY,
+        }));
+      }}
+      onTouchMove={(e) => {
+        const { clientX, clientY } = e.touches[0];
+
+        if (isDragging)
+          setPointer((prev) => ({
+            ...prev,
+            end_x: clientX,
+            end_y: clientY,
+          }));
+      }}
+      onTouchEnd={() => {
+        setPointer((prev) => ({
+          ...prev,
+          isDragging: false,
+        }));
       }}
     >
       {medias.map((media, index) => {
