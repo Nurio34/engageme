@@ -39,9 +39,15 @@ interface PostsContextType {
   y: number;
   setPointer: Dispatch<SetStateAction<PointerType>>;
   isPostLiked: (postId: string) => boolean;
-  likeThePostAction: (postId: string) => Promise<string | undefined>;
-  removeLikeFromThePostAction: (like: PostLike) => Promise<string | undefined>;
-  isLoading_LikePost: boolean;
+  likeThePostAction: (
+    postId: string,
+    postOwnerId: string,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) => Promise<string | undefined>;
+  removeLikeFromThePostAction: (
+    like: PostLike,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) => Promise<string | undefined>;
   addComment: (postId: string, postComment: PrismaPostCommentType) => void;
   isCommentLiked: (postId: string, commentId: string) => boolean;
   likeCommentAction: (
@@ -100,12 +106,8 @@ export const PostsProvider = ({
 
   const { isDragging, isFading, x, y, setPointer } = useDragAndFade();
 
-  const {
-    isPostLiked,
-    likeThePostAction,
-    removeLikeFromThePostAction,
-    isLoading_LikePost,
-  } = usePostLike(postsState, setPostsState, userId);
+  const { isPostLiked, likeThePostAction, removeLikeFromThePostAction } =
+    usePostLike(postsState, setPostsState, userId);
 
   const {
     addComment,
@@ -153,7 +155,6 @@ export const PostsProvider = ({
         setPointer,
         likeThePostAction,
         removeLikeFromThePostAction,
-        isLoading_LikePost,
         isPostLiked,
         addComment,
         isCommentLiked,

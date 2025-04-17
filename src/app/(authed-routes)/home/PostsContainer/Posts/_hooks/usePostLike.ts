@@ -4,16 +4,19 @@ import { PostLike } from "@prisma/client";
 import { likeThePost } from "@/app/actions/post/like/likeThePost";
 import toast from "react-hot-toast";
 import { removeLike } from "@/app/actions/post/like/removeLike";
+import { sendPostLikeNotification } from "@/app/actions/notification/sendPostLikeNotification";
 
 export const usePostLike = (
   postsState: PrismaPostType[],
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
   userId: string
 ) => {
-  const [isLoading_LikePost, setIsLoading_LikePost] = useState(false);
-
-  async function likeThePostAction(postId: string) {
-    setIsLoading_LikePost(true);
+  async function likeThePostAction(
+    postId: string,
+    postOwnerId: string,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) {
+    setIsLoading(true);
     const id = crypto.randomUUID();
     const newLike = { id, createdAt: new Date(), postId, userId };
     addLikeToPostLikes(newLike);
@@ -28,6 +31,9 @@ export const usePostLike = (
           "Something went wrong while liking the post ! Please try again..."
         );
       }
+
+      if (status === "success" && userId !== postOwnerId)
+        sendPostLikeNotificationAction(postLike, postOwnerId);
     } catch (error) {
       console.log(error);
       removeLikeFromPostLikes(newLike);
@@ -36,7 +42,7 @@ export const usePostLike = (
         "Unexpected error while liking the post ! Please try again..."
       );
     } finally {
-      setIsLoading_LikePost(false);
+      setIsLoading(false);
     }
   }
 
@@ -50,8 +56,30 @@ export const usePostLike = (
     );
   }
 
-  async function removeLikeFromThePostAction(like: PostLike) {
-    setIsLoading_LikePost(true);
+  async function sendPostLikeNotificationAction(
+    postLike: PostLike,
+    postOwnerId: string
+  ) {
+    try {
+      const { status, postLikeNotification } = await sendPostLikeNotification(
+        postLike,
+        postOwnerId
+      );
+
+      if (status === "fail" || !postLikeNotification) return;
+
+      //! *** Send real time notification ***
+      console.log(postLikeNotification);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function removeLikeFromThePostAction(
+    like: PostLike,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
+  ) {
+    setIsLoading(true);
     removeLikeFromPostLikes(like);
 
     try {
@@ -72,7 +100,7 @@ export const usePostLike = (
         "Unexpected error while removing like from the post ! Please try again..."
       );
     } finally {
-      setIsLoading_LikePost(false);
+      setIsLoading(false);
     }
   }
 
@@ -100,6 +128,5 @@ export const usePostLike = (
     isPostLiked,
     likeThePostAction,
     removeLikeFromThePostAction,
-    isLoading_LikePost,
   };
 };

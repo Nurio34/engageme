@@ -8,33 +8,34 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  userId        String   @unique
-  email         String   @unique
-  name          String
-  avatar        String?
-  posts         Post[]   // One-to-many relation with Post
-  postLikes     PostLike[]
-  postComments  PostComment[]
-  commentLikes  PostCommentLike[]
-  replies       ReplyComment[]
-  replyLikes    ReplyCommentLike[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt @default(now())
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  email                 String   @unique
+  name                  String
+  avatar                String?
+  posts                 Post[]
+  postLikes             PostLike[]
+  postComments          PostComment[]
+  commentLikes          PostCommentLike[]
+  replies               ReplyComment[]
+  replyLikes            ReplyCommentLike[]
+  postLikeNotifications PostLikeNotification[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt @default(now())
 }
 
 model Post {
-  id          String     @id @default(cuid())
-  message     String
-  user        User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId      String     
-  medias      Media[]    
-  location    Location?  
-  settings    Settings?  
-  likes       PostLike[] 
-  comments    PostComment[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime @updatedAt @default(now())
+  id            String     @id @default(cuid())
+  message       String
+  user          User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId        String     
+  medias        Media[]    
+  location      Location?  
+  settings      Settings?  
+  likes         PostLike[] 
+  comments      PostComment[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime @updatedAt @default(now())
 }
 
 model Media {
@@ -93,12 +94,13 @@ model Settings {
 }
 
 model PostLike {
-  id        String @id @default(cuid())
-  post      Post @relation(fields: [postId],references: [id], onDelete: Cascade)
-  postId    String
-  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  userId    String
-  createdAt DateTime @default(now())
+  id            String @id @default(cuid())
+  notifications PostLikeNotification[]
+  post          Post @relation(fields: [postId],references: [id], onDelete: Cascade)
+  postId        String
+  user          User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  userId        String
+  createdAt     DateTime @default(now())
 
   @@unique([userId,postId])
   @@index([id,userId])
@@ -149,4 +151,18 @@ model ReplyCommentLike {
   comment   ReplyComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
   @@unique([userId,commentId])
   @@index([id,userId])
+}
+
+model PostLikeNotification {
+  id              String  @id @default(cuid())
+  type            NotificationType  
+  userId          String
+  user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  postLikeId      String
+  postLike        PostLike  @relation(fields: [postLikeId],references: [id],onDelete:Cascade)
+  createdAt       DateTime  @default(now())
+}
+
+enum NotificationType {
+  postLike
 }

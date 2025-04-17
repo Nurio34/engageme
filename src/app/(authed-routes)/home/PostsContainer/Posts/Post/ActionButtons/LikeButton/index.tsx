@@ -3,32 +3,31 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { usePostsContext } from "../../../Context";
 import "./index.css";
 import { useAppSelector } from "@/store/hooks";
+import { useState } from "react";
 
 function LikeButton({ post }: { post: PrismaPostType }) {
-  const { id, likes } = post;
+  const { id: postId, likes, userId: postOwnerId } = post;
 
   const { id: userId } = useAppSelector((s) => s.user);
 
   const like = likes.find(
-    (likeObj) => likeObj.postId === id && likeObj.userId === userId
+    (likeObj) => likeObj.postId === postId && likeObj.userId === userId
   );
 
-  const {
-    isPostLiked,
-    likeThePostAction,
-    removeLikeFromThePostAction,
-    isLoading_LikePost,
-  } = usePostsContext();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isPostLikedState = isPostLiked(id);
+  const { isPostLiked, likeThePostAction, removeLikeFromThePostAction } =
+    usePostsContext();
+
+  const isPostLikedState = isPostLiked(postId);
 
   const handleLike = () =>
     isPostLikedState
-      ? removeLikeFromThePostAction(like!)
-      : likeThePostAction(id);
+      ? removeLikeFromThePostAction(like!, setIsLoading)
+      : likeThePostAction(postId, postOwnerId, setIsLoading);
 
   return (
-    <button type="button" onClick={handleLike} disabled={isLoading_LikePost}>
+    <button type="button" onClick={handleLike} disabled={isLoading}>
       {isPostLikedState ? (
         <FaHeart color="red" size={24} className="RemoveLike" />
       ) : (
