@@ -22,8 +22,7 @@ const initialTranslate = { x: 0, y: 0 };
 
 export const useDragAndFade = () => {
   const { device } = useAppSelector((s) => s.modals);
-  const { type, width, height } = device;
-  const isDesktop = type === "desktop";
+  const { width, height } = device;
 
   const dispatch = useAppDispatch();
 
@@ -33,7 +32,6 @@ export const useDragAndFade = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (isDesktop) return;
     setTranslate({
       x: pointer.end_x - pointer.start_x,
       y: pointer.end_y - pointer.start_y,
@@ -41,31 +39,35 @@ export const useDragAndFade = () => {
   }, [pointer]);
 
   useEffect(() => {
-    if (isDesktop) return;
     if (translate.x === width || translate.y === height) return;
     if (translate.x === 0 && translate.y === 0) return;
 
     if (!pointer.isDragging) {
-      if (translate.x > width / 2) {
+      if (translate.x > width / 4) {
         setIsFading(true);
         setTranslate((prev) => ({ ...prev, x: width }));
-      } else if (translate.x < (width / 2) * -1) {
-        setIsFading(true);
-        setTranslate((prev) => ({ ...prev, x: width * -1 }));
-      } else if (translate.y > height / 2) {
+        return;
+      } else if (translate.y > height / 4) {
         setIsFading(true);
         setTranslate((prev) => ({ ...prev, y: height }));
-      } else if (translate.y < (height / 2) * -1) {
+        return;
+      } else if (translate.y < height / -4) {
         setIsFading(true);
         setTranslate((prev) => ({ ...prev, y: height * -1 }));
+        return;
+      } else if (translate.x < width / -4) {
+        setIsFading(true);
+        setTranslate((prev) => ({ ...prev, x: width * -1 }));
+        return;
       } else {
-        setTranslate({ x: 0, y: 0 });
+        setTranslate(initialTranslate);
+        setPointer(initialPointer);
+        return;
       }
     }
   }, [translate, pointer.isDragging]);
 
   useEffect(() => {
-    if (isDesktop) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     if (isFading)

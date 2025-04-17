@@ -23,14 +23,11 @@ function Description({
   }, [setIsTruncated, isMessageLongThan100]);
 
   return (
-    <div
-      className="grow mt-2 text-sm
-      "
-    >
+    <div className="grow mt-2 text-sm max-h-48 overflow-y-auto">
       <div className={`mr-2 ${message ? "float-left" : ""}`}>
         <Name name={name} />
       </div>
-      <div className={`grow ${isTruncated ? "flex" : ""}`}>
+      <div className={`grow break-all ${isTruncated ? "flex" : ""}`}>
         <p
           className={`${isTruncated ? "truncate" : ""}`}
           style={{ width: isTruncated ? "200px" : "100%" }}

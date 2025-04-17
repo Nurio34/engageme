@@ -1,15 +1,11 @@
 import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
-import { likeReply } from "@/app/actions/post/reply/likeReply";
 import { useAppSelector } from "@/store/hooks";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import {
   PrismaPostCommentType,
   PrismaReplyCommentType,
 } from "../../../../../../../../../../../../../../../../prisma/types/post";
-import { ReplyCommentLike } from "@prisma/client";
-import toast from "react-hot-toast";
 import { useState } from "react";
-import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
 
 function LikeReplyButton({
   reply,
@@ -26,13 +22,8 @@ function LikeReplyButton({
   const { id: userId } = useAppSelector((s) => s.user);
   const like = likes.find((likeObj) => likeObj.userId === userId);
 
-  const {
-    setPostsState,
-    postsState,
-    isReplyLiked,
-    likeTheReplyAction,
-    removeLikeFromReplyAction,
-  } = usePostsContext();
+  const { isReplyLiked, likeTheReplyAction, removeLikeFromReplyAction } =
+    usePostsContext();
 
   const isReplyLikedState = isReplyLiked(postId, commentId, replyId);
 

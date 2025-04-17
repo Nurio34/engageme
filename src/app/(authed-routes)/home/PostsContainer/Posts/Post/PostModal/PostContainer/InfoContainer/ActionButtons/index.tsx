@@ -12,6 +12,7 @@ function ActionButtons({ post }: { post: PrismaPostType }) {
         <CommentButton />
         <ShareButton />
       </div>
+
       <SaveButton />
     </div>
   );

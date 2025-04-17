@@ -4,6 +4,7 @@ import MediaSlider from "./MediaSlider";
 import SlideNext from "./SlideButtons/SlideNext";
 import SlidePrevious from "./SlideButtons/SlidePrevious";
 import { useAppSelector } from "@/store/hooks";
+import SlideIndicator from "../../../Medias/SlideButtons/SlideIndicator";
 
 function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
   const { device } = useAppSelector((s) => s.modals);
@@ -43,11 +44,18 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
       <MediaSlider
         medias={medias}
         containerHeight={containerHeight}
+        containerWidth={containerWidth}
         setContainerWidth={setContainerWidth}
         currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
       />
-      <SlideNext setCurrentIndex={setCurrentIndex} medias={medias} />
-      <SlidePrevious setCurrentIndex={setCurrentIndex} medias={medias} />
+      {isDesktop && (
+        <SlideNext setCurrentIndex={setCurrentIndex} medias={medias} />
+      )}
+      {isDesktop && (
+        <SlidePrevious setCurrentIndex={setCurrentIndex} medias={medias} />
+      )}
+      <SlideIndicator medias={medias} currentIndex={currentIndex} />
     </div>
   );
 }

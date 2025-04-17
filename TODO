@@ -1,19 +1,16 @@
 ## App
 
-    1. PWA yap
+    - PWA yap
 
 ## Home Page
 
-    1. likeReplyComment oluştur.
-    2. post veya comment likeladığın zaman isLoading sırasında diğer postların veya commentlerin like buttonları da disabled oluyo. Sadece
-    like'ladağımın disabled olması lazım.
-    3. comment'leri useOptimistic.
-    4. Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
+    - comment'leri useOptimistic.
+    - postLike,postComment, commentLike, replyComment ve replyLike için notificationslar oluştur
+
+    - Comments sortBy "Meta Verified"a göre sortlama pending...
+    - Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
     user profilini gösteren bi modal göster
-    5. Comments sortBy "Meta Verified"a göre sortlama pending...
-    6. Homepage loading skeleton oluştur.
-    7. postLike,postComment, commentLike, replyComment ve replyLike için notificationslar oluştur
 
 ## Gallery
 
-    1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+    - User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.

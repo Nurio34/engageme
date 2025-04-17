@@ -60,7 +60,7 @@ function ImageMedia({
         alt={altText || "post image"}
         fill
         sizes="(max-width=1024) 100vw, 50vw"
-        className={`${isDesktop ? "" : "object-cover pointer-events-none"}`}
+        className={`${isDesktop ? "" : "object-cover"}`}
       />
     </figure>
   );

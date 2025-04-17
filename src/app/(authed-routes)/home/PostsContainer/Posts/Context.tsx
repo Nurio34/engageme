@@ -8,7 +8,6 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import {
@@ -21,9 +20,6 @@ import { usePostComment } from "./_hooks/usePostComment";
 import { useAppSelector } from "@/store/hooks";
 import { PostCommentLike, PostLike, ReplyCommentLike } from "@prisma/client";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
-import { likeReply } from "@/app/actions/post/reply/likeReply";
-import toast from "react-hot-toast";
-import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
 import { useReply } from "./_hooks/useReply";
 
 export type CommentReplyType = {

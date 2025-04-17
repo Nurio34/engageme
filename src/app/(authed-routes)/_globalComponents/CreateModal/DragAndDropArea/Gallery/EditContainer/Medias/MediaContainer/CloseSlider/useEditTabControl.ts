@@ -58,7 +58,7 @@ export const useEditTabControl = (
     if (!isDragEnd) {
       setEditTabTranslateX((prev) => ({ ...prev, new: prev.old + diff }));
     } else {
-      if (editTabTranslateX.new > EditTabWidth.current / 2) {
+      if (editTabTranslateX.new > EditTabWidth.current / 3) {
         setEditTabTranslateX({
           old: EditTabWidth.current,
           new: EditTabWidth.current,

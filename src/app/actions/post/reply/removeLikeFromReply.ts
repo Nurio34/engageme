@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { PostCommentLike, ReplyCommentLike } from "@prisma/client";
+import { ReplyCommentLike } from "@prisma/client";
 
 export const removeLikeFromReply = async (
   replyId: string

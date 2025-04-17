@@ -5,6 +5,7 @@ import {
 } from "../../../../../../../../../../prisma/types/post";
 import { usePostsContext } from "../../../../Context";
 import { useAppSelector } from "@/store/hooks";
+import { useState } from "react";
 
 function Comment({
   comment,
@@ -15,14 +16,12 @@ function Comment({
   username: string | null | undefined;
   post: PrismaPostType;
 }) {
-  const {
-    isCommentLiked,
-    likeCommentAction,
-    removeLikeFromTheCommentAction,
-    isLoading_LikeComment,
-  } = usePostsContext();
+  const { isCommentLiked, likeCommentAction, removeLikeFromTheCommentAction } =
+    usePostsContext();
 
   const { id } = useAppSelector((s) => s.user);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const theComment = post.comments.find(
     (commentObj) => commentObj.id === comment.id
@@ -36,8 +35,8 @@ function Comment({
 
   const handleCommentLike = () =>
     isCommentLikedState
-      ? removeLikeFromTheCommentAction(post.id, commentLike!)
-      : likeCommentAction(post.id, comment.id);
+      ? removeLikeFromTheCommentAction(post.id, commentLike!, setIsLoading)
+      : likeCommentAction(post.id, comment.id, setIsLoading);
 
   return (
     <div className="flex items-center justify-between gap-x-2 ">
@@ -45,11 +44,7 @@ function Comment({
         <span className="font-bold float-left mr-2">{username}</span>
         <p className="break-words">{comment.comment}</p>
       </div>
-      <button
-        type="button"
-        onClick={handleCommentLike}
-        disabled={isLoading_LikeComment}
-      >
+      <button type="button" onClick={handleCommentLike} disabled={isLoading}>
         {isCommentLikedState ? <FaHeart color="red" /> : <FaRegHeart />}
       </button>
     </div>

@@ -16,7 +16,7 @@ function Reply({
   postComment: PrismaPostCommentType;
   reply: PrismaReplyCommentType;
 }) {
-  const { user, comment, createdAt, likes, replyToName, id, commentId } = reply;
+  const { user, comment, createdAt, likes, replyToName, commentId } = reply;
 
   return (
     <li className="flex items-start gap-x-2">

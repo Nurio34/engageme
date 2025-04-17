@@ -1,34 +1,26 @@
 "use client";
 
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
-import { useEffect, useRef, useState } from "react";
 import MediasSlide from "./MediasSlide";
 import SlidePrevious from "./SlideButtons/SlidePrevious";
 import SlideNext from "./SlideButtons/SlideNext";
 import SlideIndicator from "./SlideButtons/SlideIndicator";
+import { useMedias } from "./_hooks/useMedias";
+import { useAppSelector } from "@/store/hooks";
 
 function Medias({ index, post }: { index: number; post: PrismaPostType }) {
   const { medias } = post;
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { device } = useAppSelector((s) => s.modals);
+  const { type } = device;
+  const isDesktop = type === "desktop";
 
-  const MediasContainerRef = useRef<HTMLDivElement | null>(null);
-  const [mediasContainerWidth, setMediasContainerWidth] = useState(0);
-
-  useEffect(() => {
-    const handleWidth = () => {
-      if (MediasContainerRef.current) {
-        setMediasContainerWidth(
-          MediasContainerRef.current.getBoundingClientRect().width
-        );
-      }
-    };
-    handleWidth();
-
-    window.addEventListener("resize", handleWidth);
-
-    return () => window.removeEventListener("resize", handleWidth);
-  }, []);
+  const {
+    MediasContainerRef,
+    currentIndex,
+    mediasContainerWidth,
+    setCurrentIndex,
+  } = useMedias();
 
   return (
     <div
@@ -39,11 +31,16 @@ function Medias({ index, post }: { index: number; post: PrismaPostType }) {
       <MediasSlide
         index={index}
         currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
         mediasContainerWidth={mediasContainerWidth}
         medias={medias}
       />
-      <SlidePrevious setCurrentIndex={setCurrentIndex} medias={medias} />
-      <SlideNext setCurrentIndex={setCurrentIndex} medias={medias} />
+      {isDesktop && (
+        <SlidePrevious setCurrentIndex={setCurrentIndex} medias={medias} />
+      )}
+      {isDesktop && (
+        <SlideNext setCurrentIndex={setCurrentIndex} medias={medias} />
+      )}
       <SlideIndicator medias={medias} currentIndex={currentIndex} />
     </div>
   );
