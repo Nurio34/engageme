@@ -12,6 +12,6 @@ function RecomendationsClient() {
     else setIsMounted(false);
   }, [type]);
 
-  return isMounted && <aside>RecomendationsClient</aside>;
+  return isMounted && <aside className="pl-16">RecomendationsClient</aside>;
 }
 export default RecomendationsClient;

@@ -10,8 +10,8 @@ async function HomePage({
 
   return (
     <div
-      className="col-start-2 col-end-3 md:grid lg:grid-cols-[1fr,319px] gap-x-16
-        md:px-16 md:py-6
+      className=" md:grid lg:grid-cols-[630px,383px] lg:justify-center
+        md:px-16 md:py-[22px]
       "
     >
       <PostsContainer variant={variant} />

@@ -23,7 +23,7 @@ function LikeButton({ post }: { post: PrismaPostType }) {
 
   const handleLike = () =>
     isPostLikedState
-      ? removeLikeFromThePostAction(like!, setIsLoading)
+      ? removeLikeFromThePostAction(like!, postOwnerId, setIsLoading)
       : likeThePostAction(postId, postOwnerId, setIsLoading);
 
   return (

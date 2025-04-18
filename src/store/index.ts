@@ -4,6 +4,7 @@ import pingSlice from "./slices/ping";
 import routingSlice from "./slices/routing";
 import homePageSlice from "./slices/homePage";
 import userSlice from "./slices/user";
+import sideMenuSlice from "./slices/sidemenu";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     routing: routingSlice,
     homePage: homePageSlice,
     user: userSlice,
+    sideMenu: sideMenuSlice,
   },
 });
 

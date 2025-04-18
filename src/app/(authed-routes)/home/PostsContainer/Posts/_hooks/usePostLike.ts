@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { PrismaPostType } from "../../../../../../../prisma/types/post";
 import { PostLike } from "@prisma/client";
 import { likeThePost } from "@/app/actions/post/like/likeThePost";
 import toast from "react-hot-toast";
 import { removeLike } from "@/app/actions/post/like/removeLike";
-import { sendPostLikeNotification } from "@/app/actions/notification/sendPostLikeNotification";
+import { sendPostLikeNotification } from "@/app/actions/notification/like/postLike/sendPostLikeNotification";
 
 export const usePostLike = (
   postsState: PrismaPostType[],
@@ -69,7 +69,7 @@ export const usePostLike = (
       if (status === "fail" || !postLikeNotification) return;
 
       //! *** Send real time notification ***
-      console.log(postLikeNotification);
+      // console.log(postLikeNotification);
     } catch (error) {
       console.log(error);
     }
@@ -77,6 +77,7 @@ export const usePostLike = (
 
   async function removeLikeFromThePostAction(
     like: PostLike,
+    postOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) {
     setIsLoading(true);
@@ -91,8 +92,6 @@ export const usePostLike = (
           "Something went wrong while removing like from the post ! Please try again..."
         );
       }
-
-      removeLikeFromPostLikes(postLike);
     } catch (error) {
       console.log(error);
       addLikeToPostLikes(like);

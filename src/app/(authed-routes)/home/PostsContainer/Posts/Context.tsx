@@ -46,6 +46,7 @@ interface PostsContextType {
   ) => Promise<string | undefined>;
   removeLikeFromThePostAction: (
     like: PostLike,
+    postOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   addComment: (postId: string, postComment: PrismaPostCommentType) => void;

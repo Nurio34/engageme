@@ -5,7 +5,8 @@
 ## Home Page
 
     - postLike,postComment, commentLike, replyComment ve replyLike için notificationslar oluştur
-    1. removeLikeFromThePost yapınca notification'ı database'den sil
+    1. postComment notification oluştur
+    2.  SideMenu / notifications'ta getAllNotifications
     
 
     - Comments sortBy "Meta Verified"a göre sortlama pending...

@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  email                 String   @unique
-  name                  String
-  avatar                String?
-  posts                 Post[]
-  postLikes             PostLike[]
-  postComments          PostComment[]
-  commentLikes          PostCommentLike[]
-  replies               ReplyComment[]
-  replyLikes            ReplyCommentLike[]
-  postLikeNotifications PostLikeNotification[]
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt @default(now())
+  id                        String   @id @default(cuid())
+  userId                    String   @unique
+  email                     String   @unique
+  name                      String
+  avatar                    String?
+  posts                     Post[]
+  postLikes                 PostLike[]
+  postComments              PostComment[]
+  commentLikes              PostCommentLike[]
+  replies                   ReplyComment[]
+  replyLikes                ReplyCommentLike[]
+  postLikeNotifications     PostLikeNotification[]
+  postCommentNotifications  PostCommentNotification[]
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt @default(now())
 }
 
 model Post {
@@ -107,16 +108,17 @@ model PostLike {
 }
 
 model PostComment {
-  id      String @id @default(cuid())
-  comment String
-  likes   PostCommentLike[]
-  replies ReplyComment[]
-  postId  String
-  post    Post @relation(fields: [postId],references: [id],onDelete: Cascade)
-  userId  String
-  user    User @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt   DateTime @updatedAt @default(now())
+  id              String @id @default(cuid())
+  comment         String
+  likes           PostCommentLike[]
+  replies         ReplyComment[]
+  notifications   PostCommentNotification[]
+  postId          String
+  post            Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  userId          String
+  user            User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt @default(now())
 }
 
 model PostCommentLike {
@@ -161,8 +163,22 @@ model PostLikeNotification {
   postLikeId      String
   postLike        PostLike  @relation(fields: [postLikeId],references: [id],onDelete:Cascade)
   createdAt       DateTime  @default(now())
+
+  @@unique([userId,postLikeId])
+  @@index([userId])
+}
+
+model PostCommentNotification {
+  id              String  @id @default(cuid())
+  type            NotificationType
+  userId          String
+  user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentId       String @unique
+  comment         PostComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+
 }
 
 enum NotificationType {
   postLike
+  postComment
 }

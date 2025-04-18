@@ -6,12 +6,16 @@ import {
 } from "@/store/slices/modals";
 import { deleteFromCloudinary } from "../CreateModal/apiCalls/deleteFromCloudinary";
 import { deletePosterImagesFromCloudinary } from "../CreateModal/apiCalls/deletePosterImageFromCloudinary";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
+import { usePathname } from "next/navigation";
 
 function Client() {
   const { isWannaCloseCreateModalOpen, cloudinaryMedias, posterImages } =
     useAppSelector((s) => s.modals);
 
   const dispatch = useAppDispatch();
+
+  const path = usePathname().slice(1);
 
   const closeThisModal = () => dispatch(toggle_WannaCloseCreateModal_Modal());
 
@@ -21,6 +25,7 @@ function Client() {
     dispatch(toggleCreateModal());
     closeThisModal();
     dispatch(resterPosterImages());
+    dispatch(setCurrentMenu(path));
   };
 
   return (

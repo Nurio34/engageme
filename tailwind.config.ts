@@ -13,6 +13,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      screens: {
+        xxl: "1670px", // or any custom value you want
+      },
     },
   },
   plugins: [daisyui],
