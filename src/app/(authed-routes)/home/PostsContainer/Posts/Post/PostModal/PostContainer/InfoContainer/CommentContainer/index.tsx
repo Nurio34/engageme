@@ -41,9 +41,7 @@ function CommentContainer({
 
   //! ***********************
 
-  const { comment, setComment, formAction, isPending } = useSendComment(
-    post.id
-  );
+  const { comment, setComment, formAction, isPending } = useSendComment(post);
 
   useEffect(() => {
     if (!isPending)

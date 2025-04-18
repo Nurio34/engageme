@@ -2,10 +2,7 @@ import { getAllNotifications } from "@/app/actions/notification/getAllNotificati
 import ProviderComponent from "./Provider";
 
 async function SideMenu() {
-  const { status, allNotifications } = await getAllNotifications();
-  console.log(allNotifications);
-
-  if (status === "fail" || !allNotifications) return;
+  const { allNotifications } = await getAllNotifications();
 
   return <ProviderComponent allNotifications={allNotifications} />;
 }

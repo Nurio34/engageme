@@ -14,7 +14,7 @@ function Client() {
   return (
     <button
       className="w-full min-w-max flex items-center justify-center lg:justify-start gap-x-4
-      hover:bg-base-content/10 rounded-lg p-3
+      hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3
       order-4 md:order-none
       "
       onClick={() => {

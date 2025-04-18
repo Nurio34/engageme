@@ -50,6 +50,7 @@ interface PostsContextType {
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   addComment: (postId: string, postComment: PrismaPostCommentType) => void;
+
   isCommentLiked: (postId: string, commentId: string) => boolean;
   likeCommentAction: (
     postId: string,

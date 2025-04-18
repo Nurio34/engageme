@@ -11,9 +11,11 @@ import ActionIndicator from "./ActionIndicator";
 import SentComments from "./SentComments";
 import { usePostsContext } from "../../Context";
 import { sendComment } from "@/app/actions/post/comment/sendComment";
+import { sendPostCommentNotification } from "@/app/actions/notification/comment/sendPostCommentNotification";
 
 function AddComment({ post }: { post: PrismaPostType }) {
   const { isPickerOpen } = useAppSelector((s) => s.modals);
+  const { id: userId } = useAppSelector((s) => s.user);
 
   const dispatch = useAppDispatch();
 
@@ -32,8 +34,25 @@ function AddComment({ post }: { post: PrismaPostType }) {
     addComment(post.id, state.postComment);
     setSentComments((prev) => [...prev, state.postComment!]);
     setComment("");
-
     if (isPickerOpen) dispatch(togglePicker());
+
+    const sendPostCommentNotificationAction = async () => {
+      if (post.userId === userId || !state.postComment) return;
+
+      try {
+        const { status, postCommentNotification } =
+          await sendPostCommentNotification(post.userId, state.postComment.id);
+
+        if (status === "fail" || !postCommentNotification) return;
+
+        //! *** send real-time postCommentNotification ***
+        console.log({ postCommentNotification });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    sendPostCommentNotificationAction();
   }, [state]);
 
   const togglePickerFunction = () => {

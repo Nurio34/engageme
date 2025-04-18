@@ -2,20 +2,19 @@
 
 import { prisma } from "@/lib/prisma";
 import { PostLike } from "@prisma/client";
-import { PrismaPostLikeNotification } from "../../../../../../prisma/types/notification";
+import { PrismaPostLikeNotificationType } from "../../../../../../prisma/types/notification";
 
 export const sendPostLikeNotification = async (
   postLike: PostLike,
   postOwnerId: string
 ): Promise<{
   status: "success" | "fail";
-  postLikeNotification?: PrismaPostLikeNotification;
+  postLikeNotification?: PrismaPostLikeNotificationType;
 }> => {
   try {
     const postLikeNotification = await prisma.postLikeNotification.create({
       data: { userId: postOwnerId, postLikeId: postLike.id, type: "postLike" },
       include: {
-        user: true,
         postLike: { include: { user: true, post: true } },
       },
     });

@@ -164,8 +164,6 @@ model PostLikeNotification {
   postLike        PostLike  @relation(fields: [postLikeId],references: [id],onDelete:Cascade)
   createdAt       DateTime  @default(now())
 
-  @@unique([userId,postLikeId])
-  @@index([userId])
 }
 
 model PostCommentNotification {
@@ -173,8 +171,9 @@ model PostCommentNotification {
   type            NotificationType
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  commentId       String @unique
+  commentId       String 
   comment         PostComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+  createdAt       DateTime  @default(now())
 
 }
 

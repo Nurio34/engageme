@@ -69,7 +69,7 @@ export const usePostLike = (
       if (status === "fail" || !postLikeNotification) return;
 
       //! *** Send real time notification ***
-      // console.log(postLikeNotification);
+      console.log({ postLikeNotification });
     } catch (error) {
       console.log(error);
     }

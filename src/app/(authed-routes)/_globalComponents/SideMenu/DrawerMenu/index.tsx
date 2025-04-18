@@ -2,18 +2,11 @@
 import { store } from "@/store";
 import { Provider } from "react-redux";
 import Client from "./Client";
-import { AllNotificationsType } from "../../../../../../prisma/types/notification";
 
-function DrawerMenu({
-  navWidth,
-  allNotifications,
-}: {
-  navWidth: number;
-  allNotifications: AllNotificationsType;
-}) {
+function DrawerMenu({ navWidth }: { navWidth: number }) {
   return (
     <Provider store={store}>
-      <Client navWidth={navWidth} allNotifications={allNotifications} />
+      <Client navWidth={navWidth} />
     </Provider>
   );
 }

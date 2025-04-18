@@ -5,6 +5,7 @@ import routingSlice from "./slices/routing";
 import homePageSlice from "./slices/homePage";
 import userSlice from "./slices/user";
 import sideMenuSlice from "./slices/sidemenu";
+import notificationsSlice from "./slices/notifications";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     homePage: homePageSlice,
     user: userSlice,
     sideMenu: sideMenuSlice,
+    notifications: notificationsSlice,
   },
 });
 

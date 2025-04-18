@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef, useState } from "react";
+import { JSX, useEffect } from "react";
 import Home from "./MenuItem/Home";
 import Search from "./MenuItem/Search";
 import Explore from "./MenuItem/Explore/";
@@ -11,8 +11,13 @@ import Threads from "./MenuItem/Threads";
 import More from "./MenuItem/More";
 import Logo from "./Logo";
 import DrawerMenu from "./DrawerMenu";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { AllNotificationsType } from "../../../../../prisma/types/notification";
+import { useSidemenuLayout } from "./_hooks/useSidemenuLayout";
+import {
+  setPostCommentNotifications,
+  setPostLikeNotifications,
+} from "@/store/slices/notifications";
 
 export type MenuType = {
   name: string;
@@ -65,41 +70,48 @@ const menu: MenuType[] = [
 function Client({
   allNotifications,
 }: {
-  allNotifications: AllNotificationsType;
+  allNotifications: AllNotificationsType | undefined;
 }) {
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
   const { device } = useAppSelector((s) => s.modals);
   const isMobile = device.type === "mobile";
 
-  const NavRef = useRef<HTMLElement | null>(null);
-  const [navWidth, setNavWidth] = useState(0);
+  const dispatch = useAppDispatch();
+
+  const { NavRef, navWidth } = useSidemenuLayout();
 
   useEffect(() => {
-    const handleNavWidth = () => {
-      if (NavRef.current)
-        setNavWidth(NavRef.current.getBoundingClientRect().width);
-    };
-
-    handleNavWidth();
-
-    window.addEventListener("resize", handleNavWidth);
-
-    return () => window.removeEventListener("resize", handleNavWidth);
-  }, [isDrawerMenuOpen]);
+    if (allNotifications) {
+      const { postLikeNotifications, postCommentNotifications } =
+        allNotifications;
+      dispatch(
+        setPostLikeNotifications(
+          JSON.parse(JSON.stringify(postLikeNotifications))
+        )
+      );
+      dispatch(
+        setPostCommentNotifications(
+          JSON.parse(JSON.stringify(postCommentNotifications))
+        )
+      );
+    }
+  }, [allNotifications]);
+  console.log(navWidth);
 
   return (
-    <div className="relative md:h-screen bg-red-50" style={{ width: navWidth }}>
-      {!isMobile && (
-        <DrawerMenu navWidth={navWidth} allNotifications={allNotifications} />
-      )}
+    <div
+      className="relative md:h-screen bg-red-50 max-w-min"
+      style={{ width: navWidth }}
+    >
+      {!isMobile && <DrawerMenu navWidth={navWidth} />}
       <nav
         ref={NavRef}
         className={`md:px-3 md:py-2 border-t md:border-t-0 md:border-r bg-base-100
           fixed z-10 bottom-0
           ${
             isDrawerMenuOpen
-              ? "w-[73px] "
-              : "transition-all duration-500 overflow-hidden min-w-full md:min-w-0 md:w-[73px] lg:w-[245px] xxl:w-[335px]"
+              ? "min-w-full md:w-[73px] md:min-w-min "
+              : "transition-all duration-300 overflow-hidden min-w-full md:min-w-0 md:w-[73px] lg:w-[245px] xxl:w-[335px]"
           } md:h-screen
           flex flex-col justify-between
         `}

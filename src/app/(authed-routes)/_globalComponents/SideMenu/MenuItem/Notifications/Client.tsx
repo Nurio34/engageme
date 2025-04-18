@@ -17,7 +17,7 @@ function Client() {
     <>
       <button
         className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4
-      hover:bg-base-content/10 rounded-lg p-3"
+      hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3"
         onClick={() => {
           if (currentMenu === "notifications") dispatch(setCurrentMenu(path));
           else dispatch(setCurrentMenu("notifications"));

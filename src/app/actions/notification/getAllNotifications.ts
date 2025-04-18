@@ -2,30 +2,43 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaPostLikeNotification } from "../../../../prisma/types/notification";
+import { AllNotificationsType } from "../../../../prisma/types/notification";
 
 export const getAllNotifications = async (): Promise<{
   status: "success" | "fail";
-  allNotifications?: PrismaPostLikeNotification[][];
+  allNotifications?: AllNotificationsType;
 }> => {
   try {
     const user = await currentUser();
     if (!user) return { status: "fail" };
 
-    const postLikeNotifications = prisma.postLikeNotification.findMany({
+    const allNotifications = await prisma.user.findUnique({
       where: { userId: user.id },
-      include: {
-        user: true,
-        postLike: {
+      select: {
+        postLikeNotifications: {
           include: {
-            user: true,
-            post: true,
+            postLike: {
+              include: {
+                user: true,
+                post: true,
+              },
+            },
+          },
+        },
+        postCommentNotifications: {
+          include: {
+            comment: {
+              include: {
+                user: true,
+                post: true,
+              },
+            },
           },
         },
       },
     });
 
-    const allNotifications = await prisma.$transaction([postLikeNotifications]);
+    if (!allNotifications) return { status: "fail" };
 
     return { status: "success", allNotifications };
   } catch (error) {
