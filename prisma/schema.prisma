@@ -8,21 +8,24 @@ datasource db {
 }
 
 model User {
-  id                        String   @id @default(cuid())
-  userId                    String   @unique
-  email                     String   @unique
-  name                      String
-  avatar                    String?
-  posts                     Post[]
-  postLikes                 PostLike[]
-  postComments              PostComment[]
-  commentLikes              PostCommentLike[]
-  replies                   ReplyComment[]
-  replyLikes                ReplyCommentLike[]
-  postLikeNotifications     PostLikeNotification[]
-  postCommentNotifications  PostCommentNotification[]
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt @default(now())
+  id                            String   @id @default(cuid())
+  userId                        String   @unique
+  email                         String   @unique
+  name                          String
+  avatar                        String?
+  posts                         Post[]
+  postLikes                     PostLike[]
+  postComments                  PostComment[]
+  commentLikes                  PostCommentLike[]
+  replies                       ReplyComment[]
+  replyLikes                    ReplyCommentLike[]
+  postLikeNotifications         PostLikeNotification[]
+  postCommentNotifications      PostCommentNotification[]
+  replyCommentNotifications     ReplyCommentNotification[]
+  postCommentLikeNotifications  PostCommentLikeNotification[]
+  replyCommentLikeNotification  ReplyCommentLikeNotification[]
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt @default(now())
 }
 
 model Post {
@@ -108,21 +111,22 @@ model PostLike {
 }
 
 model PostComment {
-  id              String @id @default(cuid())
-  comment         String
-  likes           PostCommentLike[]
-  replies         ReplyComment[]
-  notifications   PostCommentNotification[]
-  postId          String
-  post            Post @relation(fields: [postId],references: [id],onDelete: Cascade)
-  userId          String
-  user            User @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt @default(now())
+  id                        String @id @default(cuid())
+  comment                   String
+  likes                     PostCommentLike[]
+  replies                   ReplyComment[]
+  notifications             PostCommentNotification[]
+  postId                    String
+  post                      Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  userId                    String
+  user                      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt @default(now())
 }
 
 model PostCommentLike {
   id        String @id @default(cuid())
+  notifications             PostCommentLikeNotification[]
   userId    String
   user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentId String
@@ -135,9 +139,11 @@ model ReplyComment {
   id                String  @id @default(cuid())
   comment           String
   replyToName       String?
+  replyId           String?
   likes             ReplyCommentLike[]
+  notifications     ReplyCommentNotification[]
   commentId         String
-  postComment       PostComment @relation(fields: [commentId],references: [id], onDelete: Cascade) 
+  postComment       PostComment @relation(fields: [commentId],references: [id], onDelete: Cascade)
   userId            String
   user              User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   createdAt         DateTime  @default(now())
@@ -146,11 +152,13 @@ model ReplyComment {
 }
 
 model ReplyCommentLike {
-  id        String @id @default(cuid())
-  userId    String
-  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  commentId String
-  comment   ReplyComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+  id            String @id @default(cuid())
+  notifications ReplyCommentLikeNotification[]
+  userId        String
+  user          User @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentId     String
+  comment       ReplyComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+
   @@unique([userId,commentId])
   @@index([id,userId])
 }
@@ -174,10 +182,42 @@ model PostCommentNotification {
   commentId       String 
   comment         PostComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
   createdAt       DateTime  @default(now())
+}
 
+model PostCommentLikeNotification {
+  id              String  @id @default(cuid())
+  type            NotificationType
+  userId          String
+  user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentLikeId   String 
+  commentLike     PostCommentLike @relation(fields: [commentLikeId],references: [id],onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+}
+
+model ReplyCommentNotification {
+  id              String  @id @default(cuid())
+  type            NotificationType
+  userId          String
+  user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentId       String 
+  comment         ReplyComment @relation(fields: [commentId],references: [id],onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+}
+
+model ReplyCommentLikeNotification {
+  id              String  @id @default(cuid())
+  type            NotificationType
+  userId          String
+  user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
+  commentLikeId   String 
+  commentLike     ReplyCommentLike @relation(fields: [commentLikeId],references: [id],onDelete: Cascade)
+  createdAt       DateTime  @default(now())
 }
 
 enum NotificationType {
   postLike
   postComment
+  commentLike
+  replyComment
+  replyLike
 }

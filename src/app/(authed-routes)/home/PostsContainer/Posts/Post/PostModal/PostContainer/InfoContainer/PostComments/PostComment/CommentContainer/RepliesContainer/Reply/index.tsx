@@ -38,9 +38,10 @@ function Reply({
           <TotalCommentLikes commentLikes={likes} />
           <ReplyTheComment
             commentId={postComment.id}
+            commentOwnerId={reply.userId}
             name={user.name}
             isReplyToReply={true}
-            replyOwnerId={reply.userId}
+            reply={reply}
           />
         </div>
       </div>

@@ -96,12 +96,11 @@ function Client({
       );
     }
   }, [allNotifications]);
-  console.log(navWidth);
 
   return (
     <div
       className="relative md:h-screen bg-red-50 max-w-min"
-      style={{ width: navWidth }}
+      style={{ minWidth: navWidth }}
     >
       {!isMobile && <DrawerMenu navWidth={navWidth} />}
       <nav

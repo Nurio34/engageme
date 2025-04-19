@@ -4,20 +4,30 @@ import { useActionState, useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../../../prisma/types/post";
 import { useAppSelector } from "@/store/hooks";
 import { sendPostCommentNotification } from "@/app/actions/notification/comment/sendPostCommentNotification";
+import toast from "react-hot-toast";
+import { sendReplyNotification } from "@/app/actions/notification/reply/sendReplyNotification";
 
 export const useSendComment = (post: PrismaPostType) => {
   const { id: userId } = useAppSelector((s) => s.user);
 
-  const { addComment, addReply, setRepliedCommentId } = usePostsContext();
+  const { addComment, addReply, setRepliedCommentId, commentReply } =
+    usePostsContext();
 
   const [comment, setComment] = useState("");
 
   const [state, formAction, isPending] = useActionState(sendComment, {
-    status: "fail",
+    status: "pending",
     isReply: false,
   });
 
   useEffect(() => {
+    if (state.status === "pending") return;
+
+    if (state.status === "fail") {
+      toast.error("Something went wrong while commenting ! Please try again..");
+      return;
+    }
+
     if (state.status === "success") {
       if (state.postComment) {
         addComment(post.id, state.postComment);
@@ -32,10 +42,10 @@ export const useSendComment = (post: PrismaPostType) => {
                 state.postComment.id
               );
 
-            if (status === "fail" || !postCommentNotification) return;
-
-            //! *** send real-time postCommentNotification ***
-            console.log({ postCommentNotification });
+            if (status === "success" || postCommentNotification) {
+              //! *** send real-time postCommentNotification ***
+              console.log("send real-time postCommentNotification");
+            }
           } catch (error) {
             console.log(error);
           }
@@ -46,6 +56,27 @@ export const useSendComment = (post: PrismaPostType) => {
       if (state.replyComment) {
         addReply(post.id, state.replyComment);
         setRepliedCommentId(state.replyComment.commentId);
+
+        const sendReplyCommentNotificationAction = async () => {
+          if (commentReply.commentOwnerId === userId || !state.replyComment)
+            return;
+
+          try {
+            const { status, replyNotification } = await sendReplyNotification(
+              commentReply.commentOwnerId,
+              state.replyComment.id
+            );
+
+            if (status === "success" || replyNotification) {
+              //! *** send real-time replyCommentNotification ***
+              console.log("send real-time replyCommentNotification");
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+
+        sendReplyCommentNotificationAction();
       }
 
       setComment("");

@@ -1,19 +1,22 @@
 import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { useAppSelector } from "@/store/hooks";
+import { PrismaReplyCommentType } from "../../../../../../../../../../../../../../prisma/types/post";
 
 function ReplyTheComment({
   commentId,
+  commentOwnerId,
   name,
   isReplyToReply,
-  replyOwnerId,
+  reply,
 }: {
   commentId: string;
+  commentOwnerId: string;
   name: string;
   isReplyToReply: boolean;
-  replyOwnerId?: string;
+  reply?: PrismaReplyCommentType;
 }) {
   const { id } = useAppSelector((s) => s.user);
-  const isSelfReply = replyOwnerId === id;
+  const isSelfReply = reply?.userId === id;
 
   const { setCommentReply, CommentAreaRef } = usePostsContext();
 
@@ -25,10 +28,12 @@ function ReplyTheComment({
         onClick={() => {
           setCommentReply((pre) => ({
             isReply: true,
-            replyToId: commentId,
+            commentId,
             replyToName: name,
             isReplyToReply,
             count: pre.count + 1,
+            replyId: reply?.id || "",
+            commentOwnerId,
           }));
           if (CommentAreaRef.current) CommentAreaRef.current.focus();
         }}

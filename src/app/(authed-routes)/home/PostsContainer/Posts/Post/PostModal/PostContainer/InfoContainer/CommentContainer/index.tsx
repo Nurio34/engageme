@@ -23,8 +23,8 @@ function CommentContainer({
   //! *** replyToNameState ***
   const [commentReplyState, setCommentReplyState] =
     useState<CommentReplyType>(commentReply);
-  const { replyToName, isReply, replyToId, isReplyToReply } = commentReplyState;
-
+  const { replyToName, isReply, commentId, replyId, isReplyToReply } =
+    commentReplyState;
   useEffect(() => {
     setCommentReplyState(commentReply);
   }, [commentReply.count]);
@@ -49,8 +49,10 @@ function CommentContainer({
         count: 0,
         isReply: false,
         isReplyToReply: false,
-        replyToId: "",
+        commentId: "",
         replyToName: "",
+        replyId: "",
+        commentOwnerId: "",
       });
   }, [isPending]);
 
@@ -63,12 +65,13 @@ function CommentContainer({
     >
       <input type="hidden" name="postId" value={post.id} />
       <input type="hidden" name="isReply" value={isReply ? 1 : 0} />
-      <input type="hidden" name="replyToId" value={replyToId} />
+      <input type="hidden" name="commentId" value={commentId} />
       <input
         type="hidden"
         name="isReplyToReply"
         value={isReplyToReply ? 1 : 0}
       />
+      <input type="hidden" name="replyId" value={replyId} />
       <input type="hidden" name="replyToName" value={replyToName} />
       {isDesktop && <EmojiContainer setComment={setComment} />}
       {replyToName && (
@@ -79,9 +82,11 @@ function CommentContainer({
             setCommentReplyState({
               isReply: false,
               isReplyToReply: false,
-              replyToId: "",
+              commentId: "",
               replyToName: "",
               count: 0,
+              replyId: "",
+              commentOwnerId: "",
             })
           }
         >

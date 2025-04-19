@@ -12,13 +12,9 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
     (s) => s.notifications
   );
 
-  console.log({ postLikeNotifications, postCommentNotifications });
-
   const [allNotifications, setAllNotifications] = useState<
     (PrismaPostLikeNotificationType | PrismaPostCommentNotificationType)[]
   >([]);
-
-  console.log(allNotifications);
 
   useEffect(() => {
     setAllNotifications([

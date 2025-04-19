@@ -17,7 +17,7 @@ function LikeReplyButton({
   commentId: string;
 }) {
   const { postId } = postComment;
-  const { id: replyId, likes } = reply;
+  const { id: replyId, likes, userId: replyOwnerId } = reply;
 
   const { id: userId } = useAppSelector((s) => s.user);
   const like = likes.find((likeObj) => likeObj.userId === userId);
@@ -38,7 +38,13 @@ function LikeReplyButton({
           replyId,
           like!
         )
-      : likeTheReplyAction(postId, commentId, replyId, setIsLoading);
+      : likeTheReplyAction(
+          postId,
+          commentId,
+          replyId,
+          replyOwnerId,
+          setIsLoading
+        );
 
   return (
     <button type="button" onClick={handleReplyLike} disabled={isLoading}>

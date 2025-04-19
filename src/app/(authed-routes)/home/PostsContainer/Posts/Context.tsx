@@ -24,10 +24,12 @@ import { useReply } from "./_hooks/useReply";
 
 export type CommentReplyType = {
   isReply: boolean;
-  replyToId: string;
+  commentId: string;
   replyToName: string;
   isReplyToReply: boolean;
   count: number;
+  replyId: string;
+  commentOwnerId: string;
 };
 
 interface PostsContextType {
@@ -55,6 +57,7 @@ interface PostsContextType {
   likeCommentAction: (
     postId: string,
     commentId: string,
+    commentOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   removeLikeFromTheCommentAction: (
@@ -77,6 +80,7 @@ interface PostsContextType {
     postId: string,
     commentId: string,
     replyId: string,
+    replyOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   removeLikeFromReplyAction: (
@@ -135,10 +139,12 @@ export const PostsProvider = ({
     if (!postModal.isOpen) {
       setCommentReply({
         isReply: false,
-        replyToId: "",
+        commentId: "",
         replyToName: "",
         isReplyToReply: false,
         count: 0,
+        replyId: "",
+        commentOwnerId: "",
       });
       setRepliedCommentId("");
     }

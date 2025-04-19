@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { likeComment } from "@/app/actions/post/comment/likeComment";
 import { PostCommentLike } from "@prisma/client";
 import { removeLikeFromComment } from "@/app/actions/post/comment/removeLikeFromComment";
+import { sendCommentLikeNotification } from "@/app/actions/notification/comment/sendCommentLikeNotification";
 
 export const usePostComment = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
@@ -25,6 +26,7 @@ export const usePostComment = (
   const likeCommentAction = async (
     postId: string,
     commentId: string,
+    commentOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => {
     const id = crypto.randomUUID();
@@ -46,6 +48,9 @@ export const usePostComment = (
           "Something went wrong while liking the comment ! Please try again..."
         );
       }
+
+      if (commentOwnerId !== userId)
+        sendCommentLikeNotificationAction(commentOwnerId, postCommentLike.id);
     } catch (error) {
       console.log(error);
       removeLikeFromTheComment(postId, commentId, newCommentLike);
@@ -79,6 +84,22 @@ export const usePostComment = (
           : postObj
       )
     );
+
+  const sendCommentLikeNotificationAction = async (
+    commentOwnerId: string,
+    commentLikeId: string
+  ) => {
+    try {
+      const { status, postCommentLikeNotification } =
+        await sendCommentLikeNotification(commentOwnerId, commentLikeId);
+
+      if (status === "success" && postCommentLikeNotification) {
+        console.log("send real-time postCommentLikeNotification");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const removeLikeFromTheCommentAction = async (
     postId: string,

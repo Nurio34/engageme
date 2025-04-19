@@ -36,7 +36,7 @@ function Comment({
   const handleCommentLike = () =>
     isCommentLikedState
       ? removeLikeFromTheCommentAction(post.id, commentLike!, setIsLoading)
-      : likeCommentAction(post.id, comment.id, setIsLoading);
+      : likeCommentAction(post.id, comment.id, comment.userId, setIsLoading);
 
   return (
     <div className="flex items-center justify-between gap-x-2 ">

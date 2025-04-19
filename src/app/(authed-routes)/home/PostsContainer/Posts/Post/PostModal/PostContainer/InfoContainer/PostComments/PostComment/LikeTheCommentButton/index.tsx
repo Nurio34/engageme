@@ -32,7 +32,12 @@ function LikeTheCommentButton({
           commentLike!,
           setIsLoading
         )
-      : likeCommentAction(postComment.postId, postComment.id, setIsLoading);
+      : likeCommentAction(
+          postComment.postId,
+          postComment.id,
+          postComment.userId,
+          setIsLoading
+        );
 
   return (
     <button

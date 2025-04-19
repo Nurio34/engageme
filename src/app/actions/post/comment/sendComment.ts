@@ -16,7 +16,7 @@ export const sendComment = async (
   },
   formData: FormData
 ): Promise<{
-  status: "success" | "fail";
+  status: "success" | "fail" | "pending";
   postComment?: PrismaPostCommentType;
   replyComment?: PrismaReplyCommentType;
   isReply: boolean;
@@ -35,9 +35,10 @@ export const sendComment = async (
     const comment = formData.get("comment") as string;
     const isReply = formData.get("isReply") as string;
     const isReplyState = isReply === "1";
-    const replyToId = formData.get("replyToId") as string;
+    const commentId = formData.get("commentId") as string;
     const isReplyToReply = formData.get("isReplyToReply") as string;
     const isReplyToReplyState = isReplyToReply === "1";
+    const replyId = formData.get("replyId") as string;
     const replyToName = formData.get("replyToName") as string;
 
     if (!isReplyState) {
@@ -75,7 +76,7 @@ export const sendComment = async (
       if (!isReplyToReplyState) {
         const replyComment = await prisma.replyComment.create({
           data: {
-            commentId: replyToId,
+            commentId,
             userId,
             comment,
           },
@@ -100,10 +101,11 @@ export const sendComment = async (
       } else {
         const replyComment = await prisma.replyComment.create({
           data: {
-            commentId: replyToId,
+            commentId,
             userId,
             comment,
             replyToName,
+            replyId,
           },
           include: {
             user: true,

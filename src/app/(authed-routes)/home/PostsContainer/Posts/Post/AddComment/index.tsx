@@ -12,6 +12,7 @@ import SentComments from "./SentComments";
 import { usePostsContext } from "../../Context";
 import { sendComment } from "@/app/actions/post/comment/sendComment";
 import { sendPostCommentNotification } from "@/app/actions/notification/comment/sendPostCommentNotification";
+import toast from "react-hot-toast";
 
 function AddComment({ post }: { post: PrismaPostType }) {
   const { isPickerOpen } = useAppSelector((s) => s.modals);
@@ -23,13 +24,20 @@ function AddComment({ post }: { post: PrismaPostType }) {
 
   const [comment, setComment] = useState("");
   const [state, formAction, isPending] = useActionState(sendComment, {
-    status: "fail",
+    status: "pending",
     isReply: false,
   });
   const [sentComments, setSentComments] = useState<PrismaPostCommentType[]>([]);
 
   useEffect(() => {
-    if (state.status === "fail" || !state.postComment) return;
+    if (state.status === "pending") return;
+
+    if (state.status === "fail" || !state.postComment) {
+      toast.error(
+        "Something went wrong while commenting ! Please try again..."
+      );
+      return;
+    }
 
     addComment(post.id, state.postComment);
     setSentComments((prev) => [...prev, state.postComment!]);
@@ -46,7 +54,7 @@ function AddComment({ post }: { post: PrismaPostType }) {
         if (status === "fail" || !postCommentNotification) return;
 
         //! *** send real-time postCommentNotification ***
-        console.log({ postCommentNotification });
+        console.log("sending real-time postCommentNotification");
       } catch (error) {
         console.log(error);
       }

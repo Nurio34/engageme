@@ -24,6 +24,7 @@ function CommentContainer({
         <TotalCommentLikes commentLikes={likes} />
         <ReplyTheComment
           commentId={id}
+          commentOwnerId={postComment.userId}
           name={user.name}
           isReplyToReply={false}
         />

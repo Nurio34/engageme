@@ -8,6 +8,7 @@ import { likeReply } from "@/app/actions/post/reply/likeReply";
 import toast from "react-hot-toast";
 import { ReplyCommentLike } from "@prisma/client";
 import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
+import { sendReplyLikeNotification } from "@/app/actions/notification/reply/sendReplyLikeNotificationAction";
 
 export const useReply = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
@@ -17,10 +18,12 @@ export const useReply = (
   const CommentAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [commentReply, setCommentReply] = useState<CommentReplyType>({
     isReply: false,
-    replyToId: "",
+    commentId: "",
     replyToName: "",
     isReplyToReply: false,
     count: 0,
+    replyId: "",
+    commentOwnerId: "",
   });
 
   const [repliedCommentId, setRepliedCommentId] = useState("");
@@ -47,6 +50,7 @@ export const useReply = (
     postId: string,
     commentId: string,
     replyId: string,
+    replyOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => {
     const id = crypto.randomUUID();
@@ -68,6 +72,8 @@ export const useReply = (
           "Something went wrong while liking the reply ! Please try again..."
         );
       }
+
+      sendReplyLikeNotificationAction(replyOwnerId, replyLike.id);
     } catch (error) {
       console.log(error);
       removeLikeFromReplyState(postId, commentId, replyId, newReplyLike);
@@ -109,6 +115,27 @@ export const useReply = (
           : postObj
       )
     );
+  };
+
+  const sendReplyLikeNotificationAction = async (
+    replyOwnerId: string,
+    commentLikeId: string
+  ) => {
+    if (replyOwnerId === userId) return;
+
+    try {
+      const { status, replyLikeNotification } = await sendReplyLikeNotification(
+        replyOwnerId,
+        commentLikeId
+      );
+
+      if (status === "success" && replyLikeNotification) {
+        //! *** send real-time replyLikeNotification ***
+        console.log("send real-time replyLikeNotification");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const removeLikeFromReplyAction = async (
