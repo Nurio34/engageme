@@ -26,11 +26,8 @@ export const sendReplyNotification = async (
       include: {
         comment: {
           include: {
-            postComment: {
-              include: {
-                post: true,
-              },
-            },
+            user: true,
+            postComment: true,
           },
         },
       },

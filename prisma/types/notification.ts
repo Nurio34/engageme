@@ -1,11 +1,14 @@
 import {
   Post,
   PostComment,
+  PostCommentLike,
+  PostCommentLikeNotification,
   PostCommentNotification,
   PostLike,
   PostLikeNotification,
   ReplyComment,
   ReplyCommentLike,
+  ReplyCommentLikeNotification,
   ReplyCommentNotification,
   User,
 } from "@prisma/client";
@@ -20,14 +23,29 @@ export type PrismaPostLikeNotificationType = PostLikeNotification & {
 export type PrismaPostCommentNotificationType = PostCommentNotification & {
   comment: PostComment & {
     user: User;
-    post: Post;
   };
 };
 
+export type PrismaPostCommentLikeNotificationType =
+  PostCommentLikeNotification & {
+    commentLike: PostCommentLike & {
+      user: User;
+      comment: PostComment;
+    };
+  };
+
 export type PrismaReplyNotificationType = ReplyCommentNotification & {
   comment: ReplyComment & {
-    postComment: PostComment & {
-      post: Post;
+    user: User;
+    postComment: PostComment;
+  };
+};
+
+export type PrismaReplyLikeNotificationType = ReplyCommentLikeNotification & {
+  commentLike: ReplyCommentLike & {
+    user: User;
+    comment: ReplyComment & {
+      postComment: PostComment;
     };
   };
 };
@@ -35,4 +53,7 @@ export type PrismaReplyNotificationType = ReplyCommentNotification & {
 export type AllNotificationsType = {
   postLikeNotifications: PrismaPostLikeNotificationType[];
   postCommentNotifications: PrismaPostCommentNotificationType[];
+  postCommentLikeNotifications: PrismaPostCommentLikeNotificationType[];
+  replyCommentNotifications: PrismaReplyNotificationType[];
+  replyCommentLikeNotifications: PrismaReplyLikeNotificationType[];
 };

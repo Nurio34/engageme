@@ -2,14 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { ReplyCommentLikeNotification } from "@prisma/client";
+import { PrismaReplyLikeNotificationType } from "../../../../../prisma/types/notification";
 
 export const sendReplyLikeNotification = async (
   repliedUserId: string,
   commentLikeId: string
 ): Promise<{
   status: "success" | "fail";
-  replyLikeNotification?: ReplyCommentLikeNotification;
+  replyLikeNotification?: PrismaReplyLikeNotificationType;
 }> => {
   try {
     const user = await currentUser();
@@ -23,8 +23,16 @@ export const sendReplyLikeNotification = async (
           type: "replyLike",
         },
         include: {
-          user: true,
-          commentLike: true,
+          commentLike: {
+            include: {
+              user: true,
+              comment: {
+                include: {
+                  postComment: true,
+                },
+              },
+            },
+          },
         },
       });
 

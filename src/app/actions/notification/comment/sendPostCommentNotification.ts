@@ -19,7 +19,7 @@ export const sendPostCommentNotification = async (
       {
         data: { userId: postOwnerId, commentId, type: "postComment" },
         include: {
-          comment: { include: { user: true, post: true } },
+          comment: { include: { user: true } },
         },
       }
     );

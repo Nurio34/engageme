@@ -1,17 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  PrismaPostCommentLikeNotificationType,
   PrismaPostCommentNotificationType,
   PrismaPostLikeNotificationType,
+  PrismaReplyLikeNotificationType,
+  PrismaReplyNotificationType,
 } from "../../../prisma/types/notification";
 
 interface NotificationsState {
   postLikeNotifications: PrismaPostLikeNotificationType[];
   postCommentNotifications: PrismaPostCommentNotificationType[];
+  postCommentLikeNotifications: PrismaPostCommentLikeNotificationType[];
+  replyCommentNotifications: PrismaReplyNotificationType[];
+  replyCommentLikeNotifications: PrismaReplyLikeNotificationType[];
 }
 
 const initialState: NotificationsState = {
   postLikeNotifications: [],
   postCommentNotifications: [],
+  postCommentLikeNotifications: [],
+  replyCommentNotifications: [],
+  replyCommentLikeNotifications: [],
 };
 
 export const notificationsSlice = createSlice({
@@ -30,9 +39,32 @@ export const notificationsSlice = createSlice({
     ) => {
       state.postCommentNotifications = action.payload;
     },
+    setPostCommentLikeNotifications: (
+      state,
+      action: PayloadAction<PrismaPostCommentLikeNotificationType[]>
+    ) => {
+      state.postCommentLikeNotifications = action.payload;
+    },
+    seReplyCommentNotifications: (
+      state,
+      action: PayloadAction<PrismaReplyNotificationType[]>
+    ) => {
+      state.replyCommentNotifications = action.payload;
+    },
+    seReplyCommentLikeNotifications: (
+      state,
+      action: PayloadAction<PrismaReplyLikeNotificationType[]>
+    ) => {
+      state.replyCommentLikeNotifications = action.payload;
+    },
   },
 });
 
-export const { setPostLikeNotifications, setPostCommentNotifications } =
-  notificationsSlice.actions;
+export const {
+  setPostLikeNotifications,
+  setPostCommentNotifications,
+  setPostCommentLikeNotifications,
+  seReplyCommentNotifications,
+  seReplyCommentLikeNotifications,
+} = notificationsSlice.actions;
 export default notificationsSlice.reducer;

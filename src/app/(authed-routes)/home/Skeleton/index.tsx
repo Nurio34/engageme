@@ -3,7 +3,7 @@ import { LuDot } from "react-icons/lu";
 function Skeleton() {
   return (
     <div
-      className="ml-[245px] md:grid lg:grid-cols-[1fr,319px] gap-x-16
+      className="md:grid lg:grid-cols-[1fr,319px] gap-x-16
             md:px-16 md:py-6 
         "
     >

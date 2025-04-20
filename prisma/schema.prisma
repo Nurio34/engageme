@@ -23,7 +23,8 @@ model User {
   postCommentNotifications      PostCommentNotification[]
   replyCommentNotifications     ReplyCommentNotification[]
   postCommentLikeNotifications  PostCommentLikeNotification[]
-  replyCommentLikeNotification  ReplyCommentLikeNotification[]
+  replyCommentLikeNotifications  ReplyCommentLikeNotification[]
+  mock  String?
   createdAt                     DateTime @default(now())
   updatedAt                     DateTime @updatedAt @default(now())
 }

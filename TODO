@@ -4,8 +4,9 @@
 
 ## Home Page
 
-    1. Sekelton'daki bozukluğu düzelt.
-    2. postLike,postComment,commentLike,replyComment ve replyLike notification sending success'ten sonra;
+    1. HomePage'de SideMEnu - Posts layout çok bozuk, düzelt
+    2. Ardından Skeleton!u düzelt.
+    3. postLike,postComment,commentLike,replyComment ve replyLike notification sending success'ten sonra;
         1. real-time olarak gönder.
         2. real-time olarak alınca sidemenu store'daki yerlerine dispatchle    
     

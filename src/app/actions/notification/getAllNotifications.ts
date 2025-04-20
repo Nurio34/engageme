@@ -30,7 +30,40 @@ export const getAllNotifications = async (): Promise<{
             comment: {
               include: {
                 user: true,
-                post: true,
+              },
+            },
+          },
+        },
+        postCommentLikeNotifications: {
+          include: {
+            commentLike: {
+              include: {
+                user: true,
+                comment: true,
+              },
+            },
+          },
+        },
+        replyCommentNotifications: {
+          include: {
+            comment: {
+              include: {
+                user: true,
+                postComment: true,
+              },
+            },
+          },
+        },
+        replyCommentLikeNotifications: {
+          include: {
+            commentLike: {
+              include: {
+                user: true,
+                comment: {
+                  include: {
+                    postComment: true,
+                  },
+                },
               },
             },
           },
