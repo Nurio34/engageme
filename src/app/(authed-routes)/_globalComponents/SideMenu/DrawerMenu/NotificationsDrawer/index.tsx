@@ -2,15 +2,27 @@ import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import Notification from "./Notification";
 
+// export type NotificationType = {
+//   message: string;
+//   avatar: string | null;
+//   post?: string;
+//   comment?: string;
+//   reply?: string;
+//   postId: string;
+//   postCommentId?: string;
+//   createdAt: Date;
+// };
+
 export type NotificationType = {
-  message: string;
-  avatar: string | null;
-  post?: string;
-  comment?: string;
-  reply?: string;
   postId: string;
-  postCommentId?: string;
+  users: {
+    name: string;
+    avatar: string;
+    userId: string;
+  }[];
+  post: string;
   createdAt: Date;
+  type: "postLikeNotification";
 };
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
@@ -52,15 +64,68 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
   );
 
   useEffect(() => {
-    const notifications = postLikeNotifications.map((notification) => {
-      const message = `${notification.postLike.user.name} liked your post.`;
-      const avatar = notification.postLike.user.avatar;
-      const post = notification.postLike.post.message;
-      const postId = notification.postLike.postId;
-      const createdAt = notification.createdAt;
+    const notifications = postLikeNotifications.reduce(
+      (
+        arr: {
+          postId: string;
+          users: { name: string; avatar: string; userId: string }[];
+          post: string;
+          createdAt: Date;
+          type: "postLikeNotification";
+        }[],
+        notification
+      ) => {
+        const postId = notification.postLike.postId;
+        const username = notification.postLike.user.name;
+        const avatar = notification.postLike.user.avatar;
+        const userId = notification.postLike.user.id;
+        const post = notification.postLike.post.message;
+        const createdAt = notification.createdAt;
 
-      return { message, avatar, post, postId, createdAt };
-    });
+        const isAnyNotificationWithSamePostId = arr.some(
+          (notification) => notification.postId === postId
+        );
+
+        if (arr.length === 0 || !isAnyNotificationWithSamePostId)
+          arr.push({
+            postId,
+            users: [
+              {
+                name: username,
+                avatar: avatar || "./placeholders/avatar.webp",
+                userId,
+              },
+            ],
+            post,
+            createdAt,
+            type: "postLikeNotification",
+          });
+        else {
+          arr = arr.map((notifArr) =>
+            notifArr.postId === postId
+              ? {
+                  ...notifArr,
+                  users: [
+                    {
+                      name: username,
+                      avatar: avatar || "./placeholders/avatar.webp",
+                      userId,
+                    },
+                    ...notifArr.users,
+                  ],
+                  createdAt,
+                }
+              : notifArr
+          );
+        }
+
+        return arr;
+        // return { message, avatar, post, postId, createdAt };
+      },
+      []
+    );
+
+    console.log(notifications);
 
     setPostLikeNotificationsState(notifications);
   }, [postLikeNotifications]);

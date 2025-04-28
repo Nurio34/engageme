@@ -22,7 +22,7 @@ function Client() {
   return (
     <Link
       href={`/${username}`}
-      className="w-full min-w-max flex items-center justify-center lg:justify-start gap-x-4
+      className="w-full min-w-max flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
         p-3 md:p-[1.25vh] lg:p-3 rounded-lg order-6 md:order-none
         hover:bg-base-content/10
       "

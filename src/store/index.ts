@@ -6,6 +6,7 @@ import homePageSlice from "./slices/homePage";
 import userSlice from "./slices/user";
 import sideMenuSlice from "./slices/sidemenu";
 import notificationsSlice from "./slices/notifications";
+import socketSlice from "./slices/socket";
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +17,12 @@ export const store = configureStore({
     user: userSlice,
     sideMenu: sideMenuSlice,
     notifications: notificationsSlice,
+    socket: socketSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

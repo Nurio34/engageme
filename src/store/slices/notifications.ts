@@ -33,6 +33,12 @@ export const notificationsSlice = createSlice({
     ) => {
       state.postLikeNotifications = action.payload;
     },
+    addPostLikeNotification: (
+      state,
+      action: PayloadAction<PrismaPostLikeNotificationType>
+    ) => {
+      state.postLikeNotifications.push(action.payload);
+    },
     setPostCommentNotifications: (
       state,
       action: PayloadAction<PrismaPostCommentNotificationType[]>
@@ -62,6 +68,7 @@ export const notificationsSlice = createSlice({
 
 export const {
   setPostLikeNotifications,
+  addPostLikeNotification,
   setPostCommentNotifications,
   setPostCommentLikeNotifications,
   seReplyCommentNotifications,

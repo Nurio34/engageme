@@ -15,7 +15,7 @@ function Client() {
 
   return (
     <button
-      className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4
+      className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
         hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3
         
       "

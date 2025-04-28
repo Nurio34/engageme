@@ -10,7 +10,7 @@ function Client() {
   return (
     height > 525 && (
       <div
-        className={`hidden md:flex justify-center items-center lg:justify-start
+        className={`hidden md:flex justify-center items-center lg:justify-start overflow-hidden
         text-2xl lg:pl-3  ${height > 525 ? "pt-6 pb-9" : ""}
       `}
       >

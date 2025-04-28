@@ -5,12 +5,15 @@ import { likeThePost } from "@/app/actions/post/like/likeThePost";
 import toast from "react-hot-toast";
 import { removeLike } from "@/app/actions/post/like/removeLike";
 import { sendPostLikeNotification } from "@/app/actions/notification/like/postLike/sendPostLikeNotification";
+import { useAppSelector } from "@/store/hooks";
 
 export const usePostLike = (
   postsState: PrismaPostType[],
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
   userId: string
 ) => {
+  const { socket } = useAppSelector((s) => s.socket);
+
   async function likeThePostAction(
     postId: string,
     postOwnerId: string,
@@ -70,6 +73,10 @@ export const usePostLike = (
 
       //! *** Send real time notification ***
       console.log("send real-time postLikeNotification");
+      socket?.emit("postLikeNotification", {
+        postOwnerId,
+        postLikeNotification,
+      });
     } catch (error) {
       console.log(error);
     }
