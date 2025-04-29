@@ -1,27 +1,16 @@
-import Image from "next/image";
 import { NotificationType } from "..";
-import Link from "next/link";
+import Users from "./Users";
+import Avatars from "./Avatars";
+import Post from "./Post";
 
 function Notification({ notification }: { notification: NotificationType }) {
-  const { postId, users, post, createdAt, type } = notification;
+  const { postId, users, post, createdAt, type, media } = notification;
 
   return (
-    <li>
-      <Link
-        href={`/post/${postId}/?commentId=${"postCommentId"}`}
-        className="grid grid-cols-[auto,1fr] bg-primary/50 rounded-lg p-1"
-      >
-        <figure className="relative w-8 aspect-square rounded-full overflow-hidden">
-          <Image
-            src={avatar || "/placeholders/avatar.webp"}
-            fill
-            alt="avatar"
-          />
-        </figure>
-        {users.map((user) => (
-          <Link href={`/user/${user.userId}`}></Link>
-        ))}
-      </Link>
+    <li className="grid grid-cols-[58px,1fr,58px] items-center py-2 px-6">
+      <Avatars users={users} />
+      <Users users={users} createdAt={createdAt} />
+      <Post media={media} postId={postId} />
     </li>
   );
 }

@@ -20,7 +20,11 @@ export const getAllNotifications = async (): Promise<{
             postLike: {
               include: {
                 user: true,
-                post: true,
+                post: {
+                  include: {
+                    medias: true,
+                  },
+                },
               },
             },
           },

@@ -24,5 +24,5 @@ export const fancyTime = (date: Date) => {
     }
   }
 
-  return { short: "0s", long: "just now" };
+  return { short: "just now", long: "just now" };
 };

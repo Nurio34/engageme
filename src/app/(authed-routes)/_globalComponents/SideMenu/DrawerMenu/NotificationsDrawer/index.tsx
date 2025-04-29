@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import Notification from "./Notification";
+import { Media, MediaType } from "@prisma/client";
 
 // export type NotificationType = {
 //   message: string;
@@ -13,16 +14,24 @@ import Notification from "./Notification";
 //   createdAt: Date;
 // };
 
+export type User = {
+  name: string;
+  avatar: string;
+  userId: string;
+};
+
+export type MediaInterface = {
+  type: MediaType;
+  url: string;
+};
+
 export type NotificationType = {
   postId: string;
-  users: {
-    name: string;
-    avatar: string;
-    userId: string;
-  }[];
+  users: User[];
   post: string;
   createdAt: Date;
   type: "postLikeNotification";
+  media: MediaInterface;
 };
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
@@ -65,22 +74,17 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
 
   useEffect(() => {
     const notifications = postLikeNotifications.reduce(
-      (
-        arr: {
-          postId: string;
-          users: { name: string; avatar: string; userId: string }[];
-          post: string;
-          createdAt: Date;
-          type: "postLikeNotification";
-        }[],
-        notification
-      ) => {
+      (arr: NotificationType[], notification) => {
         const postId = notification.postLike.postId;
         const username = notification.postLike.user.name;
         const avatar = notification.postLike.user.avatar;
         const userId = notification.postLike.user.id;
         const post = notification.postLike.post.message;
         const createdAt = notification.createdAt;
+        const media = {
+          type: notification.postLike.post.medias[0].type,
+          url: notification.postLike.post.medias[0].url,
+        };
 
         const isAnyNotificationWithSamePostId = arr.some(
           (notification) => notification.postId === postId
@@ -99,6 +103,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "postLikeNotification",
+            media,
           });
         else {
           arr = arr.map((notifArr) =>
@@ -130,67 +135,67 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
     setPostLikeNotificationsState(notifications);
   }, [postLikeNotifications]);
 
-  useEffect(() => {
-    const notifications = postCommentNotifications.map((notification) => {
-      const message = `${notification.comment.user.name} commented on your post.`;
-      const avatar = notification.comment.user.avatar;
-      const comment = notification.comment.comment;
-      const postId = notification.comment.postId;
-      const createdAt = notification.createdAt;
+  // useEffect(() => {
+  //   const notifications = postCommentNotifications.map((notification) => {
+  //     const message = `${notification.comment.user.name} commented on your post.`;
+  //     const avatar = notification.comment.user.avatar;
+  //     const comment = notification.comment.comment;
+  //     const postId = notification.comment.postId;
+  //     const createdAt = notification.createdAt;
 
-      return { message, avatar, comment, postId, createdAt };
-    });
-    setPostCommentNotificationsState(notifications);
-  }, [postCommentNotifications]);
+  //     return { message, avatar, comment, postId, createdAt };
+  //   });
+  //   setPostCommentNotificationsState(notifications);
+  // }, [postCommentNotifications]);
 
-  useEffect(() => {
-    const notifications = postCommentLikeNotifications.map((notification) => {
-      const message = `${notification.commentLike.user.name} liked your comment.`;
-      const avatar = notification.commentLike.user.avatar;
-      const comment = notification.commentLike.comment.comment;
-      const postId = notification.commentLike.comment.postId;
-      const createdAt = notification.createdAt;
+  // useEffect(() => {
+  //   const notifications = postCommentLikeNotifications.map((notification) => {
+  //     const message = `${notification.commentLike.user.name} liked your comment.`;
+  //     const avatar = notification.commentLike.user.avatar;
+  //     const comment = notification.commentLike.comment.comment;
+  //     const postId = notification.commentLike.comment.postId;
+  //     const createdAt = notification.createdAt;
 
-      return { message, avatar, comment, postId, createdAt };
-    });
+  //     return { message, avatar, comment, postId, createdAt };
+  //   });
 
-    setPostCommentLikeNotifications(notifications);
-  }, [postCommentLikeNotifications]);
+  //   setPostCommentLikeNotifications(notifications);
+  // }, [postCommentLikeNotifications]);
 
-  useEffect(() => {
-    const notifications = replyCommentNotifications.map((notification) => {
-      const message = `${notification.comment.user.name} replied to your comment`;
-      const avatar = notification.comment.user.avatar;
-      const comment = notification.comment.comment;
-      const postId = notification.comment.postComment.postId;
-      const postCommentId = notification.comment.postComment.id;
-      const createdAt = notification.createdAt;
+  // useEffect(() => {
+  //   const notifications = replyCommentNotifications.map((notification) => {
+  //     const message = `${notification.comment.user.name} replied to your comment`;
+  //     const avatar = notification.comment.user.avatar;
+  //     const comment = notification.comment.comment;
+  //     const postId = notification.comment.postComment.postId;
+  //     const postCommentId = notification.comment.postComment.id;
+  //     const createdAt = notification.createdAt;
 
-      return { message, avatar, comment, postId, postCommentId, createdAt };
-    });
+  //     return { message, avatar, comment, postId, postCommentId, createdAt };
+  //   });
 
-    setReplyCommentNotificationsState(notifications);
-  }, [replyCommentNotifications]);
+  //   setReplyCommentNotificationsState(notifications);
+  // }, [replyCommentNotifications]);
 
-  useEffect(() => {
-    const notifications = replyCommentLikeNotifications.map((notification) => {
-      const message = `${notification.commentLike.user.name} liked your reply.`;
-      const avatar = notification.commentLike.user.avatar;
-      const reply = notification.commentLike.comment.comment;
-      const postId = notification.commentLike.comment.postComment.postId;
-      const postCommentId = notification.commentLike.comment.postComment.id;
-      const createdAt = notification.createdAt;
+  // useEffect(() => {
+  //   const notifications = replyCommentLikeNotifications.map((notification) => {
+  //     const message = `${notification.commentLike.user.name} liked your reply.`;
+  //     const avatar = notification.commentLike.user.avatar;
+  //     const reply = notification.commentLike.comment.comment;
+  //     const postId = notification.commentLike.comment.postComment.postId;
+  //     const postCommentId = notification.commentLike.comment.postComment.id;
+  //     const createdAt = notification.createdAt;
 
-      return { message, avatar, reply, postId, postCommentId, createdAt };
-    });
+  //     return { message, avatar, reply, postId, postCommentId, createdAt };
+  //   });
 
-    setReplyCommentLikeNotificationsState(notifications);
-  }, [replyCommentLikeNotifications]);
+  //   setReplyCommentLikeNotificationsState(notifications);
+  // }, [replyCommentLikeNotifications]);
 
   return (
     <div
       className={`fixed z-10 top-0 left-0 w-[397px] h-full  transition-transform duration-300
-         bg-base-100 rounded-tr-xl rounded-br-xl shadow-[0px_0px_30px_0px]    
+         bg-base-100 rounded-tr-xl rounded-br-xl shadow-[0px_0px_30px_0px] py-2 pr-2  
       `}
       style={{
         transform:
@@ -199,7 +204,10 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             : "translateX(-100%)",
       }}
     >
-      <ul className="p-2 grid gap-y-2">
+      <div className="pt-4 pb-6 px-6 text-2xl font-bold">
+        <h2>Notifications</h2>
+      </div>
+      <ul className="rid gap-y-2">
         {allNotifications.map((notification, index) => (
           <Notification key={index} notification={notification} />
         ))}

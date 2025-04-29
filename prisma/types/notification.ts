@@ -1,4 +1,5 @@
 import {
+  Media,
   Post,
   PostComment,
   PostCommentLike,
@@ -16,7 +17,9 @@ import {
 export type PrismaPostLikeNotificationType = PostLikeNotification & {
   postLike: PostLike & {
     user: User;
-    post: Post;
+    post: Post & {
+      medias: Media[];
+    };
   };
 };
 

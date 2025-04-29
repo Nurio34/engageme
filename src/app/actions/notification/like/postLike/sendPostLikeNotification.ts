@@ -15,7 +15,9 @@ export const sendPostLikeNotification = async (
     const postLikeNotification = await prisma.postLikeNotification.create({
       data: { userId: postOwnerId, postLikeId: postLike.id, type: "postLike" },
       include: {
-        postLike: { include: { user: true, post: true } },
+        postLike: {
+          include: { user: true, post: { include: { medias: true } } },
+        },
       },
     });
 
