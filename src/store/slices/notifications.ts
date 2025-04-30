@@ -45,11 +45,23 @@ export const notificationsSlice = createSlice({
     ) => {
       state.postCommentNotifications = action.payload;
     },
+    addPostCommentNotification: (
+      state,
+      action: PayloadAction<PrismaPostCommentNotificationType>
+    ) => {
+      state.postCommentNotifications.push(action.payload);
+    },
     setPostCommentLikeNotifications: (
       state,
       action: PayloadAction<PrismaPostCommentLikeNotificationType[]>
     ) => {
       state.postCommentLikeNotifications = action.payload;
+    },
+    addCommentLikeNotification: (
+      state,
+      action: PayloadAction<PrismaPostCommentLikeNotificationType>
+    ) => {
+      state.postCommentLikeNotifications.push(action.payload);
     },
     seReplyCommentNotifications: (
       state,
@@ -57,11 +69,23 @@ export const notificationsSlice = createSlice({
     ) => {
       state.replyCommentNotifications = action.payload;
     },
+    addReplyNotification: (
+      state,
+      action: PayloadAction<PrismaReplyNotificationType>
+    ) => {
+      state.replyCommentNotifications.push(action.payload);
+    },
     seReplyCommentLikeNotifications: (
       state,
       action: PayloadAction<PrismaReplyLikeNotificationType[]>
     ) => {
       state.replyCommentLikeNotifications = action.payload;
+    },
+    addReplyLikeNotification: (
+      state,
+      action: PayloadAction<PrismaReplyLikeNotificationType>
+    ) => {
+      state.replyCommentLikeNotifications.push(action.payload);
     },
   },
 });
@@ -70,8 +94,12 @@ export const {
   setPostLikeNotifications,
   addPostLikeNotification,
   setPostCommentNotifications,
+  addPostCommentNotification,
   setPostCommentLikeNotifications,
+  addCommentLikeNotification,
   seReplyCommentNotifications,
+  addReplyNotification,
   seReplyCommentLikeNotifications,
+  addReplyLikeNotification,
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

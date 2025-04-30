@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 function AddComment({ post }: { post: PrismaPostType }) {
   const { isPickerOpen } = useAppSelector((s) => s.modals);
   const { id: userId } = useAppSelector((s) => s.user);
+  const { socket } = useAppSelector((s) => s.socket);
 
   const dispatch = useAppDispatch();
 
@@ -54,7 +55,10 @@ function AddComment({ post }: { post: PrismaPostType }) {
         if (status === "fail" || !postCommentNotification) return;
 
         //! *** send real-time postCommentNotification ***
-        console.log("sending real-time postCommentNotification");
+        socket?.emit("postCommentNotification", {
+          postOwnerId: post.userId,
+          postCommentNotification,
+        });
       } catch (error) {
         console.log(error);
       }

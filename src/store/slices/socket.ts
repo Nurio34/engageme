@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
 
@@ -15,14 +13,16 @@ const socketSlice = createSlice({
   name: "socket",
   initialState,
   reducers: {
-    setSocket(state, action: PayloadAction<Socket>) {
-      // Create a new instance or copy the socket to avoid immutability issues
-      if (!state.socket) state.socket = action.payload;
+    setSocket: (state, action: PayloadAction<Socket>) => {
+      return {
+        ...state,
+        socket: action.payload, // replace whole state object
+      };
     },
 
-    clearSocket(state) {
-      state.socket = null;
-    },
+    clearSocket: () => ({
+      socket: null,
+    }),
   },
 });
 

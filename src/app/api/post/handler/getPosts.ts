@@ -15,8 +15,8 @@ export const getPosts = async (
         headers: {
           "request-secret": process.env.REQUEST_SECRET!,
         },
-        cache: "force-cache",
-        next: { tags: ["posts"], revalidate: 3600 },
+        cache: "no-store",
+        next: { tags: ["posts"] },
       }
     );
 

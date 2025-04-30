@@ -2,17 +2,25 @@ import Image from "next/image";
 import { MediaInterface } from "../..";
 import Link from "next/link";
 
-function Post({ media, postId }: { media: MediaInterface; postId: string }) {
+function Post({
+  media,
+  postId,
+  commentId,
+}: {
+  media: MediaInterface;
+  postId: string;
+  commentId: string | undefined;
+}) {
   const type = media.type;
 
   return (
     <Link
-      href={`/p/${postId}`}
+      href={commentId ? `/p/${postId}&c=${commentId}` : `/p/${postId}`}
       className=" justify-self-end rounded-lg overflow-hidden"
     >
       {type === "image" ? (
         <figure className="relative w-11 aspect-square">
-          <Image src={media.url} alt="post" fill />
+          <Image src={media.url} alt="post" fill sizes="44px" />
         </figure>
       ) : (
         <video

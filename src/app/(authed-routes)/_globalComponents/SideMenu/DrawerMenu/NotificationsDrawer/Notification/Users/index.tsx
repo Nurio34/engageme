@@ -1,80 +1,52 @@
-import Link from "next/link";
-import { User } from "../..";
-import { fancyTime } from "@/utils/fancyTime";
+import { NotificationTypeInterface, User } from "../..";
+import PostLikeNotification from "./PostLikeNotification";
+import PostCommentNotification from "./PostCommentNotification";
+import CommentLikeNotification from "./CommentLikeNotification";
+import ReplyNotification from "./ReplyNotification";
+import ReplyLikeNotification from "./ReplyLikeNotification";
 
-function Users({ users, createdAt }: { users: User[]; createdAt: Date }) {
-  const last = { name: users[0].name, id: users[0].userId };
-  const lastSecond = { name: users[1]?.name, id: users[1]?.userId };
-  const lastThird = { name: users[2]?.name, id: users[2]?.userId };
-  const isMoreThanThree = users.length > 3;
-
+function Users({
+  users,
+  createdAt,
+  type,
+  comment,
+}: {
+  users: User[];
+  createdAt: Date;
+  type: NotificationTypeInterface;
+  comment: string | undefined;
+}) {
   return (
-    <div className="text-sm">
-      {isMoreThanThree ? (
-        <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
-            {last.name}
-          </Link>
-          ,{" "}
-          <Link
-            className="font-bold"
-            key={lastSecond.id}
-            href={`/${lastSecond.name}`}
-          >
-            {lastSecond.name}
-          </Link>{" "}
-          and {users.length - 2} others liked your post.
-        </span>
-      ) : lastThird.name ? (
-        <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
-            {last.name}
-          </Link>
-          ,{" "}
-          <Link
-            className="font-bold"
-            key={lastSecond.id}
-            href={`/${lastSecond.name}`}
-          >
-            {lastSecond.name}
-          </Link>{" "}
-          and{" "}
-          <Link
-            className="font-bold"
-            key={lastThird.id}
-            href={`/${lastThird.name}`}
-          >
-            {lastThird.name}
-          </Link>{" "}
-          liked your post.
-        </span>
-      ) : lastSecond.name ? (
-        <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
-            {last.name}
-          </Link>{" "}
-          and{" "}
-          <Link
-            className="font-bold"
-            key={lastSecond.id}
-            href={`/${lastSecond.name}`}
-          >
-            {lastSecond.name}
-          </Link>{" "}
-          liked your post.
-        </span>
+    <div className="text-sm max-h-20 overflow-clip">
+      {type === "postLikeNotification" ? (
+        <PostLikeNotification users={users} createdAt={createdAt} />
+      ) : type === "postCommentNotification" ? (
+        <PostCommentNotification
+          users={users}
+          createdAt={createdAt}
+          comment={comment}
+        />
+      ) : type === "commentLikeNotification" ? (
+        <CommentLikeNotification
+          users={users}
+          createdAt={createdAt}
+          comment={comment}
+        />
+      ) : type === "replyNotification" ? (
+        <ReplyNotification
+          users={users}
+          createdAt={createdAt}
+          comment={comment}
+        />
+      ) : type === "replyLikeNotification" ? (
+        <ReplyLikeNotification
+          users={users}
+          createdAt={createdAt}
+          comment={comment}
+        />
       ) : (
-        <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
-            {last.name}
-          </Link>{" "}
-          liked your post.
-        </span>
+        "ok"
       )}
-      <span className="text-base-content/50">
-        {" "}
-        {fancyTime(createdAt).short}
-      </span>
     </div>
   );
 }

@@ -1,18 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import Notification from "./Notification";
-import { Media, MediaType } from "@prisma/client";
-
-// export type NotificationType = {
-//   message: string;
-//   avatar: string | null;
-//   post?: string;
-//   comment?: string;
-//   reply?: string;
-//   postId: string;
-//   postCommentId?: string;
-//   createdAt: Date;
-// };
+import { MediaType } from "@prisma/client";
 
 export type User = {
   name: string;
@@ -25,13 +14,22 @@ export type MediaInterface = {
   url: string;
 };
 
+export type NotificationTypeInterface =
+  | "postLikeNotification"
+  | "postCommentNotification"
+  | "commentLikeNotification"
+  | "replyNotification"
+  | "replyLikeNotification";
+
 export type NotificationType = {
   postId: string;
   users: User[];
   post: string;
   createdAt: Date;
-  type: "postLikeNotification";
+  type: NotificationTypeInterface;
   media: MediaInterface;
+  comment?: string;
+  commentId?: string;
 };
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
@@ -125,72 +123,282 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
         }
 
         return arr;
-        // return { message, avatar, post, postId, createdAt };
       },
       []
     );
 
-    console.log(notifications);
-
     setPostLikeNotificationsState(notifications);
   }, [postLikeNotifications]);
 
-  // useEffect(() => {
-  //   const notifications = postCommentNotifications.map((notification) => {
-  //     const message = `${notification.comment.user.name} commented on your post.`;
-  //     const avatar = notification.comment.user.avatar;
-  //     const comment = notification.comment.comment;
-  //     const postId = notification.comment.postId;
-  //     const createdAt = notification.createdAt;
+  useEffect(() => {
+    const notifications = postCommentNotifications.reduce(
+      (arr: NotificationType[], notification) => {
+        const postId = notification.comment.postId;
+        const username = notification.comment.user.name;
+        const avatar = notification.comment.user.avatar;
+        const userId = notification.comment.userId;
+        const post = notification.comment.post.message;
+        const createdAt = notification.createdAt;
+        const comment = notification.comment.comment;
+        const media = {
+          type: notification.comment.post.medias[0].type,
+          url: notification.comment.post.medias[0].url,
+        };
 
-  //     return { message, avatar, comment, postId, createdAt };
-  //   });
-  //   setPostCommentNotificationsState(notifications);
-  // }, [postCommentNotifications]);
+        const isAnyNotificationWithSamePostId = arr.some(
+          (notification) => notification.postId === postId
+        );
 
-  // useEffect(() => {
-  //   const notifications = postCommentLikeNotifications.map((notification) => {
-  //     const message = `${notification.commentLike.user.name} liked your comment.`;
-  //     const avatar = notification.commentLike.user.avatar;
-  //     const comment = notification.commentLike.comment.comment;
-  //     const postId = notification.commentLike.comment.postId;
-  //     const createdAt = notification.createdAt;
+        if (arr.length === 0 || !isAnyNotificationWithSamePostId)
+          arr.push({
+            postId,
+            users: [
+              {
+                name: username,
+                avatar: avatar || "./placeholders/avatar.webp",
+                userId,
+              },
+            ],
+            post,
+            createdAt,
+            type: "postCommentNotification",
+            media,
+            comment,
+          });
+        else {
+          arr = arr.map((notifArr) =>
+            notifArr.postId === postId
+              ? {
+                  ...notifArr,
+                  users: Array.from(
+                    new Map(
+                      [
+                        {
+                          name: username,
+                          avatar: avatar || "./placeholders/avatar.webp",
+                          userId,
+                        },
+                        ...notifArr.users,
+                      ].map((user) => [user.userId, user])
+                    ).values()
+                  ),
 
-  //     return { message, avatar, comment, postId, createdAt };
-  //   });
+                  createdAt,
+                  comment,
+                }
+              : notifArr
+          );
+        }
 
-  //   setPostCommentLikeNotifications(notifications);
-  // }, [postCommentLikeNotifications]);
+        return arr;
+      },
+      []
+    );
+    setPostCommentNotificationsState(notifications);
+  }, [postCommentNotifications]);
 
-  // useEffect(() => {
-  //   const notifications = replyCommentNotifications.map((notification) => {
-  //     const message = `${notification.comment.user.name} replied to your comment`;
-  //     const avatar = notification.comment.user.avatar;
-  //     const comment = notification.comment.comment;
-  //     const postId = notification.comment.postComment.postId;
-  //     const postCommentId = notification.comment.postComment.id;
-  //     const createdAt = notification.createdAt;
+  useEffect(() => {
+    const notifications = postCommentLikeNotifications.reduce(
+      (arr: NotificationType[], notification) => {
+        const postId = notification.commentLike.comment.postId;
+        const username = notification.commentLike.user.name;
+        const avatar = notification.commentLike.user.avatar;
+        const userId = notification.commentLike.userId;
+        const post = notification.commentLike.comment.post.message;
+        const comment = notification.commentLike.comment.comment;
+        const createdAt = notification.createdAt;
+        const media = {
+          type: notification.commentLike.comment.post.medias[0].type,
+          url: notification.commentLike.comment.post.medias[0].url,
+        };
 
-  //     return { message, avatar, comment, postId, postCommentId, createdAt };
-  //   });
+        const isAnyNotificationWithSamePostId = arr.some(
+          (notification) => notification.postId === postId
+        );
 
-  //   setReplyCommentNotificationsState(notifications);
-  // }, [replyCommentNotifications]);
+        if (arr.length === 0 || !isAnyNotificationWithSamePostId)
+          arr.push({
+            postId,
+            users: [
+              {
+                name: username,
+                avatar: avatar || "./placeholders/avatar.webp",
+                userId,
+              },
+            ],
+            post,
+            createdAt,
+            type: "commentLikeNotification",
+            media,
+            comment,
+          });
+        else {
+          arr = arr.map((notifArr) =>
+            notifArr.postId === postId
+              ? {
+                  ...notifArr,
+                  users: [
+                    {
+                      name: username,
+                      avatar: avatar || "./placeholders/avatar.webp",
+                      userId,
+                    },
+                    ...notifArr.users,
+                  ],
+                  createdAt,
+                }
+              : notifArr
+          );
+        }
 
-  // useEffect(() => {
-  //   const notifications = replyCommentLikeNotifications.map((notification) => {
-  //     const message = `${notification.commentLike.user.name} liked your reply.`;
-  //     const avatar = notification.commentLike.user.avatar;
-  //     const reply = notification.commentLike.comment.comment;
-  //     const postId = notification.commentLike.comment.postComment.postId;
-  //     const postCommentId = notification.commentLike.comment.postComment.id;
-  //     const createdAt = notification.createdAt;
+        return arr;
+      },
+      []
+    );
 
-  //     return { message, avatar, reply, postId, postCommentId, createdAt };
-  //   });
+    setPostCommentLikeNotifications(notifications);
+  }, [postCommentLikeNotifications]);
 
-  //   setReplyCommentLikeNotificationsState(notifications);
-  // }, [replyCommentLikeNotifications]);
+  useEffect(() => {
+    const notifications = replyCommentNotifications.reduce(
+      (arr: NotificationType[], notification) => {
+        const commentId = notification.comment.postComment.id;
+        const username = notification.comment.user.name;
+        const avatar = notification.comment.user.avatar;
+        const userId = notification.comment.userId;
+        const post = notification.comment.postComment.post.message;
+        const postId = notification.comment.postComment.postId;
+        const comment = notification.comment.comment;
+        const createdAt = notification.createdAt;
+
+        const media = {
+          type: notification.comment.postComment.post.medias[0].type,
+          url: notification.comment.postComment.post.medias[0].url,
+        };
+
+        const isAnyNotificationWithSameCommentId = arr.some(
+          (notification) => notification.commentId === commentId
+        );
+
+        if (arr.length === 0 || !isAnyNotificationWithSameCommentId) {
+          arr.push({
+            commentId,
+            postId,
+            users: [
+              {
+                name: username,
+                avatar: avatar || "./placeholders/avatar.webp",
+                userId,
+              },
+            ],
+            post,
+            createdAt,
+            type: "replyNotification",
+            media,
+            comment,
+          });
+        } else {
+          arr = arr.map((notifArr) =>
+            notifArr.commentId === commentId
+              ? {
+                  ...notifArr,
+                  users: Array.from(
+                    new Map(
+                      [
+                        {
+                          name: username,
+                          avatar: avatar || "./placeholders/avatar.webp",
+                          userId,
+                        },
+                        ...notifArr.users,
+                      ].map((user) => [user.userId, user])
+                    ).values()
+                  ),
+                  createdAt,
+                  comment,
+                }
+              : notifArr
+          );
+        }
+
+        return arr;
+      },
+      []
+    );
+
+    setReplyCommentNotificationsState(notifications);
+  }, [replyCommentNotifications]);
+
+  useEffect(() => {
+    const notifications = replyCommentLikeNotifications.reduce(
+      (arr: NotificationType[], notification) => {
+        const postId = notification.commentLike.comment.postComment.postId;
+        const username = notification.commentLike.user.name;
+        const avatar = notification.commentLike.user.avatar;
+        const userId = notification.commentLike.userId;
+        const post = notification.commentLike.comment.postComment.post.message;
+
+        const comment = notification.commentLike.comment.comment;
+        const commentId = notification.commentLike.comment.postComment.id;
+        const createdAt = notification.createdAt;
+        const media = {
+          type: notification.commentLike.comment.postComment.post.medias[0]
+            .type,
+          url: notification.commentLike.comment.postComment.post.medias[0].url,
+        };
+
+        const isAnyNotificationWithSameCommentId = arr.some(
+          (notification) => notification.commentId === commentId
+        );
+
+        if (arr.length === 0 || !isAnyNotificationWithSameCommentId) {
+          arr.push({
+            commentId,
+            postId,
+            users: [
+              {
+                name: username,
+                avatar: avatar || "./placeholders/avatar.webp",
+                userId,
+              },
+            ],
+            post,
+            createdAt,
+            type: "replyLikeNotification",
+            media,
+            comment,
+          });
+        } else {
+          arr = arr.map((notifArr) =>
+            notifArr.commentId === commentId
+              ? {
+                  ...notifArr,
+                  users: Array.from(
+                    new Map(
+                      [
+                        {
+                          name: username,
+                          avatar: avatar || "./placeholders/avatar.webp",
+                          userId,
+                        },
+                        ...notifArr.users,
+                      ].map((user) => [user.userId, user])
+                    ).values()
+                  ),
+                  createdAt,
+                  comment,
+                }
+              : notifArr
+          );
+        }
+
+        return arr;
+      },
+      []
+    );
+
+    setReplyCommentLikeNotificationsState(notifications);
+  }, [replyCommentLikeNotifications]);
 
   return (
     <div

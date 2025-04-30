@@ -28,7 +28,15 @@ export const sendReplyLikeNotification = async (
               user: true,
               comment: {
                 include: {
-                  postComment: true,
+                  postComment: {
+                    include: {
+                      post: {
+                        include: {
+                          medias: true,
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },

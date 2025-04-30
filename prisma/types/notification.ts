@@ -26,6 +26,9 @@ export type PrismaPostLikeNotificationType = PostLikeNotification & {
 export type PrismaPostCommentNotificationType = PostCommentNotification & {
   comment: PostComment & {
     user: User;
+    post: Post & {
+      medias: Media[];
+    };
   };
 };
 
@@ -33,14 +36,22 @@ export type PrismaPostCommentLikeNotificationType =
   PostCommentLikeNotification & {
     commentLike: PostCommentLike & {
       user: User;
-      comment: PostComment;
+      comment: PostComment & {
+        post: Post & {
+          medias: Media[];
+        };
+      };
     };
   };
 
 export type PrismaReplyNotificationType = ReplyCommentNotification & {
   comment: ReplyComment & {
     user: User;
-    postComment: PostComment;
+    postComment: PostComment & {
+      post: Post & {
+        medias: Media[];
+      };
+    };
   };
 };
 
@@ -48,7 +59,11 @@ export type PrismaReplyLikeNotificationType = ReplyCommentLikeNotification & {
   commentLike: ReplyCommentLike & {
     user: User;
     comment: ReplyComment & {
-      postComment: PostComment;
+      postComment: PostComment & {
+        post: Post & {
+          medias: Media[];
+        };
+      };
     };
   };
 };

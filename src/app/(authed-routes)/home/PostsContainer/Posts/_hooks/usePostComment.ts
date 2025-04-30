@@ -8,12 +8,15 @@ import { likeComment } from "@/app/actions/post/comment/likeComment";
 import { PostCommentLike } from "@prisma/client";
 import { removeLikeFromComment } from "@/app/actions/post/comment/removeLikeFromComment";
 import { sendCommentLikeNotification } from "@/app/actions/notification/comment/sendCommentLikeNotification";
+import { useAppSelector } from "@/store/hooks";
 
 export const usePostComment = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
   postsState: PrismaPostType[],
   userId: string
 ) => {
+  const { socket } = useAppSelector((s) => s.socket);
+
   const addComment = (postId: string, postComment: PrismaPostCommentType) =>
     setPostsState((prev) =>
       prev.map((postObj) =>
@@ -95,6 +98,10 @@ export const usePostComment = (
 
       if (status === "success" && postCommentLikeNotification) {
         console.log("send real-time postCommentLikeNotification");
+        socket?.emit("commentLikeNotification", {
+          commentOwnerId,
+          postCommentLikeNotification,
+        });
       }
     } catch (error) {
       console.log(error);

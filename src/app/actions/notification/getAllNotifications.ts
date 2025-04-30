@@ -34,6 +34,11 @@ export const getAllNotifications = async (): Promise<{
             comment: {
               include: {
                 user: true,
+                post: {
+                  include: {
+                    medias: true,
+                  },
+                },
               },
             },
           },
@@ -43,7 +48,15 @@ export const getAllNotifications = async (): Promise<{
             commentLike: {
               include: {
                 user: true,
-                comment: true,
+                comment: {
+                  include: {
+                    post: {
+                      include: {
+                        medias: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -53,7 +66,15 @@ export const getAllNotifications = async (): Promise<{
             comment: {
               include: {
                 user: true,
-                postComment: true,
+                postComment: {
+                  include: {
+                    post: {
+                      include: {
+                        medias: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -65,7 +86,15 @@ export const getAllNotifications = async (): Promise<{
                 user: true,
                 comment: {
                   include: {
-                    postComment: true,
+                    postComment: {
+                      include: {
+                        post: {
+                          include: {
+                            medias: true,
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },

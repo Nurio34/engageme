@@ -22,7 +22,15 @@ export const sendCommentLikeNotification = async (
           commentLike: {
             include: {
               user: true,
-              comment: true,
+              comment: {
+                include: {
+                  post: {
+                    include: {
+                      medias: true,
+                    },
+                  },
+                },
+              },
             },
           },
         },

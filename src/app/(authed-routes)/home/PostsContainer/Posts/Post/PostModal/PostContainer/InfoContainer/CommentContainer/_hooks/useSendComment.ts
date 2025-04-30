@@ -9,6 +9,7 @@ import { sendReplyNotification } from "@/app/actions/notification/reply/sendRepl
 
 export const useSendComment = (post: PrismaPostType) => {
   const { id: userId } = useAppSelector((s) => s.user);
+  const { socket } = useAppSelector((s) => s.socket);
 
   const { addComment, addReply, setRepliedCommentId, commentReply } =
     usePostsContext();
@@ -44,7 +45,10 @@ export const useSendComment = (post: PrismaPostType) => {
 
             if (status === "success" || postCommentNotification) {
               //! *** send real-time postCommentNotification ***
-              console.log("send real-time postCommentNotification");
+              socket?.emit("postCommentNotification", {
+                postOwnerId: post.userId,
+                postCommentNotification,
+              });
             }
           } catch (error) {
             console.log(error);
@@ -69,7 +73,10 @@ export const useSendComment = (post: PrismaPostType) => {
 
             if (status === "success" || replyNotification) {
               //! *** send real-time replyCommentNotification ***
-              console.log("send real-time replyCommentNotification");
+              socket?.emit("replyNotification", {
+                commentOwnerId: commentReply.commentOwnerId,
+                replyNotification,
+              });
             }
           } catch (error) {
             console.log(error);

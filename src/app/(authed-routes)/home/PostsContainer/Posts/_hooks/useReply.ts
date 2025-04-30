@@ -9,12 +9,15 @@ import toast from "react-hot-toast";
 import { ReplyCommentLike } from "@prisma/client";
 import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
 import { sendReplyLikeNotification } from "@/app/actions/notification/reply/sendReplyLikeNotificationAction";
+import { useAppSelector } from "@/store/hooks";
 
 export const useReply = (
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>,
   userId: string,
   postsState: PrismaPostType[]
 ) => {
+  const { socket } = useAppSelector((s) => s.socket);
+
   const CommentAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [commentReply, setCommentReply] = useState<CommentReplyType>({
     isReply: false,
@@ -132,6 +135,10 @@ export const useReply = (
       if (status === "success" && replyLikeNotification) {
         //! *** send real-time replyLikeNotification ***
         console.log("send real-time replyLikeNotification");
+        socket?.emit("replyLikeNotification", {
+          replyOwnerId,
+          replyLikeNotification,
+        });
       }
     } catch (error) {
       console.log(error);

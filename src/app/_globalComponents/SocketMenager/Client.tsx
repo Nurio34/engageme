@@ -2,8 +2,20 @@ import { useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "@/store/hooks"; // your own typed hooks
 import { clearSocket, setSocket } from "@/store/slices/socket";
-import { PrismaPostLikeNotificationType } from "../../../../prisma/types/notification";
-import { addPostLikeNotification } from "@/store/slices/notifications";
+import {
+  PrismaPostCommentLikeNotificationType,
+  PrismaPostCommentNotificationType,
+  PrismaPostLikeNotificationType,
+  PrismaReplyLikeNotificationType,
+  PrismaReplyNotificationType,
+} from "../../../../prisma/types/notification";
+import {
+  addCommentLikeNotification,
+  addPostCommentNotification,
+  addPostLikeNotification,
+  addReplyNotification,
+  addReplyLikeNotification,
+} from "@/store/slices/notifications";
 
 let socketInstance: Socket | null = null; // Singleton
 
@@ -31,6 +43,34 @@ const Client = () => {
           console.log(notification);
 
           dispatch(addPostLikeNotification(notification));
+        }
+      );
+
+      socketInstance.on(
+        "postCommentNotification",
+        (notification: PrismaPostCommentNotificationType) => {
+          dispatch(addPostCommentNotification(notification));
+        }
+      );
+
+      socketInstance.on(
+        "commentLikeNotification",
+        (notification: PrismaPostCommentLikeNotificationType) => {
+          dispatch(addCommentLikeNotification(notification));
+        }
+      );
+
+      socketInstance.on(
+        "replyNotification",
+        (notification: PrismaReplyNotificationType) => {
+          dispatch(addReplyNotification(notification));
+        }
+      );
+
+      socketInstance.on(
+        "replyLikeNotification",
+        (notification: PrismaReplyLikeNotificationType) => {
+          dispatch(addReplyLikeNotification(notification));
         }
       );
 

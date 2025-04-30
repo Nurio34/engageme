@@ -1,14 +1,13 @@
 ## App
 
     - PWA yap
+    - Mobile Notifications olayını çöz
 
 ## Home Page
 
-    1. HomePage'de SideMEnu - Posts layout çok bozuk, düzelt
-    2. Ardından Skeleton!u düzelt.
-    3. postLike,postComment,commentLike,replyComment ve replyLike notification sending success'ten sonra;
-        1. real-time olarak gönder.
-        2. real-time olarak alınca sidemenu store'daki yerlerine dispatchle    
+    1. HomePage'de Posts layout ve Skeleton layout'u her width'te kontrol et.
+    2. Notifications, New, Today, Yesterday, This Week, This Month and earlier olarak katagorize et
+    2. Notifications, mobil  görünümünü düzelt.
     
 
     - Comments sortBy "Meta Verified"a göre sortlama pending...
