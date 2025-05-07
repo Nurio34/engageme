@@ -40,8 +40,6 @@ const Client = () => {
       socketInstance.on(
         "postLikeNotification",
         (notification: PrismaPostLikeNotificationType) => {
-          console.log(notification);
-
           dispatch(addPostLikeNotification(notification));
         }
       );

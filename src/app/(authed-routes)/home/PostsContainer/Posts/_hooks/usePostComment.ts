@@ -97,7 +97,6 @@ export const usePostComment = (
         await sendCommentLikeNotification(commentOwnerId, commentLikeId);
 
       if (status === "success" && postCommentLikeNotification) {
-        console.log("send real-time postCommentLikeNotification");
         socket?.emit("commentLikeNotification", {
           commentOwnerId,
           postCommentLikeNotification,

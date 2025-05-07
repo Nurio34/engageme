@@ -1,5 +1,6 @@
 import PostsContainer from "./PostsContainer";
 import Recomendations from "./Recomendations";
+import Skeleton from "./Skeleton";
 
 async function HomePage({
   searchParams,

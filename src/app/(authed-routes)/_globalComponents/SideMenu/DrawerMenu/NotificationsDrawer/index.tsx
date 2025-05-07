@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
-import Notification from "./Notification";
 import { MediaType } from "@prisma/client";
+import { detectTime } from "./utils/detectTime";
+import CatagorizedNotification from "./CatagorizedNotification";
 
 export type User = {
   name: string;
@@ -21,16 +22,47 @@ export type NotificationTypeInterface =
   | "replyNotification"
   | "replyLikeNotification";
 
+export type VariantType = "like" | "comment" | "follow";
+
 export type NotificationType = {
   postId: string;
   users: User[];
   post: string;
   createdAt: Date;
   type: NotificationTypeInterface;
+  variant: VariantType;
   media: MediaInterface;
   comment?: string;
   commentId?: string;
 };
+
+export type CatagorizedNotificationType = {
+  time: "new" | "yesterday" | "this week" | "this month" | "earlier";
+  notifications: NotificationType[];
+};
+
+const initialCatagorizedNotifications = [
+  {
+    time: "new",
+    notifications: [],
+  },
+  {
+    time: "yesterday",
+    notifications: [],
+  },
+  {
+    time: "this week",
+    notifications: [],
+  },
+  {
+    time: "this month",
+    notifications: [],
+  },
+  {
+    time: "earlier",
+    notifications: [],
+  },
+];
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
   const { isDrawerMenuOpen, currentMenu } = useAppSelector((s) => s.sideMenu);
@@ -60,15 +92,46 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
     setReplyCommentLikeNotificationsState,
   ] = useState<NotificationType[]>([]);
 
-  const allNotifications = [
+  const catagorizedNotifications = [
     ...postLikeNotificationsState,
     ...postCommentNotificationsState,
     ...postCommentLikeNotificationsState,
     ...replyCommentNotificationsState,
     ...replyCommentLikeNotificationsState,
-  ].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  ]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .reduce((array: CatagorizedNotificationType[], notification) => {
+      const { isNew, isYesterday, isThisWeek, isThisMonth } = detectTime(
+        new Date(notification.createdAt)
+      );
+
+      const newObject = array.find((category) => category.time === "new");
+      const yesterdayObject = array.find(
+        (category) => category.time === "yesterday"
+      );
+      const thisWeekObject = array.find(
+        (category) => category.time === "this week"
+      );
+      const thisMonthObject = array.find(
+        (category) => category.time === "this month"
+      );
+      const earlierObject = array.find(
+        (category) => category.time === "this month"
+      );
+
+      if (isNew) newObject?.notifications.push(notification);
+      else if (isYesterday) yesterdayObject?.notifications.push(notification);
+      else if (isThisWeek) thisWeekObject?.notifications.push(notification);
+      else if (isThisMonth) thisMonthObject?.notifications.push(notification);
+      else earlierObject?.notifications.push(notification);
+
+      return array;
+    }, initialCatagorizedNotifications as CatagorizedNotificationType[]);
+
+  console.log(catagorizedNotifications);
 
   useEffect(() => {
     const notifications = postLikeNotifications.reduce(
@@ -101,6 +164,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "postLikeNotification",
+            variant: "like",
             media,
           });
         else {
@@ -162,6 +226,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "postCommentNotification",
+            variant: "comment",
             media,
             comment,
           });
@@ -229,6 +294,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "commentLikeNotification",
+            variant: "like",
             media,
             comment,
           });
@@ -294,6 +360,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "replyNotification",
+            variant: "comment",
             media,
             comment,
           });
@@ -365,6 +432,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "replyLikeNotification",
+            variant: "like",
             media,
             comment,
           });
@@ -415,9 +483,12 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
       <div className="pt-4 pb-6 px-6 text-2xl font-bold">
         <h2>Notifications</h2>
       </div>
-      <ul className="rid gap-y-2">
-        {allNotifications.map((notification, index) => (
-          <Notification key={index} notification={notification} />
+      <ul className="">
+        {catagorizedNotifications.map((catagorizedNotification, index) => (
+          <CatagorizedNotification
+            key={index}
+            catagorizedNotification={catagorizedNotification}
+          />
         ))}
       </ul>
     </div>

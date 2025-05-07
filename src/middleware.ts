@@ -33,7 +33,6 @@ export default clerkMiddleware(async (auth, req) => {
 
   //! *** Rate Limiter ***
   const { success, reset, remaining } = await limiter.limit(userId!);
-  console.log(success);
 
   if (!success) {
     return new NextResponse(

@@ -1,14 +1,14 @@
-import { NotificationType } from "..";
-import Users from "./Users";
+import { NotificationType } from "../..";
 import Avatars from "./Avatars";
 import Post from "./Post";
+import Users from "./Users";
 
 function Notification({ notification }: { notification: NotificationType }) {
-  const { postId, users, createdAt, type, media, comment, commentId } =
+  const { users, createdAt, type, comment, media, postId, commentId } =
     notification;
 
   return (
-    <li className="grid grid-cols-[58px,1fr,58px] items-center py-2 px-6">
+    <li className="grid grid-cols-[58px,1fr,58px] items-center py-2 ">
       <Avatars users={users} />
       <Users
         users={users}

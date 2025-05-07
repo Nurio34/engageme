@@ -133,8 +133,6 @@ export const useReply = (
       );
 
       if (status === "success" && replyLikeNotification) {
-        //! *** send real-time replyLikeNotification ***
-        console.log("send real-time replyLikeNotification");
         socket?.emit("replyLikeNotification", {
           replyOwnerId,
           replyLikeNotification,

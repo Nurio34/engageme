@@ -11,8 +11,6 @@ export const sendReplyNotification = async (
   status: "success" | "fail";
   replyNotification?: PrismaReplyNotificationType;
 }> => {
-  console.log({ commentOwnerId, replyId });
-
   try {
     const user = await currentUser();
     if (!user) return { status: "fail" };

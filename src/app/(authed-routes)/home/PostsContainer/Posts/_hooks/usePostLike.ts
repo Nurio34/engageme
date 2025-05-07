@@ -71,8 +71,6 @@ export const usePostLike = (
 
       if (status === "fail" || !postLikeNotification) return;
 
-      //! *** Send real time notification ***
-      console.log("send real-time postLikeNotification");
       socket?.emit("postLikeNotification", {
         postOwnerId,
         postLikeNotification,
