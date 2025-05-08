@@ -30,7 +30,6 @@ export type NotificationType = {
   post: string;
   createdAt: Date;
   type: NotificationTypeInterface;
-  variant: VariantType;
   media: MediaInterface;
   comment?: string;
   commentId?: string;
@@ -73,6 +72,7 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
     replyCommentNotifications,
     replyCommentLikeNotifications,
   } = useAppSelector((s) => s.notifications);
+  console.log(postLikeNotifications);
 
   const [postLikeNotificationsState, setPostLikeNotificationsState] = useState<
     NotificationType[]
@@ -108,30 +108,29 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
         new Date(notification.createdAt)
       );
 
-      const newObject = array.find((category) => category.time === "new");
-      const yesterdayObject = array.find(
-        (category) => category.time === "yesterday"
-      );
-      const thisWeekObject = array.find(
-        (category) => category.time === "this week"
-      );
-      const thisMonthObject = array.find(
-        (category) => category.time === "this month"
-      );
-      const earlierObject = array.find(
-        (category) => category.time === "this month"
+      // Create a fresh copy of the initial array to avoid mutation
+      const newArray = array.map((item) => ({
+        ...item,
+        notifications: [...item.notifications],
+      }));
+
+      // Map categories for quick access
+      const categoryMap = new Map<string, CatagorizedNotificationType>(
+        newArray.map((category) => [category.time, category])
       );
 
-      if (isNew) newObject?.notifications.push(notification);
-      else if (isYesterday) yesterdayObject?.notifications.push(notification);
-      else if (isThisWeek) thisWeekObject?.notifications.push(notification);
-      else if (isThisMonth) thisMonthObject?.notifications.push(notification);
-      else earlierObject?.notifications.push(notification);
+      // Determine the appropriate category
+      let categoryKey: string = "earlier";
+      if (isNew) categoryKey = "new";
+      else if (isYesterday) categoryKey = "yesterday";
+      else if (isThisWeek) categoryKey = "this week";
+      else if (isThisMonth) categoryKey = "this month";
 
-      return array;
-    }, initialCatagorizedNotifications as CatagorizedNotificationType[]);
+      // Add the notification to the correct category
+      categoryMap.get(categoryKey)?.notifications.push(notification);
 
-  console.log(catagorizedNotifications);
+      return Array.from(categoryMap.values());
+    }, JSON.parse(JSON.stringify(initialCatagorizedNotifications)) as CatagorizedNotificationType[]);
 
   useEffect(() => {
     const notifications = postLikeNotifications.reduce(
@@ -164,7 +163,6 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "postLikeNotification",
-            variant: "like",
             media,
           });
         else {
@@ -226,7 +224,6 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "postCommentNotification",
-            variant: "comment",
             media,
             comment,
           });
@@ -294,7 +291,6 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "commentLikeNotification",
-            variant: "like",
             media,
             comment,
           });
@@ -360,7 +356,6 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "replyNotification",
-            variant: "comment",
             media,
             comment,
           });
@@ -432,7 +427,6 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             post,
             createdAt,
             type: "replyLikeNotification",
-            variant: "like",
             media,
             comment,
           });

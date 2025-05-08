@@ -5,7 +5,9 @@
 
 ## Home Page
 
-    2. Notifications, New, Today, Yesterday, This Week, This Month and earlier olarak katagorize et
+    1. Notification drawwer açık ike yeni notification geldiğinde indicatorler çalışmıyor ama draweri kapadığımda çalışıyor
+        - Drawwe açıkken gelen notificationslara da "markSeenAllUnseenNotificationsAction" çalıştır
+
     2. Notifications, mobil  görünümünü düzelt.
 
 

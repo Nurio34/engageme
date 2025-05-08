@@ -37,6 +37,14 @@ export const notificationsSlice = createSlice({
       state,
       action: PayloadAction<PrismaPostLikeNotificationType>
     ) => {
+      if (
+        state.postLikeNotifications.some(
+          (notification) =>
+            notification.postLike.postId === action.payload.postLike.postId &&
+            notification.postLike.userId === action.payload.postLike.userId
+        )
+      )
+        return;
       state.postLikeNotifications.push(action.payload);
     },
     setPostCommentNotifications: (
@@ -61,9 +69,19 @@ export const notificationsSlice = createSlice({
       state,
       action: PayloadAction<PrismaPostCommentLikeNotificationType>
     ) => {
+      if (
+        state.postCommentLikeNotifications.some(
+          (notification) =>
+            notification.commentLike.commentId ===
+              action.payload.commentLike.commentId &&
+            notification.commentLike.userId ===
+              action.payload.commentLike.userId
+        )
+      )
+        return;
       state.postCommentLikeNotifications.push(action.payload);
     },
-    seReplyCommentNotifications: (
+    setReplyCommentNotifications: (
       state,
       action: PayloadAction<PrismaReplyNotificationType[]>
     ) => {
@@ -75,7 +93,7 @@ export const notificationsSlice = createSlice({
     ) => {
       state.replyCommentNotifications.push(action.payload);
     },
-    seReplyCommentLikeNotifications: (
+    setReplyCommentLikeNotifications: (
       state,
       action: PayloadAction<PrismaReplyLikeNotificationType[]>
     ) => {
@@ -85,6 +103,16 @@ export const notificationsSlice = createSlice({
       state,
       action: PayloadAction<PrismaReplyLikeNotificationType>
     ) => {
+      if (
+        state.replyCommentLikeNotifications.some(
+          (notification) =>
+            notification.commentLike.commentId ===
+              action.payload.commentLike.commentId &&
+            notification.commentLike.userId ===
+              action.payload.commentLike.userId
+        )
+      )
+        return;
       state.replyCommentLikeNotifications.push(action.payload);
     },
   },
@@ -97,9 +125,9 @@ export const {
   addPostCommentNotification,
   setPostCommentLikeNotifications,
   addCommentLikeNotification,
-  seReplyCommentNotifications,
+  setReplyCommentNotifications,
   addReplyNotification,
-  seReplyCommentLikeNotifications,
+  setReplyCommentLikeNotifications,
   addReplyLikeNotification,
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

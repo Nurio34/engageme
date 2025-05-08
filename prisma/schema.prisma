@@ -167,17 +167,20 @@ model ReplyCommentLike {
 model PostLikeNotification {
   id              String  @id @default(cuid())
   type            NotificationType  
+  variant         NotificationVariant @default(like)
+  isSeen          Boolean @default(false)
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   postLikeId      String
   postLike        PostLike  @relation(fields: [postLikeId],references: [id],onDelete:Cascade)
   createdAt       DateTime  @default(now())
-
 }
 
 model PostCommentNotification {
   id              String  @id @default(cuid())
   type            NotificationType
+  variant         NotificationVariant @default(comment)
+  isSeen          Boolean @default(false)
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentId       String 
@@ -188,6 +191,8 @@ model PostCommentNotification {
 model PostCommentLikeNotification {
   id              String  @id @default(cuid())
   type            NotificationType
+  variant         NotificationVariant @default(like)
+  isSeen          Boolean @default(false)
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentLikeId   String 
@@ -198,6 +203,8 @@ model PostCommentLikeNotification {
 model ReplyCommentNotification {
   id              String  @id @default(cuid())
   type            NotificationType
+  variant         NotificationVariant @default(comment)
+  isSeen          Boolean @default(false)
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentId       String 
@@ -208,6 +215,8 @@ model ReplyCommentNotification {
 model ReplyCommentLikeNotification {
   id              String  @id @default(cuid())
   type            NotificationType
+  variant         NotificationVariant @default(like)
+  isSeen          Boolean @default(false)
   userId          String
   user            User  @relation(fields: [userId],references: [userId],onDelete: Cascade)
   commentLikeId   String 
@@ -221,4 +230,10 @@ enum NotificationType {
   commentLike
   replyComment
   replyLike
+}
+
+enum NotificationVariant {
+  like
+  comment
+  follow
 }

@@ -1,13 +1,14 @@
 "use client";
-import { store } from "@/store";
-import { Provider } from "react-redux";
-import Client from "./Client";
+
+import SearchDrawer from "./SearchDrawer";
+import NotificationsDrawer from "./NotificationsDrawer";
 
 function DrawerMenu({ navWidth }: { navWidth: number }) {
   return (
-    <Provider store={store}>
-      <Client navWidth={navWidth} />
-    </Provider>
+    <>
+      <SearchDrawer navWidth={navWidth} />
+      <NotificationsDrawer navWidth={navWidth} />
+    </>
   );
 }
 export default DrawerMenu;

@@ -15,8 +15,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { AllNotificationsType } from "../../../../../prisma/types/notification";
 import { useSidemenuLayout } from "./_hooks/useSidemenuLayout";
 import {
-  seReplyCommentLikeNotifications,
-  seReplyCommentNotifications,
+  setReplyCommentLikeNotifications,
+  setReplyCommentNotifications,
   setPostCommentLikeNotifications,
   setPostCommentNotifications,
   setPostLikeNotifications,
@@ -27,54 +27,53 @@ export type MenuType = {
   component: JSX.Element;
 };
 
-const menu: MenuType[] = [
-  {
-    name: "Home",
-    component: <Home />,
-  },
-  {
-    name: "Search",
-    component: <Search />,
-  },
-  {
-    name: "Explore",
-    component: <Explore />,
-  },
-  {
-    name: "Reels",
-    component: <Reels />,
-  },
-  {
-    name: "Messages",
-    component: <Messages />,
-  },
-  {
-    name: "Notifications",
-    component: <Notifications />,
-  },
-  {
-    name: "Create",
-    component: <Create />,
-  },
-  {
-    name: "Profile",
-    component: <Profile />,
-  },
-  {
-    name: "Threads",
-    component: <Threads />,
-  },
-  {
-    name: "More",
-    component: <More />,
-  },
-];
-
 function Client({
   allNotifications,
 }: {
-  allNotifications: AllNotificationsType | undefined;
+  allNotifications: AllNotificationsType;
 }) {
+  const menu: MenuType[] = [
+    {
+      name: "Home",
+      component: <Home />,
+    },
+    {
+      name: "Search",
+      component: <Search />,
+    },
+    {
+      name: "Explore",
+      component: <Explore />,
+    },
+    {
+      name: "Reels",
+      component: <Reels />,
+    },
+    {
+      name: "Messages",
+      component: <Messages />,
+    },
+    {
+      name: "Notifications",
+      component: <Notifications />,
+    },
+    {
+      name: "Create",
+      component: <Create />,
+    },
+    {
+      name: "Profile",
+      component: <Profile />,
+    },
+    {
+      name: "Threads",
+      component: <Threads />,
+    },
+    {
+      name: "More",
+      component: <More />,
+    },
+  ];
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
   const { device } = useAppSelector((s) => s.modals);
   const isMobile = device.type === "mobile";
@@ -108,12 +107,12 @@ function Client({
         )
       );
       dispatch(
-        seReplyCommentNotifications(
+        setReplyCommentNotifications(
           JSON.parse(JSON.stringify(replyCommentNotifications))
         )
       );
       dispatch(
-        seReplyCommentLikeNotifications(
+        setReplyCommentLikeNotifications(
           JSON.parse(JSON.stringify(replyCommentLikeNotifications))
         )
       );
