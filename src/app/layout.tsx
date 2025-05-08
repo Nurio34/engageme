@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import Ping from "./_globalComponents/Ping/Provider";
 import RoutingAnimationBar from "./_globalComponents/RoutingAnimationBar";
 import ListenResize from "./_globalComponents/ListenResize";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 import ScrollBlocker from "./_globalComponents/ScrollBlocker";
 import StoreUser from "./_globalComponents/StoreUser";
 import SocketManager from "./_globalComponents/SocketMenager";
@@ -31,7 +31,7 @@ export default function RootLayout({
           <ListenResize />
           <RoutingAnimationBar />
           <ScrollBlocker />
-          <SpeedInsights />
+          {/* <SpeedInsights /> */}
           <StoreUser />
           <SocketManager />
           {children}

@@ -7,11 +7,26 @@ import {
 } from "@/app/_globalComponents/Svg/SideMenuSvgs/NotificationsIcon";
 import NotificationsIndicator from "./NotificationsIndicator";
 
-import { useNotificationIndicator } from "./hooks/useNotificationIndicator";
-import { useMarkSeenAllUnseenNotifications } from "./hooks/useMarkSeenAllUnseenNotifications";
+import { useNotificationIndicator } from "./_hooks/useNotificationIndicator";
+import {
+  setPostCommentLikeNotifications,
+  setPostCommentNotifications,
+  setPostLikeNotifications,
+  setReplyCommentLikeNotifications,
+  setReplyCommentNotifications,
+} from "@/store/slices/notifications";
+import { markSeenAllUnseenNotifications } from "@/app/actions/notification/markSeenAllUnseenNotifications";
 
 function Notifications() {
   const { currentMenu, isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
+  const { id: userId } = useAppSelector((s) => s.user);
+  const {
+    postLikeNotifications,
+    postCommentNotifications,
+    postCommentLikeNotifications,
+    replyCommentNotifications,
+    replyCommentLikeNotifications,
+  } = useAppSelector((s) => s.notifications);
 
   const dispatch = useAppDispatch();
 
@@ -20,7 +35,63 @@ function Notifications() {
   const { notificationIndicator, isAnyNotification, isRender } =
     useNotificationIndicator();
 
-  useMarkSeenAllUnseenNotifications();
+  //! ***
+  const markSeenAllUnseenNotificationsAction = async () => {
+    dispatch(
+      setPostLikeNotifications(
+        postLikeNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
+    dispatch(
+      setPostCommentNotifications(
+        postCommentNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
+    dispatch(
+      setPostCommentLikeNotifications(
+        postCommentLikeNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
+    dispatch(
+      setReplyCommentNotifications(
+        replyCommentNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
+    dispatch(
+      setReplyCommentLikeNotifications(
+        replyCommentLikeNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
+
+    try {
+      await markSeenAllUnseenNotifications(
+        userId,
+        postLikeNotifications,
+        postCommentNotifications,
+        postCommentLikeNotifications,
+        replyCommentNotifications,
+        replyCommentLikeNotifications
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //! ***
 
   return (
     <div className="flex items-start">
@@ -28,6 +99,7 @@ function Notifications() {
         className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
        hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3"
         onClick={() => {
+          markSeenAllUnseenNotificationsAction();
           if (currentMenu === "notifications") dispatch(setCurrentMenu(path));
           else dispatch(setCurrentMenu("notifications"));
         }}

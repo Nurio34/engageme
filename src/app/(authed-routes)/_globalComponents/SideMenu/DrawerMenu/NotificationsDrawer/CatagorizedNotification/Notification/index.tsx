@@ -1,4 +1,4 @@
-import { NotificationType } from "../..";
+import { NotificationType } from "../../../types";
 import Avatars from "./Avatars";
 import Post from "./Post";
 import Users from "./Users";

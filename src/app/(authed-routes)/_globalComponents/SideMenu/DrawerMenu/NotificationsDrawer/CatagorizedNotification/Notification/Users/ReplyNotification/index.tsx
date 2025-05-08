@@ -1,7 +1,7 @@
 import { fancyTime } from "@/utils/fancyTime";
-import { User } from "../../..";
 import { getUsers } from "../utils/getUsers";
 import Link from "next/link";
+import { User } from "../../../../../types";
 
 function ReplyNotification({
   users,

@@ -8,16 +8,25 @@ function Client() {
   const { postModal } = useAppSelector((s) => s.homePage);
   const { isOpen } = postModal;
 
+  const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
+
   useEffect(() => {
     if (
       isCreateModalOpen ||
       isWannaCloseCreateModalOpen ||
       isPickerOpen ||
-      isOpen
+      isOpen ||
+      isDrawerMenuOpen
     )
       document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
-  }, [isCreateModalOpen, isWannaCloseCreateModalOpen, isPickerOpen, isOpen]);
+  }, [
+    isCreateModalOpen,
+    isWannaCloseCreateModalOpen,
+    isPickerOpen,
+    isOpen,
+    isDrawerMenuOpen,
+  ]);
 
   return <div hidden />;
 }

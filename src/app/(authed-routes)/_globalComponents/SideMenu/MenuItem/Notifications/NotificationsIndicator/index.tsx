@@ -1,10 +1,9 @@
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { IoPersonSharp } from "react-icons/io5";
-import { NotificationIndicator } from "../hooks/useNotificationIndicator";
+import { NotificationIndicator } from "../_hooks/useNotificationIndicator";
 
 function NotificationsIndicator({
   notificationIndicator,

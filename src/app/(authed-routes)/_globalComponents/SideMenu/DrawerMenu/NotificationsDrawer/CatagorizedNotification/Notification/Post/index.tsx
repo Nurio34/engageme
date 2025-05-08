@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { MediaInterface } from "../..";
 import Link from "next/link";
+import { MediaInterface } from "../../../../types";
 
 function Post({
   media,

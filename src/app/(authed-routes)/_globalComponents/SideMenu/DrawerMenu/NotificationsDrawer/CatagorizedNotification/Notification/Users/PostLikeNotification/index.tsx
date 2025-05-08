@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { User } from "../../..";
 import { fancyTime } from "@/utils/fancyTime";
 import { getUsers } from "../utils/getUsers";
+import { User } from "../../../../../types";
 
 function PostLikeNotification({
   users,

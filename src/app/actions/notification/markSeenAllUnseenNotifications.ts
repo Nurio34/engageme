@@ -20,8 +20,8 @@ export const markSeenAllUnseenNotifications = async (
 ) => {
   try {
     const user = await currentUser();
-    if (!user) return { status: "fail" };
-    if (user.id !== userId) return { status: "fail" };
+    if (!user) return;
+    if (user.id !== userId) return;
 
     const updates = [];
 
@@ -91,12 +91,8 @@ export const markSeenAllUnseenNotifications = async (
       );
     }
 
-    // Run the updates in a single transaction
     await prisma.$transaction(updates);
-
-    return { status: "success" };
   } catch (error) {
     console.log(error);
-    return { status: "fail" };
   }
 };

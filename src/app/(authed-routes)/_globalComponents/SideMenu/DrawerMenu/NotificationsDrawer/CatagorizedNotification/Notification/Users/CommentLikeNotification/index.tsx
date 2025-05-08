@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { User } from "../../..";
 import { getUsers } from "../utils/getUsers";
 import { fancyTime } from "@/utils/fancyTime";
+import { User } from "../../../../../types";
 
 function CommentLikeNotification({
   users,

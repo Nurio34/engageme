@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { User } from "../..";
+import { User } from "../../../../types";
 
 function Avatars({ users }: { users: User[] }) {
   const lastUser = users[0].avatar;

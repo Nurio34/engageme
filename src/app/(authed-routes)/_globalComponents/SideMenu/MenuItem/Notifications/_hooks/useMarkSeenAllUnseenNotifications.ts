@@ -26,7 +26,7 @@ export const useMarkSeenAllUnseenNotifications = () => {
   useEffect(() => {
     const markSeenAllUnseenNotificationsActions = async () => {
       try {
-        const response = await markSeenAllUnseenNotifications(
+        await markSeenAllUnseenNotifications(
           userId,
           postLikeNotifications,
           postCommentNotifications,

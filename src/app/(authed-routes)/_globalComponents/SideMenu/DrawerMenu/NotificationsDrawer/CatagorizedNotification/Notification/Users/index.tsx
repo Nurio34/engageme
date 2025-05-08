@@ -1,9 +1,9 @@
-import { NotificationTypeInterface, User } from "../..";
 import PostLikeNotification from "./PostLikeNotification";
 import PostCommentNotification from "./PostCommentNotification";
 import CommentLikeNotification from "./CommentLikeNotification";
 import ReplyNotification from "./ReplyNotification";
 import ReplyLikeNotification from "./ReplyLikeNotification";
+import { NotificationTypeInterface, User } from "../../../../types";
 
 function Users({
   users,
