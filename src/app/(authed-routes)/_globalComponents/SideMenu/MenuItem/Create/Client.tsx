@@ -14,8 +14,10 @@ function Client() {
   return (
     <button
       className="w-full min-w-max flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
-      hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3
-      order-4 md:order-none
+         
+       
+      p-3 md:p-[1.25vh] lg:p-3 rounded-lg order-4 md:order-none
+        hover:bg-base-content/10
       "
       onClick={() => {
         if (currentMenu === "create") dispatch(setCurrentMenu(path));

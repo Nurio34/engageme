@@ -12,7 +12,7 @@ function Client({
 }) {
   const animationState = isLoading ? "running" : "paused";
 
-  const { theme } = useAppSelector((s) => s.modals);
+  const { currentTheme } = useAppSelector((s) => s.theme);
 
   return (
     <div
@@ -21,7 +21,8 @@ function Client({
         {
           "--animationState": animationState,
           "--inset": inset || 4,
-          "--bg": theme === "light" ? "rgb(255,255,255)" : "rgb(29,35,42)",
+          "--bg":
+            currentTheme === "light" ? "rgb(255,255,255)" : "rgb(29,35,42)",
           width,
         } as React.CSSProperties
       }

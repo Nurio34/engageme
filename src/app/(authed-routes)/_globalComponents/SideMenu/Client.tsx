@@ -27,53 +27,54 @@ export type MenuType = {
   component: JSX.Element;
 };
 
+const menu: MenuType[] = [
+  {
+    name: "Home",
+    component: <Home />,
+  },
+  {
+    name: "Search",
+    component: <Search />,
+  },
+  {
+    name: "Explore",
+    component: <Explore />,
+  },
+  {
+    name: "Reels",
+    component: <Reels />,
+  },
+  {
+    name: "Messages",
+    component: <Messages />,
+  },
+  {
+    name: "Notifications",
+    component: <Notifications />,
+  },
+  {
+    name: "Create",
+    component: <Create />,
+  },
+  {
+    name: "Profile",
+    component: <Profile />,
+  },
+  {
+    name: "Threads",
+    component: <Threads />,
+  },
+  {
+    name: "More",
+    component: <More />,
+  },
+];
+
 function Client({
   allNotifications,
 }: {
   allNotifications: AllNotificationsType;
 }) {
-  const menu: MenuType[] = [
-    {
-      name: "Home",
-      component: <Home />,
-    },
-    {
-      name: "Search",
-      component: <Search />,
-    },
-    {
-      name: "Explore",
-      component: <Explore />,
-    },
-    {
-      name: "Reels",
-      component: <Reels />,
-    },
-    {
-      name: "Messages",
-      component: <Messages />,
-    },
-    {
-      name: "Notifications",
-      component: <Notifications />,
-    },
-    {
-      name: "Create",
-      component: <Create />,
-    },
-    {
-      name: "Profile",
-      component: <Profile />,
-    },
-    {
-      name: "Threads",
-      component: <Threads />,
-    },
-    {
-      name: "More",
-      component: <More />,
-    },
-  ];
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
   const { device } = useAppSelector((s) => s.modals);
   const isMobile = device.type === "mobile";
@@ -132,7 +133,7 @@ function Client({
           ${
             isDrawerMenuOpen
               ? "min-w-full md:w-[73px] md:min-w-min"
-              : "transition-all duration-300 min-w-full md:min-w-0 md:w-[73px] lg:w-[245px] xxl:w-[335px]"
+              : "transition-transform duration-300 min-w-full md:min-w-0 md:w-[73px] lg:w-[245px] xxl:w-[335px]"
           } md:h-screen
           flex flex-col justify-between
         `}

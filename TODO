@@ -3,6 +3,18 @@
     - PWA yap
     - Mobile Notifications olayını çöz
 
+## useCustomNativeBackButton
+
+    1. createModal'ı X ile kapadığımda
+        - WannaCloseModal uyarısı vermiyor
+        - history'de 1 extra geçmiş kalıyor
+
+    2. drawerMenu notificationButton ile kapandığında
+        - history'de 1 extra geçmiş kalıyor
+
+    3. postModal drag ile kapandığında
+        - history'de 5 extra geçmiş kalıyor
+
 ## Home Page
 
     2. Notifications, mobil  görünümünü düzelt.

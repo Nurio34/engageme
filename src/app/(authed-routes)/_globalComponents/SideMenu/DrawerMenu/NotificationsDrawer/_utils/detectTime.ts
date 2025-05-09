@@ -1,49 +1,39 @@
-export const detectTime = (date: Date) => {
-  const isNewFn = (date: Date) => {
-    const today = new Date();
-    return (
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth() &&
-      date.getDate() === today.getDate()
-    );
-  };
-  const isNew = isNewFn(new Date(date));
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-  const isYesterdayFn = (date: Date) => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+export interface TimeFlags {
+  isNew: boolean;
+  isYesterday: boolean;
+  isThisWeek: boolean;
+  isThisMonth: boolean;
+}
 
-    return (
-      date.getFullYear() === yesterday.getFullYear() &&
-      date.getMonth() === yesterday.getMonth() &&
-      date.getDate() === yesterday.getDate()
-    );
-  };
-  const isYesterday = isYesterdayFn(new Date(date));
+function atMidnight(d: Date): Date {
+  const m = new Date(d);
+  m.setHours(0, 0, 0, 0);
+  return m;
+}
 
-  const isThisWeekFn = (date: Date) => {
-    const today = new Date();
+export function detectTime(date: Date): TimeFlags {
+  const todayMid = atMidnight(new Date());
+  const targetMid = atMidnight(date);
 
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay() + 1);
+  const diffDays = Math.floor(
+    (todayMid.getTime() - targetMid.getTime()) / MS_PER_DAY
+  );
 
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
+  const isNew = diffDays === 0;
+  const isYesterday = diffDays === 1;
 
-    return date >= startOfWeek && date <= endOfWeek;
-  };
-  const isThisWeek = isThisWeekFn(new Date(date));
+  const todayDow = todayMid.getDay();
+  const monOffset = (todayDow + 6) % 7;
+  const weekStart = new Date(todayMid);
+  weekStart.setDate(weekStart.getDate() - monOffset);
 
-  const isThisMonthFn = (date: Date) => {
-    const today = new Date();
+  const isThisWeek = targetMid >= weekStart && diffDays <= 6;
 
-    return (
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth()
-    );
-  };
-  const isThisMonth = isThisMonthFn(new Date(date));
+  const isThisMonth =
+    targetMid.getFullYear() === todayMid.getFullYear() &&
+    targetMid.getMonth() === todayMid.getMonth();
 
   return { isNew, isYesterday, isThisWeek, isThisMonth };
-};
+}

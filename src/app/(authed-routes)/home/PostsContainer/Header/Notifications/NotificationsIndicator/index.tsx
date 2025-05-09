@@ -1,9 +1,9 @@
+import { NotificationIndicator } from "@/app/(authed-routes)/_globalComponents/SideMenu/MenuItem/Notifications/_hooks/useNotificationIndicator";
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { IoPersonSharp } from "react-icons/io5";
-import { NotificationIndicator } from "../_hooks/useNotificationIndicator";
 
 function NotificationsIndicator({
   notificationIndicator,
@@ -23,9 +23,10 @@ function NotificationsIndicator({
 
   return (
     isMounted &&
-    !isMobile && (
+    isMobile && (
       <button
-        className="absolute left-14 lg:left-40 flex items-start gap-x-2 bg-[rgb(255,48,64)] py-1 px-2 rounded-[50vw] shadow-inner transition-all"
+        className="absolute top-9 -right-1
+        flex items-start gap-x-2 bg-[rgb(255,48,64)] py-1 px-2 rounded-[50vw] shadow-inner transition-all"
         style={{
           ...style,
           boxShadow: "inset 0 0 4px 2px rgb(236,34,84)",
@@ -49,12 +50,12 @@ function NotificationsIndicator({
           </div>
         )}
         <div
-          className="absolute bottom-0 left-0
+          className="absolute top-0 right-0
             border-8 border-b-transparent border-l-transparent border-t-transparent border-r-[rgb(236,34,84)]
         "
           style={{
             transform:
-              "translate(calc(-50% + 2px),calc(50% - 2px)) rotate(-45deg)",
+              "translate(calc(0% - 10px),calc(-100% + 2px)) rotate(90deg)",
           }}
         />
       </button>

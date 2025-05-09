@@ -8,7 +8,7 @@ function Skeleton() {
         "
     >
       <div className="flex flex-col items-center">
-        <div className="w-full border-b h-11 flex items-center gap-x-2">
+        <div className="w-full border-b h-11 flex items-center gap-x-4">
           <div className="w-14 h-6 rounded-lg bg-base-content/50 animate-pulse" />
           <div className="w-20 h-6 rounded-lg bg-base-content/50 animate-pulse" />
         </div>

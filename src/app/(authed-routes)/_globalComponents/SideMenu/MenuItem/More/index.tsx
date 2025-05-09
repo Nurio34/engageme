@@ -1,6 +1,13 @@
-import ProviderComponent from "./Provider";
+"use client";
+import { store } from "@/store";
+import { Provider } from "react-redux";
+import Client from "./Client";
 
 function More() {
-  return <ProviderComponent />;
+  return (
+    <Provider store={store}>
+      <Client />
+    </Provider>
+  );
 }
 export default More;

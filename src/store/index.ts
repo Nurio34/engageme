@@ -7,6 +7,7 @@ import userSlice from "./slices/user";
 import sideMenuSlice from "./slices/sidemenu";
 import notificationsSlice from "./slices/notifications";
 import socketSlice from "./slices/socket";
+import themeSlice from "./slices/theme";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     sideMenu: sideMenuSlice,
     notifications: notificationsSlice,
     socket: socketSlice,
+    theme: themeSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -74,7 +74,7 @@ function AddComment({ post }: { post: PrismaPostType }) {
   return (
     <div>
       <SentComments sentComments={sentComments} post={post} />
-      <form action={formAction} className="relative flex items-center mt-1">
+      <form action={formAction} className="relative flex items-end mt-1">
         <input type="hidden" name="postId" value={post.id} />
         <TextArea
           togglePickerFunction={togglePickerFunction}

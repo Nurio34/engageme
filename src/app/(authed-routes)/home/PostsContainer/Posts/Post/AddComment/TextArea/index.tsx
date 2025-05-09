@@ -15,7 +15,7 @@ function TextArea({
     <textarea
       name="comment"
       rows={1}
-      className={`grow text-sm mt-2 resize-none  outline-none
+      className={`grow text-sm mt-2 resize-none outline-none bg-base-100
         ${isPending ? "text-base-content/50" : ""}  
       `}
       placeholder="Add a comment.."

@@ -59,12 +59,18 @@ export const useNotificationIndicator = () => {
   ]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       setIsRender(true);
+
+      const timer2 = setTimeout(() => {
+        setIsRender(false);
+      }, 5000);
+
+      return () => clearTimeout(timer2);
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer1);
+  }, [notificationIndicator]);
 
   return { notificationIndicator, isAnyNotification, isRender };
 };

@@ -1,8 +1,6 @@
 import { DeleteMediaType } from "@/actions/cloudinary";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type ThemeType = "light" | "dark";
-
 type DeviceTypeType = "mobile" | "tablet" | "desktop";
 
 export type DeviceType = {
@@ -12,7 +10,6 @@ export type DeviceType = {
 };
 
 interface ModalState {
-  theme: ThemeType;
   device: {
     type: DeviceTypeType;
     width: number;
@@ -24,10 +21,10 @@ interface ModalState {
   posterImages: string[];
   isPickerOpen: boolean;
   isMoreModalOpen: boolean;
+  isSwitchAppearanceModalOpen: boolean;
 }
 
 const initialState: ModalState = {
-  theme: "light",
   device: {
     type: "desktop",
     width: 0,
@@ -39,15 +36,13 @@ const initialState: ModalState = {
   posterImages: [],
   isPickerOpen: false,
   isMoreModalOpen: false,
+  isSwitchAppearanceModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    setTheme: (state, action: PayloadAction<ThemeType>) => {
-      state.theme = action.payload;
-    },
     setDevice: (state, action: PayloadAction<DeviceType>) => {
       state.device = action.payload;
     },
@@ -78,11 +73,13 @@ export const modalsSlice = createSlice({
     toggleMoreModal: (state) => {
       state.isMoreModalOpen = !state.isMoreModalOpen;
     },
+    toggleSwitchAppearanceModal: (state) => {
+      state.isSwitchAppearanceModalOpen = !state.isSwitchAppearanceModalOpen;
+    },
   },
 });
 
 export const {
-  setTheme,
   setDevice,
   toggleCreateModal,
   toggle_WannaCloseCreateModal_Modal,
@@ -92,5 +89,6 @@ export const {
   resterPosterImages,
   togglePicker,
   toggleMoreModal,
+  toggleSwitchAppearanceModal,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;
