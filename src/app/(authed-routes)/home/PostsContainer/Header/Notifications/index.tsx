@@ -98,13 +98,15 @@ function Notifications() {
 
   return (
     isMobile && (
-      <div className="relative flex items-center">
+      <div className="relative flex items-center ">
         <button
           type="button"
           onClick={() => {
             markSeenAllUnseenNotificationsAction();
-            if (currentMenu === "notifications") dispatch(setCurrentMenu(path));
-            else dispatch(setCurrentMenu("notifications"));
+            if (currentMenu === "notifications") {
+              dispatch(setCurrentMenu(path));
+              history.back();
+            } else dispatch(setCurrentMenu("notifications"));
           }}
         >
           {currentMenu === "notifications" ? (
@@ -128,7 +130,7 @@ function Notifications() {
             isRender={isRender}
           />
         )}
-        {isDrawerMenuOpen && <NotificationsDrawer />}
+        <NotificationsDrawer />
       </div>
     )
   );

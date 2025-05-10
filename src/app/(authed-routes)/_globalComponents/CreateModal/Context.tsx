@@ -1,7 +1,7 @@
 "use client";
 
 import { MediaType } from "@/actions/cloudinary";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   createContext,
   Dispatch,
@@ -23,6 +23,7 @@ import { useGlobalCloudinaryMedias } from "./_hooks/useGlobalCloudinaryMedias";
 import { useStep } from "./_hooks/useStep";
 import { TransformationType } from "./DragAndDropArea/Gallery/EditContainer/Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
 import { useMessage } from "./_hooks/useMessage";
+import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
 
 export type FilesType = {
   files: File[] | null;
@@ -175,6 +176,11 @@ interface ContextType {
 const Context = createContext<ContextType | undefined>(undefined);
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
+  const { isCreateModalOpen, device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
+  const dispatch = useAppDispatch();
+
   //! *** files state ***
   const [files, setFiles] = useState<FilesType>({
     files: null,
@@ -283,8 +289,27 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const { controls, setControls } = useVideoTrimControls(cloudinaryMedias);
   //! ******************************
 
+  //! *** push history state when "isCreateModalOpen === true" ( for mobile native back button manipulation ) ***
+
+  useEffect(() => {
+    if (isCreateModalOpen && !isDesktop) {
+      history.pushState({ isCreateModalOpen: true }, "", window.location.href);
+    }
+
+    const handlePopState = () => {
+      if (isCreateModalOpen && !isDesktop)
+        dispatch(toggle_WannaCloseCreateModal_Modal());
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isCreateModalOpen, isDesktop]);
+
+  //! ************************************************************
+
   //! *** when create modal closed, reset context ***
-  const { isCreateModalOpen } = useAppSelector((s) => s.modals);
 
   useEffect(() => {
     if (!isCreateModalOpen) {

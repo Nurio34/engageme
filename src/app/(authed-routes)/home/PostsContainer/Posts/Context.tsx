@@ -17,10 +17,11 @@ import {
 } from "../../../../../../prisma/types/post";
 import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { PostCommentLike, PostLike, ReplyCommentLike } from "@prisma/client";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
 import { useReply } from "./_hooks/useReply";
+import { setPostModal } from "@/store/slices/homePage";
 
 export type CommentReplyType = {
   isReply: boolean;
@@ -102,7 +103,11 @@ export const PostsProvider = ({
   posts: PrismaPostType[];
 }) => {
   const { id: userId } = useAppSelector((s) => s.user);
+
   const { postModal } = useAppSelector((s) => s.homePage);
+  const isPostModalOpen = postModal.isOpen;
+
+  const dispatch = useAppDispatch();
 
   const [postsState, setPostsState] = useState<PrismaPostType[]>([]);
 
@@ -134,9 +139,24 @@ export const PostsProvider = ({
     removeLikeFromReplyAction,
   } = useReply(setPostsState, userId, postsState);
 
+  //! *** push history state when "isPostModalOpen === true" ( for mobile native back button manipulation ) ***
+  useEffect(() => {
+    if (isPostModalOpen)
+      history.pushState({ isPostModalOpen: true }, "", window.location.href);
+
+    const handlePopState = () =>
+      dispatch(setPostModal({ isOpen: false, postId: "" }));
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [isPostModalOpen]);
+
+  //! ***********************************************************************************************************
+
   //! *** reset when postModal closed ***
   useEffect(() => {
-    if (!postModal.isOpen) {
+    if (!isPostModalOpen) {
       setCommentReply({
         isReply: false,
         commentId: "",
@@ -148,7 +168,7 @@ export const PostsProvider = ({
       });
       setRepliedCommentId("");
     }
-  }, [postModal.isOpen]);
+  }, [isPostModalOpen]);
   //! ***********************************
 
   return (

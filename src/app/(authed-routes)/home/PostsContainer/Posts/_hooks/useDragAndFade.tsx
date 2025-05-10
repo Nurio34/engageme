@@ -76,6 +76,7 @@ export const useDragAndFade = () => {
         setPointer(initialPointer);
         setTranslate(initialTranslate);
         setIsFading(false);
+        history.back();
       }, 300);
 
     return () => {

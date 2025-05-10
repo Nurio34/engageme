@@ -10,14 +10,21 @@ import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
 
 function Client() {
-  const { isWannaCloseCreateModalOpen, cloudinaryMedias, posterImages } =
-    useAppSelector((s) => s.modals);
+  const {
+    isWannaCloseCreateModalOpen,
+    cloudinaryMedias,
+    posterImages,
+    device,
+  } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
 
   const dispatch = useAppDispatch();
 
   const path = usePathname().slice(1);
 
-  const closeThisModal = () => dispatch(toggle_WannaCloseCreateModal_Modal());
+  const closeThisModal = () => {
+    dispatch(toggle_WannaCloseCreateModal_Modal());
+  };
 
   const closeCreateModal = async () => {
     deletePosterImagesFromCloudinary(posterImages);
@@ -33,7 +40,16 @@ function Client() {
       {isWannaCloseCreateModalOpen && (
         <div
           className="fixed z-10 w-screen h-screen top-0 left-0 bg-base-content/70 text-center"
-          onClick={closeThisModal}
+          onClick={() => {
+            if (!isDesktop) {
+              history.pushState(
+                { isCreateModalOpen: true },
+                "",
+                window.location.href
+              );
+            }
+            closeThisModal();
+          }}
         >
           <div
             className="absolute top-1/2  left-1/2 -translate-x-1/2 -translate-y-1/2 bg-base-100  rounded-lg"
@@ -54,7 +70,16 @@ function Client() {
             <button
               type="button"
               className="w-full py-[1.2vh]"
-              onClick={closeThisModal}
+              onClick={() => {
+                if (!isDesktop) {
+                  history.pushState(
+                    { isCreateModalOpen: true },
+                    "",
+                    window.location.href
+                  );
+                }
+                closeThisModal();
+              }}
             >
               Cancel
             </button>

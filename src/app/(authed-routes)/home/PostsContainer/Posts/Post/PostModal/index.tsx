@@ -4,13 +4,11 @@ import PostContainer from "./PostContainer";
 import { usePreventRefresh } from "@/hooks/usePreventRefresh";
 import { usePostsContext } from "../../Context";
 import { setPostModal } from "@/store/slices/homePage";
-import { useCustomNativeBackButton } from "./_hooks/useCustomNativeBackButton";
 
 function PostModal({ post }: { post: PrismaPostType }) {
   const { postModal } = useAppSelector((s) => s.homePage);
   const { postId, isOpen } = postModal;
   usePreventRefresh(isOpen);
-  useCustomNativeBackButton();
 
   const { device } = useAppSelector((s) => s.modals);
   const { type } = device;
@@ -33,7 +31,10 @@ function PostModal({ post }: { post: PrismaPostType }) {
           transform: `translate(${x}px,${y}px)`,
         }}
         onClick={() => {
-          if (isDesktop) dispatch(setPostModal({ isOpen: false, postId: "" }));
+          if (isDesktop) {
+            dispatch(setPostModal({ isOpen: false, postId: "" }));
+            history.back();
+          }
         }}
         onMouseMove={(e) => {
           if (isDragging)
