@@ -1,3 +1,4 @@
+import { PushNotificationManager } from "@/app/_globalComponents/PushNotificationManager";
 import Header from "./Header";
 import Posts from "./Posts";
 import { getPosts } from "@/app/api/post/handler/getPosts";
@@ -16,6 +17,7 @@ async function PostsContainer({ variant }: { variant: string | undefined }) {
   return (
     <main className="flex flex-col items-center">
       <Header />
+      <PushNotificationManager />
       <Posts posts={posts} />
     </main>
   );
