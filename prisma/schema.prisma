@@ -13,6 +13,9 @@ model User {
   email                         String   @unique
   name                          String
   avatar                        String?
+  pushToken                     String?  // Optional field to store the push token
+  authToken                     String?  // Optional field to store the auth token
+  endpoint                      String?  // Subscription endpoint
   posts                         Post[]
   postLikes                     PostLike[]
   postComments                  PostComment[]
