@@ -10,6 +10,7 @@ const urlBase64ToUint8Array = (base64String: string) => {
 export const subscribeUser = async (userId: string) => {
   try {
     const registration = await navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.ready;
 
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,

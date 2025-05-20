@@ -4,7 +4,7 @@ self.addEventListener("push", (event) => {
 
   self.registration.showNotification(data.title, {
     body: data.message,
-    icon: "/logo/logo.webp",
+    icon: data.icon || "/placeholders/avatar.webp",
   });
 });
 

@@ -1,6 +1,5 @@
 import PostsContainer from "./PostsContainer";
 import Recomendations from "./Recomendations";
-import PushNotification from "@/app/_globalComponents/PushNotification";
 
 async function HomePage({
   searchParams,
@@ -15,7 +14,6 @@ async function HomePage({
         md:px-16 md:py-[22px]
       "
     >
-      <PushNotification />
       <PostsContainer variant={variant} />
       <Recomendations />
     </div>

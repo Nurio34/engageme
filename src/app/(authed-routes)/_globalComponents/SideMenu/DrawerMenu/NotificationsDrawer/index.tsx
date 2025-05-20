@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import CatagorizedNotification from "./CatagorizedNotification";
 import { useCatagorizedNotifications } from "./_hooks/useCatagorizedNotifications";
+import NotificationsPermissionRequestButton from "./NotificationsPermissionRequestButton";
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
   const { isDrawerMenuOpen, currentMenu } = useAppSelector((s) => s.sideMenu);
@@ -19,8 +20,13 @@ function NotificationsDrawer({ navWidth }: { navWidth: number }) {
             : "translateX(-100%)",
       }}
     >
-      <div className="pt-4 pb-6 px-6 text-2xl font-bold">
+      <div
+        className="pt-4 pb-6 px-6 text-2xl font-bold
+        flex justify-between items-center
+      "
+      >
         <h2>Notifications</h2>
+        {/* <NotificationsPermissionRequestButton /> */}
       </div>
       <ul className="overflow-y-auto">
         {catagorizedNotifications.map((catagorizedNotification, index) => (

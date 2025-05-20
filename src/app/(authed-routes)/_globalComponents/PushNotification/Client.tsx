@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { requestNotificationPermission } from "./utils/requestNotificationPermission";
 import { useAppSelector } from "@/store/hooks";
 import { subscribeUser } from "./utils/subscribeUser";
-import { pushNotification } from "./actions/pushNotification";
 
 function Client() {
   const { id: userId } = useAppSelector((s) => s.user);
@@ -38,22 +37,6 @@ function Client() {
     }
   }, [isRequestPermissionGranted]);
 
-  const pushNotificationAction = async () => {
-    try {
-      await pushNotification(userId);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      className="fixed top-1  right-10 btn btn-primary"
-      onClick={pushNotificationAction}
-    >
-      Push
-    </button>
-  );
+  return <div hidden />;
 }
 export default Client;
