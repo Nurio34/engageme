@@ -17,7 +17,7 @@ const initialState: HomePageState = {
 };
 
 export const homePageSlice = createSlice({
-  name: "ping",
+  name: "homePage",
   initialState,
   reducers: {
     setPostModal: (state, action: PayloadAction<PostModalType>) => {

@@ -9,7 +9,7 @@ const initialState: RoutingState = {
 };
 
 export const routingSlice = createSlice({
-  name: "ping",
+  name: "routing",
   initialState,
   reducers: {
     started: (state) => {

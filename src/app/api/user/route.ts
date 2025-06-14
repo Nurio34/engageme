@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      await prisma.user.create({
+      user = await prisma.user.create({
         data: {
           userId,
           name: username,

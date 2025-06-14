@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Header from "./Header";
 import Posts from "./Posts";
 import { getPosts } from "@/app/api/post/handler/getPosts";
@@ -9,7 +10,9 @@ async function PostsContainer({ variant }: { variant: string | undefined }) {
     return (
       <div>
         <p>There is an error</p>
-        <button type="button"></button>
+        <Link href={"/home"} className="btn btn-primary">
+          Refresh
+        </Link>
       </div>
     );
 

@@ -10,11 +10,7 @@ export type DeviceType = {
 };
 
 interface ModalState {
-  device: {
-    type: DeviceTypeType;
-    width: number;
-    height: number;
-  };
+  device: DeviceType;
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
   cloudinaryMedias: DeleteMediaType[];
@@ -40,7 +36,7 @@ const initialState: ModalState = {
 };
 
 export const modalsSlice = createSlice({
-  name: "counter",
+  name: "modals",
   initialState,
   reducers: {
     setDevice: (state, action: PayloadAction<DeviceType>) => {
