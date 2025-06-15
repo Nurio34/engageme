@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaReplyNotificationType } from "../../../../../prisma/types/notification";
+import { pushNotification } from "@/app/(authed-routes)/_globalComponents/PushNotification/actions/pushNotification";
 
 export const sendReplyNotification = async (
   commentOwnerId: string,
@@ -40,6 +41,12 @@ export const sendReplyNotification = async (
     });
 
     if (!replyNotification) return { status: "fail" };
+
+    //! *** push notification
+    const userId = replyNotification.userId;
+    const title = `${replyNotification.comment.user.name} replied to your comment`;
+    const message = `"${replyNotification.comment.comment}"`;
+    await pushNotification(userId, title, message);
 
     return { status: "success", replyNotification };
   } catch (error) {

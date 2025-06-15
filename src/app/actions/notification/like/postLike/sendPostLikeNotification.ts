@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { PostLike } from "@prisma/client";
 import { PrismaPostLikeNotificationType } from "../../../../../../prisma/types/notification";
 import webPush from "web-push";
+import { pushNotification } from "@/app/(authed-routes)/_globalComponents/PushNotification/actions/pushNotification";
 
 webPush.setVapidDetails(
   `mailto:${process.env.EMAIL_USER}`,
@@ -34,30 +35,11 @@ export const sendPostLikeNotification = async (
     if (!postLikeNotification) return { status: "fail" };
 
     //! *** Push Notification ***
-    const { authToken, pushToken, endpoint } =
-      postLikeNotification.postLike.post.user;
+    const userId = postLikeNotification.postLike.post.user.userId;
+    const title = `${postLikeNotification.postLike.user.name} liked your post`;
+    const message = postLikeNotification.postLike.post.message;
 
-    if (!authToken || !pushToken || !endpoint) return { status: "fail" };
-
-    const subscription = {
-      endpoint: endpoint,
-      keys: {
-        p256dh: pushToken,
-        auth: authToken,
-      },
-    };
-
-    const { name, avatar } = postLikeNotification.postLike.user;
-
-    await webPush.sendNotification(
-      subscription,
-      JSON.stringify({
-        title: "Post Like",
-        message: `${name} liked your post.`,
-        icon: avatar,
-      })
-    );
-
+    await pushNotification(userId, title, message);
     //! ***********************************
 
     return { status: "success", postLikeNotification };

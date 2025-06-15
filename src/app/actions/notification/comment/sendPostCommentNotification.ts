@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostCommentNotificationType } from "../../../../../prisma/types/notification";
+import { pushNotification } from "@/app/(authed-routes)/_globalComponents/PushNotification/actions/pushNotification";
 
 export const sendPostCommentNotification = async (
   postOwnerId: string,
@@ -28,6 +29,15 @@ export const sendPostCommentNotification = async (
 
     if (!postCommentNotification)
       return { status: "fail", postCommentNotification };
+
+    //! *** push notification ***
+
+    const userId = postCommentNotification.comment.post.userId;
+    const title = `${postCommentNotification.comment.user.name} commented to your post`;
+    const message = `"${postCommentNotification.comment.comment}"`;
+    await pushNotification(userId, title, message);
+
+    //! ***
 
     return { status: "success", postCommentNotification };
   } catch (error) {

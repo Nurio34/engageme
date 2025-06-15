@@ -9,44 +9,54 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ status: "fail" }, { status: 401 });
   }
 
-  // const variant = req.nextUrl.searchParams.get("variant"); //! "followings" || undefined
+  const skip = parseInt(req.nextUrl.searchParams.get("skip")!);
+  console.log({ skip });
+
+  const variant = req.nextUrl.searchParams.get("variant"); //! "followings" || undefined
+  console.log({ variant });
+
+  let posts: PrismaPostType[] = [];
 
   try {
-    const posts: PrismaPostType[] = await prisma.post.findMany({
-      include: {
-        user: true,
-        medias: {
-          include: {
-            poster: true,
-            transformation: true,
-          },
-        },
-        location: true,
-        settings: true,
-        likes: true,
-        comments: {
-          include: {
-            user: true,
-            likes: true,
-            replies: {
-              include: {
-                likes: true,
-                user: true,
-              },
-              orderBy: {
-                createdAt: "asc",
-              },
+    if (variant === "undefined" || variant === "home") {
+      posts = await prisma.post.findMany({
+        include: {
+          user: true,
+          medias: {
+            include: {
+              poster: true,
+              transformation: true,
             },
           },
-          orderBy: {
-            createdAt: "asc",
+          location: true,
+          settings: true,
+          likes: true,
+          comments: {
+            include: {
+              user: true,
+              likes: true,
+              replies: {
+                include: {
+                  likes: true,
+                  user: true,
+                },
+                orderBy: {
+                  createdAt: "asc",
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "asc",
+            },
           },
         },
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
-    });
+        orderBy: {
+          updatedAt: "desc",
+        },
+        skip: skip * 5,
+        take: 5,
+      });
+    }
 
     return NextResponse.json({ status: "success", posts }, { status: 200 });
   } catch (error) {

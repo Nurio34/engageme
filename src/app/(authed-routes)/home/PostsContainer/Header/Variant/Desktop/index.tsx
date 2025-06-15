@@ -1,22 +1,26 @@
+import { useAppDispatch } from "@/store/hooks";
+import { ended, started } from "@/store/slices/routing";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type CurrentVariantType = "for-you" | "followings" | "favorites";
+export type CurrentVariantType = "home" | "followings" | "favorites";
 
 function Desktop() {
+  const dispatch = useAppDispatch();
+
   const path = usePathname();
 
   const searchParams = useSearchParams();
   const variant = searchParams.get("variant");
 
   const [currentVariant, setCurrentVariant] =
-    useState<CurrentVariantType>("for-you");
+    useState<CurrentVariantType>("home");
 
   useEffect(() => {
-    if (!variant) setCurrentVariant("for-you");
+    if (!variant) setCurrentVariant("home");
     else {
-      if (variant === "for-you") setCurrentVariant("for-you");
+      if (variant === "home") setCurrentVariant("home");
       else if (variant === "followings") setCurrentVariant("followings");
       else setCurrentVariant("favorites");
     }
@@ -26,12 +30,13 @@ function Desktop() {
     <div className="space-x-4">
       <Link
         className={`font-bold ${
-          currentVariant === "for-you"
+          currentVariant === "home"
             ? "text-base-content"
             : "text-base-content/50"
         }    
         `}
-        href={"/home?variant=for-you"}
+        href={"/home?variant=home"}
+        onClick={() => dispatch(started())}
       >
         For you
       </Link>
@@ -42,6 +47,7 @@ function Desktop() {
             : "text-base-content/50"
         }   `}
         href={"/home?variant=followings"}
+        onClick={() => dispatch(started())}
       >
         Following
       </Link>
@@ -52,6 +58,7 @@ function Desktop() {
             : "text-base-content/50"
         }   `}
         href={"/home?variant=favorites"}
+        onClick={() => dispatch(started())}
       >
         Favorites
       </Link>

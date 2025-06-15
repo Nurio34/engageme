@@ -2,20 +2,22 @@ import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostType } from "../../../../../prisma/types/post";
 
 export const getPosts = async (
+  skip: number,
   variant?: string
 ): Promise<{ status: "success" | "fail"; posts: PrismaPostType[] }> => {
   try {
-    const user = await currentUser();
+    // const user = await currentUser();
 
-    if (!user) return { status: "fail", posts: [] };
+    // if (!user) return { status: "fail", posts: [] };
 
     const response = await fetch(
-      `${process.env.SITE_URL}/api/post?variant=${variant}`,
+      `${process.env.SITE_URL}/api/post?skip=${skip}&variant=${variant}`,
       {
         headers: {
           "request-secret": process.env.REQUEST_SECRET!,
         },
-        cache: "force-cache",
+        cache: "no-cache",
+        // cache:"force-cache",
         next: { tags: ["posts"], revalidate: 60 * 15 },
       }
     );

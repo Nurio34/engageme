@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaReplyLikeNotificationType } from "../../../../../prisma/types/notification";
+import { pushNotification } from "@/app/(authed-routes)/_globalComponents/PushNotification/actions/pushNotification";
 
 export const sendReplyLikeNotification = async (
   repliedUserId: string,
@@ -45,6 +46,12 @@ export const sendReplyLikeNotification = async (
       });
 
     if (!replyLikeNotification) return { status: "fail" };
+
+    //! *** push notification ***
+    const userId = replyLikeNotification.userId;
+    const title = `${replyLikeNotification.commentLike.user.name} liked your reply`;
+    const message = `"${replyLikeNotification.commentLike.comment.comment}"`;
+    await pushNotification(userId, title, message);
 
     return { status: "success", replyLikeNotification };
   } catch (error) {

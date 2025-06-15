@@ -34,8 +34,11 @@ export type CommentReplyType = {
 };
 
 interface PostsContextType {
+  variant: string | undefined;
   postsState: PrismaPostType[];
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>;
+  skip: number;
+  setSkip: Dispatch<SetStateAction<number>>;
   isDragging: boolean;
   isFading: boolean;
   x: number;
@@ -98,9 +101,11 @@ const Context = createContext<PostsContextType | undefined>(undefined);
 export const PostsProvider = ({
   children,
   posts,
+  variant,
 }: {
   children: ReactNode;
   posts: PrismaPostType[];
+  variant: string | undefined;
 }) => {
   const { id: userId } = useAppSelector((s) => s.user);
 
@@ -110,6 +115,7 @@ export const PostsProvider = ({
   const dispatch = useAppDispatch();
 
   const [postsState, setPostsState] = useState<PrismaPostType[]>([]);
+  const [skip, setSkip] = useState(1);
 
   useEffect(() => {
     setPostsState(posts);
@@ -174,8 +180,11 @@ export const PostsProvider = ({
   return (
     <Context.Provider
       value={{
+        variant,
         postsState,
         setPostsState,
+        skip,
+        setSkip,
         isDragging,
         isFading,
         x,

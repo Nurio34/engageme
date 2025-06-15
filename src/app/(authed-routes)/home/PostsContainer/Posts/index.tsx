@@ -6,10 +6,16 @@ import { store } from "@/store";
 import { PostsProvider } from "./Context";
 import PostsClient from "./Client";
 
-function Posts({ posts }: { posts: PrismaPostType[] }) {
+function Posts({
+  posts,
+  variant,
+}: {
+  posts: PrismaPostType[];
+  variant: string | undefined;
+}) {
   return (
     <Provider store={store}>
-      <PostsProvider posts={posts}>
+      <PostsProvider posts={posts} variant={variant}>
         <PostsClient />
       </PostsProvider>
     </Provider>

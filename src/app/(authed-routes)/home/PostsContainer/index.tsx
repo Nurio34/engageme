@@ -4,7 +4,7 @@ import Posts from "./Posts";
 import { getPosts } from "@/app/api/post/handler/getPosts";
 
 async function PostsContainer({ variant }: { variant: string | undefined }) {
-  const { status, posts } = await getPosts(variant);
+  const { status, posts } = await getPosts(0, variant);
 
   if (status === "fail")
     return (
@@ -19,7 +19,7 @@ async function PostsContainer({ variant }: { variant: string | undefined }) {
   return (
     <main className="flex flex-col items-center">
       <Header />
-      <Posts posts={posts} />
+      <Posts posts={posts} variant={variant} />
     </main>
   );
 }

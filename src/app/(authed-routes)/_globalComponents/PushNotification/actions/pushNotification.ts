@@ -9,7 +9,11 @@ webPush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 );
 
-export const pushNotification = async (userId: string) => {
+export const pushNotification = async (
+  userId: string,
+  title: string,
+  message: string
+) => {
   try {
     const user = await prisma.user.findUnique({ where: { userId } });
     if (!user) return { status: "fail" };
@@ -28,7 +32,7 @@ export const pushNotification = async (userId: string) => {
 
     await webPush.sendNotification(
       subscription,
-      JSON.stringify({ title: "Title", message: "Message" })
+      JSON.stringify({ title, message })
     );
   } catch (error) {
     console.error(error);

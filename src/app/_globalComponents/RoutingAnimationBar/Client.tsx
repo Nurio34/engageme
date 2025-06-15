@@ -18,12 +18,7 @@ function Client() {
     dispatch(ended());
   }, [pathname, searchParams]);
 
-  return (
-    isRouting && (
-      // <div className={`fixed top-0 left-0 w-screen h-2 bg-red-500`} />
-      <GradientBar />
-    )
-  );
+  return isRouting && <GradientBar />;
 }
 
 export default Client;
