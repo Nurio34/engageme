@@ -18,6 +18,7 @@ interface ModalState {
   isPickerOpen: boolean;
   isMoreModalOpen: boolean;
   isSwitchAppearanceModalOpen: boolean;
+  isPostSettingsModalOpen: boolean;
 }
 
 const initialState: ModalState = {
@@ -33,6 +34,7 @@ const initialState: ModalState = {
   isPickerOpen: false,
   isMoreModalOpen: false,
   isSwitchAppearanceModalOpen: false,
+  isPostSettingsModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -72,6 +74,9 @@ export const modalsSlice = createSlice({
     toggleSwitchAppearanceModal: (state) => {
       state.isSwitchAppearanceModalOpen = !state.isSwitchAppearanceModalOpen;
     },
+    togglePostSettingsModal: (state) => {
+      state.isPostSettingsModalOpen = !state.isPostSettingsModalOpen;
+    },
   },
 });
 
@@ -86,5 +91,6 @@ export const {
   togglePicker,
   toggleMoreModal,
   toggleSwitchAppearanceModal,
+  togglePostSettingsModal,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 import ShowMoreRepliesButton from "./ShowMoreRepliesButton";
 import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
+import { useInfoContainerContext } from "../../../../Context";
 
 function RepliesContainer({
   postComment,

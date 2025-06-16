@@ -3,7 +3,7 @@ import { PrismaPostType } from "../../../../../../../../prisma/types/post";
 import Avatar from "./Avatar";
 import CreatedAt from "./CreatedAt";
 import Name from "./Name";
-import ActionsContainer from "./ActionsContainer";
+import SettingsContainer from "./SettingsContainer";
 
 function Header({ post }: { post: PrismaPostType }) {
   const { updatedAt, user } = post;
@@ -17,7 +17,7 @@ function Header({ post }: { post: PrismaPostType }) {
         <LuDot />
         <CreatedAt updatedAt={updatedAt} />
       </div>
-      <ActionsContainer />
+      <SettingsContainer post={post} />
     </div>
   );
 }

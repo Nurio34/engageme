@@ -1,0 +1,68 @@
+"use server";
+
+import { prisma } from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+import { PrismaPostType } from "../../../../../../prisma/types/post";
+
+export const getPost = async (
+  postId: string
+): Promise<{ status: "success" | "fail"; post: null | PrismaPostType }> => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: "fail", post: null };
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        user: true,
+        medias: {
+          include: {
+            poster: true,
+            transformation: true,
+          },
+        },
+        location: true,
+        settings: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
+        comments: {
+          include: {
+            user: true,
+            likes: {
+              include: {
+                user: true,
+              },
+            },
+            replies: {
+              include: {
+                likes: {
+                  include: {
+                    user: true,
+                  },
+                },
+                user: true,
+              },
+              orderBy: {
+                createdAt: "asc",
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
+    });
+
+    if (!post) return { status: "fail", post: null };
+
+    return { status: "success", post };
+  } catch (error) {
+    console.log(error);
+
+    return { status: "fail", post: null };
+  }
+};

@@ -1,5 +1,5 @@
 import Name from "../../../../Header/Name";
-import ActionsContainer from "../../../../Header/ActionsContainer";
+import ActionsContainer from "../../../../Header/SettingsContainer";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import Avatar from "../../../../Header/Avatar";
 import DragButton from "./DragButton";
@@ -15,7 +15,7 @@ function Header({ post }: { post: PrismaPostType }) {
         <Name name={name} />
       </div>
       <DragButton />
-      <ActionsContainer />
+      <ActionsContainer post={post} />
     </div>
   );
 }

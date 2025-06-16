@@ -2,8 +2,12 @@ import { useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 
 function Client() {
-  const { isCreateModalOpen, isWannaCloseCreateModalOpen, isPickerOpen } =
-    useAppSelector((s) => s.modals);
+  const {
+    isCreateModalOpen,
+    isWannaCloseCreateModalOpen,
+    isPickerOpen,
+    isPostSettingsModalOpen,
+  } = useAppSelector((s) => s.modals);
 
   const { postModal } = useAppSelector((s) => s.homePage);
   const { isOpen } = postModal;
@@ -16,7 +20,8 @@ function Client() {
       isWannaCloseCreateModalOpen ||
       isPickerOpen ||
       isOpen ||
-      isDrawerMenuOpen
+      isDrawerMenuOpen ||
+      isPostSettingsModalOpen
     )
       document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
@@ -26,6 +31,7 @@ function Client() {
     isPickerOpen,
     isOpen,
     isDrawerMenuOpen,
+    isPostSettingsModalOpen,
   ]);
 
   return <div hidden />;

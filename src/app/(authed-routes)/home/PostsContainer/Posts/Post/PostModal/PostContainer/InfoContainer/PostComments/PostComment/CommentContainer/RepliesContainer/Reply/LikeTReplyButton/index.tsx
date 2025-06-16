@@ -6,6 +6,7 @@ import {
   PrismaReplyCommentType,
 } from "../../../../../../../../../../../../../../../../prisma/types/post";
 import { useState } from "react";
+import { useInfoContainerContext } from "../../../../../../Context";
 
 function LikeReplyButton({
   reply,

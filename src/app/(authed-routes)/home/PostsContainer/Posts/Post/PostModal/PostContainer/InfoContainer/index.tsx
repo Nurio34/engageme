@@ -10,6 +10,7 @@ import Description from "./Description";
 import ActionButtons from "./ActionButtons";
 import TotalLikes from "../../../TotalLikes";
 import SortComments from "./SortComments";
+import { ContextProvider } from "./Context";
 
 export type SortByType = "For You" | "Most Recent" | "Meta Verified";
 
@@ -23,46 +24,48 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
   const [sortBy, setSortBy] = useState<SortByType>("For You");
 
   return (
-    <div className="lg:w-[500px] flex flex-col">
-      <Header post={post} />
-      <div
-        className="grow w-full
-          grid grid-rows-[1fr,auto]
-        "
-      >
+    <ContextProvider>
+      <div className="lg:w-[500px] flex flex-col">
+        <Header post={post} />
         <div
-          className=" px-1 lg:px-4 py-1 lg:py-3
-            flex flex-col
-          "
+          className="grow w-full
+        grid grid-rows-[1fr,auto]
+        "
         >
-          <div className="flex items-start gap-4">
-            <Avatar avatar={avatar} />
+          <div
+            className=" px-1 lg:px-4 py-1 lg:py-3
+          flex flex-col
+          "
+          >
+            <div className="flex items-start gap-4">
+              <Avatar avatar={avatar} />
 
-            <div>
-              <Description
-                post={post}
-                isTruncated={isTruncated}
-                setIsTruncated={setIsTruncated}
-              />
-              <CreatedAt updatedAt={updatedAt} />
-              <SortComments sortBy={sortBy} setSortBy={setSortBy} />
+              <div>
+                <Description
+                  post={post}
+                  isTruncated={isTruncated}
+                  setIsTruncated={setIsTruncated}
+                />
+                <CreatedAt updatedAt={updatedAt} />
+                <SortComments sortBy={sortBy} setSortBy={setSortBy} />
+              </div>
             </div>
+            <PostComments
+              comments={comments}
+              isTruncated={isTruncated}
+              textAreaHeight={textAreaHeight}
+              sortBy={sortBy}
+            />
           </div>
-          <PostComments
-            comments={comments}
-            isTruncated={isTruncated}
-            textAreaHeight={textAreaHeight}
-            sortBy={sortBy}
-          />
+          <div className="border-t-2 px-2 lg:px-4 py-1 lg:pb-2">
+            <ActionButtons post={post} />
+            <TotalLikes post={post} />
+            <CreatedAtLong updatedAt={updatedAt} />
+          </div>
+          <CommentContainer post={post} setTextAreaHeight={setTextAreaHeight} />
         </div>
-        <div className="border-t-2 px-2 lg:px-4 py-1 lg:pb-2">
-          <ActionButtons post={post} />
-          <TotalLikes post={post} />
-          <CreatedAtLong updatedAt={updatedAt} />
-        </div>
-        <CommentContainer post={post} setTextAreaHeight={setTextAreaHeight} />
       </div>
-    </div>
+    </ContextProvider>
   );
 }
 export default InfoContainer;

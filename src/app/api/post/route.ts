@@ -10,10 +10,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   const skip = parseInt(req.nextUrl.searchParams.get("skip")!);
-  console.log({ skip });
-
-  const variant = req.nextUrl.searchParams.get("variant"); //! "followings" || undefined
-  console.log({ variant });
+  const variant = req.nextUrl.searchParams.get("variant"); //! "undefined" || "home" || "followings" || "favorites"
 
   let posts: PrismaPostType[] = [];
 
@@ -30,14 +27,26 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           },
           location: true,
           settings: true,
-          likes: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
           comments: {
             include: {
               user: true,
-              likes: true,
+              likes: {
+                include: {
+                  user: true,
+                },
+              },
               replies: {
                 include: {
-                  likes: true,
+                  likes: {
+                    include: {
+                      user: true,
+                    },
+                  },
                   user: true,
                 },
                 orderBy: {
