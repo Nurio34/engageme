@@ -1,14 +1,13 @@
 import { fancyTime } from "@/utils/fancyTime";
-import { useInfoContext } from "../Context";
+import { useInfoContext } from "../../Context";
 
-function CreatedAtLong() {
+function CreatedAt() {
   const { postsState } = useInfoContext();
   if (postsState.length <= 0) return;
 
   const { updatedAt } = postsState[0];
-
   return (
-    <p className="text-base-content/70 text-xs">{fancyTime(updatedAt).long}</p>
+    <p className="text-base-content/60 text-sm">{fancyTime(updatedAt).short}</p>
   );
 }
-export default CreatedAtLong;
+export default CreatedAt;

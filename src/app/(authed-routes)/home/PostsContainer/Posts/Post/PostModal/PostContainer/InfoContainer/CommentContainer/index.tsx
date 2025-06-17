@@ -1,12 +1,13 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import EmojiContainer from "./EmojiContainer";
 import PostButton from "./PostButton";
-import { CommentReplyType, usePostsContext } from "../../../../../Context";
+import { CommentReplyType } from "../../../../../Context";
 import TextArea from "./TextArea";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import ActionIndicator from "../../../../AddComment/ActionIndicator";
 import { useAppSelector } from "@/store/hooks";
 import { useSendComment } from "./_hooks/useSendComment";
+import { useInfoContext } from "../Context";
 
 function CommentContainer({
   post,
@@ -18,7 +19,7 @@ function CommentContainer({
   const { device } = useAppSelector((s) => s.modals);
   const isDesktop = device.type === "desktop";
 
-  const { commentReply } = usePostsContext();
+  const { commentReply } = useInfoContext();
 
   //! *** replyToNameState ***
   const [commentReplyState, setCommentReplyState] =

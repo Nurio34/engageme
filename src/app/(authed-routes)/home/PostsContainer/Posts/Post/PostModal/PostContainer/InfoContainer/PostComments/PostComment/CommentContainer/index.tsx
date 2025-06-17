@@ -1,15 +1,15 @@
-import CreatedAt from "../../../../../../Header/CreatedAt";
 import Name from "../../../../../../Header/Name";
 import TotalCommentLikes from "./TotalCommentLikes";
 import ReplyTheComment from "./ReplyTheComment";
 import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
+import CreatedAt from "../../../_components/CreatedAt";
 
 function CommentContainer({
   postComment,
 }: {
   postComment: PrismaPostCommentType;
 }) {
-  const { user, comment, updatedAt, likes, id } = postComment;
+  const { user, comment, likes, id } = postComment;
 
   return (
     <div className="overflow-auto">
@@ -20,7 +20,7 @@ function CommentContainer({
         <p className="break-words text-sm">{comment}</p>
       </div>
       <div className="flex items-center gap-x-3 py-1">
-        <CreatedAt updatedAt={updatedAt} />
+        <CreatedAt />
         <TotalCommentLikes commentLikes={likes} />
         <ReplyTheComment
           commentId={id}

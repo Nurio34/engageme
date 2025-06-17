@@ -16,7 +16,7 @@ function Client() {
 
   useEffect(() => {
     dispatch(ended());
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, dispatch]);
 
   return isRouting && <GradientBar />;
 }

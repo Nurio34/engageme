@@ -1,4 +1,3 @@
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { useAppSelector } from "@/store/hooks";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import {
@@ -6,7 +5,7 @@ import {
   PrismaReplyCommentType,
 } from "../../../../../../../../../../../../../../../../prisma/types/post";
 import { useState } from "react";
-import { useInfoContainerContext } from "../../../../../../Context";
+import { useInfoContext } from "../../../../../../Context";
 
 function LikeReplyButton({
   reply,
@@ -24,7 +23,7 @@ function LikeReplyButton({
   const like = likes.find((likeObj) => likeObj.userId === userId);
 
   const { isReplyLiked, likeTheReplyAction, removeLikeFromReplyAction } =
-    usePostsContext();
+    useInfoContext();
 
   const isReplyLikedState = isReplyLiked(postId, commentId, replyId);
 

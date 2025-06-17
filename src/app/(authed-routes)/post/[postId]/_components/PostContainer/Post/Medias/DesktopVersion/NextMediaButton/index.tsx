@@ -1,13 +1,11 @@
 import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
 import Chevron from "@/app/_globalComponents/Svg/Chevron";
 
-function NextMediaButton() {
-  const { setMediaIndex, MediasRef, containerWidth, mediaIndex } =
-    usePostContext();
+function NextMediaButton({ totalMedias }: { totalMedias: number }) {
+  const { setMediaIndex, containerWidth, mediaIndex } = usePostContext();
 
   return (
-    MediasRef.current.length > 1 &&
-    mediaIndex < MediasRef.current.length - 1 && (
+    mediaIndex < totalMedias - 1 && (
       <button
         type="button"
         className={`absolute z-10 top-1/2 right-4 -translate-y-1/2 rounded-full bg-base-100
@@ -16,9 +14,7 @@ function NextMediaButton() {
         `}
         onClick={() =>
           setMediaIndex((prev) =>
-            prev >= MediasRef.current.length - 1
-              ? MediasRef.current.length - 1
-              : prev + 1
+            prev >= totalMedias - 1 ? totalMedias - 1 : prev + 1
           )
         }
       >

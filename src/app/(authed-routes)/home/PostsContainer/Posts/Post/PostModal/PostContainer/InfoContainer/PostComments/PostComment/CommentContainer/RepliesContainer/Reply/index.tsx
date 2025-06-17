@@ -1,13 +1,13 @@
-import Avatar from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/Avatar";
 import {
   PrismaPostCommentType,
   PrismaReplyCommentType,
 } from "../../../../../../../../../../../../../../../prisma/types/post";
 import Name from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/Name";
-import CreatedAt from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Header/CreatedAt";
 import TotalCommentLikes from "../../TotalCommentLikes";
 import ReplyTheComment from "../../ReplyTheComment";
 import LikeReplyButton from "./LikeTReplyButton";
+import Avatar from "../../../../../_components/Avatar";
+import CreatedAt from "../../../../../_components/CreatedAt";
 
 function Reply({
   postComment,
@@ -16,11 +16,11 @@ function Reply({
   postComment: PrismaPostCommentType;
   reply: PrismaReplyCommentType;
 }) {
-  const { user, comment, createdAt, likes, replyToName, commentId } = reply;
+  const { user, comment, likes, replyToName, commentId } = reply;
 
   return (
     <li className="flex items-start gap-x-2">
-      <Avatar avatar={user.avatar} />
+      <Avatar />
       <div className="grow space-y-2 min-w-0">
         <div>
           <div className="float-left mr-1 text-sm">
@@ -34,7 +34,7 @@ function Reply({
           </p>
         </div>
         <div className="flex items-center gap-x-4">
-          <CreatedAt updatedAt={createdAt} />
+          <CreatedAt />
           <TotalCommentLikes commentLikes={likes} />
           <ReplyTheComment
             commentId={postComment.id}

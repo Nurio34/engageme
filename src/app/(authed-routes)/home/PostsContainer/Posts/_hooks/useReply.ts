@@ -3,10 +3,11 @@ import { CommentReplyType } from "../Context";
 import {
   PrismaPostType,
   PrismaReplyCommentType,
+  PrismaReplyLikeType,
 } from "../../../../../../../prisma/types/post";
 import { likeReply } from "@/app/actions/post/reply/likeReply";
 import toast from "react-hot-toast";
-import { ReplyCommentLike } from "@prisma/client";
+import { ReplyCommentLike, User } from "@prisma/client";
 import { removeLikeFromReply } from "@/app/actions/post/reply/removeLikeFromReply";
 import { sendReplyLikeNotification } from "@/app/actions/notification/reply/sendReplyLikeNotificationAction";
 import { useAppSelector } from "@/store/hooks";
@@ -61,6 +62,7 @@ export const useReply = (
       id,
       userId,
       commentId,
+      user: {} as User,
     };
 
     addLikeToReplyState(postId, commentId, replyId, newReplyLike);
@@ -92,7 +94,7 @@ export const useReply = (
     postId: string,
     commentId: string,
     replyId: string,
-    replyLike: ReplyCommentLike
+    replyLike: PrismaReplyLikeType
   ) => {
     setPostsState((prev) =>
       prev.map((postObj) =>
@@ -148,7 +150,7 @@ export const useReply = (
     postId: string,
     commentId: string,
     replyId: string,
-    like: ReplyCommentLike
+    like: PrismaReplyLikeType
   ) => {
     try {
       setIsLoading(true);

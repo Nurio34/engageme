@@ -1,7 +1,5 @@
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
-import Avatar from "../../../Header/Avatar";
 import Header from "./Header";
-import CreatedAt from "../../../Header/CreatedAt";
 import PostComments from "./PostComments";
 import CreatedAtLong from "./CreatedAtLong";
 import CommentContainer from "./CommentContainer";
@@ -10,22 +8,27 @@ import Description from "./Description";
 import ActionButtons from "./ActionButtons";
 import TotalLikes from "../../../TotalLikes";
 import SortComments from "./SortComments";
-import { ContextProvider } from "./Context";
+import { InfoContainerContextProvider } from "./Context";
+import Avatar from "./_components/Avatar";
+import CreatedAt from "./_components/CreatedAt";
 
 export type SortByType = "For You" | "Most Recent" | "Meta Verified";
 
-function InfoContainer({ post }: { post: PrismaPostType }) {
-  const { comments, user, updatedAt } = post;
-  const { avatar } = user;
-
+function InfoContainer({ post, page }: { post: PrismaPostType; page: string }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const [textAreaHeight, setTextAreaHeight] = useState(0);
 
   const [sortBy, setSortBy] = useState<SortByType>("For You");
 
   return (
-    <ContextProvider>
-      <div className="lg:w-[500px] flex flex-col">
+    <InfoContainerContextProvider post={post} page={page}>
+      <div
+        className={`flex flex-col w-full 
+        ${
+          page === "home" ? "lg:max-w-[500px]" : "lg:max-w-[335px] border-l-2"
+        }  
+      `}
+      >
         <Header post={post} />
         <div
           className="grow w-full
@@ -34,11 +37,11 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
         >
           <div
             className=" px-1 lg:px-4 py-1 lg:py-3
-          flex flex-col
+          flex flex-col 
           "
           >
-            <div className="flex items-start gap-4">
-              <Avatar avatar={avatar} />
+            <div className="flex items-start gap-4 shadow-[0_20px_20px_-30px_black]">
+              <Avatar />
 
               <div>
                 <Description
@@ -46,12 +49,11 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
                   isTruncated={isTruncated}
                   setIsTruncated={setIsTruncated}
                 />
-                <CreatedAt updatedAt={updatedAt} />
+                <CreatedAt />
                 <SortComments sortBy={sortBy} setSortBy={setSortBy} />
               </div>
             </div>
             <PostComments
-              comments={comments}
               isTruncated={isTruncated}
               textAreaHeight={textAreaHeight}
               sortBy={sortBy}
@@ -60,12 +62,12 @@ function InfoContainer({ post }: { post: PrismaPostType }) {
           <div className="border-t-2 px-2 lg:px-4 py-1 lg:pb-2">
             <ActionButtons post={post} />
             <TotalLikes post={post} />
-            <CreatedAtLong updatedAt={updatedAt} />
+            <CreatedAtLong />
           </div>
           <CommentContainer post={post} setTextAreaHeight={setTextAreaHeight} />
         </div>
       </div>
-    </ContextProvider>
+    </InfoContainerContextProvider>
   );
 }
 export default InfoContainer;

@@ -7,7 +7,7 @@ function ImageMedia({ media }: { media: PrismaMediaType }) {
   const { width, height, url, altText } = media;
   const aspectRatio = width! / height!;
 
-  const { containerWidth, setContainerWidth, MediasRef } = usePostContext();
+  const { containerWidth, setContainerWidth } = usePostContext();
 
   const LiRef = useRef<HTMLLIElement | null>(null);
   const [liSize, setLiSize] = useState({ w: 0, h: 0 });
@@ -19,8 +19,6 @@ function ImageMedia({ media }: { media: PrismaMediaType }) {
       w: LiRef.current.getBoundingClientRect().width,
       h: LiRef.current.getBoundingClientRect().height,
     });
-
-    MediasRef.current.push(LiRef.current);
   }, []);
 
   useEffect(() => {

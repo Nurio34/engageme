@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePicker } from "@/store/slices/modals";
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
+import { useInfoContext } from "../../Context";
 
 function TextArea({
   comment,
@@ -17,7 +17,7 @@ function TextArea({
   const { isPickerOpen } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
 
-  const { CommentAreaRef } = usePostsContext();
+  const { CommentAreaRef } = useInfoContext();
   const [commentAreaWidth, setCommentAreaWidth] = useState(0);
 
   useEffect(() => {

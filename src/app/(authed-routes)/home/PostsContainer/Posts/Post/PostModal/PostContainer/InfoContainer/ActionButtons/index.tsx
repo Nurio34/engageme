@@ -1,6 +1,6 @@
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
-import LikeButton from "../../../../ActionButtons/LikeButton";
 import CommentButton from "./CommentButton";
+import LikeButton from "./LikeButton";
 import SaveButton from "./SaveButton";
 import ShareButton from "./ShareButton";
 

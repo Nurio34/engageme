@@ -1,4 +1,3 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostType } from "../../../../../prisma/types/post";
 
 export const getPosts = async (

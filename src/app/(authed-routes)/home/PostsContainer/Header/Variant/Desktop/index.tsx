@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/store/hooks";
-import { ended, started } from "@/store/slices/routing";
+import { started } from "@/store/slices/routing";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

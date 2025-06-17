@@ -50,11 +50,11 @@ export const sendComment = async (
         },
         include: {
           user: true,
-          likes: true,
+          likes: { include: { user: true } },
           replies: {
             include: {
               user: true,
-              likes: true,
+              likes: { include: { user: true } },
             },
           },
         },
@@ -82,7 +82,7 @@ export const sendComment = async (
           },
           include: {
             user: true,
-            likes: true,
+            likes: { include: { user: true } },
           },
         });
 
@@ -109,7 +109,7 @@ export const sendComment = async (
           },
           include: {
             user: true,
-            likes: true,
+            likes: { include: { user: true } },
           },
         });
 

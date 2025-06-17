@@ -4,14 +4,13 @@ import PostComment from "./PostComment";
 import { SortByType } from "..";
 import { useAppSelector } from "@/store/hooks";
 import NoCommentsPlaceholder from "./NoCommentsPlaceholder";
+import { useInfoContext } from "../Context";
 
 function PostComments({
-  comments,
   isTruncated,
   textAreaHeight,
   sortBy,
 }: {
-  comments: PrismaPostCommentType[];
   isTruncated: boolean;
   textAreaHeight: number;
   sortBy: SortByType;
@@ -20,6 +19,8 @@ function PostComments({
   const { device } = useAppSelector((s) => s.modals);
   const { type, height } = device;
   const isDesktop = type === "desktop";
+
+  const { postsState } = useInfoContext();
 
   const [sortedComments, setSortedComments] = useState<PrismaPostCommentType[]>(
     []
@@ -49,6 +50,9 @@ function PostComments({
   }, [reRender]);
 
   useEffect(() => {
+    if (postsState.length <= 0) return;
+    const { comments } = postsState[0];
+
     if (sortBy === "For You")
       setSortedComments([
         ...comments.filter((commentObj) => commentObj.userId === id),
@@ -62,7 +66,7 @@ function PostComments({
         )
       );
     }
-  }, [id, sortBy, comments]);
+  }, [id, sortBy, postsState]);
 
   return (
     <div ref={CommentsContainerRef} className="grow relative">

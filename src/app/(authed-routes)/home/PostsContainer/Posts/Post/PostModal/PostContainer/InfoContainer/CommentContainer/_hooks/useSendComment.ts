@@ -1,4 +1,3 @@
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { sendComment } from "@/app/actions/post/comment/sendComment";
 import { useActionState, useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../../../prisma/types/post";
@@ -6,13 +5,14 @@ import { useAppSelector } from "@/store/hooks";
 import { sendPostCommentNotification } from "@/app/actions/notification/comment/sendPostCommentNotification";
 import toast from "react-hot-toast";
 import { sendReplyNotification } from "@/app/actions/notification/reply/sendReplyNotification";
+import { useInfoContext } from "../../Context";
 
 export const useSendComment = (post: PrismaPostType) => {
   const { id: userId } = useAppSelector((s) => s.user);
   const { socket } = useAppSelector((s) => s.socket);
 
   const { addComment, addReply, setRepliedCommentId, commentReply } =
-    usePostsContext();
+    useInfoContext();
 
   const [comment, setComment] = useState("");
 

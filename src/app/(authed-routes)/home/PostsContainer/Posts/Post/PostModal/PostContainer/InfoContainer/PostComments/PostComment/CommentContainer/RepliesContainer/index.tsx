@@ -8,8 +8,7 @@ import Reply from "./Reply";
 import { useEffect, useState } from "react";
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 import ShowMoreRepliesButton from "./ShowMoreRepliesButton";
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
-import { useInfoContainerContext } from "../../../../Context";
+import { useInfoContext } from "../../../../Context";
 
 function RepliesContainer({
   postComment,
@@ -19,7 +18,7 @@ function RepliesContainer({
   const { replies } = postComment;
   const isAnyReply = replies.length > 0;
 
-  const { repliedCommentId } = usePostsContext();
+  const { repliedCommentId } = useInfoContext();
 
   const [isRepliesVisible, setIsRepliesVisible] = useState(false);
   const { isMounted, style } = useAnimatedMount(isRepliesVisible, "scaleY");

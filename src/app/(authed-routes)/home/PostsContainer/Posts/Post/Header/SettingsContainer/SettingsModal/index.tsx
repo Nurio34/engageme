@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePostSettingsModal } from "@/store/slices/modals";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
 import { started } from "@/store/slices/routing";
 import { setCurrentMenu } from "@/store/slices/sidemenu";

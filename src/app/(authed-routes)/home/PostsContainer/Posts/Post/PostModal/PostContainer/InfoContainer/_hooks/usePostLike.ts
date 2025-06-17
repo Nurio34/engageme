@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  PrismaPostLikeType,
-  PrismaPostType,
-} from "../../../../../../../prisma/types/post";
 import { PostLike, User } from "@prisma/client";
 import { likeThePost } from "@/app/actions/post/like/likeThePost";
 import toast from "react-hot-toast";
 import { removeLike } from "@/app/actions/post/like/removeLike";
 import { sendPostLikeNotification } from "@/app/actions/notification/like/postLike/sendPostLikeNotification";
 import { useAppSelector } from "@/store/hooks";
+import {
+  PrismaPostLikeType,
+  PrismaPostType,
+} from "../../../../../../../../../../../prisma/types/post";
 
 export const usePostLike = (
   postsState: PrismaPostType[],

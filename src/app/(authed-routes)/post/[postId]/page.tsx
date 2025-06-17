@@ -3,12 +3,12 @@ import PostError from "./_components/PostError";
 import ProviderComponent from "./Provider";
 
 type PostPageProps = {
-  params: { postId: string };
+  params: Promise<{ postId: string }>;
 };
 
 async function PostWrapper(props: PostPageProps) {
-  const params = await props.params;
-  const { postId } = params;
+  // ✅ Directly destructure `params` without await
+  const { postId } = await props.params;
 
   const { status, post } = await getPost(postId);
 

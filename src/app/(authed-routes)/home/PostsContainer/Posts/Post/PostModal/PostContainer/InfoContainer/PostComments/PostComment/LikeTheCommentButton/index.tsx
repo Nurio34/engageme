@@ -1,9 +1,8 @@
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
 import { useAppSelector } from "@/store/hooks";
 import { useState } from "react";
-import { useInfoContainerContext } from "../../../Context";
+import { useInfoContext } from "../../../Context";
 
 function LikeTheCommentButton({
   postComment,
@@ -11,7 +10,7 @@ function LikeTheCommentButton({
   postComment: PrismaPostCommentType;
 }) {
   const { isCommentLiked, likeCommentAction, removeLikeFromTheCommentAction } =
-    usePostsContext();
+    useInfoContext();
 
   const { id } = useAppSelector((s) => s.user);
 

@@ -11,14 +11,16 @@ import {
   useState,
 } from "react";
 import {
+  PrismaCommentLikeType,
   PrismaPostCommentType,
+  PrismaPostLikeType,
   PrismaPostType,
   PrismaReplyCommentType,
+  PrismaReplyLikeType,
 } from "../../../../../../prisma/types/post";
 import { usePostLike } from "./_hooks/usePostLike";
 import { usePostComment } from "./_hooks/usePostComment";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { PostCommentLike, PostLike, ReplyCommentLike } from "@prisma/client";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
 import { useReply } from "./_hooks/useReply";
 import { setPostModal } from "@/store/slices/homePage";
@@ -51,7 +53,7 @@ interface PostsContextType {
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   removeLikeFromThePostAction: (
-    like: PostLike,
+    like: PrismaPostLikeType,
     postOwnerId: string,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
@@ -66,7 +68,7 @@ interface PostsContextType {
   ) => Promise<string | undefined>;
   removeLikeFromTheCommentAction: (
     postId: string,
-    commentLike: PostCommentLike,
+    commentLike: PrismaCommentLikeType,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | undefined>;
   CommentAreaRef: RefObject<HTMLTextAreaElement | null>;
@@ -92,7 +94,7 @@ interface PostsContextType {
     postId: string,
     commentId: string,
     replyId: string,
-    like: ReplyCommentLike
+    like: PrismaReplyLikeType
   ) => Promise<string | undefined>;
 }
 

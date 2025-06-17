@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import {
+  PrismaCommentLikeType,
   PrismaPostCommentType,
   PrismaPostType,
 } from "../../../../../../../prisma/types/post";
 import toast from "react-hot-toast";
 import { likeComment } from "@/app/actions/post/comment/likeComment";
-import { PostCommentLike } from "@prisma/client";
+import { PostCommentLike, User } from "@prisma/client";
 import { removeLikeFromComment } from "@/app/actions/post/comment/removeLikeFromComment";
 import { sendCommentLikeNotification } from "@/app/actions/notification/comment/sendCommentLikeNotification";
 import { useAppSelector } from "@/store/hooks";
@@ -37,6 +38,7 @@ export const usePostComment = (
       id,
       userId,
       commentId,
+      user: {} as User,
     };
     addLikeToTheComment(postId, commentId, newCommentLike);
 
@@ -68,7 +70,7 @@ export const usePostComment = (
   const addLikeToTheComment = (
     postId: string,
     commentId: string,
-    postCommentLike: PostCommentLike
+    postCommentLike: PrismaCommentLikeType
   ) =>
     setPostsState((prev) =>
       prev.map((postObj) =>
@@ -109,7 +111,7 @@ export const usePostComment = (
 
   const removeLikeFromTheCommentAction = async (
     postId: string,
-    commentLike: PostCommentLike,
+    commentLike: PrismaCommentLikeType,
     setIsLoading: Dispatch<SetStateAction<boolean>>
   ) => {
     const { commentId } = commentLike;

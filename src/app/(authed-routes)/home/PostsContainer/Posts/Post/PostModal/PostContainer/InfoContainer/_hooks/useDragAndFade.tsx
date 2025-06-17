@@ -27,7 +27,6 @@ export const useDragAndFade = () => {
   const dispatch = useAppDispatch();
 
   const [pointer, setPointer] = useState<PointerType>(initialPointer);
-
   const [translate, setTranslate] = useState(initialTranslate);
   const [isFading, setIsFading] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

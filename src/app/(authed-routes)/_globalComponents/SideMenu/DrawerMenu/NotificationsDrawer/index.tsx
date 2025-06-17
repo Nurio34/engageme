@@ -1,7 +1,6 @@
 import { useAppSelector } from "@/store/hooks";
 import CatagorizedNotification from "./CatagorizedNotification";
 import { useCatagorizedNotifications } from "./_hooks/useCatagorizedNotifications";
-import NotificationsPermissionRequestButton from "./NotificationsPermissionRequestButton";
 
 function NotificationsDrawer({ navWidth }: { navWidth: number }) {
   const { isDrawerMenuOpen, currentMenu } = useAppSelector((s) => s.sideMenu);

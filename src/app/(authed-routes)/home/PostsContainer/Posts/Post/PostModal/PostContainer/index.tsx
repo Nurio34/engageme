@@ -28,7 +28,7 @@ function PostContainer({ post }: { post: PrismaPostType }) {
       }}
     >
       <MediaContainer medias={medias} />
-      <InfoContainer post={post} />
+      <InfoContainer post={post} page={"home"} />
     </div>
   );
 }

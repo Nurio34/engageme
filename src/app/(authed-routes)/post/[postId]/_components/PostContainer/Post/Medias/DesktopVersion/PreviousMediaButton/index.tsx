@@ -2,11 +2,9 @@ import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
 import Chevron from "@/app/_globalComponents/Svg/Chevron";
 
 function PreviousMediaButton() {
-  const { setMediaIndex, containerWidth, MediasRef, mediaIndex } =
-    usePostContext();
+  const { setMediaIndex, containerWidth, mediaIndex } = usePostContext();
 
   return (
-    MediasRef.current.length > 1 &&
     mediaIndex > 0 && (
       <button
         type="button"

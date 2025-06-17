@@ -1,7 +1,6 @@
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { useAppSelector } from "@/store/hooks";
 import { PrismaReplyCommentType } from "../../../../../../../../../../../../../../prisma/types/post";
-import { useInfoContainerContext } from "../../../../Context";
+import { useInfoContext } from "../../../../Context";
 
 function ReplyTheComment({
   commentId,
@@ -19,7 +18,7 @@ function ReplyTheComment({
   const { id } = useAppSelector((s) => s.user);
   const isSelfReply = reply?.userId === id;
 
-  const { setCommentReply, CommentAreaRef } = usePostsContext();
+  const { setCommentReply, CommentAreaRef } = useInfoContext();
 
   return (
     !isSelfReply && (

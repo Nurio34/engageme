@@ -1,13 +1,12 @@
-import { usePostsContext } from "@/app/(authed-routes)/home/PostsContainer/Posts/Context";
 import { useAppSelector } from "@/store/hooks";
 import { MdOutlineDragHandle } from "react-icons/md";
-import { useInfoContainerContext } from "../../Context";
+import { useInfoContext } from "../../Context";
 
 function DragButton() {
   const { device } = useAppSelector((s) => s.modals);
   const isDesktop = device.type === "desktop";
 
-  const { setPointer } = usePostsContext();
+  const { setPointer } = useInfoContext();
 
   return (
     !isDesktop && (

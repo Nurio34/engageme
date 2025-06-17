@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
@@ -16,14 +15,8 @@ function VideoMedia({
   const { width, height, x, y } = transformation!;
   const aspectRatio = +width / +height;
 
-  const {
-    containerWidth,
-    setContainerWidth,
-    MediasRef,
-    mediaIndex,
-    isMuted,
-    setIsMuted,
-  } = usePostContext();
+  const { containerWidth, setContainerWidth, mediaIndex, isMuted, setIsMuted } =
+    usePostContext();
 
   const LiRef = useRef<HTMLLIElement | null>(null);
   const [liSize, setLiSize] = useState({ w: 0, h: 0 });
@@ -47,8 +40,6 @@ function VideoMedia({
       w: VideoRef.current.getBoundingClientRect().width,
       h: VideoRef.current.getBoundingClientRect().height,
     });
-
-    MediasRef.current.push(LiRef.current);
   }, [isVideoLoaded]);
 
   useEffect(() => {

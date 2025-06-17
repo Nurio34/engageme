@@ -17,7 +17,7 @@ function Client() {
 
   useEffect(() => {
     if (path === username) dispatch(setCurrentMenu(username));
-  }, [path]);
+  }, [path, dispatch]);
 
   return (
     <Link

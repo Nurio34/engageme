@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppSelector } from "@/store/hooks";
 import {
   createContext,
   Dispatch,
@@ -15,33 +16,31 @@ import {
 interface ContextType {
   containerWidth: number | undefined;
   setContainerWidth: Dispatch<SetStateAction<number | undefined>>;
-  MediasRef: RefObject<HTMLLIElement[]>;
   mediaIndex: number;
   setMediaIndex: Dispatch<SetStateAction<number>>;
   isMuted: boolean;
   setIsMuted: Dispatch<SetStateAction<boolean>>;
+  UlRef: RefObject<HTMLUListElement | null>;
 }
 
 const Context = createContext<ContextType | undefined>(undefined);
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
+  const { device } = useAppSelector((s) => s.modals);
+
   const [containerWidth, setContainerWidth] = useState<undefined | number>(
     undefined
   );
 
-  const MediasRef = useRef<HTMLLIElement[]>([]);
-
   const [mediaIndex, setMediaIndex] = useState(0);
+  console.log({ mediaIndex });
+
+  const UlRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
-    if (MediasRef.current.length === 0) return;
-
-    MediasRef.current[mediaIndex].scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
-  }, [mediaIndex]);
+    if (!UlRef.current || !containerWidth) return;
+    UlRef.current.style.translate = `${containerWidth * mediaIndex * -1}px`;
+  }, [mediaIndex, containerWidth, device]);
 
   const [isMuted, setIsMuted] = useState(true);
 
@@ -50,11 +49,11 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         containerWidth,
         setContainerWidth,
-        MediasRef,
         mediaIndex,
         setMediaIndex,
         isMuted,
         setIsMuted,
+        UlRef,
       }}
     >
       {children}
