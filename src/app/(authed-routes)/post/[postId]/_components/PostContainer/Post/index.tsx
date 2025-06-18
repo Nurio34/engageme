@@ -7,8 +7,8 @@ function Post({ post }: { post: PrismaPostType }) {
   const { medias } = post;
 
   return (
-    <section className="flex justify-center lg:py-9">
-      <div className="h-screen lg:max-h-[599] flex flex-col lg:flex-row border-2">
+    <section className="flex lg:justify-center lg:py-9">
+      <div className="lg:h-screen lg:max-h-[599px] w-full lg:w-auto flex flex-col lg:flex-row lg:border-2">
         <Medias medias={medias} />
         <InfoContainer post={post} page={"post"} />
       </div>

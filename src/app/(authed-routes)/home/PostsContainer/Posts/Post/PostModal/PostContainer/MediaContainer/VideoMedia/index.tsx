@@ -55,10 +55,10 @@ function VideoMedia({
 
     setSlideArray((prev) => [...prev, videoWidth]);
 
-    const objXParam = videoWidth / +width;
-    const objX = +x === 0 ? "center" : +x * objXParam * -1 + "px";
+    const objXParam = +width / videoWidth;
+    const objX = +x <= 0 ? "center" : +x * objXParam * -1 + "px";
     const objYParam = containerHeight / +height;
-    const objY = +y === 0 ? "center" : +y * objYParam * -1 + "px";
+    const objY = +y <= 0 ? "center" : +y * objYParam * -1 + "px";
     setObjectPosition({ x: objX, y: objY });
   }, [videoWidth]);
 

@@ -33,7 +33,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const [mediaIndex, setMediaIndex] = useState(0);
-  console.log({ mediaIndex });
 
   const UlRef = useRef<HTMLUListElement | null>(null);
 

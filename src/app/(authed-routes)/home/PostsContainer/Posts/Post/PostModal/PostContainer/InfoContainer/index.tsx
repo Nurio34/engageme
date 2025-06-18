@@ -23,9 +23,11 @@ function InfoContainer({ post, page }: { post: PrismaPostType; page: string }) {
   return (
     <InfoContainerContextProvider post={post} page={page}>
       <div
-        className={`flex flex-col w-full 
+        className={`flex flex-col w-full bg-base-100
         ${
-          page === "home" ? "lg:max-w-[500px]" : "lg:max-w-[335px] border-l-2"
+          page === "home"
+            ? "lg:max-w-[500px]"
+            : "lg:max-w-[335px] lg:border-l-2"
         }  
       `}
       >

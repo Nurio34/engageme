@@ -3,9 +3,10 @@ import { PrismaMediaType } from "../../../../../../../../../../prisma/types/post
 import Media from "./Media";
 import NextMediaButton from "./NextMediaButton";
 import PreviousMediaButton from "./PreviousMediaButton";
+import SlideIndicator from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Medias/SlideButtons/SlideIndicator";
 
 function DesktopVersion({ medias }: { medias: PrismaMediaType[] }) {
-  const { containerWidth, UlRef } = usePostContext();
+  const { containerWidth, UlRef, mediaIndex } = usePostContext();
 
   return (
     <div className="relative overflow-hidden">
@@ -22,6 +23,7 @@ function DesktopVersion({ medias }: { medias: PrismaMediaType[] }) {
         ))}
       </ul>
       <NextMediaButton totalMedias={medias.length} />
+      <SlideIndicator medias={medias} currentIndex={mediaIndex} />
     </div>
   );
 }

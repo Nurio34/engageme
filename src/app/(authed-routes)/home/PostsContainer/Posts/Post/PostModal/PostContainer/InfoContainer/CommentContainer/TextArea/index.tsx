@@ -21,9 +21,15 @@ function TextArea({
   const [commentAreaWidth, setCommentAreaWidth] = useState(0);
 
   useEffect(() => {
-    if (CommentAreaRef.current) {
-      setCommentAreaWidth(CommentAreaRef.current.getBoundingClientRect().width);
-    }
+    const timeout = setTimeout(() => {
+      if (CommentAreaRef.current) {
+        setCommentAreaWidth(
+          CommentAreaRef.current.getBoundingClientRect().width
+        );
+      }
+    }, 1000);
+
+    return clearTimeout(timeout);
   }, [comment]);
 
   useEffect(() => {
@@ -51,8 +57,8 @@ function TextArea({
       name="comment"
       id="comment"
       rows={1}
-      className={`grow break-words block max-h-20 resize-none outline-none text-sm ${
-        isPending ? "text-base-content/50" : ""
+      className={`w-full break-words block max-h-20 resize-none outline-none text-sm ${
+        isPending ? "text-base-content/50" : "bg-base-100"
       }`}
       style={{
         maxWidth: commentAreaWidth > 0 ? commentAreaWidth : undefined,

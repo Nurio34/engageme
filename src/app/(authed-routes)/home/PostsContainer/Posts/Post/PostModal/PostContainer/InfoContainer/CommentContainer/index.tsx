@@ -61,7 +61,7 @@ function CommentContainer({
     <form
       action={formAction}
       className="relative border-t-2 px-2 md:px-4 py-3
-        flex items-center gap-x-3
+        flex items-center gap-x-3 min-h-[50px]
       "
     >
       <input type="hidden" name="postId" value={post.id} />
