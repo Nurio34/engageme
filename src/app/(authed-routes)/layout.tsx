@@ -3,7 +3,7 @@ import PushNotification from "./_globalComponents/PushNotification";
 import SideMenu from "./_globalComponents/SideMenu";
 import WannaCloseCreateModal_Modal from "./_globalComponents/WannaCloseCreateModal_Modal";
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

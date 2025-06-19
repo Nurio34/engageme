@@ -18,6 +18,7 @@ export const useSendComment = (post: PrismaPostType) => {
 
   const [state, formAction, isPending] = useActionState(sendComment, {
     status: "pending",
+    message: "",
     isReply: false,
   });
 
@@ -25,7 +26,7 @@ export const useSendComment = (post: PrismaPostType) => {
     if (state.status === "pending") return;
 
     if (state.status === "fail") {
-      toast.error("Something went wrong while commenting ! Please try again..");
+      toast.error(state.message);
       return;
     }
 

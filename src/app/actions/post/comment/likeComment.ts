@@ -8,11 +8,16 @@ export const likeComment = async (
   commentId: string
 ): Promise<{
   status: "success" | "fail";
+  message: string;
   postCommentLike?: PostCommentLike;
 }> => {
   try {
     const user = await currentUser();
-    if (!user) return { status: "fail" };
+    if (!user)
+      return {
+        status: "fail",
+        message: "You have to signin to like comments!",
+      };
 
     const userId = user.id;
 
@@ -23,11 +28,20 @@ export const likeComment = async (
       },
     });
 
-    if (!postCommentLike) return { status: "fail" };
+    if (!postCommentLike)
+      return {
+        status: "fail",
+        message:
+          "Something went wrong while liking the comment ! Please try again...",
+      };
 
-    return { status: "success", postCommentLike };
+    return { status: "success", message: "Success", postCommentLike };
   } catch (error) {
     console.log(error);
-    return { status: "fail" };
+    return {
+      status: "fail",
+      message:
+        "Something went wrong while liking the comment ! Please try again...",
+    };
   }
 };

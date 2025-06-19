@@ -1,7 +1,19 @@
 ## App
 
-    - Sayfaları dolaşmak için authenticated olmaya gerek yok
-    - like, comment ve reply için authenticated şartı koy
+    -
+
+## Home Page
+
+    1. Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında user profilini gösteren bi modal göster
+    2. Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
+
+## Create Post
+
+    1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+
+## HomePage - Notifications
+
+    1. Post/[id] sayfası oluşturduktan sonra, notificationsları link haline getir
 
 ## Post/[id]
 
@@ -10,17 +22,3 @@
 ## User/[id]
 
     1. sayfası oluştur
-
-## HomePage - Notifications
-
-    1. Post/[id] sayfası oluşturduktan sonra, notificationsları link haline getir
-
-## Home Page
-
-    1. Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında
-        user profilini gösteren bi modal göster
-    2. Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
-
-## Create Post
-
-    1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.

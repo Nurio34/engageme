@@ -1,12 +1,8 @@
 import PostsContainer from "./PostsContainer";
 import Recomendations from "./Recomendations";
 
-async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ variant: string }>;
-}) {
-  const { variant } = await searchParams;
+async function HomePage() {
+  // const { variant } = await searchParams;
 
   return (
     <div
@@ -14,7 +10,7 @@ async function HomePage({
         md:px-16 md:py-[22px]
       "
     >
-      <PostsContainer variant={variant} />
+      <PostsContainer variant={undefined} />
       <Recomendations />
     </div>
   );

@@ -69,13 +69,11 @@ export const useReply = (
     setIsLoading(true);
 
     try {
-      const { status, replyLike } = await likeReply(replyId);
+      const { status, replyLike, message } = await likeReply(replyId);
 
       if (status === "fail" || !replyLike) {
         removeLikeFromReplyState(postId, commentId, replyId, newReplyLike);
-        return toast.error(
-          "Something went wrong while liking the reply ! Please try again..."
-        );
+        return toast.error(message);
       }
 
       sendReplyLikeNotificationAction(replyOwnerId, replyLike.id);

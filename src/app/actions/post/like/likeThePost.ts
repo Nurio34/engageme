@@ -6,11 +6,16 @@ import { PrismaPostLikeType } from "../../../../../prisma/types/post";
 
 export const likeThePost = async (
   postId: string
-): Promise<{ status: "fail" | "success"; postLike?: PrismaPostLikeType }> => {
+): Promise<{
+  status: "fail" | "success";
+  message: string;
+  postLike?: PrismaPostLikeType;
+}> => {
   const user = await currentUser();
   const userId = user?.id;
 
-  if (!userId) return { status: "fail" };
+  if (!userId)
+    return { status: "fail", message: "You have to sign in to like posts!" };
 
   try {
     const postLike = await prisma.postLike.create({
@@ -19,11 +24,24 @@ export const likeThePost = async (
     });
     console.log({ postLike });
 
-    if (!postLike) return { status: "fail" };
+    if (!postLike)
+      return {
+        status: "fail",
+        message:
+          "Something went wrong while liking the post ! Please try again...",
+      };
 
-    return { status: "success", postLike };
+    return {
+      status: "success",
+      message: "Success",
+      postLike,
+    };
   } catch (error) {
     console.log(error);
-    return { status: "fail" };
+    return {
+      status: "fail",
+      message:
+        "Something went wrong while liking the post ! Please try again...",
+    };
   }
 };

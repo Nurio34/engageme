@@ -8,11 +8,13 @@ export const likeReply = async (
   replyId: string
 ): Promise<{
   status: "success" | "fail";
+  message: string;
   replyLike?: ReplyCommentLike;
 }> => {
   try {
     const user = await currentUser();
-    if (!user) return { status: "fail" };
+    if (!user)
+      return { status: "fail", message: "You have to signin to like replies!" };
 
     const userId = user.id;
 
@@ -20,11 +22,20 @@ export const likeReply = async (
       data: { commentId: replyId, userId },
     });
 
-    if (!replyLike) return { status: "fail" };
+    if (!replyLike)
+      return {
+        status: "fail",
+        message:
+          "Something went wrong while liking the reply ! Please try again...",
+      };
 
-    return { status: "success", replyLike };
+    return { status: "success", message: "Success", replyLike };
   } catch (error) {
     console.log(error);
-    return { status: "fail" };
+    return {
+      status: "fail",
+      message:
+        "Something went wrong while liking the reply ! Please try again...",
+    };
   }
 };

@@ -27,6 +27,7 @@ function AddComment({ post }: { post: PrismaPostType }) {
   const [state, formAction, isPending] = useActionState(sendComment, {
     status: "pending",
     isReply: false,
+    message: "",
   });
   const [sentComments, setSentComments] = useState<PrismaPostCommentType[]>([]);
 
@@ -34,9 +35,7 @@ function AddComment({ post }: { post: PrismaPostType }) {
     if (state.status === "pending") return;
 
     if (state.status === "fail" || !state.postComment) {
-      toast.error(
-        "Something went wrong while commenting ! Please try again..."
-      );
+      toast.error(state.message);
       return;
     }
 

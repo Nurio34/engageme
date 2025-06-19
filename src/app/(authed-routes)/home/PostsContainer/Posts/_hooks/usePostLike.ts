@@ -34,14 +34,12 @@ export const usePostLike = (
     addLikeToPostLikes(newLike);
 
     try {
-      const { status, postLike } = await likeThePost(postId);
+      const { status, postLike, message } = await likeThePost(postId);
 
       if (status === "fail" || !postLike) {
         removeLikeFromPostLikes(newLike);
 
-        return toast.error(
-          "Something went wrong while liking the post ! Please try again..."
-        );
+        return toast.error(message);
       }
 
       if (status === "success" && userId !== postOwnerId)

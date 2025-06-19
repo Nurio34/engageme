@@ -45,13 +45,11 @@ export const usePostComment = (
     try {
       setIsLoading(true);
 
-      const { status, postCommentLike } = await likeComment(commentId);
+      const { status, postCommentLike, message } = await likeComment(commentId);
 
       if (status === "fail" || !postCommentLike) {
         removeLikeFromTheComment(postId, commentId, newCommentLike);
-        return toast.error(
-          "Something went wrong while liking the comment ! Please try again..."
-        );
+        return toast.error(message);
       }
 
       if (commentOwnerId !== userId)

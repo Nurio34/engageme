@@ -17,6 +17,7 @@ export const sendComment = async (
   formData: FormData
 ): Promise<{
   status: "success" | "fail" | "pending";
+  message: string;
   postComment?: PrismaPostCommentType;
   replyComment?: PrismaReplyCommentType;
   isReply: boolean;
@@ -26,6 +27,7 @@ export const sendComment = async (
     if (!user)
       return {
         status: "fail",
+        message: "You have to signin to comment to posts!",
         postComment: {} as PrismaPostCommentType,
         isReply: false,
       };
@@ -63,12 +65,15 @@ export const sendComment = async (
       if (!postComment)
         return {
           status: "fail",
+          message:
+            "Something went wrong while commenting ! Please try again...",
           postComment: {} as PrismaPostCommentType,
           isReply: isReplyState,
         };
 
       return {
         status: "success",
+        message: "Success",
         postComment,
         isReply: isReplyState,
       };
@@ -89,12 +94,15 @@ export const sendComment = async (
         if (!replyComment)
           return {
             status: "fail",
+            message:
+              "Something went wrong while commenting ! Please try again...",
             replyComment: {} as PrismaReplyCommentType,
             isReply: isReplyState,
           };
 
         return {
           status: "success",
+          message: "Success",
           replyComment,
           isReply: isReplyState,
         };
@@ -116,12 +124,15 @@ export const sendComment = async (
         if (!replyComment)
           return {
             status: "fail",
+            message:
+              "Something went wrong while commenting ! Please try again...",
             replyComment: {} as PrismaReplyCommentType,
             isReply: isReplyState,
           };
 
         return {
           status: "success",
+          message: "Success",
           replyComment,
           isReply: isReplyState,
         };
@@ -131,6 +142,7 @@ export const sendComment = async (
     console.log(error);
     return {
       status: "fail",
+      message: "Something went wrong while commenting ! Please try again...",
       postComment: {} as PrismaPostCommentType,
       replyComment: {} as PrismaReplyCommentType,
       isReply: false,
