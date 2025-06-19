@@ -42,7 +42,7 @@ function MobileVersion({ medias }: { medias: PrismaMediaType[] }) {
   return (
     <div ref={DivRef} className="w-screen relative">
       <ul
-        className="w-full flex overflow-auto"
+        className="w-full flex overflow-hidden"
         onTouchStart={(e) => {
           const touch = e.touches[0];
           const x = touch.clientX;

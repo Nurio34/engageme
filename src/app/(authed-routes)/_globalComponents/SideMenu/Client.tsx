@@ -73,7 +73,7 @@ const menu: MenuType[] = [
 function Client({
   allNotifications,
 }: {
-  allNotifications: AllNotificationsType;
+  allNotifications: AllNotificationsType | undefined;
 }) {
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
   const { device } = useAppSelector((s) => s.modals);

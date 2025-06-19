@@ -10,10 +10,11 @@ export const getAllNotifications = async (): Promise<{
 }> => {
   try {
     const user = await currentUser();
-    if (!user) return { status: "fail" };
+    // if (!user) return { status: "fail" };
+    if (!user) return { status: "success" };
 
     const allNotifications = await prisma.user.findUnique({
-      where: { userId: user.id },
+      where: { userId: user?.id },
       select: {
         postLikeNotifications: {
           include: {

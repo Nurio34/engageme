@@ -42,12 +42,6 @@ function VideoMedia({
 
   useEffect(() => {
     if (VideoRef.current) {
-      VideoRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
-  useEffect(() => {
-    if (VideoRef.current) {
       const player = VideoRef.current;
 
       if (isPlaying) {
@@ -86,9 +80,9 @@ function VideoMedia({
             } ${updatedY > 0 ? updatedY * -1 + "px" : "center"}`,
           } as React.CSSProperties
         }
-        muted
+        muted={isAudioAllowed === false || isMuted}
         loop
-        poster={poster?.url || ""}
+        poster={poster?.url || undefined}
       />
       <button
         type="button"
@@ -99,15 +93,13 @@ function VideoMedia({
         }}
         disabled={isAudioAllowed === false}
       >
-        {isAudioAllowed === false ? (
-          <div className="relative">
+        {(isAudioAllowed === true || isAudioAllowed === null) &&
+          (isMuted ? <MutedAudioIcon /> : <PlayingAudioIcon />)}
+        {isAudioAllowed === false && (
+          <div className="relative h-full flex justify-center items-center">
             <MdAudiotrack />
-            <div className="absolute border-l-2 border-base-content h-full -scale-y-125 -rotate-45 z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "></div>
+            <div className="absolute h-[100%] w-[2px] bg-base-content/70 rotate-45" />
           </div>
-        ) : isMuted ? (
-          <MutedAudioIcon />
-        ) : (
-          <PlayingAudioIcon />
         )}
       </button>
     </div>

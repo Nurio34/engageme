@@ -1,16 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
 import { PrismaPostType } from "../../../../../../prisma/types/post";
 
 export const getPost = async (
   postId: string
 ): Promise<{ status: "success" | "fail"; post: null | PrismaPostType }> => {
   try {
-    const user = await currentUser();
-    if (!user) return { status: "fail", post: null };
-
     const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {

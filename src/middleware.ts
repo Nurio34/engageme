@@ -4,7 +4,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { NextResponse } from "next/server";
 
 //! *** Route Protection Configs ***
-const protectedRoutes = createRouteMatcher(["/home", "/onboarding"]);
+const protectedRoutes = createRouteMatcher(["/onboarding"]);
 const unprotectedRoutes = ["/", "/sign-in(.*)", "/sign-up(.*)"];
 //! *********************************
 

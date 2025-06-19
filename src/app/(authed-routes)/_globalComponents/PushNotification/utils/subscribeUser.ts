@@ -24,7 +24,13 @@ export const subscribeUser = async (userId: string) => {
       JSON.stringify(subscription)
     );
 
-    if (status === "error" || status === "fail") throw new Error();
+    if (status === "error" || status === "fail") {
+      console.log(
+        "Unauthenticated user can not be subscribed to push service !"
+      );
+      return;
+    }
+
     console.log("User subscribed successfully");
   } catch (err) {
     console.error(err);

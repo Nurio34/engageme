@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { LuLogIn } from "react-icons/lu";
 
 function Client() {
   const { username, avatar } = useAppSelector((s) => s.user);
@@ -18,6 +19,20 @@ function Client() {
   useEffect(() => {
     if (path === username) dispatch(setCurrentMenu(username));
   }, [path, dispatch]);
+
+  if (!username)
+    return (
+      <Link
+        href={"/sign-in"}
+        className="w-full min-w-max flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
+        p-3 md:p-[1.25vh] lg:p-3 rounded-lg order-6 md:order-none
+        hover:bg-base-content/10
+      "
+      >
+        <LuLogIn className="text-2xl" />
+        <p className="hidden lg:block">Sign In</p>
+      </Link>
+    );
 
   return (
     <Link

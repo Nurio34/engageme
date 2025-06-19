@@ -3,9 +3,11 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleCreateModal } from "@/store/slices/modals";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
+import toast from "react-hot-toast";
 
 function Client() {
   const { currentMenu, isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
+  const { username } = useAppSelector((s) => s.user);
 
   const dispatch = useAppDispatch();
 
@@ -20,6 +22,7 @@ function Client() {
         hover:bg-base-content/10
       "
       onClick={() => {
+        if (!username) return toast.error("You should login to create post!");
         if (currentMenu === "create") dispatch(setCurrentMenu(path));
         else dispatch(setCurrentMenu("create"));
         dispatch(toggleCreateModal());

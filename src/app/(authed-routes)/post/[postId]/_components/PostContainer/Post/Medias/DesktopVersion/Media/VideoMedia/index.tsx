@@ -3,6 +3,7 @@ import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
+import { MdAudiotrack } from "react-icons/md";
 
 function VideoMedia({
   index,
@@ -11,7 +12,7 @@ function VideoMedia({
   index: number;
   media: PrismaMediaType;
 }) {
-  const { url, transformation } = media;
+  const { url, transformation, poster, isAudioAllowed } = media;
   const { width, height, x, y } = transformation!;
   const aspectRatio = +width / +height;
 
@@ -74,16 +75,26 @@ function VideoMedia({
         `}
         style={{ objectPosition: `${updatedX * -1}px ${updatedY * -1}px` }}
         onClick={() => setIsPlaying((prev) => !prev)}
-        muted={isMuted}
+        poster={poster?.url || undefined}
+        muted={isAudioAllowed === false || isMuted}
+        loop
       />
       <button
         type="button"
         className="absolute z-10 bottom-4 right-4 rounded-full bg-base-content/80 text-base-100
           w-7 aspect-square flex justify-center items-center
         "
+        disabled={isAudioAllowed === false}
         onClick={() => setIsMuted((prev) => !prev)}
       >
-        {isMuted ? <MutedAudioIcon /> : <PlayingAudioIcon />}
+        {(isAudioAllowed === true || isAudioAllowed === null) &&
+          (isMuted ? <MutedAudioIcon /> : <PlayingAudioIcon />)}
+        {isAudioAllowed === false && (
+          <div className="relative h-full flex justify-center items-center">
+            <MdAudiotrack />
+            <div className="absolute h-[80%] w-[2px] bg-base-100/80 rotate-45" />
+          </div>
+        )}
       </button>
     </li>
   );

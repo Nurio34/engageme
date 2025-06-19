@@ -8,7 +8,7 @@ import { AllNotificationsType } from "../../../../../prisma/types/notification";
 function ProviderComponent({
   allNotifications,
 }: {
-  allNotifications: AllNotificationsType;
+  allNotifications: AllNotificationsType | undefined;
 }) {
   return (
     <Provider store={store}>
