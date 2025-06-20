@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MediaInterface } from "../../../../types";
+import { useAppDispatch } from "@/store/hooks";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
+import { useState } from "react";
 
 function Post({
   media,
@@ -13,10 +16,16 @@ function Post({
 }) {
   const type = media.type;
 
+  const dispatch = useAppDispatch();
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Link
-      href={commentId ? `/p/${postId}&c=${commentId}` : `/p/${postId}`}
+      href={commentId ? `/post/${postId}?c=${commentId}` : `/post/${postId}`}
       className=" justify-self-end rounded-lg overflow-hidden"
+      onClick={() => dispatch(setCurrentMenu("post"))}
+      onMouseEnter={() => setIsHovered(true)}
+      prefetch={isHovered}
     >
       {type === "image" ? (
         <figure className="relative w-11 aspect-square">

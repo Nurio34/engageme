@@ -11,7 +11,7 @@ function NotificationsDrawer() {
 
   const dispatch = useAppDispatch();
 
-  const path = usePathname().slice(1);
+  const path = usePathname()?.slice(1);
 
   const { isMounted, style } = useAnimatedMount(isDrawerMenuOpen, "translateX");
 

@@ -30,6 +30,7 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
 
     return () => window.removeEventListener("resize", handleContainerHeight);
   }, []);
+  console.log({ containerWidth });
 
   return (
     <div
@@ -37,6 +38,7 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
       className={`relative overflow-hidden transition-all duration-500`}
       style={{
         width: isDesktop ? containerWidth : "100%",
+        minWidth: isDesktop ? containerWidth : "100%",
         height: isDesktop ? undefined : "100%",
         maxWidth: isDesktop ? containerHeight : undefined,
       }}

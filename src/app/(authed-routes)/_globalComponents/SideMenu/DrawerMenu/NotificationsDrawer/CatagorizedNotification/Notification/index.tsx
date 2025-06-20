@@ -8,7 +8,7 @@ function Notification({ notification }: { notification: NotificationType }) {
     notification;
 
   return (
-    <li className="grid grid-cols-[58px,1fr,58px] items-center py-2 ">
+    <li className="grid grid-cols-[58px,1fr,58px] items-center py-2">
       <Avatars users={users} />
       <Users
         users={users}

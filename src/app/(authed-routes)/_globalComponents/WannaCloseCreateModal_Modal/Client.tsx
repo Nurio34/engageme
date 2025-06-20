@@ -20,7 +20,7 @@ function Client() {
 
   const dispatch = useAppDispatch();
 
-  const path = usePathname().slice(1);
+  const path = usePathname()?.slice(1);
 
   const closeThisModal = () => {
     dispatch(toggle_WannaCloseCreateModal_Modal());
@@ -32,14 +32,14 @@ function Client() {
     dispatch(toggleCreateModal());
     closeThisModal();
     dispatch(resterPosterImages());
-    dispatch(setCurrentMenu(path));
+    dispatch(setCurrentMenu(path!));
   };
 
   return (
     <>
       {isWannaCloseCreateModalOpen && (
         <div
-          className="fixed z-10 w-screen h-screen top-0 left-0 bg-base-content/70 text-center"
+          className="fixed z-20 w-screen h-screen top-0 left-0 bg-base-content/70 text-center"
           onClick={() => {
             if (!isDesktop) {
               history.pushState(

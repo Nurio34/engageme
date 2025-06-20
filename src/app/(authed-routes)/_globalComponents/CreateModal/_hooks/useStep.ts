@@ -46,6 +46,9 @@ export const useStep = (
     if (files.files && files.files.length > 0) {
       setStep({ action: "previous", step: "crop" });
     }
+
+    if (files.files && files.files.length === 0)
+      setStep({ action: "previous", step: "new" });
   }, [files]);
 
   return { step, setStep, goPrevStep, goNextStep };

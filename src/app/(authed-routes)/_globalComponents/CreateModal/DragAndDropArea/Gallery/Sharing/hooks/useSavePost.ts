@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { PostType } from "..";
 import { savePost } from "../../../../actions/savePost";
 import { useCreateModalContext } from "../../../../Context";
+import toast from "react-hot-toast";
 
 export const useSavePost = (post: PostType) => {
   const { goPrevStep, setIsShared } = useCreateModalContext();
@@ -14,8 +15,9 @@ export const useSavePost = (post: PostType) => {
 
     const savePostAction = async () => {
       try {
-        const { status } = await savePost(post);
+        const { status, message } = await savePost(post);
         if (status === "fail") {
+          toast.error(message);
           goPrevStep();
         } else {
           setIsShared(true);

@@ -96,6 +96,8 @@ interface PostsContextType {
     replyId: string,
     like: PrismaReplyLikeType
   ) => Promise<string | undefined>;
+  isMuted: boolean;
+  setIsMuted: Dispatch<SetStateAction<boolean>>;
 }
 
 const Context = createContext<PostsContextType | undefined>(undefined);
@@ -179,6 +181,8 @@ export const PostsProvider = ({
   }, [isPostModalOpen]);
   //! ***********************************
 
+  const [isMuted, setIsMuted] = useState(true);
+
   return (
     <Context.Provider
       value={{
@@ -208,6 +212,8 @@ export const PostsProvider = ({
         isReplyLiked,
         likeTheReplyAction,
         removeLikeFromReplyAction,
+        isMuted,
+        setIsMuted,
       }}
     >
       {children}

@@ -115,6 +115,8 @@ export const notificationsSlice = createSlice({
         return;
       state.replyCommentLikeNotifications.push(action.payload);
     },
+
+    resetNotifications: (state) => (state = initialState),
   },
 });
 
@@ -129,5 +131,6 @@ export const {
   addReplyNotification,
   setReplyCommentLikeNotifications,
   addReplyLikeNotification,
+  resetNotifications,
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

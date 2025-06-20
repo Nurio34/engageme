@@ -77,6 +77,8 @@ export const modalsSlice = createSlice({
     togglePostSettingsModal: (state) => {
       state.isPostSettingsModalOpen = !state.isPostSettingsModalOpen;
     },
+
+    resetModals: (state) => (state = initialState),
   },
 });
 
@@ -92,5 +94,6 @@ export const {
   toggleMoreModal,
   toggleSwitchAppearanceModal,
   togglePostSettingsModal,
+  resetModals,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

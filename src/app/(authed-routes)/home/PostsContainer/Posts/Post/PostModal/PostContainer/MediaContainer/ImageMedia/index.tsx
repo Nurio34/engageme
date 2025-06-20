@@ -20,7 +20,10 @@ function ImageMedia({
 }) {
   const { url, altText, width, height } = media;
   const aspectRatio = width! / height!;
-  const updatedWidth = containerHeight * aspectRatio;
+  const updatedWidth = Math.min(
+    containerHeight * aspectRatio,
+    window.innerWidth - 420
+  );
 
   const { device } = useAppSelector((s) => s.modals);
   const isDesktop = device.type === "desktop";

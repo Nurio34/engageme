@@ -5,6 +5,7 @@ import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";
 import { useEffect, useRef, useState } from "react";
 import { MdAudiotrack } from "react-icons/md";
+import { usePostsContext } from "../../../Context";
 
 function VideoMedia({
   media,
@@ -15,6 +16,8 @@ function VideoMedia({
   index: number;
   currentIndex: number;
 }) {
+  const { isMuted, setIsMuted } = usePostsContext();
+
   const { url, poster, transformation, isAudioAllowed } = media;
 
   const { width, height, x, y } = transformation!;
@@ -29,8 +32,34 @@ function VideoMedia({
   const updatedX = +x / (+height / containerSize.height);
 
   const VideoRef = useRef<HTMLVideoElement | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
+  // const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  //! *** handle observer ***
+  useEffect(() => {
+    const videoElement = VideoRef.current;
+    if (!videoElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsPlaying(true);
+        } else {
+          setIsPlaying(false);
+        }
+      },
+      {
+        threshold: 1, // Adjust this to trigger earlier/later (e.g. 0.5 means 50% visible)
+      }
+    );
+
+    observer.observe(videoElement);
+
+    return () => {
+      observer.unobserve(videoElement);
+    };
+  }, []);
+  //! ***
 
   useEffect(() => {
     if (currentIndex === index) {
@@ -45,7 +74,7 @@ function VideoMedia({
       const player = VideoRef.current;
 
       if (isPlaying) {
-        player.play();
+        player.play().catch((e) => console.log("Play failed", e));
       } else {
         player.pause();
       }

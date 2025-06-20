@@ -8,9 +8,11 @@ import { revalidateTag } from "next/cache";
 
 export const savePost = async (
   post: PostType
-): Promise<{ status: "success" | "fail" }> => {
+): Promise<{ status: "success" | "fail"; message: string }> => {
   const user = await currentUser();
-  if (!user) redirect("/home");
+  if (!user) {
+    return { status: "fail", message: "You have to signin to create post!" };
+  }
 
   const { medias, message, location, settings } = post;
 
@@ -61,13 +63,19 @@ export const savePost = async (
     });
 
     if (!response) {
-      return { status: "fail" };
+      return {
+        status: "fail",
+        message: "Something went wrong while commenting ! Please try again...",
+      };
     }
 
     revalidateTag("posts");
-    return { status: "success" };
+    return { status: "success", message: "Success" };
   } catch (error) {
     console.log(error);
-    return { status: "fail" };
+    return {
+      status: "fail",
+      message: "Something went wrong while commenting ! Please try again...",
+    };
   }
 };

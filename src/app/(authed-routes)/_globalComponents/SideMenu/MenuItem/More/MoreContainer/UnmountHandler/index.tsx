@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 function UnmountHandler() {
   const dispatch = useAppDispatch();
 
-  const path = usePathname().slice(1);
+  const path = usePathname()?.slice(1);
 
   return (
     <div

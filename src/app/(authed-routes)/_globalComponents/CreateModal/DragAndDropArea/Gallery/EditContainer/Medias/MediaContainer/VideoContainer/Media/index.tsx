@@ -109,7 +109,7 @@ function Media({
       }`}
       style={{
         minWidth: baseCanvasContainerWidth,
-        maxHeight: isDesktop ? "690.62px" : "calc(100vh - 43.38px)",
+        maxHeight: isDesktop ? "734px" : "calc(100vh - 38.31px)",
       }}
     >
       {isRendered && (
@@ -126,6 +126,7 @@ function Media({
             duration: du,
             audio_codec: codec,
           }}
+          className="w-full h-full"
           onDataLoad={() => setisLoaded(true)}
           poster={poster?.url}
           playerRef={PlayerRef}

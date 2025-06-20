@@ -11,7 +11,7 @@ function Client() {
 
   const dispatch = useAppDispatch();
 
-  const path = usePathname().slice(1);
+  const path = usePathname()?.slice(1);
 
   return (
     <button

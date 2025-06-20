@@ -11,7 +11,7 @@ function DrawerMenu({ navWidth }: { navWidth: number }) {
 
   const dispatch = useAppDispatch();
 
-  const path = usePathname().split("/")[1];
+  const path = usePathname()?.split("/")[1];
 
   return (
     <>

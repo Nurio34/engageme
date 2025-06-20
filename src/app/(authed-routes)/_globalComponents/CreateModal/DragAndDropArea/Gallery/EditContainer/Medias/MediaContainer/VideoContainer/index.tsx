@@ -16,7 +16,8 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
 
   const {
     eager,
-    secure_url,
+    // secure_url,
+    url,
     duration,
     poster,
     asset_id,
@@ -30,7 +31,7 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
       <div className="flex h-full">
         <Media
           eagerUrl={eagerUrl}
-          url={secure_url}
+          url={url}
           poster={poster}
           asset_id={asset_id}
           setPlayerTime={setPlayerTime}
@@ -39,7 +40,7 @@ function VideoContainer({ index, media }: { index: number; media: MediaType }) {
         />
         <EditTab
           eagerUrl={eagerUrl}
-          url={secure_url}
+          url={url}
           duration={duration}
           asset_id={asset_id}
           playerTime={playerTime}

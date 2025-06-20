@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import ScrollBlocker from "./_globalComponents/ScrollBlocker";
 import StoreUser from "./_globalComponents/StoreUser";
 import SocketManager from "./_globalComponents/SocketMenager";
+import LogoutListener from "./_globalComponents/LogoutListener";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,6 +33,7 @@ export default function RootLayout({
           <SpeedInsights />
           <StoreUser />
           <SocketManager />
+          <LogoutListener />
           {children}
         </body>
       </html>

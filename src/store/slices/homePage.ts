@@ -23,8 +23,9 @@ export const homePageSlice = createSlice({
     setPostModal: (state, action: PayloadAction<PostModalType>) => {
       state.postModal = action.payload;
     },
+    resetHomePage: (state) => (state = initialState),
   },
 });
 
-export const { setPostModal } = homePageSlice.actions;
+export const { setPostModal, resetHomePage } = homePageSlice.actions;
 export default homePageSlice.reducer;

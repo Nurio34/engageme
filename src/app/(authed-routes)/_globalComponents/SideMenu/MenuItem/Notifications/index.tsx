@@ -30,7 +30,7 @@ function Notifications() {
 
   const dispatch = useAppDispatch();
 
-  const path = usePathname().slice(1);
+  const path = usePathname()?.slice(1);
 
   const { notificationIndicator, isAnyNotification, isRender } =
     useNotificationIndicator();

@@ -1,11 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { DeviceType, setDevice } from "@/store/slices/modals";
+import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 function ListenResizeClient() {
   const { device } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
   const [deviceState, setDeviceState] = useState<DeviceType>(device);
+
+  const user = useUser();
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,7 +45,7 @@ function ListenResizeClient() {
 
   useEffect(() => {
     dispatch(setDevice(deviceState));
-  }, [dispatch, deviceState]);
+  }, [dispatch, deviceState, user]);
 
   return <div hidden />;
 }

@@ -1,14 +1,14 @@
 "use client";
 
+import { store } from "@/store";
 import { Provider } from "react-redux";
 import Client from "./Client";
-import { store } from "@/store";
 
-function Logout() {
+function LogoutListener() {
   return (
     <Provider store={store}>
       <Client />
     </Provider>
   );
 }
-export default Logout;
+export default LogoutListener;

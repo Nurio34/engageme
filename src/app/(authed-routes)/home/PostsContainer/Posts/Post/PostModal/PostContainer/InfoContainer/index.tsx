@@ -45,7 +45,7 @@ function InfoContainer({ post, page }: { post: PrismaPostType; page: string }) {
             <div className="flex items-start gap-4 shadow-[0_20px_20px_-30px_black]">
               <Avatar />
 
-              <div>
+              <div className="grow">
                 <Description
                   post={post}
                   isTruncated={isTruncated}
