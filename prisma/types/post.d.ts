@@ -14,7 +14,11 @@ import {
 } from "@prisma/client";
 
 export type PrismaPostType = Post & {
-  user: User;
+  user: User & {
+    _count: {
+      posts: number;
+    };
+  };
   medias: PrismaMediaType[];
   location?: Location | null;
   settings?: Settings | null;

@@ -23,7 +23,7 @@ export const homePageSlice = createSlice({
     setPostModal: (state, action: PayloadAction<PostModalType>) => {
       state.postModal = action.payload;
     },
-    resetHomePage: (state) => (state = initialState),
+    resetHomePage: () => initialState,
   },
 });
 

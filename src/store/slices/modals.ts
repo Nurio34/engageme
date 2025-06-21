@@ -78,7 +78,7 @@ export const modalsSlice = createSlice({
       state.isPostSettingsModalOpen = !state.isPostSettingsModalOpen;
     },
 
-    resetModals: (state) => (state = initialState),
+    resetModals: () => initialState,
   },
 });
 

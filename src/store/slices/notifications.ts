@@ -116,7 +116,7 @@ export const notificationsSlice = createSlice({
       state.replyCommentLikeNotifications.push(action.payload);
     },
 
-    resetNotifications: (state) => (state = initialState),
+    resetNotifications: () => initialState,
   },
 });
 

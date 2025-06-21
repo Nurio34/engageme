@@ -20,8 +20,10 @@ function VideoMedia({
   const newHeight = divWidth / aspectRatio;
 
   const adjustmentParameter = +width / divWidth;
-  const newX = Math.abs(+x) / adjustmentParameter;
-  const newY = Math.abs(+y) / adjustmentParameter;
+  const newX = +x / adjustmentParameter;
+  const newY = +y / adjustmentParameter;
+
+  const objXParam = aspectRatio <= 1 ? -1 : 0;
 
   const { mediaIndex, isMuted, setIsMuted } = usePostContext();
 
@@ -49,7 +51,8 @@ function VideoMedia({
   useEffect(() => {
     if (!VideoRef.current) return;
 
-    if (isPlaying) VideoRef.current.play();
+    if (isPlaying)
+      VideoRef.current.play().catch((e) => console.log("Play failed", e));
     else VideoRef.current.pause();
   }, [isPlaying]);
 
@@ -58,13 +61,14 @@ function VideoMedia({
       <video
         ref={VideoRef}
         src={url}
-        className={`object-cover
-            ${Math.abs(+y) >= 0 ? "w-full" : ""}
-            ${Math.abs(+x) >= 0 ? "h-full" : ""}
-        `}
+        // className={`object-cover
+        //     ${Math.abs(+y) >= 0 ? "w-full" : ""}
+        //     ${Math.abs(+x) >= 0 ? "h-full" : ""}
+        // `}
         style={{
-          objectPosition: `${newX * -1}px ${newY * -1}px`,
+          objectPosition: `${newX * objXParam}px ${newY * -1}px`,
         }}
+        className="object-cover h-full w-full"
         onClick={() => setIsPlaying((prev) => !prev)}
         loop
         poster={poster?.url || undefined}

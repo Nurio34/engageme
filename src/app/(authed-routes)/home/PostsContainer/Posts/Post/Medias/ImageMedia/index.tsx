@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { PrismaMediaType } from "@/../prisma/types/post";
-import { CldImage } from "next-cloudinary";
 
 function ImageMedia({
   index,
@@ -17,7 +16,7 @@ function ImageMedia({
       className="relative  min-w-full max-w-[485px] max-h-[585px]"
       style={{ aspectRatio }}
     >
-      <CldImage
+      <Image
         src={url}
         alt={altText || "image"}
         fill

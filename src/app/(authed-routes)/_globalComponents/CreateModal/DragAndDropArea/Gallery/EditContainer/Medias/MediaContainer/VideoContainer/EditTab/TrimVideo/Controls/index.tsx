@@ -29,7 +29,7 @@ function Controls({
   asset_id: string;
   playerTime: PlayerTimeType;
 }) {
-  const { setCloudinaryMedias, controls, setControls, cloudinaryMedias } =
+  const { setCloudinaryMedias, controls, setControls } =
     useCreateModalContext();
 
   const control =

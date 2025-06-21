@@ -10,7 +10,15 @@ export const getPost = async (
     const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {
-        user: true,
+        user: {
+          include: {
+            _count: {
+              select: {
+                posts: true,
+              },
+            },
+          },
+        },
         medias: {
           include: {
             poster: true,

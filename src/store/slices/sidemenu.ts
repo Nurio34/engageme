@@ -22,7 +22,7 @@ export const sideMenuSlice = createSlice({
       else state.isDrawerMenuOpen = false;
     },
 
-    resetSidemenu: (state) => (state = initialState),
+    resetSidemenu: () => initialState,
   },
 });
 

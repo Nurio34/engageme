@@ -9,7 +9,7 @@ function DesktopVersion({ medias }: { medias: PrismaMediaType[] }) {
   const { containerWidth, UlRef, mediaIndex } = usePostContext();
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden max-w-[1200px]">
       <PreviousMediaButton />
       <ul
         ref={UlRef}

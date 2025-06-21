@@ -18,7 +18,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (variant === "undefined" || variant === "home") {
       posts = await prisma.post.findMany({
         include: {
-          user: true,
+          user: {
+            include: {
+              _count: {
+                select: {
+                  posts: true,
+                },
+              },
+            },
+          },
           medias: {
             include: {
               poster: true,

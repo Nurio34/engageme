@@ -170,7 +170,8 @@ function Canvas({ url, index }: { url: string; index: number }) {
 
         setMediaSize({ width, height });
 
-        if (index === currentIndex) mediaRefState.play();
+        if (index === currentIndex)
+          mediaRefState.play().catch((e) => console.log("Play failed", e));
 
         mediaRefState.onplay = () => setIsPlaying(true);
         mediaRefState.onpause = () => setIsPlaying(false);

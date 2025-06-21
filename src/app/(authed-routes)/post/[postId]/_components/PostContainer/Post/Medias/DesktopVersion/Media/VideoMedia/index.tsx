@@ -23,9 +23,11 @@ function VideoMedia({
   const [liSize, setLiSize] = useState({ w: 0, h: 0 });
   const VideoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [videoSize, setVideoSize] = useState({ w: 0, h: 0 });
+  // const [videoSize, setVideoSize] = useState({ w: 0, h: 0 });
 
-  const updatedX = (liSize.w / +width) * +x;
+  const objXParam = aspectRatio <= 1 ? -1 : 1;
+  const updatedX =
+    aspectRatio <= 1 ? (liSize.w / +width) * +x : (+width / liSize.w) * +x;
   const updatedY = (liSize.h / +height) * +y;
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -37,10 +39,10 @@ function VideoMedia({
       w: LiRef.current.getBoundingClientRect().width,
       h: LiRef.current.getBoundingClientRect().height,
     });
-    setVideoSize({
-      w: VideoRef.current.getBoundingClientRect().width,
-      h: VideoRef.current.getBoundingClientRect().height,
-    });
+    // setVideoSize({
+    //   w: VideoRef.current.getBoundingClientRect().width,
+    //   h: VideoRef.current.getBoundingClientRect().height,
+    // });
   }, [isVideoLoaded]);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ function VideoMedia({
     const video = VideoRef.current;
     if (!video) return;
 
-    if (isPlaying) video.play();
+    if (isPlaying) video.play().catch((e) => console.log("Play failed", e));
     else video.pause();
   }, [isPlaying]);
 
@@ -66,14 +68,16 @@ function VideoMedia({
         ref={VideoRef}
         src={url}
         onLoadedMetadata={() => setIsVideoLoaded(true)} // ✅ Fires when video metadata is ready (dimensions, duration, etc.)
-        className={`object-cover h-full
-          ${
-            liSize.w === videoSize.w && liSize.h > videoSize.h
-              ? "h-full"
-              : "w-full"
-          }
-        `}
-        style={{ objectPosition: `${updatedX * -1}px ${updatedY * -1}px` }}
+        className={`object-cover w-full h-full`}
+        // ${
+        //   liSize.w === videoSize.w && liSize.h > videoSize.h
+        //     ? "h-full"
+        //     : "w-full"
+        // }
+        // `}
+        style={{
+          objectPosition: `${updatedX * objXParam}px ${updatedY * -1}px`,
+        }}
         onClick={() => setIsPlaying((prev) => !prev)}
         poster={poster?.url || undefined}
         muted={isAudioAllowed === false || isMuted}

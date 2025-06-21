@@ -2,7 +2,6 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import { PostType } from "../DragAndDropArea/Gallery/Sharing";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
 

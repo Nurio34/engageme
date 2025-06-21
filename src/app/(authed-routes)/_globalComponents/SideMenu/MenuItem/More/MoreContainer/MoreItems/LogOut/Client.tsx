@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleMoreModal } from "@/store/slices/modals";
-import { SignIn, SignOutButton } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 function Client() {

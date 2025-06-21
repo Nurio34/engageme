@@ -87,7 +87,7 @@ function VideoMedia({
       const player = VideoRef.current;
 
       if (isPlaying) {
-        player.play();
+        player.play().catch((e) => console.log("Play failed", e));
       } else {
         player.pause();
       }
