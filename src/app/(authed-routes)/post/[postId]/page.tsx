@@ -2,6 +2,7 @@ import { getPost } from "./actions/getPost";
 import PostError from "./_components/PostError";
 import ProviderComponent from "./Provider";
 import { Metadata } from "next";
+import PostContainer from "./_components/PostContainer";
 
 type PostPageProps = {
   params: Promise<{ postId: string }>;
@@ -90,7 +91,7 @@ async function PostWrapper(props: PostPageProps) {
 
   if (status === "fail" || post === null) return <PostError postId={postId} />;
 
-  return <ProviderComponent post={post} />;
+  return <PostContainer post={post} />;
 }
 
 export default PostWrapper;
