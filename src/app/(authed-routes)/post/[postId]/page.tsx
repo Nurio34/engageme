@@ -1,8 +1,8 @@
 import { getPost } from "./actions/getPost";
 import PostError from "./_components/PostError";
-import ProviderComponent from "./Provider";
 import { Metadata } from "next";
 import PostContainer from "./_components/PostContainer";
+import NoOtherPosts from "./_components/NoOtherPosts";
 
 type PostPageProps = {
   params: Promise<{ postId: string }>;
@@ -91,7 +91,13 @@ async function PostWrapper(props: PostPageProps) {
 
   if (status === "fail" || post === null) return <PostError postId={postId} />;
 
-  return <PostContainer post={post} />;
+  const { posts: postsCount } = post?.user._count;
+  return (
+    <main>
+      <PostContainer post={post} />
+      {postsCount === 1 && <NoOtherPosts />}
+    </main>
+  );
 }
 
 export default PostWrapper;

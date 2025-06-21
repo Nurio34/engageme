@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
+import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";
 import PlayingAudioIcon from "@/app/_globalComponents/Svg/PlayingAudioIcon";

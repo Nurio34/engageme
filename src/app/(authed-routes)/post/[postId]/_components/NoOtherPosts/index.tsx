@@ -1,12 +1,12 @@
 import Header from "./Header";
-import SuggestedForYou from "./SuggestedForYou";
+import SuggestedForYou from "../../../../_globalComponents/SuggestedForYou";
 
 function NoOtherPosts() {
   const maxWidth = 935;
 
   return (
     <section className="flex justify-center">
-      <div className="w-full bg-red-100" style={{ maxWidth }}>
+      <div style={{ maxWidth }}>
         <Header />
         <SuggestedForYou maxWidth={maxWidth} />
       </div>

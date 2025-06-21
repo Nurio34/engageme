@@ -1,4 +1,4 @@
-import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
+import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
 import { useEffect, useRef, useState } from "react";
 import MutedAudioIcon from "@/app/_globalComponents/Svg/MutedAudioIcon";

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
+import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
 
 function ImageMedia({ media }: { media: PrismaMediaType }) {

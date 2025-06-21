@@ -1,4 +1,4 @@
-import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
+import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 import Chevron from "@/app/_globalComponents/Svg/Chevron";
 
 function PreviousMediaButton() {

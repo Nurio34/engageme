@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PrismaMediaType } from "../../../../../../../../../../prisma/types/post";
 import Media from "./Media";
 import SlideIndicator from "@/app/(authed-routes)/home/PostsContainer/Posts/Post/Medias/SlideButtons/SlideIndicator";
-import { usePostContext } from "@/app/(authed-routes)/post/[postId]/Context";
+import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 
 function MobileVersion({ medias }: { medias: PrismaMediaType[] }) {
   const { mediaIndex, setMediaIndex } = usePostContext();

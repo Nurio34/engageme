@@ -1,22 +1,18 @@
+"use client";
+
+import { Provider } from "react-redux";
+import { ContextProvider } from "./Context";
+import Client from "./Client";
+import { store } from "@/store";
 import { PrismaPostType } from "../../../../../../../prisma/types/post";
-import NoOtherPosts from "./NoOtherPosts";
-import OtherPostsOfUser from "./OtherPostsOfUser";
-import Post from "./Post";
 
 function PostContainer({ post }: { post: PrismaPostType }) {
-  const { id: postId, user } = post;
-  const { userId, name: username, _count } = user;
-  const { posts: postsCount } = _count;
-
   return (
-    <main>
-      <Post post={post} />
-      {postsCount > 1 ? (
-        <OtherPostsOfUser userId={userId} username={username} postId={postId} />
-      ) : (
-        <NoOtherPosts />
-      )}
-    </main>
+    <Provider store={store}>
+      <ContextProvider>
+        <Client post={post} />
+      </ContextProvider>
+    </Provider>
   );
 }
 export default PostContainer;
