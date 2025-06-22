@@ -3,6 +3,7 @@ import PostError from "./_components/PostError";
 import { Metadata } from "next";
 import PostContainer from "./_components/PostContainer";
 import NoOtherPosts from "./_components/NoOtherPosts";
+import Footer from "../../_globalComponents/Footer";
 
 type PostPageProps = {
   params: Promise<{ postId: string }>;
@@ -96,6 +97,7 @@ async function PostWrapper(props: PostPageProps) {
     <main>
       <PostContainer post={post} />
       {postsCount === 1 && <NoOtherPosts />}
+      <Footer />
     </main>
   );
 }

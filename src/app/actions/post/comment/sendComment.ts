@@ -27,7 +27,7 @@ export const sendComment = async (
     if (!user)
       return {
         status: "fail",
-        message: "You have to signin to comment to posts!",
+        message: "You have to sign in to comment to posts!",
         postComment: {} as PrismaPostCommentType,
         isReply: false,
       };

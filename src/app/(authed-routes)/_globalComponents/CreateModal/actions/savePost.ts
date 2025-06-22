@@ -10,7 +10,7 @@ export const savePost = async (
 ): Promise<{ status: "success" | "fail"; message: string }> => {
   const user = await currentUser();
   if (!user) {
-    return { status: "fail", message: "You have to signin to create post!" };
+    return { status: "fail", message: "You have to sign in to create post!" };
   }
 
   const { medias, message, location, settings } = post;

@@ -16,7 +16,7 @@ export const likeComment = async (
     if (!user)
       return {
         status: "fail",
-        message: "You have to signin to like comments!",
+        message: "You have to sign in to like comments!",
       };
 
     const userId = user.id;

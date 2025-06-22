@@ -1,11 +1,17 @@
 export type ChevronRotateType = 0 | 90 | 180 | 270;
 
-const Chevron = ({ rotate }: { rotate: ChevronRotateType }) => {
+const Chevron = ({
+  rotate,
+  size,
+}: {
+  rotate: ChevronRotateType;
+  size?: number;
+}) => {
   return (
     <svg
       aria-label="Down chevron icon"
-      className="w-4 h-4 fill-current transition-transform"
-      style={{ transform: `rotate(${rotate}deg)` }}
+      className="fill-current transition-transform aspect-square"
+      style={{ transform: `rotate(${rotate}deg)`, width: size ? size * 4 : 16 }}
       role="img"
       viewBox="0 0 24 24"
     >

@@ -14,7 +14,10 @@ export const likeReply = async (
   try {
     const user = await currentUser();
     if (!user)
-      return { status: "fail", message: "You have to signin to like replies!" };
+      return {
+        status: "fail",
+        message: "You have to sign in to like replies!",
+      };
 
     const userId = user.id;
 

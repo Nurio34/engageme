@@ -15,15 +15,13 @@ export const getRecommendations = async (): Promise<{
   try {
     const user = await currentUser();
 
-    if (!user) return { status: "fail" };
-
     const response = await fetch(`${process.env.SITE_URL}/api/recomendation`, {
       method: "GET",
       headers: {
         "request-secret": process.env.REQUEST_SECRET!,
-        "user-id": user.id,
+        "user-id": user?.id || "",
       },
-      //   cache: "force-cache", //! after you done, uncomment this line
+      cache: "force-cache",
       next: { tags: ["recomendations"], revalidate: 60 * 60 },
     });
 

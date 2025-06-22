@@ -8,28 +8,29 @@ datasource db {
 }
 
 model User {
-  id                            String   @id @default(cuid())
-  userId                        String   @unique
-  email                         String   @unique
-  name                          String
-  avatar                        String?
-  pushToken                     String?  // Optional field to store the push token
-  authToken                     String?  // Optional field to store the auth token
-  endpoint                      String?  // Subscription endpoint
-  posts                         Post[]
-  postLikes                     PostLike[]
-  postComments                  PostComment[]
-  commentLikes                  PostCommentLike[]
-  replies                       ReplyComment[]
-  replyLikes                    ReplyCommentLike[]
-  postLikeNotifications         PostLikeNotification[]
-  postCommentNotifications      PostCommentNotification[]
-  replyCommentNotifications     ReplyCommentNotification[]
-  postCommentLikeNotifications  PostCommentLikeNotification[]
+  id                             String   @id @default(cuid())
+  userId                         String   @unique
+  email                          String   @unique
+  name                           String
+  avatar                         String?
+  pushToken                      String?  // Optional field to store the push token
+  authToken                      String?  // Optional field to store the auth token
+  endpoint                       String?  // Subscription endpoint
+  posts                          Post[]
+  postLikes                      PostLike[]
+  postComments                   PostComment[]
+  commentLikes                   PostCommentLike[]
+  replies                        ReplyComment[]
+  replyLikes                     ReplyCommentLike[]
+  postLikeNotifications          PostLikeNotification[]
+  postCommentNotifications       PostCommentNotification[]
+  replyCommentNotifications      ReplyCommentNotification[]
+  postCommentLikeNotifications   PostCommentLikeNotification[]
   replyCommentLikeNotifications  ReplyCommentLikeNotification[]
-  mock  String?
-  createdAt                     DateTime @default(now())
-  updatedAt                     DateTime @updatedAt @default(now())
+  dontSuggestsMade               DontSuggest[] @relation("UserWhoDoesntWant")
+  dontSuggestsReceived           DontSuggest[] @relation("UserToNotBeSuggested")
+  createdAt                      DateTime @default(now())
+  updatedAt                      DateTime @updatedAt @default(now())
 }
 
 model Post {
@@ -239,4 +240,17 @@ enum NotificationVariant {
   like
   comment
   follow
+}
+
+model DontSuggest {
+  id                String @id @default(cuid())
+
+  // Who doesn't want to see whom
+  userId            String
+  user              User   @relation("UserWhoDoesntWant", fields: [userId], references: [userId], onDelete: Cascade)
+
+  dontSuggestUserId String
+  dontSuggestUser   User   @relation("UserToNotBeSuggested", fields: [dontSuggestUserId], references: [userId], onDelete: Cascade)
+
+  @@unique([userId, dontSuggestUserId]) // Prevent duplicates
 }
