@@ -4,21 +4,29 @@
 
 ## Home Page
 
-    1. Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında user profilini gösteren bi modal göster
-    2. Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
+    1. Post sağ üst tıkladığında açılan setting modal animated olarak açılması gerekiodu ama bozulmuş.
+
+    - Recomendations section oluştur
+    - Post üzerinde Header'daki user avatar yada ismi üzerine hoverladğında veya total likes altındaki user ismi üzerine hoverladığında user profilini gösteren bi modal göster ( Reusable)
+    - Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
 
 ## Create Post
 
-    1. User'lar ekldikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+    1. User'lar ekledikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
 
 ## HomePage - Notifications
 
-    1. Post/[id] sayfası oluşturduktan sonra, notificationsları link haline getir
+    1. Comment, CommentLike, Reply veya ReplyLike notificationslarda post'u tıklaıdğında, ilgili commenti göster ve higlight et
 
 ## Post/[id]
 
-    1.
+    1. SuggestedForYouModal oluştur (Reusable)
+    2. Footer oluştur.
 
 ## User/[id]
 
     1. sayfası oluştur
+
+## Footer
+
+    1. Oluştur

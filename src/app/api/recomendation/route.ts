@@ -18,7 +18,6 @@ export async function GET(req: Request): Promise<NextResponse> {
       { status: "fail", msg: "Unauthenticated !" },
       { status: 401 }
     );
-  console.log({ userId });
 
   //! if client authenticated, find the client's DontSuggest array and filter recomendations according to this
   if (userId) {

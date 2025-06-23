@@ -30,7 +30,6 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
 
     return () => window.removeEventListener("resize", handleContainerHeight);
   }, []);
-  console.log({ containerWidth });
 
   return (
     <div

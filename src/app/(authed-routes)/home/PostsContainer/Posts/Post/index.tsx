@@ -4,9 +4,14 @@ import AddComment from "./AddComment";
 import Description from "./Description";
 import Header from "./Header";
 import Medias from "./Medias";
-import PostModal from "./PostModal";
 import TotalComments from "./TotalComments";
 import TotalLikes from "./TotalLikes";
+import dynamic from "next/dynamic";
+
+const PostModal = dynamic(() => import("./PostModal"), {
+  loading: () => null, // Or a spinner if you prefer
+  ssr: false, // Most modals are client-only
+});
 
 function Post({ index, post }: { index: number; post: PrismaPostType }) {
   return (

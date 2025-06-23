@@ -8,6 +8,7 @@ function Avatar({ avatar, name }: { avatar: string; name: string }) {
         fill
         alt={`avatar of ${name}`}
         className=" object-cover"
+        sizes="74px"
       />
     </figure>
   );
