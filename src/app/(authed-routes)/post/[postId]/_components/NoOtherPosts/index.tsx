@@ -1,14 +1,17 @@
 import Header from "./Header";
 import SuggestedForYou from "../../../../_globalComponents/SuggestedForYou";
+import SuggestedForYouModal from "@/app/(authed-routes)/_globalComponents/SuggestedForYouModal";
 
 function NoOtherPosts() {
-  const maxWidth = 935;
+  const suggestedForYouMaxWidth = 935;
+  const suggestedForYouModalMaxWidth = 560;
 
   return (
     <section className="flex justify-center">
-      <div style={{ maxWidth }}>
+      <div style={{ maxWidth: suggestedForYouMaxWidth }}>
         <Header />
-        <SuggestedForYou maxWidth={maxWidth} />
+        <SuggestedForYou maxWidth={suggestedForYouMaxWidth} />
+        <SuggestedForYouModal maxWidth={suggestedForYouModalMaxWidth} />
       </div>
     </section>
   );

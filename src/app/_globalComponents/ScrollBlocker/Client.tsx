@@ -7,6 +7,7 @@ function Client() {
     isWannaCloseCreateModalOpen,
     isPickerOpen,
     isPostSettingsModalOpen,
+    isSuggestedForYouModalOpen,
   } = useAppSelector((s) => s.modals);
 
   const { postModal } = useAppSelector((s) => s.homePage);
@@ -21,10 +22,15 @@ function Client() {
       isPickerOpen ||
       isOpen ||
       isDrawerMenuOpen ||
-      isPostSettingsModalOpen
-    )
+      isPostSettingsModalOpen ||
+      isSuggestedForYouModalOpen
+    ) {
       document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
+      document.body.style.marginInlineEnd = "16px";
+    } else {
+      document.body.style.overflow = "auto";
+      document.body.style.marginInlineEnd = "0px";
+    }
   }, [
     isCreateModalOpen,
     isWannaCloseCreateModalOpen,
@@ -32,6 +38,7 @@ function Client() {
     isOpen,
     isDrawerMenuOpen,
     isPostSettingsModalOpen,
+    isSuggestedForYouModalOpen,
   ]);
 
   return <div hidden />;

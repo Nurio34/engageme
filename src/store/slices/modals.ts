@@ -19,6 +19,7 @@ interface ModalState {
   isMoreModalOpen: boolean;
   isSwitchAppearanceModalOpen: boolean;
   isPostSettingsModalOpen: boolean;
+  isSuggestedForYouModalOpen: boolean;
 }
 
 const initialState: ModalState = {
@@ -35,6 +36,7 @@ const initialState: ModalState = {
   isMoreModalOpen: false,
   isSwitchAppearanceModalOpen: false,
   isPostSettingsModalOpen: false,
+  isSuggestedForYouModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -77,6 +79,9 @@ export const modalsSlice = createSlice({
     togglePostSettingsModal: (state) => {
       state.isPostSettingsModalOpen = !state.isPostSettingsModalOpen;
     },
+    toggleSuggestedForYouModalOpen: (state) => {
+      state.isSuggestedForYouModalOpen = !state.isSuggestedForYouModalOpen;
+    },
 
     resetModals: () => initialState,
   },
@@ -94,6 +99,7 @@ export const {
   toggleMoreModal,
   toggleSwitchAppearanceModal,
   togglePostSettingsModal,
+  toggleSuggestedForYouModalOpen,
   resetModals,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

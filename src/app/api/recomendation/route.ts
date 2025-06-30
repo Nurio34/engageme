@@ -54,6 +54,7 @@ export async function GET(req: Request): Promise<NextResponse> {
           userId: true,
           name: true,
           avatar: true,
+          fullname: true,
         },
       });
 

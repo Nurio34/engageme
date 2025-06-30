@@ -1,23 +1,15 @@
 import { useAppDispatch } from "@/store/hooks";
 import { togglePostSettingsModal } from "@/store/slices/modals";
-import { Dispatch, SetStateAction } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 
-function OpenSettingsModalButton({
-  setIsModelOpen,
-}: {
-  setIsModelOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+function OpenSettingsModalButton() {
   const dispatch = useAppDispatch();
 
   return (
     <button
       type="button"
       className="h-full pl-4 col-start-3 col-end-4 justify-self-end ml-auto"
-      onClick={() => {
-        setIsModelOpen(true);
-        dispatch(togglePostSettingsModal());
-      }}
+      onClick={() => dispatch(togglePostSettingsModal())}
     >
       <HiDotsHorizontal />
     </button>

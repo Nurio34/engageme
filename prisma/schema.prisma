@@ -12,6 +12,7 @@ model User {
   userId                         String   @unique
   email                          String   @unique
   name                           String
+  fullname                       String   @default("fullname")
   avatar                         String?
   pushToken                      String?  // Optional field to store the push token
   authToken                      String?  // Optional field to store the auth token

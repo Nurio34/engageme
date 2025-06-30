@@ -1,9 +1,9 @@
 import Name from "../../../../Header/Name";
-import ActionsContainer from "../../../../Header/SettingsContainer";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
 import DragButton from "./DragButton";
 import Avatar from "../_components/Avatar";
 import { useInfoContext } from "../Context";
+import SettingsContainer from "../../../../Header/SettingsContainer";
 
 function Header({ post }: { post: PrismaPostType }) {
   const { user } = post;
@@ -18,7 +18,7 @@ function Header({ post }: { post: PrismaPostType }) {
         <Name name={name} />
       </div>
       {page === "home" && <DragButton />}
-      <ActionsContainer post={post} />
+      <SettingsContainer post={post} />
     </div>
   );
 }

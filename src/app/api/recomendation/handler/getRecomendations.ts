@@ -4,6 +4,7 @@ export type PrismaRecomendationType = {
   userId: string;
   name: string;
   avatar: string;
+  fullname: string;
 };
 
 export const getRecommendations = async (): Promise<{

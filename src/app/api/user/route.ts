@@ -1,17 +1,24 @@
 import { prisma } from "@/lib/prisma";
+import { User } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   console.log("api call...");
 
-  const clerkUser = await req.json();
+  const clerkUser: User | null = await req.json();
   if (!clerkUser) return NextResponse.json({ status: "fail" }, { status: 401 });
 
   if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
     return NextResponse.json({ status: "fail" }, { status: 401 });
   }
 
-  const { id: userId, username, imageUrl: avatar, emailAddresses } = clerkUser;
+  const {
+    id: userId,
+    username,
+    imageUrl: avatar,
+    emailAddresses,
+    fullName,
+  } = clerkUser;
 
   let user;
   try {
@@ -23,7 +30,8 @@ export async function POST(req: Request) {
       user = await prisma.user.create({
         data: {
           userId,
-          name: username,
+          name: username!,
+          fullname: fullName!,
           avatar,
           email: emailAddresses[0].emailAddress,
         },

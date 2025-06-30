@@ -1,43 +1,34 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePostSettingsModal } from "@/store/slices/modals";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
 import { started } from "@/store/slices/routing";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 
-function SettingsModal({
-  isModelOpen,
-  setIsModelOpen,
-  post,
-}: {
-  isModelOpen: boolean;
-  setIsModelOpen: Dispatch<SetStateAction<boolean>>;
-  post: PrismaPostType;
-}) {
+function SettingsModal({ post }: { post: PrismaPostType }) {
   const { id: postId } = post;
+  console.log({ postId });
 
+  const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();
 
-  const [isRender, setIsRender] = useState(!isModelOpen);
+  const [isRender, setIsRender] = useState(!isPostSettingsModalOpen);
   const timeout = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
-    if (isModelOpen) setIsRender(true);
+    if (isPostSettingsModalOpen) setIsRender(true);
     else setIsRender(false);
 
     return () => {
       if (timeout.current) clearTimeout(timeout.current);
     };
-  }, [isModelOpen]);
+  }, [isPostSettingsModalOpen]);
 
   return (
     <div
-      className="fixed z-10 top-0 left-0 bg-base-content/70 w-screen h-screen overflow-hidden"
-      onClick={() => {
-        setIsModelOpen(false);
-        dispatch(togglePostSettingsModal());
-      }}
+      className="fixed z-10 top-0 left-0 bg-base-content/40 w-screen h-screen overflow-hidden"
+      onClick={() => dispatch(togglePostSettingsModal())}
     >
       <ul
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-base-100

@@ -10,7 +10,7 @@ function Recomendation({
 }: {
   recomendation: PrismaRecomendationType;
 }) {
-  const { avatar, name, userId } = recomendation;
+  const { avatar, name, userId, fullname } = recomendation;
 
   return (
     <li className="border rounded-md relative" style={{ width: 168 }}>
@@ -20,7 +20,7 @@ function Recomendation({
       >
         <Avatar avatar={avatar} name={name} />
         <Name name={name} />
-        <Fullname name={name} />
+        <Fullname fullname={fullname} />
       </div>
       <FollowButton userId={userId} />
       <DontSuggestButton userId={userId} />
