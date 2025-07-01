@@ -1,4 +1,4 @@
-import { User } from "../../../../../types";
+import { User } from "../../../../../../types";
 
 export const getUsers = (users: User[]) => {
   const last = { name: users[0].name, id: users[0].userId };

@@ -11,8 +11,6 @@ export const getRecommendations = async (): Promise<{
   status: "success" | "fail";
   recomendations?: PrismaRecomendationType[];
 }> => {
-  console.log("getRecomendations()...");
-
   try {
     const user = await currentUser();
 

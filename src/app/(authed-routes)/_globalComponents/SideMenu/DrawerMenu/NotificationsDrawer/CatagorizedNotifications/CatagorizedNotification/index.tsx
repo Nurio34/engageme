@@ -1,4 +1,4 @@
-import { CatagorizedNotificationType } from "../../types";
+import { CatagorizedNotificationType } from "../../../types";
 import Notification from "./Notification";
 
 function CatagorizedNotification({

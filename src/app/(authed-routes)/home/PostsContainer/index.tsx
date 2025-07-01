@@ -2,8 +2,15 @@ import Link from "next/link";
 import Header from "./Header";
 import Posts from "./Posts";
 import { getPosts } from "@/app/api/post/handler/getPosts";
+import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 
-async function PostsContainer({ variant }: { variant: string | undefined }) {
+async function PostsContainer({
+  variant,
+  recomendations,
+}: {
+  variant: string | undefined;
+  recomendations: PrismaRecomendationType[];
+}) {
   const { status, posts } = await getPosts(0, variant);
 
   if (status === "fail")
@@ -18,7 +25,7 @@ async function PostsContainer({ variant }: { variant: string | undefined }) {
 
   return (
     <main className="flex flex-col items-center">
-      <Header />
+      <Header recomendations={recomendations} />
       <Posts posts={posts} variant={variant} />
     </main>
   );

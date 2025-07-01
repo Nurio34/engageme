@@ -8,7 +8,7 @@ function SuggestedForYouList({
 }: {
   maxWidth: number;
   recomendations: PrismaRecomendationType[];
-  path?: "explore";
+  path?: "explore" | "home";
 }) {
   return (
     <div className="w-full flex justify-center">
@@ -30,13 +30,14 @@ function SuggestedForYouList({
                 fill
                 alt={`Avatar of ${recomendation.name}`}
                 className="object-cover"
+                sizes="44px"
               />
             </figure>
             <div className="grow">
               <p className="text-sm font-semibold leading-[18px]">
                 {recomendation.name}
               </p>
-              <p className="text-sm font-normal leading-[18px] text-base-content/50">
+              <p className="text-sm font-normal leading-[18px] text-base-content/50 capitalize">
                 {recomendation.fullname}
               </p>
               {path === "explore" && (
@@ -45,7 +46,14 @@ function SuggestedForYouList({
                 </p>
               )}
             </div>
-            <button type="button" className="btn btn-primary btn-sm">
+            <button
+              type="button"
+              className={`${
+                path === "home"
+                  ? "text-xs font-medium text-primary transition-colors hover:text-primary/70"
+                  : "btn btn-primary btn-sm"
+              }`}
+            >
               Follow
             </button>
           </li>

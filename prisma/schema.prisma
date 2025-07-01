@@ -12,7 +12,7 @@ model User {
   userId                         String   @unique
   email                          String   @unique
   name                           String
-  fullname                       String   @default("fullname")
+  fullname                       String?   
   avatar                         String?
   pushToken                      String?  // Optional field to store the push token
   authToken                      String?  // Optional field to store the auth token
@@ -30,6 +30,8 @@ model User {
   replyCommentLikeNotifications  ReplyCommentLikeNotification[]
   dontSuggestsMade               DontSuggest[] @relation("UserWhoDoesntWant")
   dontSuggestsReceived           DontSuggest[] @relation("UserToNotBeSuggested")
+  following  Follow[] @relation("FollowingRelation") // Users this user is following
+  followers  Follow[] @relation("FollowerRelation")  // Users who follow this user
   createdAt                      DateTime @default(now())
   updatedAt                      DateTime @updatedAt @default(now())
 }
@@ -254,4 +256,18 @@ model DontSuggest {
   dontSuggestUser   User   @relation("UserToNotBeSuggested", fields: [dontSuggestUserId], references: [userId], onDelete: Cascade)
 
   @@unique([userId, dontSuggestUserId]) // Prevent duplicates
+}
+
+model Follow {
+  id           String   @id @default(cuid())
+
+  followerId   String
+  follower     User     @relation("FollowerRelation", fields: [followerId], references: [userId], onDelete: Cascade)
+
+  followingId  String
+  following    User     @relation("FollowingRelation", fields: [followingId], references: [userId], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+
+  @@unique([followerId, followingId]) // Prevent duplicate follows
 }

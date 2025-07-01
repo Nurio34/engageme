@@ -1,7 +1,5 @@
 ## App
 
-    - SuggestedForYou ve SuggestedForYouList'da username'in yanı sıra fullName lazım. Ayarla.
-
     - SuggestedForYou;
         -- Follow button; işlevselleştir.
 
@@ -29,13 +27,8 @@
 
 ## Post/[id]
 
-    1. SuggestedForYouModal oluştur (Reusable)
-    2. Footer oluştur.
+    1.
 
 ## User/[id]
 
     1. sayfası oluştur
-
-## Footer
-
-    1. Oluştur

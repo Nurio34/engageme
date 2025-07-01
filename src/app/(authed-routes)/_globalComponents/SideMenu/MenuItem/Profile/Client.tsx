@@ -30,7 +30,15 @@ function Client() {
       "
       >
         <LuLogIn className="text-2xl" />
-        <p className="hidden lg:block">Sign In</p>
+        {!isDrawerMenuOpen && (
+          <span
+            className={`hidden lg:block ${
+              currentMenu === "create" ? "transition-all font-bold" : ""
+            }`}
+          >
+            Sign In
+          </span>
+        )}
       </Link>
     );
 
@@ -64,7 +72,7 @@ function Client() {
             currentMenu === username ? "transition-all font-bold" : ""
           }`}
         >
-          {username || "Profile"}
+          Profile
         </span>
       )}
     </Link>

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MediaInterface } from "../../../../types";
 import { useAppDispatch } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { useState } from "react";
+import { MediaInterface } from "../../../../../types";
 
 function Post({
   media,

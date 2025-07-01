@@ -5,8 +5,15 @@ import NotificationsDrawer from "./NotificationsDrawer";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
+import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 
-function DrawerMenu({ navWidth }: { navWidth: number }) {
+function DrawerMenu({
+  navWidth,
+  recomendations,
+}: {
+  navWidth: number;
+  recomendations: PrismaRecomendationType[];
+}) {
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
 
   const dispatch = useAppDispatch();
@@ -16,7 +23,10 @@ function DrawerMenu({ navWidth }: { navWidth: number }) {
   return (
     <>
       <SearchDrawer navWidth={navWidth} />
-      <NotificationsDrawer navWidth={navWidth} />
+      <NotificationsDrawer
+        navWidth={navWidth}
+        recomendations={recomendations}
+      />
       {isDrawerMenuOpen && (
         <div
           className="fixed z-[1] top-0 left-0 w-screen h-screen"

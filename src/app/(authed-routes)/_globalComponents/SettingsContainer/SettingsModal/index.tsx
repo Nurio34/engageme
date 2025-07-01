@@ -2,9 +2,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { togglePostSettingsModal } from "@/store/slices/modals";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
 import { started } from "@/store/slices/routing";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
+import { PrismaPostType } from "../../../../../../prisma/types/post";
 
 function SettingsModal({ post }: { post: PrismaPostType }) {
   const { id: postId } = post;

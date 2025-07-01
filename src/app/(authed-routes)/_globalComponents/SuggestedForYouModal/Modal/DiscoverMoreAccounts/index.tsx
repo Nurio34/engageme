@@ -2,12 +2,16 @@ import Chevron from "@/app/_globalComponents/Svg/Chevron";
 import UsersIcon from "@/app/_globalComponents/Svg/UsersIcon";
 import { useAppDispatch } from "@/store/hooks";
 import { toggleSuggestedForYouModalOpen } from "@/store/slices/modals";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
 import Link from "next/link";
 
 function DiscoverMoreAccounts() {
   const dispatch = useAppDispatch();
 
-  const toggleModal = () => dispatch(toggleSuggestedForYouModalOpen());
+  const toggleModal = () => {
+    dispatch(setCurrentMenu("explore"));
+    dispatch(toggleSuggestedForYouModalOpen());
+  };
 
   return (
     <Link
@@ -16,6 +20,7 @@ function DiscoverMoreAccounts() {
           flex items-center justify-between gap-x-3
       "
       onClick={toggleModal}
+      prefetch
     >
       <div
         className=" w-11 aspect-square border rounded-full

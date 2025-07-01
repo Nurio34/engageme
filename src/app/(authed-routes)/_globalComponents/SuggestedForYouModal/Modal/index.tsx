@@ -1,6 +1,6 @@
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppSelector } from "@/store/hooks";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import DiscoverMoreAccounts from "./DiscoverMoreAccounts";
 import SuggestedForYouList from "../../SuggestedForYouList";

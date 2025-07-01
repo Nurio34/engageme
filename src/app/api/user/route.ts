@@ -3,7 +3,7 @@ import { User } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  console.log("api call...");
+  console.log("handleUser()...");
 
   const clerkUser: User | null = await req.json();
   if (!clerkUser) return NextResponse.json({ status: "fail" }, { status: 401 });
@@ -17,8 +17,10 @@ export async function POST(req: Request) {
     username,
     imageUrl: avatar,
     emailAddresses,
-    fullName,
+    firstName,
+    lastName,
   } = clerkUser;
+  console.log(clerkUser);
 
   let user;
   try {
@@ -31,7 +33,7 @@ export async function POST(req: Request) {
         data: {
           userId,
           name: username!,
-          fullname: fullName!,
+          fullname: firstName + " " + lastName,
           avatar,
           email: emailAddresses[0].emailAddress,
         },

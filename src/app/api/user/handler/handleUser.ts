@@ -1,8 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 
 export async function handleUser() {
-  console.log("handleUser()...");
-
   const user = await currentUser();
 
   const response = await fetch(`${process.env.SITE_URL}/api/user`, {

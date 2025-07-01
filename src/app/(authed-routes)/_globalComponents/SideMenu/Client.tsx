@@ -21,6 +21,7 @@ import {
   setPostCommentNotifications,
   setPostLikeNotifications,
 } from "@/store/slices/notifications";
+import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 
 export type MenuType = {
   name: string;
@@ -72,8 +73,10 @@ const menu: MenuType[] = [
 
 function Client({
   allNotifications,
+  recomendations,
 }: {
   allNotifications: AllNotificationsType | undefined;
+  recomendations: PrismaRecomendationType[];
 }) {
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
   const { device } = useAppSelector((s) => s.modals);
@@ -125,7 +128,9 @@ function Client({
       className="relative md:h-screen max-w-min"
       style={{ minWidth: navWidth }}
     >
-      {!isMobile && <DrawerMenu navWidth={navWidth} />}
+      {!isMobile && (
+        <DrawerMenu navWidth={navWidth} recomendations={recomendations} />
+      )}
       <nav
         ref={NavRef}
         className={`md:px-3 md:py-2 border-t md:border-t-0 md:border-r bg-base-100

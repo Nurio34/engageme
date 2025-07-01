@@ -1,9 +1,9 @@
-import { fancyTime } from "@/utils/fancyTime";
-import { getUsers } from "../utils/getUsers";
 import Link from "next/link";
-import { User } from "../../../../../types";
+import { getUsers } from "../utils/getUsers";
+import { fancyTime } from "@/utils/fancyTime";
+import { User } from "../../../../../../types";
 
-function ReplyNotification({
+function ReplyLikeNotification({
   users,
   createdAt,
   comment,
@@ -29,7 +29,7 @@ function ReplyNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          and {users.length - 2} others replied to your comment :{" "}
+          and {users.length - 2} others liked your reply :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : lastThird.name ? (
@@ -53,7 +53,7 @@ function ReplyNotification({
           >
             {lastThird.name}
           </Link>{" "}
-          replied to your comment :{" "}
+          liked your reply :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : lastSecond.name ? (
@@ -69,7 +69,7 @@ function ReplyNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          replied to your comment :{" "}
+          liked your reply :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : (
@@ -77,7 +77,7 @@ function ReplyNotification({
           <Link className="font-bold" key={last.id} href={`/${last.name}`}>
             {last.name}
           </Link>{" "}
-          replied to your comment :{" "}
+          liked your reply :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       )}
@@ -88,4 +88,4 @@ function ReplyNotification({
     </>
   );
 }
-export default ReplyNotification;
+export default ReplyLikeNotification;

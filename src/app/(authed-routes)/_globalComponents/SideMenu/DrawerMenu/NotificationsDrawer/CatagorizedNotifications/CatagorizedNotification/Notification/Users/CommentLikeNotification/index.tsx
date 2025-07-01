@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getUsers } from "../utils/getUsers";
 import { fancyTime } from "@/utils/fancyTime";
-import { User } from "../../../../../types";
+import { User } from "../../../../../../types";
 
-function ReplyLikeNotification({
+function CommentLikeNotification({
   users,
   createdAt,
   comment,
@@ -29,8 +29,8 @@ function ReplyLikeNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          and {users.length - 2} others liked your reply :{" "}
-          <span className="text-xs break-all">&quot;{comment}&quot;</span>
+          and {users.length - 2} others liked your comment :{" "}
+          <span className="text-xs">&quot;{comment}&quot;</span>
         </span>
       ) : lastThird.name ? (
         <span>
@@ -53,8 +53,8 @@ function ReplyLikeNotification({
           >
             {lastThird.name}
           </Link>{" "}
-          liked your reply :{" "}
-          <span className="text-xs break-all">&quot;{comment}&quot;</span>
+          liked your comment :{" "}
+          <span className="text-xs">&quot;{comment}&quot;</span>
         </span>
       ) : lastSecond.name ? (
         <span>
@@ -69,16 +69,16 @@ function ReplyLikeNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          liked your reply :{" "}
-          <span className="text-xs break-all">&quot;{comment}&quot;</span>
+          liked your comment :{" "}
+          <span className="text-xs">&quot;{comment}&quot;</span>
         </span>
       ) : (
         <span>
           <Link className="font-bold" key={last.id} href={`/${last.name}`}>
             {last.name}
           </Link>{" "}
-          liked your reply :{" "}
-          <span className="text-xs break-all">&quot;{comment}&quot;</span>
+          liked your comment :{" "}
+          <span className="text-xs">&quot;{comment}&quot;</span>
         </span>
       )}
       <span className="text-base-content/50">
@@ -88,4 +88,4 @@ function ReplyLikeNotification({
     </>
   );
 }
-export default ReplyLikeNotification;
+export default CommentLikeNotification;

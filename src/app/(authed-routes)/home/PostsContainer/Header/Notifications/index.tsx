@@ -16,8 +16,13 @@ import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
 import NotificationsIndicator from "./NotificationsIndicator";
 import NotificationsDrawer from "./NotificationsDrawer";
+import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 
-function Notifications() {
+function Notifications({
+  recomendations,
+}: {
+  recomendations: PrismaRecomendationType[];
+}) {
   const { id: userId } = useAppSelector((s) => s.user);
 
   const { device } = useAppSelector((s) => s.modals);
@@ -130,7 +135,7 @@ function Notifications() {
             isRender={isRender}
           />
         )}
-        <NotificationsDrawer />
+        <NotificationsDrawer recomendations={recomendations} />
       </div>
     )
   );

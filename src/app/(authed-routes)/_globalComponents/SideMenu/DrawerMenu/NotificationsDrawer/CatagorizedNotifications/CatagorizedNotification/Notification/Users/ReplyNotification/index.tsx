@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { getUsers } from "../utils/getUsers";
 import { fancyTime } from "@/utils/fancyTime";
-import { User } from "../../../../../types";
+import { getUsers } from "../utils/getUsers";
+import Link from "next/link";
+import { User } from "../../../../../../types";
 
-function PostCommentNotification({
+function ReplyNotification({
   users,
   createdAt,
   comment,
@@ -29,7 +29,7 @@ function PostCommentNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          and {users.length - 2} others commented :{" "}
+          and {users.length - 2} others replied to your comment :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : lastThird.name ? (
@@ -53,7 +53,7 @@ function PostCommentNotification({
           >
             {lastThird.name}
           </Link>{" "}
-          commented :{" "}
+          replied to your comment :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : lastSecond.name ? (
@@ -69,7 +69,7 @@ function PostCommentNotification({
           >
             {lastSecond.name}
           </Link>{" "}
-          commented :{" "}
+          replied to your comment :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       ) : (
@@ -77,7 +77,7 @@ function PostCommentNotification({
           <Link className="font-bold" key={last.id} href={`/${last.name}`}>
             {last.name}
           </Link>{" "}
-          commented :{" "}
+          replied to your comment :{" "}
           <span className="text-xs break-all">&quot;{comment}&quot;</span>
         </span>
       )}
@@ -88,4 +88,4 @@ function PostCommentNotification({
     </>
   );
 }
-export default PostCommentNotification;
+export default ReplyNotification;

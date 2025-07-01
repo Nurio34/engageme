@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request): Promise<NextResponse> {
-  console.log("api call...");
+  console.log("getRecomendations()...");
 
   const requestSecret = req.headers.get("request-secret");
   const userId = req.headers.get("user-id");
@@ -79,6 +79,7 @@ export async function GET(req: Request): Promise<NextResponse> {
           userId: true,
           name: true,
           avatar: true,
+          fullname: true,
         },
       });
       return NextResponse.json(

@@ -4,12 +4,14 @@ interface UserState {
   id: string;
   username: string;
   avatar: string;
+  fullname: string;
 }
 
 const initialState: UserState = {
   id: "",
   username: "",
   avatar: "",
+  fullname: "",
 };
 
 export const userSlice = createSlice({
@@ -17,11 +19,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      const { id, username, avatar } = action.payload;
+      const { id, username, avatar, fullname } = action.payload;
 
       state.id = id;
       state.username = username;
       state.avatar = avatar;
+      state.fullname = fullname;
     },
     resetUser: () => initialState,
   },

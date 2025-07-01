@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import OpenSettingsModalButton from "./OpenSettingsModalButton";
 import SettingsModal from "./SettingsModal";
-import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
 import { useAppSelector } from "@/store/hooks";
+import { PrismaPostType } from "../../../../../prisma/types/post";
 
 function SettingsContainer({ post }: { post: PrismaPostType }) {
   const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
