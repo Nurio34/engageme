@@ -16,33 +16,27 @@ function VideoMedia({
   containerHeight,
   setContainerWidth,
   currentIndex,
-  setSlideArray,
 }: {
   index: number;
   media: PrismaMediaType;
   containerHeight: number;
   setContainerWidth: Dispatch<SetStateAction<number>>;
   currentIndex: number;
-  setSlideArray: Dispatch<SetStateAction<number[]>>;
 }) {
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
   const { url, transformation, isAudioAllowed, poster } = media;
   const { width, height, x, y } = transformation!;
 
   const aspectRatio = +width / +height;
   const containerWidth = Math.min(
     containerHeight * aspectRatio,
-    window.innerWidth - 420
+    window.innerWidth - (isDesktop ? 420 : 0)
   );
-  // const [objectPosition, setObjectPosition] = useState<ObjectPositionType>({
-  //   x: "0px",
-  //   y: "0px",
-  // });
-
-  const { device } = useAppSelector((s) => s.modals);
-  const isDesktop = device.type === "desktop";
 
   const VideoRef = useRef<HTMLVideoElement | null>(null);
-  const [videoWidth, setVideoWidth] = useState(0);
+  // const [videoWidth, setVideoWidth] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -54,19 +48,6 @@ function VideoMedia({
       setContainerWidth(containerWidth);
     }
   }, [currentIndex, containerWidth]);
-
-  useEffect(() => {
-    if (videoWidth === 0) return;
-    if (index === 0) setSlideArray([]);
-
-    setSlideArray((prev) => [...prev, videoWidth]);
-
-    // const objXParam = +width / videoWidth;
-    // const objX = +x <= 0 ? "center" : +x * objXParam * -1 + "px";
-    // const objYParam = containerHeight / +height;
-    // const objY = +y <= 0 ? "center" : +y * objYParam * -1 + "px";
-    // setObjectPosition({ x: objX, y: objY });
-  }, [videoWidth]);
 
   useEffect(() => {
     if (currentIndex === index) {
@@ -94,10 +75,10 @@ function VideoMedia({
     }
   }, [isPlaying]);
 
-  useEffect(() => {
-    if (VideoRef.current)
-      setVideoWidth(VideoRef.current.getBoundingClientRect().width);
-  }, [containerWidth, device, currentIndex]);
+  // useEffect(() => {
+  //   if (VideoRef.current)
+  //     setVideoWidth(VideoRef.current.getBoundingClientRect().width);
+  // }, [containerWidth, device, currentIndex]);
 
   return (
     <div

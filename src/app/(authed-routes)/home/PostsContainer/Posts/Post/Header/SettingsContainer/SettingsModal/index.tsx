@@ -41,7 +41,7 @@ function SettingsModal({
     >
       <ul
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-base-100
-            w-screen max-w-[400px] rounded-3xl text-sm transition-all duration-500
+            w-screen max-w-[400px] sm:rounded-3xl text-sm transition-all duration-500
             ${isRender ? "opacity-100 scale-100" : "opacity-0 scale-90"}
         `}
       >
@@ -142,6 +142,7 @@ function SettingsModal({
             onClick={(e) => {
               e.stopPropagation();
               setIsRender(false);
+              setIsModelOpen(false);
             }}
           >
             Cancel

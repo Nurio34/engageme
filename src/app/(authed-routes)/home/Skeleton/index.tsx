@@ -3,7 +3,7 @@ import { LuDot } from "react-icons/lu";
 function Skeleton() {
   return (
     <div
-      className=" md:grid lg:grid-cols-[630px,383px] lg:justify-center
+      className=" md:grid xl:grid-cols-[630px,minmax(0px,383px)] xl:justify-center
         md:px-16 md:py-[22px]
       "
     >
@@ -47,7 +47,7 @@ function Skeleton() {
             </div>
           ))}
       </div>
-      <div className="pl-16 pt-9">
+      <div className="hidden xl:block pl-16 pt-9">
         <div className="flex gap-x-3 items-center justify-center px-4">
           <div className="relative w-11 aspect-square rounded-full overflow-hidden bg-base-content/50 animate-pulse" />
           <div className="grow grid gap-y-1">

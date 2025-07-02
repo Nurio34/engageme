@@ -5,41 +5,83 @@ import { PostPreviewType } from "../../../../../../prisma/types/postPreview";
 
 export const getOtherPosts = async (
   userId: string,
-  postId: string
+  postId: string,
+  path: "post" | "profile"
 ): Promise<{ status: "success" | "fail"; posts: PostPreviewType[] }> => {
-  try {
-    const posts = await prisma.post.findMany({
-      where: {
-        userId,
-        NOT: {
-          id: postId,
-        },
-      },
-      include: {
-        medias: {
-          take: 1, // First media
-          select: {
-            altText: true,
-            width: true,
-            height: true,
-            poster: true,
-            type: true,
-            url: true,
-            transformation: true,
+  if (path === "post") {
+    try {
+      const posts = await prisma.post.findMany({
+        where: {
+          userId,
+          NOT: {
+            id: postId,
           },
         },
-        _count: {
-          select: {
-            medias: true,
-            comments: true,
-            likes: true,
+        include: {
+          medias: {
+            take: 1, // First media
+            select: {
+              altText: true,
+              width: true,
+              height: true,
+              poster: true,
+              type: true,
+              url: true,
+              transformation: true,
+            },
+          },
+          _count: {
+            select: {
+              medias: true,
+              comments: true,
+              likes: true,
+            },
           },
         },
-      },
-    });
-    return { status: "success", posts };
-  } catch (error) {
-    console.log(error);
-    return { status: "fail", posts: [] };
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      return { status: "success", posts };
+    } catch (error) {
+      console.log(error);
+      return { status: "fail", posts: [] };
+    }
+  } else {
+    try {
+      const posts = await prisma.post.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          medias: {
+            take: 1,
+            select: {
+              altText: true,
+              width: true,
+              height: true,
+              poster: true,
+              type: true,
+              url: true,
+              transformation: true,
+            },
+          },
+          _count: {
+            select: {
+              medias: true,
+              comments: true,
+              likes: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      return { status: "success", posts };
+    } catch (error) {
+      console.log(error);
+      return { status: "fail", posts: [] };
+    }
   }
 };

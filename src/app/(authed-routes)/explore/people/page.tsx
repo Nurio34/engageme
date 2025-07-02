@@ -8,7 +8,7 @@ async function ExplorePeoplePage() {
 
   return (
     <main>
-      <header className="pt-11 px-[68px]">
+      <header className="md:pt-11 px-4 md:px-[68px]">
         <h1 className="font-bold h-11 flex items-center border-b">
           Suggested for you
         </h1>

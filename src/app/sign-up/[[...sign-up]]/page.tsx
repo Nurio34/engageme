@@ -1,11 +1,11 @@
 import GuestLink from "@/app/_globalComponents/GuestLink";
-import { SignUp } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, SignUp } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
 import Image from "next/image";
 
 function HomePage() {
   return (
-    <div className="w-screen h-screen md:grid md:grid-cols-2 md:gap-x-[2vw] ">
+    <div className="w-screen h-screen grid md:grid-cols-2 md:gap-x-[2vw] ">
       <div className="hidden md:grid items-center justify-items-end ">
         <figure className="relative w-[400px] h-[569px] ">
           <Image
@@ -23,18 +23,34 @@ function HomePage() {
            py-2 md:py-0
          "
       >
-        <SignUp
-          routing="hash"
-          appearance={{
-            baseTheme: shadesOfPurple,
-            variables: {},
-            layout: {
-              animations: true,
-              socialButtonsVariant: "blockButton",
-              socialButtonsPlacement: "bottom",
-            },
-          }}
-        />
+        <ClerkLoading>
+          <div
+            className="w-full max-w-[400px] h-[750.156px] rounded-lg bg-base-content/50 animate-pulse 
+              flex items-center justify-center
+            "
+          >
+            <span
+              className="text-base-100 text-2xl text-center font-bold"
+              style={{ WebkitTextStroke: "1px black" }}
+            >
+              Loading sign-up form...
+            </span>
+          </div>
+        </ClerkLoading>
+        <ClerkLoaded>
+          <SignUp
+            routing="hash"
+            appearance={{
+              baseTheme: shadesOfPurple,
+              variables: {},
+              layout: {
+                animations: true,
+                socialButtonsVariant: "blockButton",
+                socialButtonsPlacement: "bottom",
+              },
+            }}
+          />
+        </ClerkLoaded>
       </div>
       <GuestLink />
     </div>

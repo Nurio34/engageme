@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { PrismaMediaType } from "../../../../../../../../../../../prisma/types/post";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { useAppSelector } from "@/store/hooks";
 
 function ImageMedia({
@@ -9,27 +9,25 @@ function ImageMedia({
   containerHeight,
   setContainerWidth,
   currentIndex,
-  setSlideArray,
 }: {
   media: PrismaMediaType;
   index: number;
   containerHeight: number;
   setContainerWidth: Dispatch<SetStateAction<number>>;
   currentIndex: number;
-  setSlideArray: Dispatch<SetStateAction<number[]>>;
 }) {
+  const { device } = useAppSelector((s) => s.modals);
+  const isDesktop = device.type === "desktop";
+
   const { url, altText, width, height } = media;
   const aspectRatio = width! / height!;
   const updatedWidth = Math.min(
     containerHeight * aspectRatio,
-    window.innerWidth - 420
+    window.innerWidth - (isDesktop ? 420 : 0)
   );
 
-  const { device } = useAppSelector((s) => s.modals);
-  const isDesktop = device.type === "desktop";
-
   const FigureRef = useRef<HTMLElement | null>(null);
-  const [figureWidth, setFigureWidth] = useState(0);
+  // const [figureWidth, setFigureWidth] = useState(0);
 
   useEffect(() => {
     if (currentIndex === index) {
@@ -37,17 +35,10 @@ function ImageMedia({
     }
   }, [setContainerWidth, index, currentIndex, updatedWidth]);
 
-  useEffect(() => {
-    if (figureWidth === 0) return;
-    if (index === 0) setSlideArray([]);
-
-    setSlideArray((prev) => [...prev, figureWidth]);
-  }, [setSlideArray, index, figureWidth]);
-
-  useEffect(() => {
-    if (FigureRef.current)
-      setFigureWidth(FigureRef.current.getBoundingClientRect().width);
-  }, [updatedWidth, device, currentIndex]);
+  // useEffect(() => {
+  //   if (FigureRef.current)
+  //     setFigureWidth(FigureRef.current.getBoundingClientRect().width);
+  // }, [updatedWidth, device, currentIndex]);
 
   return (
     <figure

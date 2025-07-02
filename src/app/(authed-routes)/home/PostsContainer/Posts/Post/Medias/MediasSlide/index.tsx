@@ -1,8 +1,7 @@
 import { PrismaMediaType } from "../../../../../../../../../prisma/types/post";
 import ImageMedia from "../ImageMedia";
 import VideoMedia from "../VideoMedia";
-import { Dispatch, SetStateAction } from "react";
-import { useSlide } from "./_hooks/useSlide";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 function MediasSlide({
   index,
@@ -17,49 +16,44 @@ function MediasSlide({
   mediasContainerWidth: number;
   medias: PrismaMediaType[];
 }) {
-  const { pointer, setPointer } = useSlide(
-    currentIndex,
-    medias,
-    mediasContainerWidth,
-    setCurrentIndex
-  );
-  const { start_x, end_x, isDragging } = pointer;
+  const [touchEvent, setTouchEvent] = useState({
+    isDragging: false,
+    startX: 0,
+    endX: 0,
+  });
+  const { isDragging, startX, endX } = touchEvent;
+  useEffect(() => {
+    if (isDragging || Math.abs(endX - startX) < 25) return;
+
+    if (endX > startX)
+      setCurrentIndex((prev) => {
+        if (prev === 0) return prev;
+        return prev - 1;
+      });
+    else
+      setCurrentIndex((prev) => {
+        if (prev === medias.length - 1) return prev;
+        return prev + 1;
+      });
+  }, [isDragging]);
 
   return (
     <div
-      className={`flex
-        ${isDragging ? "" : "transition-transform"}  
-      `}
+      className={`flex transition-transform  duration-500`}
       style={{
-        transform: isDragging
-          ? `translateX(${
-              currentIndex * mediasContainerWidth * -1 + (end_x - start_x)
-            }px)`
-          : `translateX(${currentIndex * mediasContainerWidth * -1}px)`,
+        transform: `translateX(${currentIndex * mediasContainerWidth * -1}px)`,
       }}
       onTouchStart={(e) => {
-        if (medias.length === 1) return;
-        const { clientX } = e.touches[0];
-        setPointer((prev) => ({
-          ...prev,
-          start_x: clientX,
-          isDragging: true,
-          end_x: clientX,
-        }));
+        const x = e.touches[0].clientX;
+        setTouchEvent({ isDragging: true, startX: x, endX: x });
       }}
       onTouchMove={(e) => {
-        if (medias.length === 1) return;
-        const { clientX } = e.touches[0];
-        setPointer((prev) => ({ ...prev, end_x: clientX }));
+        const x = e.touches[0].clientX;
+        setTouchEvent((prev) => ({ ...prev, endX: x }));
       }}
-      onTouchEnd={() => {
-        if (medias.length === 1) return;
-
-        setPointer((prev) => ({
-          ...prev,
-          isDragging: false,
-        }));
-      }}
+      onTouchEnd={() =>
+        setTouchEvent((prev) => ({ ...prev, isDragging: false }))
+      }
     >
       {medias.map((media, ind) => {
         const { type } = media;

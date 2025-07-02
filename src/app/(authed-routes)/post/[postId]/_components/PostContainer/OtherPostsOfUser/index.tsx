@@ -34,7 +34,7 @@ function OtherPostsOfUser({
     setFetch((prev) => ({ ...prev, isLoading: true, isError: false }));
 
     try {
-      const { status, posts } = await getOtherPosts(userId, postId);
+      const { status, posts } = await getOtherPosts(userId, postId, "post");
 
       if (status === "fail") {
         setFetch((prev) => ({ ...prev, isError: true }));

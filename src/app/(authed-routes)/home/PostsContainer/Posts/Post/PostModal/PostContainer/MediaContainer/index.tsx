@@ -21,6 +21,9 @@ function MediaContainer({ medias }: { medias: PrismaMediaType[] }) {
         setContainerHeight(
           MediaContainerRef.current.getBoundingClientRect().height
         );
+        setContainerWidth(
+          MediaContainerRef.current.getBoundingClientRect().width
+        );
       }
     };
 

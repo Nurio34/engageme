@@ -6,7 +6,7 @@ async function HomePage() {
   // const { variant } = await searchParams;
 
   const { status, recomendations } = await getRecommendations();
-  // return <Skeleton />;
+
   if (status === "fail" || !recomendations) return <div>Error</div>;
   return (
     <div
