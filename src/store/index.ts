@@ -8,6 +8,7 @@ import sideMenuSlice from "./slices/sidemenu";
 import notificationsSlice from "./slices/notifications";
 import socketSlice from "./slices/socket";
 import themeSlice from "./slices/theme";
+import followingSlice from "./slices/following";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     notifications: notificationsSlice,
     socket: socketSlice,
     theme: themeSlice,
+    following: followingSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,8 +1,15 @@
 import { fancyTime } from "@/utils/fancyTime";
+import Link from "next/link";
 
-function CreatedAt({ updatedAt }: { updatedAt: Date }) {
+function CreatedAt({ updatedAt, postId }: { updatedAt: Date; postId: string }) {
   return (
-    <p className="text-base-content/60 text-sm">{fancyTime(updatedAt).short}</p>
+    <Link
+      href={`post/${postId}`}
+      className="text-base-content/60 text-sm"
+      prefetch
+    >
+      {fancyTime(updatedAt).short}
+    </Link>
   );
 }
 export default CreatedAt;

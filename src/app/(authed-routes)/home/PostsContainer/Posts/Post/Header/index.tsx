@@ -13,9 +13,9 @@ function Header({ post }: { post: PrismaPostType }) {
     <div className="flex justify-start items-center gap-3 px-2 md:px-0">
       <Avatar avatar={avatar} />
       <div className="flex items-center ">
-        <Name name={name} />
+        <Name name={name} userId={post.userId} />
         <LuDot />
-        <CreatedAt updatedAt={updatedAt} />
+        <CreatedAt updatedAt={updatedAt} postId={post.id} />
       </div>
       <SettingsContainer post={post} />
     </div>

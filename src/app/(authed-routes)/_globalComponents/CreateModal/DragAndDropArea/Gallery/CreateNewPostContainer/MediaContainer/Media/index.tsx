@@ -69,7 +69,7 @@ function Media({ media }: { media: EditedMedia }) {
           className="overflow-hidden"
           style={{
             width: baseCanvasContainerWidth,
-            maxHeight: isDesktop ? "690.62px" : "calc(100vh - 43.38px)",
+            maxHeight: isDesktop ? "734px" : "calc(100vh - 38.31px)",
           }}
         >
           <CldVideoPlayer

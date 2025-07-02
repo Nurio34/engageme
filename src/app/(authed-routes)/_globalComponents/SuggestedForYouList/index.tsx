@@ -1,5 +1,6 @@
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Image from "next/image";
+import FollowButton from "./FollowButton";
 
 function SuggestedForYouList({
   maxWidth,
@@ -46,16 +47,7 @@ function SuggestedForYouList({
                 </p>
               )}
             </div>
-            <button
-              type="button"
-              className={`${
-                path === "home"
-                  ? "text-xs font-medium text-primary transition-colors hover:text-primary/70"
-                  : "btn btn-primary btn-sm"
-              }`}
-            >
-              Follow
-            </button>
+            <FollowButton path={path} userId={recomendation.userId} />
           </li>
         ))}
       </ul>

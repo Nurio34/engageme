@@ -20,8 +20,11 @@ export const getRecommendations = async (): Promise<{
         "request-secret": process.env.REQUEST_SECRET!,
         "user-id": user?.id || "",
       },
-      cache: "force-cache",
-      next: { tags: ["recomendations"], revalidate: 60 * 60 },
+      // cache: "force-cache",
+      next: {
+        tags: ["recomendations"],
+        //  revalidate: 60 * 60
+      },
     });
 
     const { status: statusCode, ok } = response;

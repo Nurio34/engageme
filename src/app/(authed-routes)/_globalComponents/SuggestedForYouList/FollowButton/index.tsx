@@ -1,11 +1,17 @@
-import { useCallback, useState } from "react";
-import { follow } from "./_actions/follow";
-import { unfollow } from "./_actions/unfollow";
-import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToFollowing, deleteFromFollowing } from "@/store/slices/following";
+import { useCallback, useState } from "react";
+import { follow } from "../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
+import toast from "react-hot-toast";
+import { unfollow } from "../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/unfollow";
 
-function FollowButton({ userId }: { userId: string }) {
+function FollowButton({
+  path,
+  userId,
+}: {
+  path: "explore" | "home" | undefined;
+  userId: string;
+}) {
   const { followings } = useAppSelector((s) => s.following);
   const dispatch = useAppDispatch();
 
@@ -32,6 +38,7 @@ function FollowButton({ userId }: { userId: string }) {
   }, [userId, dispatch]);
 
   const unfollowAction = useCallback(async () => {
+    console.log("unfollowAction");
     setIsLoading(true);
     dispatch(deleteFromFollowing(userId));
 
@@ -52,9 +59,12 @@ function FollowButton({ userId }: { userId: string }) {
 
   return (
     <button
-      id={userId}
       type="button"
-      className="w-full border-t text-center text-sm py-3 text-primary font-medium underline-offset-2 hover:underline"
+      className={`${
+        path === "home"
+          ? "text-xs font-medium text-primary transition-colors hover:text-primary/70"
+          : `btn btn-sm ${isFollowing ? "btn-secondary" : " btn-primary "}`
+      }`}
       onClick={isFollowing ? unfollowAction : followAction}
       disabled={isLoading}
     >
@@ -62,5 +72,4 @@ function FollowButton({ userId }: { userId: string }) {
     </button>
   );
 }
-
 export default FollowButton;

@@ -1,11 +1,7 @@
 ## App
 
-    - SuggestedForYou;
-        -- Follow button; işlevselleştir.
-
     - SuggestedForYouList;
         -- Avatar ve Username hover'da ProfileModal > visible
-        -- Follow button; işlevselleştir.
 
     - InfoContainer ;
         -- Avatar ve Username hover'da ProfileModal > visible
@@ -15,10 +11,10 @@
 
 ## Home Page
 
-    - Recomendations section oluştur
     - Post üzerinde;
         -- Header'daki user avatar hover'da ProfileModal > visible
         -- Total likes altındaki username hover'da ProfileModal > visible
+
     - Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
 
 ## HomePage - Notifications
@@ -31,4 +27,4 @@
 
 ## User/[id]
 
-    1. sayfası oluştur
+    1. Sayfası oluştur

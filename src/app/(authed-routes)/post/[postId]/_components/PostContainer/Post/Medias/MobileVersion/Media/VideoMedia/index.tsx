@@ -21,7 +21,8 @@ function VideoMedia({
 
   const adjustmentParameter = +width / divWidth;
   const newX = +x / adjustmentParameter;
-  const newY = +y / adjustmentParameter;
+  const newY = (+y < 0 ? 0 : +y) / adjustmentParameter;
+  console.log({ newY });
 
   const objXParam = aspectRatio <= 1 ? -1 : 0;
 

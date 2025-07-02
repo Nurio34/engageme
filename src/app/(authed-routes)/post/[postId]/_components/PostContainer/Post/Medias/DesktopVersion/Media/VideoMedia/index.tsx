@@ -28,7 +28,7 @@ function VideoMedia({
   const objXParam = aspectRatio <= 1 ? -1 : 1;
   const updatedX =
     aspectRatio <= 1 ? (liSize.w / +width) * +x : (+width / liSize.w) * +x;
-  const updatedY = (liSize.h / +height) * +y;
+  const updatedY = (liSize.h / +height) * (+y < 0 ? 0 : +y);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
