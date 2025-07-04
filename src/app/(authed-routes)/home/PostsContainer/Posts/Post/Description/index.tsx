@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../prisma/types/post";
 import Name from "../Header/Name";
 
-function Description({ post }: { post: PrismaPostType }) {
+function Description({
+  post,
+  setIsContainerHovered,
+}: {
+  post: PrismaPostType;
+  setIsContainerHovered: Dispatch<SetStateAction<boolean>>;
+}) {
   const { user, message } = post;
   const { name } = user;
 
@@ -19,7 +25,7 @@ function Description({ post }: { post: PrismaPostType }) {
   return (
     <div className="grow mt-2 text-sm">
       <div className={`mr-2 ${message ? "float-left" : ""}`}>
-        <Name name={name} />
+        <Name name={name} setIsContainerHovered={setIsContainerHovered} />
       </div>
       <div className={` grow ${isTruncated ? "flex" : ""}`}>
         <p

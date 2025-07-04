@@ -1,20 +1,56 @@
-import UserModal from "@/app/(authed-routes)/_globalComponents/UserModal";
-import { observeVisibility } from "@/utils/observeVisibility";
-import { useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+import {
+  handleMouseEnter,
+  handleMouseLeave,
+} from "@/app/(authed-routes)/_globalComponents/UserModal/_utils/hover";
+import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
-function Name({ name, userId }: { name: string; userId: string }) {
-  const { containerRef, isVisible } = observeVisibility();
-  // console.log({ containerRef, isVisible });
+function Name({
+  name,
+  setIsContainerHovered,
+}: {
+  name: string;
+  setIsContainerHovered: Dispatch<SetStateAction<boolean>>;
+}) {
+  const dispatch = useAppDispatch();
+
+  // const handleMouseEnter = (e: MouseEvent) => {
+  //   if (userModalTimeoutRef.current) clearTimeout(userModalTimeoutRef.current);
+
+  //   const top = e.currentTarget.getBoundingClientRect().top;
+  //   const scrollTop = window.scrollY;
+  //   const height = e.currentTarget.getBoundingClientRect().height;
+  //   const margin = 4;
+  //   const userModalTop = top + scrollTop + height + margin;
+  //   const left = e.currentTarget.getBoundingClientRect().left;
+  //   dispatch(setIsHovered(true));
+  //   dispatch(setPosition({ top: userModalTop, left }));
+  // };
+
+  // const handleMouseLeave = () => {
+  //   if (userModalTimeoutRef.current) clearTimeout(userModalTimeoutRef.current);
+  //   userModalTimeoutRef.current = setTimeout(() => {
+  //     dispatch(setIsHovered(false));
+  //   }, 300);
+  // };
 
   return (
-    <div
-      className="relative"
-      ref={containerRef}
-      onMouseEnter={(e) => console.log(e)}
+    <Link
+      href={`/${name}`}
+      className="font-semibold cursor-pointer max-w-min"
+      onMouseEnter={(e) => {
+        handleMouseEnter(e, dispatch);
+        setIsContainerHovered(true);
+      }}
+      onMouseLeave={() => {
+        handleMouseLeave(dispatch);
+        setIsContainerHovered(false);
+      }}
+      onContextMenu={(e) => e.preventDefault()}
     >
-      <p className="font-semibold cursor-pointer">{name}</p>
-      {isVisible && <UserModal userId={userId} />}
-    </div>
+      {name}
+    </Link>
   );
 }
 export default Name;

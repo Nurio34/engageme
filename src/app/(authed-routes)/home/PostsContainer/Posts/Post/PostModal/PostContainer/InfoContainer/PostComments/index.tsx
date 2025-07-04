@@ -30,6 +30,8 @@ function PostComments({
   const [containerHeight, setContainerHeight] = useState(0);
   const [reRender, setReRender] = useState(false);
 
+  const ScrollableContainerRef = useRef<HTMLUListElement | null>(null);
+
   useEffect(() => {
     if (CommentsContainerRef.current)
       setContainerHeight(
@@ -72,6 +74,7 @@ function PostComments({
     <div ref={CommentsContainerRef} className="grow relative">
       {!reRender && (
         <ul
+          ref={ScrollableContainerRef}
           className="overflow-x-hidden overflow-y-auto"
           style={{
             height: isDesktop ? containerHeight : height - 305,
@@ -79,7 +82,11 @@ function PostComments({
           }}
         >
           {sortedComments.map((postComment) => (
-            <PostComment key={postComment.id} postComment={postComment} />
+            <PostComment
+              key={postComment.id}
+              postComment={postComment}
+              ScrollableContainerRef={ScrollableContainerRef}
+            />
           ))}
         </ul>
       )}

@@ -6,6 +6,7 @@ import SuggestedForYouList from "../../../SuggestedForYouList";
 import Link from "next/link";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/Act";
+import { useRef } from "react";
 
 function NotificationsDrawer({
   navWidth,
@@ -23,9 +24,11 @@ function NotificationsDrawer({
     (notification) => notification.notifications.length > 0
   );
 
+  const ScrollableContainerRef = useRef<HTMLDivElement | null>(null);
   return (
     <div
-      className={`fixed z-10 top-0 left-0 w-[397px] h-full overflow-y-auto  transition-transform duration-300
+      ref={ScrollableContainerRef}
+      className={`fixed z-10 top-0 left-0 w-[397px] h-full overflow-y-auto overflow-x-hidden  transition-transform duration-300
          bg-base-100 rounded-tr-xl rounded-br-xl shadow-[0px_0px_30px_0px] py-2 px-2  
       `}
       style={{
@@ -62,6 +65,8 @@ function NotificationsDrawer({
             <SuggestedForYouList
               recomendations={recomendations}
               maxWidth={1000}
+              insideOf={"notifications"}
+              ScrollableContainerRef={ScrollableContainerRef}
             />
           </div>
           <Link

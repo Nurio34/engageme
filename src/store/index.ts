@@ -9,6 +9,7 @@ import notificationsSlice from "./slices/notifications";
 import socketSlice from "./slices/socket";
 import themeSlice from "./slices/theme";
 import followingSlice from "./slices/following";
+import userModalSlice from "./slices/userModal";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     socket: socketSlice,
     theme: themeSlice,
     following: followingSlice,
+    userModal: userModalSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

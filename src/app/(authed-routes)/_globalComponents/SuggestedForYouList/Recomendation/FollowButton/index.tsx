@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToFollowing, deleteFromFollowing } from "@/store/slices/following";
 import { useCallback, useState } from "react";
-import { follow } from "../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
 import toast from "react-hot-toast";
-import { unfollow } from "../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/unfollow";
+import { follow } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
+import { unfollow } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/unfollow";
 
 function FollowButton({
   path,

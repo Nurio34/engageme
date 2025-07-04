@@ -2,16 +2,18 @@
 
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { PrismaPostType } from "../../../../../../../../../../../prisma/types/post";
-import Name from "../../../../Header/Name";
+import Name from "../_components/Name";
 
 function Description({
   post,
   isTruncated,
   setIsTruncated,
+  setIsContainerHovered,
 }: {
   post: PrismaPostType;
   isTruncated: boolean;
   setIsTruncated: Dispatch<SetStateAction<boolean>>;
+  setIsContainerHovered: Dispatch<SetStateAction<boolean>>;
 }) {
   const { user, message } = post;
   const { name } = user;
@@ -25,7 +27,7 @@ function Description({
   return (
     <div className="grow mt-2 text-sm max-h-48 overflow-y-auto">
       <div className={`mr-2 ${message ? "float-left" : ""}`}>
-        <Name name={name} />
+        <Name name={name} setIsContainerHovered={setIsContainerHovered} />
       </div>
       <div className={`grow break-all ${isTruncated ? "flex" : ""}`}>
         <p

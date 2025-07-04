@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-export const observeVisibility = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+export const useObserveVisibility = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

@@ -164,6 +164,8 @@ export const PostsProvider = ({
 
   //! ***********************************************************************************************************
 
+  const [isMuted, setIsMuted] = useState(true);
+
   //! *** reset when postModal closed ***
   useEffect(() => {
     if (!isPostModalOpen) {
@@ -180,8 +182,6 @@ export const PostsProvider = ({
     }
   }, [isPostModalOpen]);
   //! ***********************************
-
-  const [isMuted, setIsMuted] = useState(true);
 
   return (
     <Context.Provider

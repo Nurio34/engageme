@@ -1,13 +1,18 @@
-import Name from "../../../../../../Header/Name";
 import TotalCommentLikes from "./TotalCommentLikes";
 import ReplyTheComment from "./ReplyTheComment";
 import { PrismaPostCommentType } from "../../../../../../../../../../../../../prisma/types/post";
 import CreatedAt from "../../../_components/CreatedAt";
+import Name from "../../../_components/Name";
+import { Dispatch, RefObject, SetStateAction } from "react";
 
 function CommentContainer({
   postComment,
+  setIsContainerHovered,
+  ScrollableContainerRef,
 }: {
   postComment: PrismaPostCommentType;
+  setIsContainerHovered: Dispatch<SetStateAction<boolean>>;
+  ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
   const { user, comment, likes, id } = postComment;
 
@@ -15,7 +20,11 @@ function CommentContainer({
     <div className="overflow-auto">
       <div>
         <div className="float-left mr-1 text-sm">
-          <Name name={user.name} />
+          <Name
+            name={user.name}
+            setIsContainerHovered={setIsContainerHovered}
+            ScrollableContainerRef={ScrollableContainerRef}
+          />
         </div>
         <p className="break-words text-sm">{comment}</p>
       </div>

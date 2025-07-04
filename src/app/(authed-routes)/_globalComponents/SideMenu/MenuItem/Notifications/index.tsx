@@ -94,7 +94,7 @@ function Notifications() {
   return (
     <div className="flex items-start">
       <button
-        className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden
+        className="w-full min-w-max hidden md:flex items-center justify-center lg:justify-start gap-x-4 overflow-hidden overflow-x-auto
           hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3
         "
         onClick={() => {

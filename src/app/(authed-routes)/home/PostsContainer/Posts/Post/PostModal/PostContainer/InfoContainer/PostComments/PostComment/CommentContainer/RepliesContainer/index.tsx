@@ -5,15 +5,17 @@ import {
   PrismaReplyCommentType,
 } from "../../../../../../../../../../../../../../prisma/types/post";
 import Reply from "./Reply";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 import ShowMoreRepliesButton from "./ShowMoreRepliesButton";
 import { useInfoContext } from "../../../../Context";
 
 function RepliesContainer({
   postComment,
+  ScrollableContainerRef,
 }: {
   postComment: PrismaPostCommentType;
+  ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
   const { replies } = postComment;
   const isAnyReply = replies.length > 0;
@@ -22,6 +24,7 @@ function RepliesContainer({
 
   const [isRepliesVisible, setIsRepliesVisible] = useState(false);
   const { isMounted, style } = useAnimatedMount(isRepliesVisible, "scaleY");
+  console.log(`ı dont know what to do with this style:${style}`);
 
   const [shownReplies, setShownReplies] = useState<PrismaReplyCommentType[]>(
     []
@@ -49,9 +52,17 @@ function RepliesContainer({
         </div>
         {isMounted && (
           <>
-            <ul className="my-4 space-y-4 transition-all " style={{ ...style }}>
+            <ul
+              className="my-4 space-y-4 transition-all"
+              // style={{ ...style, zIndex: 100 }}
+            >
               {shownReplies.map((reply) => (
-                <Reply key={reply.id} postComment={postComment} reply={reply} />
+                <Reply
+                  key={reply.id}
+                  postComment={postComment}
+                  reply={reply}
+                  ScrollableContainerRef={ScrollableContainerRef}
+                />
               ))}
             </ul>
             <ShowMoreRepliesButton

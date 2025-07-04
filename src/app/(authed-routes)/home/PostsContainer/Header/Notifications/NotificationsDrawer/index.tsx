@@ -3,7 +3,7 @@ import { useAnimatedMount } from "@/hooks/useAnimatedMount";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import CatagorizedNotifications from "./CatagorizedNotifications";
 import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/Act";
 import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
@@ -29,6 +29,8 @@ function NotificationsDrawer({
     (notification) => notification.notifications.length > 0
   );
 
+  const ScrollableContainerRef = useRef<HTMLDivElement | null>(null);
+
   //! *** push history state when "isCreateModalOpen === true" ( for mobile native back button manipulation ) ***
   useEffect(() => {
     if (isDrawerMenuOpen)
@@ -48,6 +50,7 @@ function NotificationsDrawer({
   return (
     isMounted && (
       <div
+        ref={ScrollableContainerRef}
         className="fixed z-10 top-[49px] left-0 w-screen bg-base-100 overflow-y-auto  duration-[400ms]"
         style={{ ...style, height: "calc(100vh - 49px)" }}
       >
@@ -73,6 +76,8 @@ function NotificationsDrawer({
               <SuggestedForYouList
                 recomendations={recomendations}
                 maxWidth={1000}
+                insideOf="mobileNotifications"
+                ScrollableContainerRef={ScrollableContainerRef}
               />
             </div>
             <Link

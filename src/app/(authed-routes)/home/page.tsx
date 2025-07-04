@@ -8,6 +8,7 @@ async function HomePage() {
   const { status, recomendations } = await getRecommendations();
 
   if (status === "fail" || !recomendations) return <div>Error</div>;
+
   return (
     <div
       className=" md:grid xl:grid-cols-[630px,minmax(0px,383px)] xl:justify-center

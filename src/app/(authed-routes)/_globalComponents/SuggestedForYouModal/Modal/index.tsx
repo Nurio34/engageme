@@ -1,6 +1,6 @@
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppSelector } from "@/store/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import DiscoverMoreAccounts from "./DiscoverMoreAccounts";
 import SuggestedForYouList from "../../SuggestedForYouList";
@@ -14,6 +14,8 @@ function Modal({
 }) {
   const { isSuggestedForYouModalOpen } = useAppSelector((s) => s.modals);
   const [isRender, setIsRender] = useState(!isSuggestedForYouModalOpen);
+
+  const ScrollableContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (isSuggestedForYouModalOpen) setIsRender(true);
@@ -30,11 +32,13 @@ function Modal({
       onClick={(e) => e.stopPropagation()}
     >
       <Header />
-      <div className="overflow-y-auto">
+      <div ref={ScrollableContainerRef} className="overflow-y-auto">
         <DiscoverMoreAccounts />
         <SuggestedForYouList
           maxWidth={maxWidth}
           recomendations={recomendations}
+          insideOf="suggestedForYouModal"
+          ScrollableContainerRef={ScrollableContainerRef}
         />
       </div>
     </div>
