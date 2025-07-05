@@ -30,8 +30,8 @@ model User {
   replyCommentLikeNotifications  ReplyCommentLikeNotification[]
   dontSuggestsMade               DontSuggest[] @relation("UserWhoDoesntWant")
   dontSuggestsReceived           DontSuggest[] @relation("UserToNotBeSuggested")
-  following  Follow[] @relation("FollowingRelation") // Users this user is following
-  followers  Follow[] @relation("FollowerRelation")  // Users who follow this user
+  following                      Follow[] @relation("FollowerRelation")
+  followers                      Follow[] @relation("FollowingRelation")
   createdAt                      DateTime @default(now())
   updatedAt                      DateTime @updatedAt @default(now())
 }

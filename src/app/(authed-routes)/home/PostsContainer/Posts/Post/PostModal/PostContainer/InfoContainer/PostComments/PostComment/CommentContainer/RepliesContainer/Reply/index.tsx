@@ -74,7 +74,7 @@ function Reply({
       </div>
       {isVisible && (
         <UserModal
-          userId={postComment.userId}
+          userId={reply.userId}
           isContainerHovered={isContainerHovered}
           setIsContainerHovered={setIsContainerHovered}
         />

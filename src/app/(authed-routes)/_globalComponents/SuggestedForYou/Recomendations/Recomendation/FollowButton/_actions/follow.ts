@@ -12,6 +12,10 @@ export const follow = async (
       return { status: "fail", msg: "You have to sign in to follow people!" };
 
     const { id } = user;
+
+    if (id === userId)
+      return { status: "fail", msg: "Self service not allowed!" };
+
     const response = await prisma.follow.create({
       data: { followerId: id, followingId: userId },
     });

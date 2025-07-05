@@ -26,7 +26,7 @@ async function PostsContainer({
   return (
     <main className="flex flex-col items-center">
       <Header recomendations={recomendations} />
-      <Posts posts={posts} variant={variant} />
+      <Posts posts={posts} variant={variant} recomendations={recomendations} />
     </main>
   );
 }

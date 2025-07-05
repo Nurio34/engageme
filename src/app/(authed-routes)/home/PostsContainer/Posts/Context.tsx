@@ -36,6 +36,7 @@ export type CommentReplyType = {
 };
 
 interface PostsContextType {
+  posts: PrismaPostType[];
   variant: string | undefined;
   postsState: PrismaPostType[];
   setPostsState: Dispatch<SetStateAction<PrismaPostType[]>>;
@@ -186,6 +187,7 @@ export const PostsProvider = ({
   return (
     <Context.Provider
       value={{
+        posts,
         variant,
         postsState,
         setPostsState,

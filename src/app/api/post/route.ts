@@ -9,6 +9,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ status: "fail" }, { status: 401 });
   }
 
+  const userId = req.headers.get("user-id");
   const skip = parseInt(req.nextUrl.searchParams.get("skip")!);
   const variant = req.nextUrl.searchParams.get("variant"); //! "undefined" || "home" || "followings" || "favorites"
 
@@ -17,6 +18,78 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     if (variant === "undefined" || variant === "home") {
       posts = await prisma.post.findMany({
+        include: {
+          user: {
+            include: {
+              _count: {
+                select: {
+                  posts: true,
+                },
+              },
+            },
+          },
+          medias: {
+            include: {
+              poster: true,
+              transformation: true,
+            },
+          },
+          location: true,
+          settings: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
+          comments: {
+            include: {
+              user: true,
+              likes: {
+                include: {
+                  user: true,
+                },
+              },
+              replies: {
+                include: {
+                  likes: {
+                    include: {
+                      user: true,
+                    },
+                  },
+                  user: true,
+                },
+                orderBy: {
+                  createdAt: "asc",
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+        skip: skip * 5,
+        take: 5,
+      });
+    } else if (variant === "followings") {
+      const followings = (
+        await prisma.follow.findMany({
+          where: { followerId: userId! },
+          select: {
+            followingId: true,
+          },
+        })
+      ).map((following) => following.followingId);
+
+      posts = await prisma.post.findMany({
+        where: {
+          userId: {
+            in: followings,
+          },
+        },
         include: {
           user: {
             include: {

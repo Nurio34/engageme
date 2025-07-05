@@ -24,6 +24,7 @@ function RepliesContainer({
 
   const [isRepliesVisible, setIsRepliesVisible] = useState(false);
   const { isMounted, style } = useAnimatedMount(isRepliesVisible, "scaleY");
+  //! uncomment for eslint
   console.log(`ı dont know what to do with this style:${style}`);
 
   const [shownReplies, setShownReplies] = useState<PrismaReplyCommentType[]>(

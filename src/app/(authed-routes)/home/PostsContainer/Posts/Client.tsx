@@ -4,11 +4,20 @@ import Post from "./Post";
 import { usePostsContext } from "./Context";
 import { useEffect, useRef } from "react";
 import { getPostsAction } from "./actions/getPostsAction";
+import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
+import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import StarOutlineInCircleIcon from "@/app/_globalComponents/Svg/StarOutlineInCircleIcon";
+import { SlUserFollow } from "react-icons/sl";
 
-function PostsClient() {
-  const { postsState, setPostsState, skip, setSkip } = usePostsContext();
+function PostsClient({
+  recomendations,
+}: {
+  recomendations: PrismaRecomendationType[];
+}) {
+  const { posts, variant, postsState, setPostsState, skip, setSkip } =
+    usePostsContext();
 
-  const isFetchingRef = useRef(false); // ✅ to avoid re-renders
+  const isFetchingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -49,6 +58,41 @@ function PostsClient() {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [skip]);
+
+  if (posts.length === 0)
+    return (
+      <div className="w-full ">
+        {variant === "followings" && (
+          <div className="text-sm grid justify-items-center gap-y-4 py-6 px-11 text-center">
+            <div
+              className="w-24 aspect-square rounded-full border-2 border-base-content
+              flex justify-center items-center text-4xl
+            "
+            >
+              <SlUserFollow />
+            </div>
+            <h2 className="text-xl">See posts from people you follow</h2>
+            <p>
+              Posts from accounts you follow will appear here in the order
+              they’re shared.
+            </p>
+          </div>
+        )}
+        {variant === "favorites" && (
+          <div className="text-sm grid justify-items-center gap-y-4 py-6 px-11 text-center">
+            <StarOutlineInCircleIcon />
+            <h2 className="text-xl">
+              Choose the accounts you can&apos;t miss out on
+            </h2>
+            <p>
+              Add accounts to your favorites to see their posts here, starting
+              with the most recent posts.
+            </p>
+          </div>
+        )}
+        <SuggestedForYouList maxWidth={400} recomendations={recomendations} />
+      </div>
+    );
 
   return postsState.map((post, index) => (
     <Post key={post.id} index={index} post={post} />

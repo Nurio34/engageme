@@ -1,4 +1,4 @@
-import { Media, Post, User } from "@prisma/client";
+import { Follow, Media, Post, User } from "@prisma/client";
 
 export type UserModalType = User & {
   _count: {
@@ -9,4 +9,6 @@ export type UserModalType = User & {
   posts: (Post & {
     medias: Media[];
   })[];
+  // This will only be present if currentUser is logged in
+  followers?: Pick<Follow, "followingId">[]; // or just `Follow[]` if you want more fields
 };

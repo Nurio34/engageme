@@ -36,6 +36,7 @@ function Desktop() {
         }    
         `}
         href={"/home?variant=home"}
+        prefetch
         onClick={() => dispatch(started())}
       >
         For you
@@ -47,6 +48,7 @@ function Desktop() {
             : "text-base-content/50"
         }   `}
         href={"/home?variant=followings"}
+        prefetch
         onClick={() => dispatch(started())}
       >
         Following
@@ -58,6 +60,7 @@ function Desktop() {
             : "text-base-content/50"
         }   `}
         href={"/home?variant=favorites"}
+        prefetch
         onClick={() => dispatch(started())}
       >
         Favorites

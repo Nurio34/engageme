@@ -2,8 +2,12 @@ import { getRecommendations } from "@/app/api/recomendation/handler/getRecomenda
 import PostsContainer from "./PostsContainer";
 import Recomendations from "./Recomendations";
 
-async function HomePage() {
-  // const { variant } = await searchParams;
+async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const variant = (await searchParams).variant;
 
   const { status, recomendations } = await getRecommendations();
 
@@ -15,7 +19,7 @@ async function HomePage() {
         md:px-16 md:py-[22px]
       "
     >
-      <PostsContainer variant={undefined} recomendations={recomendations} />
+      <PostsContainer variant={variant} recomendations={recomendations} />
       <Recomendations recomendations={recomendations} />
     </div>
   );

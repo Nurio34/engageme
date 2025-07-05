@@ -5,7 +5,7 @@ import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getReco
 import SuggestedForYouList from "../../../SuggestedForYouList";
 import Link from "next/link";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
-import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/Act";
+import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/ActivityOnYourPostsIcon";
 import { useRef } from "react";
 
 function NotificationsDrawer({

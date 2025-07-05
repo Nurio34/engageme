@@ -11,6 +11,7 @@ interface UserModalState {
     top: number;
     left: number;
   };
+  userModalTimeout: NodeJS.Timeout | null;
 }
 
 const initialState: UserModalState = {
@@ -19,6 +20,7 @@ const initialState: UserModalState = {
     top: 0,
     left: 0,
   },
+  userModalTimeout: null,
 };
 
 export const userModalSlice = createSlice({
@@ -31,8 +33,20 @@ export const userModalSlice = createSlice({
     setPosition: (state, action: PayloadAction<Position>) => {
       state.position = action.payload;
     },
+    setUserModalTimeout: (state, action: PayloadAction<NodeJS.Timeout>) => {
+      state.userModalTimeout = action.payload;
+    },
+    clearUserModalTimeout: (state) => {
+      if (state.userModalTimeout) clearTimeout(state.userModalTimeout);
+      state.userModalTimeout = null;
+    },
   },
 });
 
-export const { setIsHovered, setPosition } = userModalSlice.actions;
+export const {
+  setIsHovered,
+  setPosition,
+  setUserModalTimeout,
+  clearUserModalTimeout,
+} = userModalSlice.actions;
 export default userModalSlice.reducer;

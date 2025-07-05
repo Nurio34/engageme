@@ -5,7 +5,7 @@ import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import CatagorizedNotifications from "./CatagorizedNotifications";
-import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/Act";
+import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/ActivityOnYourPostsIcon";
 import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Link from "next/link";

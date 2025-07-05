@@ -23,7 +23,7 @@ function RecomendationsClient({
 
   return (
     isMounted && (
-      <aside className="pl-16 pt-9">
+      <aside className="hidden xl:block pl-16 pt-9">
         {id && <SwitchAccounts />}
         <SuggestedForYouContainer recomendations={recomendations} />
         <Footer />
