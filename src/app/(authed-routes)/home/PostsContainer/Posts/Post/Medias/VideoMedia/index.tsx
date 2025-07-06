@@ -105,8 +105,8 @@ function VideoMedia({
           {
             objectFit: "cover",
             objectPosition: `${
-              updatedX > 0 ? updatedX * -1 + "px" : "center"
-            } ${updatedY > 0 ? updatedY * -1 + "px" : "center"}`,
+              updatedX >= 0 ? updatedX * -1 + "px" : "center"
+            } ${updatedY >= 0 ? updatedY * -1 + "px" : "center"}`,
           } as React.CSSProperties
         }
         muted={isAudioAllowed === false || isMuted}

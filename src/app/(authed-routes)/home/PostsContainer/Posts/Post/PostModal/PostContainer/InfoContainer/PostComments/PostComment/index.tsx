@@ -8,7 +8,11 @@ import dynamic from "next/dynamic";
 import { RefObject, useState } from "react";
 
 const UserModal = dynamic(
-  () => import("@/app/(authed-routes)/_globalComponents/UserModal")
+  () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
+  {
+    loading: () => null,
+    ssr: false,
+  }
 );
 
 function PostComment({

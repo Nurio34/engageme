@@ -66,7 +66,7 @@ function VideoMedia({
     <li ref={LiRef} className="h-full relative" style={{ aspectRatio }}>
       <video
         ref={VideoRef}
-        src={url}
+        src={url.replace("http://", "https://")}
         onLoadedMetadata={() => setIsVideoLoaded(true)} // ✅ Fires when video metadata is ready (dimensions, duration, etc.)
         className={`object-cover w-full h-full`}
         // ${

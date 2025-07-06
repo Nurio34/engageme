@@ -22,7 +22,6 @@ export const likeThePost = async (
       data: { userId, postId },
       include: { user: true },
     });
-    console.log({ postLike });
 
     if (!postLike)
       return {

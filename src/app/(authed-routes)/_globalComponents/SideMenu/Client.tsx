@@ -20,6 +20,7 @@ import {
   setPostCommentLikeNotifications,
   setPostCommentNotifications,
   setPostLikeNotifications,
+  setFollowNotifications,
 } from "@/store/slices/notifications";
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 
@@ -94,7 +95,9 @@ function Client({
         postCommentLikeNotifications,
         replyCommentNotifications,
         replyCommentLikeNotifications,
+        followNotifications,
       } = allNotifications;
+
       dispatch(
         setPostLikeNotifications(
           JSON.parse(JSON.stringify(postLikeNotifications))
@@ -119,6 +122,9 @@ function Client({
         setReplyCommentLikeNotifications(
           JSON.parse(JSON.stringify(replyCommentLikeNotifications))
         )
+      );
+      dispatch(
+        setFollowNotifications(JSON.parse(JSON.stringify(followNotifications)))
       );
     }
   }, [allNotifications]);

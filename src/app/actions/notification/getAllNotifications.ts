@@ -8,6 +8,7 @@ export const getAllNotifications = async (): Promise<{
   status: "success" | "fail";
   allNotifications?: AllNotificationsType;
 }> => {
+  console.log("getAllNotifications()...");
   try {
     const user = await currentUser();
     // if (!user) return { status: "fail" };
@@ -96,6 +97,22 @@ export const getAllNotifications = async (): Promise<{
                         },
                       },
                     },
+                  },
+                },
+              },
+            },
+          },
+        },
+        followNotifications: {
+          include: {
+            user: true,
+            follow: {
+              include: {
+                follower: {
+                  select: {
+                    userId: true,
+                    name: true,
+                    avatar: true,
                   },
                 },
               },

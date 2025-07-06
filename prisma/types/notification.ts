@@ -1,4 +1,6 @@
 import {
+  Follow,
+  FollowNotification,
   Media,
   Post,
   PostComment,
@@ -74,4 +76,16 @@ export type AllNotificationsType = {
   postCommentLikeNotifications: PrismaPostCommentLikeNotificationType[];
   replyCommentNotifications: PrismaReplyNotificationType[];
   replyCommentLikeNotifications: PrismaReplyLikeNotificationType[];
+  followNotifications: PrismaFollowNotification[];
+};
+
+export type PrismaFollowNotification = FollowNotification & {
+  user: User;
+  follow: Follow & {
+    follower: {
+      userId: string;
+      name: string;
+      avatar: string | null;
+    };
+  };
 };

@@ -111,8 +111,8 @@ function VideoMedia({
             objectFit: "cover", //! updated version
             objectPosition: `${
               //! updated version
-              updatedX > 0 ? updatedX * -1 + "px" : "center" //! updated version
-            } ${updatedY > 0 ? updatedY * -1 + "px" : "center"}`, //! updated version
+              updatedX >= 0 ? updatedX * -1 + "px" : "center" //! updated version
+            } ${updatedY >= 0 ? updatedY * -1 + "px" : "center"}`, //! updated version
           } as React.CSSProperties //! updated version
         } //! updated version
         muted

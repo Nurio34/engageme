@@ -6,7 +6,10 @@ import FollowButton from "./FollowButton";
 import { RefObject, useState } from "react";
 import { InsideOfType } from "..";
 
-const UserModal = dynamic(() => import("../../UserModal"));
+const UserModal = dynamic(() => import("../../UserModal"), {
+  loading: () => null,
+  ssr: false,
+});
 
 function Recomendation({
   recomendation,

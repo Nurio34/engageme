@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { follow } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
 import toast from "react-hot-toast";
 import { unfollow } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/unfollow";
+import { sendFollowNotification } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/sendFollowNotification";
 
 function ActionButtons({
   followers,
@@ -25,6 +26,7 @@ function ActionButtons({
   const isFollowingState = !!followers?.length;
 
   const { id } = useAppSelector((s) => s.user);
+  const { socket } = useAppSelector((s) => s.socket);
   const { followings } = useAppSelector((s) => s.following);
   const isFollowing = followings.includes(userId);
 
@@ -37,11 +39,18 @@ function ActionButtons({
     dispatch(addToFollowing(userId));
 
     try {
-      const { status, msg } = await follow(userId);
-      if (status === "fail") {
+      const { status: followStatus, msg, id: followId } = await follow(userId);
+      if (followStatus === "fail") {
         toast.error(msg);
         dispatch(deleteFromFollowing(userId));
+        return;
       }
+
+      const { status: followNotificaionStatus, followNotificaion } =
+        await sendFollowNotification(userId, followId);
+      if (followNotificaionStatus === "fail" || !followNotificaion) return;
+
+      socket?.emit("followNotification", followNotificaion);
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");
@@ -49,10 +58,9 @@ function ActionButtons({
     } finally {
       setIsLoading(false);
     }
-  }, [userId, dispatch]);
+  }, [userId, dispatch, socket]);
 
   const unfollowAction = useCallback(async () => {
-    console.log("unfollowAction");
     setIsLoading(true);
     dispatch(deleteFromFollowing(userId));
 

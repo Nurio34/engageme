@@ -5,7 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 export const follow = async (
   userId: string
-): Promise<{ status: "success" | "fail"; msg: string }> => {
+): Promise<{ status: "success" | "fail"; msg: string; id?: string }> => {
   try {
     const user = await currentUser();
     if (!user)
@@ -16,17 +16,16 @@ export const follow = async (
     if (id === userId)
       return { status: "fail", msg: "Self service not allowed!" };
 
-    const response = await prisma.follow.create({
+    const follow = await prisma.follow.create({
       data: { followerId: id, followingId: userId },
     });
-    if (!response)
+    if (!follow)
       return {
         status: "fail",
         msg: "Something went wrong while following! Please try again..",
       };
-    console.log({ response });
 
-    return { status: "success", msg: "Success" };
+    return { status: "success", msg: "Success", id: follow.id };
   } catch (error) {
     console.log(error);
     return {

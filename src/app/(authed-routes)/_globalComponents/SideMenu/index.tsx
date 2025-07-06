@@ -7,6 +7,7 @@ async function SideMenu() {
     await getAllNotifications();
   const { status: recomendationsStatus, recomendations } =
     await getRecommendations();
+  console.log(allNotifications);
 
   if (
     notificationsStatus === "success" &&

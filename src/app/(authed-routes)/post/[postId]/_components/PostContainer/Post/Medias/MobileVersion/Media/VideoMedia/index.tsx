@@ -61,7 +61,7 @@ function VideoMedia({
     <li ref={LiRef} style={{ minWidth: divWidth, height: newHeight }}>
       <video
         ref={VideoRef}
-        src={url}
+        src={url.replace("http://", "https://")}
         // className={`object-cover
         //     ${Math.abs(+y) >= 0 ? "w-full" : ""}
         //     ${Math.abs(+x) >= 0 ? "h-full" : ""}

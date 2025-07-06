@@ -35,7 +35,11 @@ function Posts({
             href={`/post/${post.id}`}
             className="block aspect-square"
           >
-            <video src={url} className="w-full h-full object-cover" />
+            <video
+              src={url.replace("http://", "https://")}
+              className="w-full h-full object-cover"
+              preload="metadata"
+            />
           </Link>
         );
       })}

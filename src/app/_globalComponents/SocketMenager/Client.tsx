@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "@/store/hooks"; // your own typed hooks
 import { clearSocket, setSocket } from "@/store/slices/socket";
 import {
+  PrismaFollowNotification,
   PrismaPostCommentLikeNotificationType,
   PrismaPostCommentNotificationType,
   PrismaPostLikeNotificationType,
@@ -15,6 +16,7 @@ import {
   addPostLikeNotification,
   addReplyNotification,
   addReplyLikeNotification,
+  addFollowNotification,
 } from "@/store/slices/notifications";
 
 let socketInstance: Socket | null = null; // Singleton
@@ -69,6 +71,15 @@ const Client = () => {
         "replyLikeNotification",
         (notification: PrismaReplyLikeNotificationType) => {
           dispatch(addReplyLikeNotification(notification));
+        }
+      );
+
+      socketInstance.on(
+        "followNotification",
+        (notification: PrismaFollowNotification) => {
+          console.log("dispatch(addFollowNotification(notification));");
+
+          dispatch(addFollowNotification(notification));
         }
       );
 

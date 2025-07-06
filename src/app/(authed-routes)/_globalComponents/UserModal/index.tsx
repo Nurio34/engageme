@@ -54,7 +54,6 @@ function UserModal({
     dispatch(setIsHovered(false));
     setIsContainerHovered(false);
   };
-  console.log({ isLoading });
 
   if (isLoading && isContainerHovered)
     return (

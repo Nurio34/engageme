@@ -22,7 +22,7 @@ function VideoContainer({ post }: { post: PostPreviewType }) {
       onMouseLeave={() => setIsHover(false)}
     >
       <video
-        src={url}
+        src={url.replace("http://", "https://")}
         className="object-cover w-full h-full"
         poster={poster?.url || undefined}
         preload="metadata"

@@ -12,7 +12,11 @@ import { useObserveVisibility } from "@/hooks/useObserveVisibility";
 import { RefObject, useState } from "react";
 import dynamic from "next/dynamic";
 const UserModal = dynamic(
-  () => import("@/app/(authed-routes)/_globalComponents/UserModal")
+  () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
+  {
+    loading: () => null,
+    ssr: false,
+  }
 );
 
 function Reply({

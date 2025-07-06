@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  PrismaFollowNotification,
   PrismaPostCommentLikeNotificationType,
   PrismaPostCommentNotificationType,
   PrismaPostLikeNotificationType,
@@ -13,6 +14,7 @@ interface NotificationsState {
   postCommentLikeNotifications: PrismaPostCommentLikeNotificationType[];
   replyCommentNotifications: PrismaReplyNotificationType[];
   replyCommentLikeNotifications: PrismaReplyLikeNotificationType[];
+  followNotifications: PrismaFollowNotification[];
 }
 
 const initialState: NotificationsState = {
@@ -21,6 +23,7 @@ const initialState: NotificationsState = {
   postCommentLikeNotifications: [],
   replyCommentNotifications: [],
   replyCommentLikeNotifications: [],
+  followNotifications: [],
 };
 
 export const notificationsSlice = createSlice({
@@ -116,6 +119,18 @@ export const notificationsSlice = createSlice({
       state.replyCommentLikeNotifications.push(action.payload);
     },
 
+    setFollowNotifications: (
+      state,
+      action: PayloadAction<PrismaFollowNotification[]>
+    ) => {
+      state.followNotifications = action.payload;
+    },
+    addFollowNotification: (
+      state,
+      action: PayloadAction<PrismaFollowNotification>
+    ) => {
+      state.followNotifications.push(action.payload);
+    },
     resetNotifications: () => initialState,
   },
 });
@@ -131,6 +146,8 @@ export const {
   addReplyNotification,
   setReplyCommentLikeNotifications,
   addReplyLikeNotification,
+  setFollowNotifications,
+  addFollowNotification,
   resetNotifications,
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

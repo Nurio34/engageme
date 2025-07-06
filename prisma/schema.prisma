@@ -32,6 +32,7 @@ model User {
   dontSuggestsReceived           DontSuggest[] @relation("UserToNotBeSuggested")
   following                      Follow[] @relation("FollowerRelation")
   followers                      Follow[] @relation("FollowingRelation")
+  followNotifications            FollowNotification[]
   createdAt                      DateTime @default(now())
   updatedAt                      DateTime @updatedAt @default(now())
 }
@@ -237,6 +238,7 @@ enum NotificationType {
   commentLike
   replyComment
   replyLike
+  follow
 }
 
 enum NotificationVariant {
@@ -269,5 +271,20 @@ model Follow {
 
   createdAt    DateTime @default(now())
 
-  @@unique([followerId, followingId]) // Prevent duplicate follows
+  followNotifications FollowNotification[]
+
+  @@unique([followerId, followingId])
+}
+
+model FollowNotification {
+  id        String              @id @default(cuid())
+  type      NotificationType    @default(follow)    
+  variant   NotificationVariant @default(follow)
+  isSeen    Boolean             @default(false)
+
+  userId    String
+  user      User                @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  followId  String
+  follow    Follow              @relation(fields: [followId], references: [id], onDelete: Cascade)
 }

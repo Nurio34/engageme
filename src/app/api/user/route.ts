@@ -20,7 +20,6 @@ export async function POST(req: Request) {
     firstName,
     lastName,
   } = clerkUser;
-  console.log(clerkUser);
 
   let user;
   try {

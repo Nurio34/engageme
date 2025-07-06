@@ -15,7 +15,11 @@ import { useObserveVisibility } from "@/hooks/useObserveVisibility";
 import dynamic from "next/dynamic";
 
 const UserModal = dynamic(
-  () => import("@/app/(authed-routes)/_globalComponents/UserModal")
+  () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
+  {
+    loading: () => null,
+    ssr: false,
+  }
 );
 
 export type SortByType = "For You" | "Most Recent" | "Meta Verified";

@@ -14,7 +14,9 @@ export const useCatagorizedNotifications = () => {
     postCommentLikeNotifications,
     replyCommentNotifications,
     replyCommentLikeNotifications,
+    followNotifications,
   } = useAppSelector((s) => s.notifications);
+  console.log({ followNotifications });
 
   const [postLikeNotificationsState, setPostLikeNotificationsState] = useState<
     NotificationType[]

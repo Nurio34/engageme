@@ -8,7 +8,6 @@ import { PrismaPostType } from "../../../../../../prisma/types/post";
 
 function SettingsModal({ post }: { post: PrismaPostType }) {
   const { id: postId } = post;
-  console.log({ postId });
 
   const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
   const dispatch = useAppDispatch();

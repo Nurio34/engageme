@@ -11,7 +11,7 @@ import { usePost } from "./hooks/usePost";
 import { useSavePost } from "./hooks/useSavePost";
 import AnimatedCheckIcon from "@/app/_globalComponents/Svg/AnimatedCheckIcon";
 import { useAppDispatch } from "@/store/hooks";
-import { toggleCreateModal } from "@/store/slices/modals";
+import { addCloudinaryMedias, toggleCreateModal } from "@/store/slices/modals";
 
 export type UpdatedMedia = {
   publicId: string;
@@ -60,6 +60,7 @@ function Sharing() {
     if (step.step === "sharing" && isShared) {
       setTimeout(() => {
         dispatch(toggleCreateModal());
+        dispatch(addCloudinaryMedias([]));
       }, 1500);
     }
   }, [step, isShared]);
