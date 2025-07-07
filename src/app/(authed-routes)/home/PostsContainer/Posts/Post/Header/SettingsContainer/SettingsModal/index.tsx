@@ -5,6 +5,8 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
 import { started } from "@/store/slices/routing";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
+import FollowButton from "./_components/FollowButton";
+import AddFavoritesButton from "./_components/AddFavoritesButton";
 
 function SettingsModal({
   isModelOpen,
@@ -15,7 +17,8 @@ function SettingsModal({
   setIsModelOpen: Dispatch<SetStateAction<boolean>>;
   post: PrismaPostType;
 }) {
-  const { id: postId } = post;
+  const { id: postId, userId, user } = post;
+  const { followers } = user;
 
   const dispatch = useAppDispatch();
 
@@ -56,28 +59,8 @@ function SettingsModal({
             Report xx
           </button>
         </li>
-        <li className="py-1 h-12 text-error font-bold border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Unfollow xx
-          </button>
-        </li>
-        <li className="py-1 h-12 border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Add to favorites xx
-          </button>
-        </li>
+        <FollowButton userId={userId} followers={followers} />
+        <AddFavoritesButton />
         <li className="py-1 h-12  border-b">
           <Link
             href={`/post/${postId}`}

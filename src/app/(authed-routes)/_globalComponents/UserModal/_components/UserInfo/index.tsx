@@ -10,6 +10,9 @@ function UserInfo({
   name: string;
   fullname: string | null;
 }) {
+  const isFullnameNull =
+    fullname && fullname.split(" ").every((name) => name === "null");
+
   return (
     <div className="px-4 flex items-center gap-x-4">
       <Link
@@ -27,7 +30,9 @@ function UserInfo({
         <Link href={`/${name}`} className="font-bold leading-4">
           {name}
         </Link>
-        <p className="text-sm text-base-content/70 leading-4">{fullname}</p>
+        <p className="text-sm text-base-content/70 leading-4 capitalize">
+          {isFullnameNull ? name : fullname}
+        </p>
       </div>
     </div>
   );

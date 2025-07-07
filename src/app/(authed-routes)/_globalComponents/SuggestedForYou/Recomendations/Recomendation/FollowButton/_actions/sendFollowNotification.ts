@@ -19,7 +19,15 @@ export const sendFollowNotification = async (
     const followNotificaion = await prisma.followNotification.create({
       data: { userId, followId },
       include: {
-        user: true,
+        user: {
+          include: {
+            following: {
+              select: {
+                followingId: true,
+              },
+            },
+          },
+        },
         follow: {
           include: {
             follower: {

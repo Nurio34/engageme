@@ -1,14 +1,32 @@
-"use server";
-
 import { prisma } from "@/lib/prisma";
-import { PrismaPostType } from "../../../../../../prisma/types/post";
+import { NextRequest, NextResponse } from "next/server";
 
-export const getPost = async (
-  postId: string
-): Promise<{ status: "success" | "fail"; post: null | PrismaPostType }> => {
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  console.log("getFollowingsPosts()...");
+
+  if (req.headers.get("request-secret") !== process.env.REQUEST_SECRET!) {
+    return NextResponse.json({ status: "fail" }, { status: 401 });
+  }
+
+  const userId = req.headers.get("user-id");
+  const skip = parseInt(req.nextUrl.searchParams.get("skip")!);
+
   try {
-    const post = await prisma.post.findUnique({
-      where: { id: postId },
+    const followings = (
+      await prisma.follow.findMany({
+        where: { followerId: userId! },
+        select: {
+          followingId: true,
+        },
+      })
+    ).map((following) => following.followingId);
+
+    const posts = await prisma.post.findMany({
+      where: {
+        userId: {
+          in: followings,
+        },
+      },
       include: {
         user: {
           include: {
@@ -62,14 +80,16 @@ export const getPost = async (
           },
         },
       },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      skip: skip * 5,
+      take: 5,
     });
 
-    if (!post) return { status: "fail", post: null };
-
-    return { status: "success", post };
+    return NextResponse.json({ status: "success", posts }, { status: 200 });
   } catch (error) {
-    console.log(error);
-
-    return { status: "fail", post: null };
+    console.error(error);
+    return NextResponse.json({ status: "fail" }, { status: 500 });
   }
-};
+}

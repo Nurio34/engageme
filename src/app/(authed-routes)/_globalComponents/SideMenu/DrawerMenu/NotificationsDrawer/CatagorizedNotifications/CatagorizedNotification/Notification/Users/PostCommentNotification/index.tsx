@@ -2,6 +2,9 @@ import Link from "next/link";
 import { getUsers } from "../utils/getUsers";
 import { fancyTime } from "@/utils/fancyTime";
 import { User } from "../../../../../../types";
+import { useAppDispatch } from "@/store/hooks";
+import { useState } from "react";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
 
 function PostCommentNotification({
   users,
@@ -13,12 +16,21 @@ function PostCommentNotification({
   comment: string | undefined;
 }) {
   const { isMoreThanThree, lastThird, lastSecond, last } = getUsers(users);
+  const dispatch = useAppDispatch();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
       {isMoreThanThree ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>
           ,{" "}
@@ -26,6 +38,9 @@ function PostCommentNotification({
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
           >
             {lastSecond.name}
           </Link>{" "}
@@ -34,7 +49,14 @@ function PostCommentNotification({
         </span>
       ) : lastThird.name ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>
           ,{" "}
@@ -42,6 +64,9 @@ function PostCommentNotification({
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
           >
             {lastSecond.name}
           </Link>{" "}
@@ -50,6 +75,9 @@ function PostCommentNotification({
             className="font-bold"
             key={lastThird.id}
             href={`/${lastThird.name}`}
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
           >
             {lastThird.name}
           </Link>{" "}
@@ -58,7 +86,14 @@ function PostCommentNotification({
         </span>
       ) : lastSecond.name ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>{" "}
           and{" "}
@@ -66,6 +101,9 @@ function PostCommentNotification({
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
           >
             {lastSecond.name}
           </Link>{" "}
@@ -74,7 +112,14 @@ function PostCommentNotification({
         </span>
       ) : (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>{" "}
           commented :{" "}

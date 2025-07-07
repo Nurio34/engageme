@@ -2,6 +2,9 @@ import Link from "next/link";
 import { getUsers } from "../utils/getUsers";
 import { fancyTime } from "@/utils/fancyTime";
 import { User } from "../../../../../../types";
+import { useAppDispatch } from "@/store/hooks";
+import { useState } from "react";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
 
 function CommentLikeNotification({
   users,
@@ -14,15 +17,27 @@ function CommentLikeNotification({
 }) {
   const { isMoreThanThree, lastThird, lastSecond, last } = getUsers(users);
 
+  const dispatch = useAppDispatch();
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <>
       {isMoreThanThree ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>
           ,{" "}
           <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
@@ -34,11 +49,21 @@ function CommentLikeNotification({
         </span>
       ) : lastThird.name ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>
           ,{" "}
           <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
@@ -47,6 +72,9 @@ function CommentLikeNotification({
           </Link>{" "}
           and{" "}
           <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
             className="font-bold"
             key={lastThird.id}
             href={`/${lastThird.name}`}
@@ -58,11 +86,21 @@ function CommentLikeNotification({
         </span>
       ) : lastSecond.name ? (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>{" "}
           and{" "}
           <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
             className="font-bold"
             key={lastSecond.id}
             href={`/${lastSecond.name}`}
@@ -74,7 +112,14 @@ function CommentLikeNotification({
         </span>
       ) : (
         <span>
-          <Link className="font-bold" key={last.id} href={`/${last.name}`}>
+          <Link
+            onClick={() => dispatch(setCurrentMenu(undefined))}
+            onMouseEnter={() => setIsHovered(true)}
+            prefetch={isHovered}
+            className="font-bold"
+            key={last.id}
+            href={`/${last.name}`}
+          >
             {last.name}
           </Link>{" "}
           liked your comment :{" "}

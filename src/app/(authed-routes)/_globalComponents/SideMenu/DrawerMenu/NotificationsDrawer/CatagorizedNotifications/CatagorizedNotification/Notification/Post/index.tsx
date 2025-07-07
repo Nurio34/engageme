@@ -10,11 +10,11 @@ function Post({
   postId,
   commentId,
 }: {
-  media: MediaInterface;
-  postId: string;
+  media?: MediaInterface;
+  postId?: string;
   commentId: string | undefined;
 }) {
-  const type = media.type;
+  const type = media?.type;
 
   const dispatch = useAppDispatch();
   const [isHovered, setIsHovered] = useState(false);
@@ -29,11 +29,16 @@ function Post({
     >
       {type === "image" ? (
         <figure className="relative w-11 aspect-square">
-          <Image src={media.url} alt="post" fill sizes="44px" />
+          <Image
+            src={media?.url || "./placeholders/avatar.webp"}
+            alt="post"
+            fill
+            sizes="44px"
+          />
         </figure>
       ) : (
         <video
-          src={media.url}
+          src={media?.url || "./placeholders/avatar.webp"}
           className="w-11 aspect-square overflow-hidden object-cover pointer-events-none"
         />
       )}

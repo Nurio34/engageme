@@ -77,8 +77,6 @@ const Client = () => {
       socketInstance.on(
         "followNotification",
         (notification: PrismaFollowNotification) => {
-          console.log("dispatch(addFollowNotification(notification));");
-
           dispatch(addFollowNotification(notification));
         }
       );

@@ -1,25 +1,24 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaPostType } from "../../../../../prisma/types/post";
+import { PrismaPostType } from "@/../prisma/types/post";
 
-export const getPosts = async (
-  skip: number,
-  variant?: string
+export const getFollowingsPosts = async (
+  skip: number
 ): Promise<{ status: "success" | "fail"; posts: PrismaPostType[] }> => {
   try {
     const user = await currentUser();
     // if (!user) return { status: "fail", posts: [] };
 
     const response = await fetch(
-      `${process.env.SITE_URL}/api/post?skip=${skip}&variant=${variant}`,
+      `${process.env.SITE_URL}/api/post/followingsPosts?skip=${skip}`,
       {
         headers: {
           "request-secret": process.env.REQUEST_SECRET!,
           "user-id": user?.id || "null",
         },
-        cache: "no-store",
+        cache: "force-cache",
         next: {
-          tags: ["posts"],
-          // revalidate: 60 * 15
+          tags: ["followingsPosts"],
+          revalidate: 60 * 15,
         },
       }
     );

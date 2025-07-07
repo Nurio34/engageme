@@ -8,14 +8,18 @@ import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/Suggest
 import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import StarOutlineInCircleIcon from "@/app/_globalComponents/Svg/StarOutlineInCircleIcon";
 import { SlUserFollow } from "react-icons/sl";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setSkip } from "@/store/slices/following";
 
 function PostsClient({
   recomendations,
 }: {
   recomendations: PrismaRecomendationType[];
 }) {
-  const { posts, variant, postsState, setPostsState, skip, setSkip } =
-    usePostsContext();
+  const { skip } = useAppSelector((s) => s.following);
+  const dispatch = useAppDispatch();
+
+  const { posts, variant, postsState, setPostsState } = usePostsContext();
 
   const isFetchingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,7 +37,7 @@ function PostsClient({
         isFetchingRef.current = true;
 
         const getPostsFN = async () => {
-          const { status, posts } = await getPostsAction(skip);
+          const { status, posts } = await getPostsAction(skip, variant);
 
           if (status === "fail") {
             timeoutRef.current = setTimeout(() => {
@@ -44,7 +48,7 @@ function PostsClient({
           }
 
           setPostsState((prev) => [...prev, ...posts]);
-          setSkip((prev) => prev + 1);
+          dispatch(setSkip(variant));
           isFetchingRef.current = false;
         };
 
@@ -57,7 +61,7 @@ function PostsClient({
       window.removeEventListener("scroll", handleScroll);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [skip]);
+  }, [skip, variant]);
 
   if (posts.length === 0)
     return (

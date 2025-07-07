@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addToFollowing, deleteFromFollowing } from "@/store/slices/following";
+import {
+  addToFollowing,
+  deleteFromFollowing,
+  resetSkip,
+} from "@/store/slices/following";
 import { useCallback, useEffect, useState } from "react";
 import { follow } from "../../../SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
 import toast from "react-hot-toast";
@@ -51,6 +55,7 @@ function ActionButtons({
       if (followNotificaionStatus === "fail" || !followNotificaion) return;
 
       socket?.emit("followNotification", followNotificaion);
+      dispatch(resetSkip());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");

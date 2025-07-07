@@ -20,7 +20,7 @@ function Recomendation({
       >
         <Avatar avatar={avatar} name={name} />
         <Name name={name} />
-        <Fullname fullname={fullname} />
+        <Fullname fullname={fullname} name={name} />
       </div>
       <FollowButton userId={userId} />
       <DontSuggestButton userId={userId} />

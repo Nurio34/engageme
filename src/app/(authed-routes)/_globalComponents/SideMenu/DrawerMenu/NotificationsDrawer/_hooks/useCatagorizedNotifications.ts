@@ -16,7 +16,6 @@ export const useCatagorizedNotifications = () => {
     replyCommentLikeNotifications,
     followNotifications,
   } = useAppSelector((s) => s.notifications);
-  console.log({ followNotifications });
 
   const [postLikeNotificationsState, setPostLikeNotificationsState] = useState<
     NotificationType[]
@@ -31,6 +30,9 @@ export const useCatagorizedNotifications = () => {
     replyCommentLikeNotificationsState,
     setReplyCommentLikeNotificationsState,
   ] = useState<NotificationType[]>([]);
+  const [followNotificationsState, setFollowNotificationsState] = useState<
+    NotificationType[]
+  >([]);
 
   const catagorizedNotifications = [
     ...postLikeNotificationsState,
@@ -38,6 +40,7 @@ export const useCatagorizedNotifications = () => {
     ...postCommentLikeNotificationsState,
     ...replyCommentNotificationsState,
     ...replyCommentLikeNotificationsState,
+    ...followNotificationsState,
   ]
     .sort(
       (a, b) =>
@@ -112,7 +115,7 @@ export const useCatagorizedNotifications = () => {
                       avatar: avatar || "./placeholders/avatar.webp",
                       userId,
                     },
-                    ...notifArr.users,
+                    ...notifArr.users!,
                   ],
                   createdAt,
                 }
@@ -176,7 +179,7 @@ export const useCatagorizedNotifications = () => {
                           avatar: avatar || "./placeholders/avatar.webp",
                           userId,
                         },
-                        ...notifArr.users,
+                        ...notifArr.users!,
                       ].map((user) => [user.userId, user])
                     ).values()
                   ),
@@ -241,7 +244,7 @@ export const useCatagorizedNotifications = () => {
                       avatar: avatar || "./placeholders/avatar.webp",
                       userId,
                     },
-                    ...notifArr.users,
+                    ...notifArr.users!,
                   ],
                   createdAt,
                 }
@@ -308,7 +311,7 @@ export const useCatagorizedNotifications = () => {
                           avatar: avatar || "./placeholders/avatar.webp",
                           userId,
                         },
-                        ...notifArr.users,
+                        ...notifArr.users!,
                       ].map((user) => [user.userId, user])
                     ).values()
                   ),
@@ -379,7 +382,7 @@ export const useCatagorizedNotifications = () => {
                           avatar: avatar || "./placeholders/avatar.webp",
                           userId,
                         },
-                        ...notifArr.users,
+                        ...notifArr.users!,
                       ].map((user) => [user.userId, user])
                     ).values()
                   ),
@@ -398,5 +401,23 @@ export const useCatagorizedNotifications = () => {
     setReplyCommentLikeNotificationsState(notifications);
   }, [replyCommentLikeNotifications]);
 
+  useEffect(() => {
+    setFollowNotificationsState(
+      followNotifications.map((notif) => {
+        const { createdAt, follow, user } = notif;
+        const { userId, name, avatar } = follow.follower;
+        const { following } = user;
+        const isFollowed = following.some((f) => f.followingId === userId);
+        return {
+          createdAt,
+          type: "followNotification",
+          users: [
+            { name, userId, avatar: avatar || "./placeholders/avatar.webp" },
+          ],
+          isFollowed,
+        };
+      })
+    );
+  }, [followNotifications]);
   return { catagorizedNotifications };
 };

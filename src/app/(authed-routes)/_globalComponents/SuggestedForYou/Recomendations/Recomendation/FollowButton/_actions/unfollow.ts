@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 
 export const unfollow = async (
   userId: string
@@ -36,5 +37,7 @@ export const unfollow = async (
       status: "fail",
       msg: "Unexpected error while unfollowing! Please try again..",
     };
+  } finally {
+    revalidateTag("followingsPosts");
   }
 };

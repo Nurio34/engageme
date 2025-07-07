@@ -1,22 +1,39 @@
-import { useCallback, useState } from "react";
-import { follow } from "./_actions/follow";
-import { unfollow } from "./_actions/unfollow";
-import toast from "react-hot-toast";
+import { follow } from "@/app/(authed-routes)/_globalComponents/SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/follow";
+import { sendFollowNotification } from "@/app/(authed-routes)/_globalComponents/SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/sendFollowNotification";
+import { unfollow } from "@/app/(authed-routes)/_globalComponents/SuggestedForYou/Recomendations/Recomendation/FollowButton/_actions/unfollow";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   addToFollowing,
   deleteFromFollowing,
   resetSkip,
 } from "@/store/slices/following";
-import { sendFollowNotification } from "./_actions/sendFollowNotification";
+import { togglePostSettingsModal } from "@/store/slices/modals";
+import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-function FollowButton({ userId }: { userId: string }) {
+function FollowButton({
+  userId,
+  followers,
+}: {
+  userId: string;
+  followers: {
+    followerId: string;
+  }[];
+}) {
   const { followings } = useAppSelector((s) => s.following);
   const { socket } = useAppSelector((s) => s.socket);
+  const { id } = useAppSelector((s) => s.user);
   const dispatch = useAppDispatch();
 
-  const isFollowing = followings.includes(userId);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isFollowed = followers.some((follower) => follower.followerId === id);
+
+  useEffect(() => {
+    if (isFollowed) dispatch(addToFollowing(userId));
+  }, [isFollowed]);
+
+  const isFollowing = followings.includes(userId);
 
   const followAction = useCallback(async () => {
     setIsLoading(true);
@@ -36,6 +53,7 @@ function FollowButton({ userId }: { userId: string }) {
 
       socket?.emit("followNotification", followNotificaion);
       dispatch(resetSkip());
+      dispatch(togglePostSettingsModal());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");
@@ -55,6 +73,8 @@ function FollowButton({ userId }: { userId: string }) {
         toast.error(msg);
         dispatch(addToFollowing(userId));
       }
+      dispatch(resetSkip());
+      dispatch(togglePostSettingsModal());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while unfollowing! Please try again.");
@@ -65,16 +85,24 @@ function FollowButton({ userId }: { userId: string }) {
   }, [userId, dispatch]);
 
   return (
-    <button
-      id={userId}
-      type="button"
-      className="w-full border-t text-center text-sm py-3 text-primary font-medium underline-offset-2 hover:underline"
-      onClick={isFollowing ? unfollowAction : followAction}
-      disabled={isLoading}
+    <li
+      className={`py-1 h-12 border-b
+      ${isFollowing ? "text-error font-bold" : ""}
+    `}
     >
-      {isFollowing ? "Following" : "Follow"}
-    </button>
+      <button
+        type="button"
+        className="w-full h-full flex justify-center items-center"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (isFollowing) unfollowAction();
+          else followAction();
+        }}
+        disabled={isLoading}
+      >
+        {isFollowing ? "Unfollow" : "Follow"}
+      </button>
+    </li>
   );
 }
-
 export default FollowButton;

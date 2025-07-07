@@ -25,7 +25,7 @@ function NameContainer({
         setIsContainerHovered={setIsContainerHovered}
         ScrollableContainerRef={ScrollableContainerRef}
       />
-      <Fullname fullname={recomendation.fullname} />
+      <Fullname fullname={recomendation.fullname} name={recomendation.name} />
       {path === "explore" && (
         <p className="text-xs font-normal leading-4 text-base-content/50">
           EngageMe Suggested

@@ -18,6 +18,7 @@ export type PrismaPostType = Post & {
     _count: {
       posts: number;
     };
+    followers: { followerId: string }[];
   };
   medias: PrismaMediaType[];
   location?: Location | null;

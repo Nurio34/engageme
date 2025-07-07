@@ -129,6 +129,14 @@ export const notificationsSlice = createSlice({
       state,
       action: PayloadAction<PrismaFollowNotification>
     ) => {
+      if (
+        state.followNotifications.some(
+          (notification) =>
+            notification.follow.followerId === action.payload.follow.followerId
+        )
+      )
+        return;
+
       state.followNotifications.push(action.payload);
     },
     resetNotifications: () => initialState,

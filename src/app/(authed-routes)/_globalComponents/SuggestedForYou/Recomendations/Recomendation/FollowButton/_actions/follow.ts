@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 
 export const follow = async (
   userId: string
@@ -32,5 +33,7 @@ export const follow = async (
       status: "fail",
       msg: "Unexpected error while following! Please try again..",
     };
+  } finally {
+    revalidateTag("followingsPosts");
   }
 };

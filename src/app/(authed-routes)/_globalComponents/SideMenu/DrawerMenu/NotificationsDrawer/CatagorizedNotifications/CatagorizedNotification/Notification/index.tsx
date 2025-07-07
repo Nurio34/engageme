@@ -4,8 +4,16 @@ import Post from "./Post";
 import Users from "./Users";
 
 function Notification({ notification }: { notification: NotificationType }) {
-  const { users, createdAt, type, comment, media, postId, commentId } =
-    notification;
+  const {
+    users,
+    createdAt,
+    type,
+    comment,
+    media,
+    postId,
+    commentId,
+    isFollowed,
+  } = notification;
 
   return (
     <li className="grid grid-cols-[58px,1fr,58px] items-center py-2">
@@ -15,8 +23,11 @@ function Notification({ notification }: { notification: NotificationType }) {
         createdAt={createdAt}
         type={type}
         comment={comment}
+        isFollowed={isFollowed}
       />
-      <Post media={media} postId={postId} commentId={commentId} />
+      {type !== "followNotification" && (
+        <Post media={media} postId={postId} commentId={commentId} />
+      )}
     </li>
   );
 }

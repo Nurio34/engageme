@@ -16,6 +16,16 @@ function Client() {
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
 
   useEffect(() => {
+    console.log({
+      isCreateModalOpen,
+      isWannaCloseCreateModalOpen,
+      isPickerOpen,
+      isOpen,
+      isDrawerMenuOpen,
+      isPostSettingsModalOpen,
+      isSuggestedForYouModalOpen,
+    });
+
     if (
       isCreateModalOpen ||
       isWannaCloseCreateModalOpen ||

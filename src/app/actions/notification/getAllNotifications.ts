@@ -105,7 +105,15 @@ export const getAllNotifications = async (): Promise<{
         },
         followNotifications: {
           include: {
-            user: true,
+            user: {
+              include: {
+                following: {
+                  select: {
+                    followingId: true,
+                  },
+                },
+              },
+            },
             follow: {
               include: {
                 follower: {

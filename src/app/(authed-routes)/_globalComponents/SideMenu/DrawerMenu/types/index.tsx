@@ -16,19 +16,21 @@ export type NotificationTypeInterface =
   | "postCommentNotification"
   | "commentLikeNotification"
   | "replyNotification"
-  | "replyLikeNotification";
+  | "replyLikeNotification"
+  | "followNotification";
 
 export type VariantType = "like" | "comment" | "follow";
 
 export type NotificationType = {
-  postId: string;
+  postId?: string;
   users: User[];
-  post: string;
+  post?: string;
   createdAt: Date;
   type: NotificationTypeInterface;
-  media: MediaInterface;
+  media?: MediaInterface;
   comment?: string;
   commentId?: string;
+  isFollowed?: boolean;
 };
 
 export type CatagorizedNotificationType = {

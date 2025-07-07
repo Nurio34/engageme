@@ -3,6 +3,7 @@ import Image from "next/image";
 
 function SwitchAccounts() {
   const { avatar, fullname, username } = useAppSelector((s) => s.user);
+  const isFullnameNull = fullname.split(" ").every((name) => name === "null");
 
   return (
     <div className="flex gap-x-3 items-center justify-center px-4">
@@ -12,7 +13,7 @@ function SwitchAccounts() {
       <div className="grow">
         <p className="text-sm font-semibold leading-[18px]">{username}</p>
         <p className="text-sm font-normal leading-[18px] text-base-content/70">
-          {fullname}
+          {isFullnameNull ? username : fullname}
         </p>
       </div>
       <button

@@ -1,4 +1,5 @@
 import { useAppDispatch } from "@/store/hooks";
+import { resetFollowings } from "@/store/slices/following";
 import { resetHomePage } from "@/store/slices/homePage";
 import { resetModals } from "@/store/slices/modals";
 import { resetNotifications } from "@/store/slices/notifications";
@@ -23,6 +24,7 @@ function Client() {
       dispatch(resetSidemenu());
       dispatch(clearSocket());
       dispatch(resetUser());
+      dispatch(resetFollowings());
     }
   }, [user, isSignedIn]);
 

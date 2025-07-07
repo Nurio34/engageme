@@ -33,6 +33,8 @@ model User {
   following                      Follow[] @relation("FollowerRelation")
   followers                      Follow[] @relation("FollowingRelation")
   followNotifications            FollowNotification[]
+  favoritesMade                  Favorite[] @relation("FavoritesMade")
+  favoritesReceived              Favorite[] @relation("FavoritesReceived")
   createdAt                      DateTime @default(now())
   updatedAt                      DateTime @updatedAt @default(now())
 }
@@ -287,4 +289,21 @@ model FollowNotification {
 
   followId  String
   follow    Follow              @relation(fields: [followId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+
+}
+
+model Favorite {
+  id          String   @id @default(cuid())
+
+  userId      String
+  user        User     @relation("FavoritesMade", fields: [userId], references: [userId], onDelete: Cascade)
+
+  favoriteId  String
+  favorite    User     @relation("FavoritesReceived", fields: [favoriteId], references: [userId], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, favoriteId])
 }

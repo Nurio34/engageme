@@ -1,23 +1,29 @@
 ## App
 
-    - SuggestedForYouList;
-        -- Avatar ve Username hover'da ProfileModal > visible
-
-    - InfoContainer ;
-        -- Avatar ve Username hover'da ProfileModal > visible
-
-    - CreatePost;
-        -- Userlar ekledikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+    - UserModal'ı yeniden yapılandır. Threadi blockluyor uzun süre
 
 ## Home Page
 
-    - Post üzerinde;
-        -- Header'daki user avatar hover'da ProfileModal > visible
-        -- Total likes altındaki username hover'da ProfileModal > visible
+    -
 
-    - Header'daki "Following" ve "Favorites" buttonları işlevselleştirilcek ve mobil görünümleri düzeltilcek.
+## Create Post
 
-## HomePage - Notifications
+    - Userlar ekledikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+
+## InfoContainer
+
+    - Hidden more comment'in "style" ile ilgili naapcağna karar ver.
+    - Yorumları silme özelliği ekle.
+    - InfoContainer, "/post/[id]" page'te açıkken, settingsten "go to post" butonunu kaldır.
+    - Benim postlarımın settings'lerinde extradan bir kaç buton daha var. Onları da ekle ve işlevselleştir.
+    - "Hide like and view counts" ve "Turn off commentings" propslarına göre postlara hem homepage'de hem InfoContainer'da ayar çek.
+    - Emoji'yi screen-size containerin üzerinde renderle ve containere tıkladığında emoji kapansın (better ux)
+    - "/home"da ve "/post/[id]" page'lerde comment action container'da
+        ** Emojinin yeri farklı
+        ** "/post/[id]"de extradan bir userAvatar var.
+    - Settings ( Diğer button fonksiyonlarını sırası geldikçe yap, yapmıcaklarını açık renk ve disabled yap.)
+
+## Notifications
 
     1. Comment, CommentLike, Reply veya ReplyLike notificationslarda post'u tıklaıdğında, ilgili commenti göster ve higlight et
 

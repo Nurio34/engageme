@@ -80,7 +80,9 @@ export type AllNotificationsType = {
 };
 
 export type PrismaFollowNotification = FollowNotification & {
-  user: User;
+  user: User & {
+    following: { followingId: string }[];
+  };
   follow: Follow & {
     follower: {
       userId: string;
