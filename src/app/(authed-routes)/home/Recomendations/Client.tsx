@@ -1,11 +1,11 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import SwitchAccounts from "./_components/SwitchAccounts";
 import SuggestedForYouContainer from "./_components/SuggestedForYouContainer";
 import Footer from "../../_globalComponents/Footer";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
-function RecomendationsClient({
+function Client({
   recomendations,
 }: {
   recomendations: PrismaRecomendationType[];
@@ -31,4 +31,4 @@ function RecomendationsClient({
     )
   );
 }
-export default RecomendationsClient;
+export default Client;

@@ -1,4 +1,4 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 import Footer from "../../_globalComponents/Footer";
 import SuggestedForYouList from "../../_globalComponents/SuggestedForYouList";
 

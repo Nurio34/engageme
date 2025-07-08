@@ -2,17 +2,15 @@ import Link from "next/link";
 import Header from "./Header";
 import Posts from "./Posts";
 import { getPosts } from "@/app/api/post/posts/handler/getPosts";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { getRecommendations } from "@/app/api/recomendation/handler/getRecomendations";
 import { PrismaPostType } from "../../../../../prisma/types/post";
 import { getFollowingsPosts } from "@/app/api/post/followingsPosts/handler";
 import { getFavoritesPosts } from "@/app/api/post/favoritesPosts/handler";
 
 async function PostsContainer({
   variant,
-  recomendations,
 }: {
   variant: string | undefined; //! undefined | "home" | "followings" | "favorites"
-  recomendations: PrismaRecomendationType[];
 }) {
   let postsState: PrismaPostType[] = [];
   let statusState: "success" | "fail" = "fail";
@@ -32,8 +30,14 @@ async function PostsContainer({
     statusState = status;
     postsState = posts;
   }
+  const { status: recomendationsStatus, recomendations } =
+    await getRecommendations();
 
-  if (statusState === "fail")
+  if (
+    statusState === "fail" ||
+    recomendationsStatus === "fail" ||
+    !recomendations
+  )
     return (
       <div>
         <p>There is an error</p>

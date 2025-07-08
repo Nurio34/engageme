@@ -1,6 +1,5 @@
 "use client";
 
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import {
   createContext,
   Dispatch,
@@ -12,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
 interface ContextType {
   maxWidth: number;

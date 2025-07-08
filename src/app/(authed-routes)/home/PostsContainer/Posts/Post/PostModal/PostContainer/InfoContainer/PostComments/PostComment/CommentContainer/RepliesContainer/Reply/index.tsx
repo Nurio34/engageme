@@ -11,6 +11,7 @@ import Name from "../../../../../_components/Name";
 import { useObserveVisibility } from "@/hooks/useObserveVisibility";
 import { RefObject, useState } from "react";
 import dynamic from "next/dynamic";
+import { PrismaRecomendationType } from "../../../../../../../../../../../../../../../prisma/types/recomendation";
 const UserModal = dynamic(
   () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
   {
@@ -32,6 +33,17 @@ function Reply({
 
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
+
+  const { userId, name, avatar, fullname, _count, posts, followers } = user;
+  const recomendation: PrismaRecomendationType = {
+    userId,
+    name,
+    avatar,
+    fullname,
+    _count,
+    posts,
+    followers,
+  };
 
   return (
     <li className="">
@@ -81,6 +93,7 @@ function Reply({
           userId={reply.userId}
           isContainerHovered={isContainerHovered}
           setIsContainerHovered={setIsContainerHovered}
+          recomendation={recomendation}
         />
       )}
     </li>

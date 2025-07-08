@@ -4,7 +4,7 @@ import { store } from "@/store";
 import { Provider } from "react-redux";
 import Client from "./Client";
 import { AllNotificationsType } from "../../../../../prisma/types/notification";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
 function ProviderComponent({
   allNotifications,

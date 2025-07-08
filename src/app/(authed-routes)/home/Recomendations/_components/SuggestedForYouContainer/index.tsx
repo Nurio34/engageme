@@ -1,8 +1,8 @@
 import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppDispatch } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import Link from "next/link";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function SuggestedForYouContainer({
   recomendations,

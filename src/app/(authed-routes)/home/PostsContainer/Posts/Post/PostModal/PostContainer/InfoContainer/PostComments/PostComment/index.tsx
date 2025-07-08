@@ -6,6 +6,7 @@ import RepliesContainer from "./CommentContainer/RepliesContainer";
 import LikeTheCommentButton from "./LikeTheCommentButton";
 import dynamic from "next/dynamic";
 import { RefObject, useState } from "react";
+import { PrismaRecomendationType } from "../../../../../../../../../../../../prisma/types/recomendation";
 
 const UserModal = dynamic(
   () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
@@ -24,6 +25,19 @@ function PostComment({
 }) {
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
+
+  const { user } = postComment;
+  const { userId, name, avatar, fullname, _count, posts, followers } = user;
+  const recomendation: PrismaRecomendationType = {
+    userId,
+    name,
+    avatar,
+    fullname,
+    _count,
+    posts,
+    followers,
+  };
+
   return (
     <li className="py-3">
       <div
@@ -51,6 +65,7 @@ function PostComment({
             userId={postComment.userId}
             isContainerHovered={isContainerHovered}
             setIsContainerHovered={setIsContainerHovered}
+            recomendation={recomendation}
           />
         )}
       </div>

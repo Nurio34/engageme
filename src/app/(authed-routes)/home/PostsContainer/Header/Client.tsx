@@ -2,7 +2,7 @@ import Variant from "./Variant";
 import Search from "./Search";
 import Notifications from "./Notifications";
 import { useEffect, useState } from "react";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function Client({
   recomendations,

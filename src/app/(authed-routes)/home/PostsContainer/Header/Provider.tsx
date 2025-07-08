@@ -3,7 +3,7 @@
 import { store } from "@/store";
 import { Provider } from "react-redux";
 import Client from "./Client";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function ProviderComponent({
   recomendations,

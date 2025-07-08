@@ -1,10 +1,10 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import dynamic from "next/dynamic";
 import Avatar from "./Avatar";
 import NameContainer from "./NameContainer";
 import FollowButton from "./FollowButton";
 import { RefObject, useState } from "react";
 import { InsideOfType } from "..";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 const UserModal = dynamic(() => import("../../UserModal"), {
   loading: () => null,
@@ -49,6 +49,7 @@ function Recomendation({
         userId={recomendation.userId}
         isContainerHovered={isContainerHovered}
         setIsContainerHovered={setIsContainerHovered}
+        recomendation={recomendation}
       />
     </li>
   );

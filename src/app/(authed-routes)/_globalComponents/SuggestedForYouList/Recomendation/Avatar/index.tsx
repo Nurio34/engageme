@@ -1,4 +1,3 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Image from "next/image";
 import {
   handleMouseEnter,
@@ -8,6 +7,7 @@ import { useAppDispatch } from "@/store/hooks";
 import Link from "next/link";
 import { InsideOfType } from "../..";
 import { Dispatch, RefObject, SetStateAction } from "react";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function Avatar({
   recomendation,
@@ -43,7 +43,7 @@ function Avatar({
       }}
     >
       <Image
-        src={recomendation.avatar}
+        src={recomendation.avatar || "/placeholders/avatar.webp"}
         fill
         alt={`Avatar of ${recomendation.name}`}
         className="object-cover"

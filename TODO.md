@@ -4,7 +4,7 @@
 
 ## Home Page
 
-    -
+    - Variant'ların mobil görünümlerini yap
 
 ## Create Post
 

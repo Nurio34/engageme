@@ -1,6 +1,6 @@
 "use client";
 
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 import Recomendation from "./Recomendation";
 import { RefObject } from "react";
 

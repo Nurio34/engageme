@@ -9,6 +9,7 @@ import TotalComments from "./TotalComments";
 import TotalLikes from "./TotalLikes";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 const PostModal = dynamic(() => import("./PostModal"), {
   loading: () => null,
@@ -26,6 +27,18 @@ const UserModal = dynamic(
 function Post({ index, post }: { index: number; post: PrismaPostType }) {
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
+
+  const { user } = post;
+  const { userId, name, avatar, fullname, _count, posts, followers } = user;
+  const recomendation: PrismaRecomendationType = {
+    userId,
+    name,
+    avatar,
+    fullname,
+    _count,
+    posts,
+    followers,
+  };
 
   return (
     <section ref={containerRef} className="w-full md:w-[468px] py-4 border-b-2">
@@ -47,6 +60,7 @@ function Post({ index, post }: { index: number; post: PrismaPostType }) {
           userId={post.userId}
           isContainerHovered={isContainerHovered}
           setIsContainerHovered={setIsContainerHovered}
+          recomendation={recomendation}
         />
       )}
     </section>

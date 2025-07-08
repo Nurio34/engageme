@@ -51,11 +51,75 @@ export const sendComment = async (
           comment,
         },
         include: {
-          user: true,
+          user: {
+            include: {
+              _count: {
+                select: {
+                  posts: true,
+                  following: true,
+                  followers: true,
+                },
+              },
+              posts: {
+                include: {
+                  medias: {
+                    take: 1,
+                  },
+                },
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 3,
+              },
+              followers: userId
+                ? {
+                    where: {
+                      followerId: userId,
+                    },
+                    select: {
+                      followerId: true,
+                    },
+                    take: 1,
+                  }
+                : false,
+            },
+          },
           likes: { include: { user: true } },
           replies: {
             include: {
-              user: true,
+              user: {
+                include: {
+                  _count: {
+                    select: {
+                      posts: true,
+                      following: true,
+                      followers: true,
+                    },
+                  },
+                  posts: {
+                    include: {
+                      medias: {
+                        take: 1,
+                      },
+                    },
+                    orderBy: {
+                      createdAt: "desc",
+                    },
+                    take: 3,
+                  },
+                  followers: userId
+                    ? {
+                        where: {
+                          followerId: userId,
+                        },
+                        select: {
+                          followerId: true,
+                        },
+                        take: 1,
+                      }
+                    : false,
+                },
+              },
               likes: { include: { user: true } },
             },
           },
@@ -86,7 +150,39 @@ export const sendComment = async (
             comment,
           },
           include: {
-            user: true,
+            user: {
+              include: {
+                _count: {
+                  select: {
+                    posts: true,
+                    following: true,
+                    followers: true,
+                  },
+                },
+                posts: {
+                  include: {
+                    medias: {
+                      take: 1,
+                    },
+                  },
+                  orderBy: {
+                    createdAt: "desc",
+                  },
+                  take: 3,
+                },
+                followers: userId
+                  ? {
+                      where: {
+                        followerId: userId,
+                      },
+                      select: {
+                        followerId: true,
+                      },
+                      take: 1,
+                    }
+                  : false,
+              },
+            },
             likes: { include: { user: true } },
           },
         });
@@ -116,7 +212,39 @@ export const sendComment = async (
             replyId,
           },
           include: {
-            user: true,
+            user: {
+              include: {
+                _count: {
+                  select: {
+                    posts: true,
+                    following: true,
+                    followers: true,
+                  },
+                },
+                posts: {
+                  include: {
+                    medias: {
+                      take: 1,
+                    },
+                  },
+                  orderBy: {
+                    createdAt: "desc",
+                  },
+                  take: 3,
+                },
+                followers: userId
+                  ? {
+                      where: {
+                        followerId: userId,
+                      },
+                      select: {
+                        followerId: true,
+                      },
+                      take: 1,
+                    }
+                  : false,
+              },
+            },
             likes: { include: { user: true } },
           },
         });

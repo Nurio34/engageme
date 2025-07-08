@@ -1,8 +1,8 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Name from "./Name";
 import Fullname from "./Fullname";
 import { InsideOfType } from "../..";
 import { Dispatch, RefObject, SetStateAction } from "react";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function NameContainer({
   recomendation,

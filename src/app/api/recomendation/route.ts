@@ -49,6 +49,29 @@ export async function GET(req: Request): Promise<NextResponse> {
         name: true,
         avatar: true,
         fullname: true,
+        _count: {
+          select: {
+            posts: true,
+            following: true,
+            followers: true,
+          },
+        },
+        posts: {
+          include: {
+            medias: {
+              take: 1,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 3,
+        },
+        followers: {
+          select: {
+            followerId: true,
+          },
+        },
       },
     });
 

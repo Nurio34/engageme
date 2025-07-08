@@ -53,6 +53,7 @@ function PostComments({
 
   useEffect(() => {
     if (postsState.length <= 0) return;
+
     const { comments } = postsState[0];
 
     if (sortBy === "For You")

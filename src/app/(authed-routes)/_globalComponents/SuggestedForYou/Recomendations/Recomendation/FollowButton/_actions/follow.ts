@@ -34,6 +34,9 @@ export const follow = async (
       msg: "Unexpected error while following! Please try again..",
     };
   } finally {
+    revalidateTag("posts");
     revalidateTag("followingsPosts");
+    revalidateTag("favoritesPosts");
+    revalidateTag("recomendations");
   }
 };

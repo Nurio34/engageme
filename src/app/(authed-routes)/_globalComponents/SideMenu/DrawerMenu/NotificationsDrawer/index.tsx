@@ -1,12 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCatagorizedNotifications } from "./_hooks/useCatagorizedNotifications";
 import CatagorizedNotifications from "./CatagorizedNotifications";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import SuggestedForYouList from "../../../SuggestedForYouList";
 import Link from "next/link";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/ActivityOnYourPostsIcon";
 import { useRef } from "react";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function NotificationsDrawer({
   navWidth,

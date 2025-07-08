@@ -1,6 +1,6 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Recomendation from "./Recomendation";
 import { useRecomendationsContext } from "../Context";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function Recomendations({
   recomendations,

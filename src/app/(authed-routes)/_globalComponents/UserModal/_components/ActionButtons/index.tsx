@@ -14,21 +14,11 @@ function ActionButtons({
   followers,
   userId,
 }: {
-  followers:
-    | Pick<
-        {
-          id: string;
-          createdAt: Date;
-          followerId: string;
-          followingId: string;
-        },
-        "followingId"
-      >[]
-    | undefined;
+  followers: {
+    followerId: string;
+  }[];
   userId: string;
 }) {
-  const isFollowingState = !!followers?.length;
-
   const { id } = useAppSelector((s) => s.user);
   const { socket } = useAppSelector((s) => s.socket);
   const { followings } = useAppSelector((s) => s.following);
@@ -37,6 +27,14 @@ function ActionButtons({
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const isFollowed = followers?.some(
+      (follower) => follower.followerId === id
+    );
+    if (isFollowed) dispatch(addToFollowing(userId));
+    else dispatch(deleteFromFollowing(userId));
+  }, [followers]);
 
   const followAction = useCallback(async () => {
     setIsLoading(true);
@@ -83,10 +81,6 @@ function ActionButtons({
       setIsLoading(false);
     }
   }, [userId, dispatch]);
-
-  useEffect(() => {
-    if (isFollowingState) dispatch(addToFollowing(userId));
-  }, [isFollowingState]);
 
   return (
     <div className="flex justify-center gap-x-4 items-center px-4">

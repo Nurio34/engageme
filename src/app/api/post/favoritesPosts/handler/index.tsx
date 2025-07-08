@@ -15,6 +15,7 @@ export const getFavoritesPosts = async (
           "request-secret": process.env.REQUEST_SECRET!,
           "user-id": user?.id || "null",
         },
+        //! uncomment these later
         cache: "force-cache",
         next: {
           tags: ["favoritesPosts"],

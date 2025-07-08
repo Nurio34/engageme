@@ -1,11 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
-
-export type PrismaRecomendationType = {
-  userId: string;
-  name: string;
-  avatar: string;
-  fullname: string;
-};
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
 export const getRecommendations = async (): Promise<{
   status: "success" | "fail";
@@ -20,10 +14,10 @@ export const getRecommendations = async (): Promise<{
         "request-secret": process.env.REQUEST_SECRET!,
         "user-id": user?.id || "",
       },
-      // cache: "force-cache",
+      cache: "force-cache",
       next: {
         tags: ["recomendations"],
-        //  revalidate: 60 * 60
+        revalidate: 60 * 15,
       },
     });
 

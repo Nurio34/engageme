@@ -1,4 +1,4 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 import ProviderComponent from "./Provider";
 
 function Header({

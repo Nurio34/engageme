@@ -7,8 +7,8 @@ import { useEffect, useRef } from "react";
 import CatagorizedNotifications from "./CatagorizedNotifications";
 import ActivityOnYourPostsIcon from "@/app/_globalComponents/Svg/ActivityOnYourPostsIcon";
 import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Link from "next/link";
+import { PrismaRecomendationType } from "../../../../../../../../prisma/types/recomendation";
 
 function NotificationsDrawer({
   recomendations,

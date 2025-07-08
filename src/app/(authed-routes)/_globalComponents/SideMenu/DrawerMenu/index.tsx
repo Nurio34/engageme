@@ -5,7 +5,7 @@ import NotificationsDrawer from "./NotificationsDrawer";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function DrawerMenu({
   navWidth,

@@ -23,9 +23,9 @@ function PostModal({ post }: { post: PrismaPostType }) {
     isOpen && (
       <div
         className={`fixed z-10 top-0 left-0 w-screen h-screen bg-base-content/70
-          flex justify-start lg:justify-center items-start lg:items-center overflow-auto
+          flex justify-start lg:justify-center items-start lg:items-center overflow-hidden
           ${isFading || (x === 0 && y === 0) ? "transition-transform" : ""}
-          ${isDragging || isFading ? "overflow-hidden opacity-70" : ""}
+          ${isDragging || isFading ? "opacity-70" : ""}
         `}
         style={{
           transform: `translate(${x}px,${y}px)`,

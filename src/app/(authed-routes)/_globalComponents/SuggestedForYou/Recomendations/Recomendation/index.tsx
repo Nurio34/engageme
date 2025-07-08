@@ -1,9 +1,9 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import Avatar from "./Avatar";
 import Name from "./Name";
 import FollowButton from "./FollowButton";
 import DontSuggestButton from "./DontSuggestButton";
 import Fullname from "./Fullname";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function Recomendation({
   recomendation,

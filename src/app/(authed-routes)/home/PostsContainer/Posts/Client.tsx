@@ -5,11 +5,11 @@ import { usePostsContext } from "./Context";
 import { useEffect, useRef } from "react";
 import { getPostsAction } from "./actions/getPostsAction";
 import SuggestedForYouList from "@/app/(authed-routes)/_globalComponents/SuggestedForYouList";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import StarOutlineInCircleIcon from "@/app/_globalComponents/Svg/StarOutlineInCircleIcon";
 import { SlUserFollow } from "react-icons/sl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSkip } from "@/store/slices/following";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function PostsClient({
   recomendations,

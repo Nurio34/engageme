@@ -13,6 +13,7 @@ import Avatar from "./_components/Avatar";
 import CreatedAt from "./_components/CreatedAt";
 import { useObserveVisibility } from "@/hooks/useObserveVisibility";
 import dynamic from "next/dynamic";
+import { PrismaRecomendationType } from "../../../../../../../../../../prisma/types/recomendation";
 
 const UserModal = dynamic(
   () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
@@ -33,6 +34,17 @@ function InfoContainer({ post, page }: { post: PrismaPostType; page: string }) {
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
 
+  const { user } = post;
+  const { userId, name, avatar, fullname, _count, posts, followers } = user;
+  const recomendation: PrismaRecomendationType = {
+    userId,
+    name,
+    avatar,
+    fullname,
+    _count,
+    posts,
+    followers,
+  };
   return (
     <InfoContainerContextProvider post={post} page={page}>
       <div
@@ -93,6 +105,7 @@ function InfoContainer({ post, page }: { post: PrismaPostType; page: string }) {
           userId={post.userId}
           isContainerHovered={isContainerHovered}
           setIsContainerHovered={setIsContainerHovered}
+          recomendation={recomendation}
         />
       )}
     </InfoContainerContextProvider>

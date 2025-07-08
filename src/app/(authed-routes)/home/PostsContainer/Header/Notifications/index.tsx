@@ -16,7 +16,7 @@ import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
 import NotificationsIndicator from "./NotificationsIndicator";
 import NotificationsDrawer from "./NotificationsDrawer";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../../prisma/types/recomendation";
 
 function Notifications({
   recomendations,

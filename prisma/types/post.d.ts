@@ -17,7 +17,12 @@ export type PrismaPostType = Post & {
   user: User & {
     _count: {
       posts: number;
+      following: number;
+      followers: number;
     };
+    posts: (Post & {
+      medias: Media[];
+    })[];
     followers: { followerId: string }[];
   };
   medias: PrismaMediaType[];
@@ -37,7 +42,17 @@ export type PrismaMediaType = Media & {
 };
 
 export type PrismaPostCommentType = PostComment & {
-  user: User;
+  user: User & {
+    _count: {
+      posts: number;
+      following: number;
+      followers: number;
+    };
+    posts: (Post & {
+      medias: Media[];
+    })[];
+    followers: { followerId: string }[];
+  };
   likes: PrismaCommentLikeType[];
   replies: PrismaReplyCommentType[];
 };
@@ -47,7 +62,17 @@ export type PrismaCommentLikeType = PostCommentLike & {
 };
 
 export type PrismaReplyCommentType = ReplyComment & {
-  user: User;
+  user: User & {
+    _count: {
+      posts: number;
+      following: number;
+      followers: number;
+    };
+    posts: (Post & {
+      medias: Media[];
+    })[];
+    followers: { followerId: string }[];
+  };
   likes: PrismaReplyLikeType[];
 };
 

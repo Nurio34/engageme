@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "@/store";
 import { PostsProvider } from "./Context";
 import PostsClient from "./Client";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function Posts({
   posts,

@@ -1,8 +1,8 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleSuggestedForYouModalOpen } from "@/store/slices/modals";
 import Modal from "./Modal";
 import { useEffect, useRef, useState } from "react";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
 function Client({
   recomendations,

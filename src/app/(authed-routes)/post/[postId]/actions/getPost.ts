@@ -15,10 +15,25 @@ export const getPost = async (
             _count: {
               select: {
                 posts: true,
+                following: true,
+                followers: true,
               },
             },
+            posts: {
+              include: {
+                medias: {
+                  take: 1,
+                },
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 3,
+            },
             followers: {
-              select: { followerId: true },
+              select: {
+                followerId: true,
+              },
             },
           },
         },
@@ -37,7 +52,33 @@ export const getPost = async (
         },
         comments: {
           include: {
-            user: true,
+            user: {
+              include: {
+                _count: {
+                  select: {
+                    posts: true,
+                    following: true,
+                    followers: true,
+                  },
+                },
+                posts: {
+                  include: {
+                    medias: {
+                      take: 1,
+                    },
+                  },
+                  orderBy: {
+                    createdAt: "desc",
+                  },
+                  take: 3,
+                },
+                followers: {
+                  select: {
+                    followerId: true,
+                  },
+                },
+              },
+            },
             likes: {
               include: {
                 user: true,
@@ -50,7 +91,33 @@ export const getPost = async (
                     user: true,
                   },
                 },
-                user: true,
+                user: {
+                  include: {
+                    _count: {
+                      select: {
+                        posts: true,
+                        following: true,
+                        followers: true,
+                      },
+                    },
+                    posts: {
+                      include: {
+                        medias: {
+                          take: 1,
+                        },
+                      },
+                      orderBy: {
+                        createdAt: "desc",
+                      },
+                      take: 3,
+                    },
+                    followers: {
+                      select: {
+                        followerId: true,
+                      },
+                    },
+                  },
+                },
               },
               orderBy: {
                 createdAt: "asc",

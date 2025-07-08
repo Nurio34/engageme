@@ -1,9 +1,9 @@
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import DiscoverMoreAccounts from "./DiscoverMoreAccounts";
 import SuggestedForYouList from "../../SuggestedForYouList";
+import { PrismaRecomendationType } from "../../../../../../prisma/types/recomendation";
 
 function Modal({
   recomendations,

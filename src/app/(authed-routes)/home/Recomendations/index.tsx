@@ -1,20 +1,12 @@
-"use client";
+import { getRecommendations } from "@/app/api/recomendation/handler/getRecomendations";
+import ProviderComponent from "./Provider";
 
-import { Provider } from "react-redux";
-import { store } from "@/store";
-import RecomendationsClient from "./Client";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+async function Recomendations() {
+  const { status, recomendations } = await getRecommendations();
 
-function Recomendations({
-  recomendations,
-}: {
-  recomendations: PrismaRecomendationType[];
-}) {
-  return (
-    <Provider store={store}>
-      <RecomendationsClient recomendations={recomendations} />
-    </Provider>
-  );
+  if (status === "fail" || !recomendations) return <div>Error</div>;
+
+  return <ProviderComponent recomendations={recomendations} />;
 }
 
 export default Recomendations;

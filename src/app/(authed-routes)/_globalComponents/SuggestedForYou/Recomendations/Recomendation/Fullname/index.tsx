@@ -1,5 +1,12 @@
-function Fullname({ fullname, name }: { fullname: string; name: string }) {
-  const isFullnameNull = fullname.split(" ").every((name) => name === "null");
+function Fullname({
+  fullname,
+  name,
+}: {
+  fullname: string | null;
+  name: string;
+}) {
+  const isFullnameNull =
+    !fullname || fullname.split(" ").every((name) => name === "null");
 
   //! this will be full name
   return (

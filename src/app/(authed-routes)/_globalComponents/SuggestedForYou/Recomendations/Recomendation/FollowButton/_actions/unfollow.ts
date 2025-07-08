@@ -38,6 +38,9 @@ export const unfollow = async (
       msg: "Unexpected error while unfollowing! Please try again..",
     };
   } finally {
+    revalidateTag("posts");
     revalidateTag("followingsPosts");
+    revalidateTag("favoritesPosts");
+    revalidateTag("recomendations");
   }
 };

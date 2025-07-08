@@ -22,7 +22,7 @@ import {
   setPostLikeNotifications,
   setFollowNotifications,
 } from "@/store/slices/notifications";
-import { PrismaRecomendationType } from "@/app/api/recomendation/handler/getRecomendations";
+import { PrismaRecomendationType } from "../../../../../prisma/types/recomendation";
 
 export type MenuType = {
   name: string;

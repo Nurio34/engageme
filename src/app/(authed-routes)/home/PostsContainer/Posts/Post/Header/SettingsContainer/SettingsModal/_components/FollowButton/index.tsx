@@ -20,20 +20,21 @@ function FollowButton({
     followerId: string;
   }[];
 }) {
-  const { followings } = useAppSelector((s) => s.following);
-  const { socket } = useAppSelector((s) => s.socket);
   const { id } = useAppSelector((s) => s.user);
+  const { socket } = useAppSelector((s) => s.socket);
+  const { followings } = useAppSelector((s) => s.following);
+  const isFollowing = followings.includes(userId);
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const isFollowed = followers.some((follower) => follower.followerId === id);
-
   useEffect(() => {
+    const isFollowed = followers?.some(
+      (follower) => follower.followerId === id
+    );
     if (isFollowed) dispatch(addToFollowing(userId));
-  }, [isFollowed]);
-
-  const isFollowing = followings.includes(userId);
+    else dispatch(deleteFromFollowing(userId));
+  }, [followers]);
 
   const followAction = useCallback(async () => {
     setIsLoading(true);
@@ -53,6 +54,7 @@ function FollowButton({
 
       socket?.emit("followNotification", followNotificaion);
       dispatch(resetSkip());
+      // if (isPostSettingsModalOpen) dispatch(togglePostSettingsModal());
       dispatch(togglePostSettingsModal());
     } catch (error) {
       console.error(error);
@@ -74,7 +76,7 @@ function FollowButton({
         dispatch(addToFollowing(userId));
       }
       dispatch(resetSkip());
-      dispatch(togglePostSettingsModal());
+      // dispatch(togglePostSettingsModal());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while unfollowing! Please try again.");
