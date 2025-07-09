@@ -59,7 +59,7 @@ function MediasSlide({
         const { type } = media;
 
         return type === "image" ? (
-          <ImageMedia key={media.id} index={index} media={media} />
+          <ImageMedia key={media.id} index={index} ind={ind} media={media} />
         ) : (
           <VideoMedia
             key={media.id}

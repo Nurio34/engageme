@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { usePostContext } from "@/app/(authed-routes)/post/[postId]/_components/PostContainer/Context";
 import { PrismaMediaType } from "../../../../../../../../../../../../prisma/types/post";
 
-function ImageMedia({ media }: { media: PrismaMediaType }) {
+function ImageMedia({
+  media,
+  index,
+}: {
+  media: PrismaMediaType;
+  index: number;
+}) {
   const { width, height, url, altText } = media;
   const aspectRatio = width! / height!;
 
@@ -33,7 +39,7 @@ function ImageMedia({ media }: { media: PrismaMediaType }) {
           fill
           alt={altText || "image"}
           sizes={`(max-width: 768px) 100vw ${liSize.w}px`}
-          priority
+          priority={index === 0}
         />
       </figure>
     </li>

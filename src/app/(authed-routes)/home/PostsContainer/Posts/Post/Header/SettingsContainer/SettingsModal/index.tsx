@@ -1,5 +1,5 @@
-import { useAppDispatch } from "@/store/hooks";
-import { togglePostSettingsModal } from "@/store/slices/modals";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { closePostSettingsModal } from "@/store/slices/modals";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
@@ -7,6 +7,7 @@ import { started } from "@/store/slices/routing";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import FollowButton from "./_components/FollowButton";
 import AddFavoritesButton from "./_components/AddFavoritesButton";
+import { usePathname } from "next/navigation";
 
 function SettingsModal({
   isModelOpen,
@@ -20,10 +21,16 @@ function SettingsModal({
   const { id: postId, userId, user } = post;
   const { followers } = user;
 
+  const { id } = useAppSelector((s) => s.user);
   const dispatch = useAppDispatch();
 
   const [isRender, setIsRender] = useState(!isModelOpen);
   const timeout = useRef<NodeJS.Timeout>(null);
+
+  const path = usePathname();
+  const isPostPage = path.includes("post");
+  const isSelfPost = id === userId;
+  console.log({ isSelfPost });
 
   useEffect(() => {
     if (isModelOpen) setIsRender(true);
@@ -39,7 +46,8 @@ function SettingsModal({
       className="fixed z-10 top-0 left-0 bg-base-content/70 w-screen h-screen overflow-hidden"
       onClick={() => {
         setIsModelOpen(false);
-        dispatch(togglePostSettingsModal());
+        dispatch(closePostSettingsModal());
+        history.back();
       }}
     >
       <ul
@@ -48,32 +56,98 @@ function SettingsModal({
             ${isRender ? "opacity-100 scale-100" : "opacity-0 scale-90"}
         `}
       >
-        <li className="py-1 h-12 text-error font-bold border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Report xx
-          </button>
-        </li>
-        <FollowButton userId={userId} followers={followers} />
-        <AddFavoritesButton />
-        <li className="py-1 h-12  border-b">
-          <Link
-            href={`/post/${postId}`}
-            className="w-full h-full flex justify-center items-center"
-            onClick={() => {
-              dispatch(started());
-              dispatch(setCurrentMenu(""));
-            }}
-            prefetch={true}
-          >
-            Go to post
-          </Link>
-        </li>
+        {isSelfPost && (
+          <li className="py-1 h-12 text-error font-bold border-b">
+            <button
+              type="button"
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Delete xx
+            </button>
+          </li>
+        )}
+        {isSelfPost && (
+          <li className="py-1 h-12 border-b">
+            <button
+              type="button"
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Edit xx
+            </button>
+          </li>
+        )}
+        {isSelfPost && (
+          <li className="py-1 h-12 border-b">
+            <button
+              type="button"
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Hide like count to others xx
+            </button>
+          </li>
+        )}
+        {isSelfPost && (
+          <li className="py-1 h-12 border-b">
+            <button
+              type="button"
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Turn off commenting xx
+            </button>
+          </li>
+        )}
+        {isSelfPost ? (
+          <div hidden />
+        ) : (
+          <li className="py-1 h-12 text-error font-bold border-b">
+            <button
+              type="button"
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Report xx
+            </button>
+          </li>
+        )}
+        {isSelfPost ? (
+          <div hidden />
+        ) : (
+          <FollowButton userId={userId} followers={followers} />
+        )}
+        {isSelfPost ? <div hidden /> : <AddFavoritesButton />}
+        {isPostPage ? (
+          <div hidden />
+        ) : (
+          <li className="py-1 h-12  border-b">
+            <Link
+              href={`/post/${postId}`}
+              className="w-full h-full flex justify-center items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(started());
+                dispatch(setCurrentMenu(""));
+                dispatch(closePostSettingsModal());
+              }}
+              prefetch={true}
+            >
+              Go to post
+            </Link>
+          </li>
+        )}
         <li className="py-1 h-12 border-b">
           <button
             type="button"
@@ -122,8 +196,7 @@ function SettingsModal({
           <button
             type="button"
             className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               setIsRender(false);
               setIsModelOpen(false);
             }}

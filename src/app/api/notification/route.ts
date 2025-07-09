@@ -1,21 +1,22 @@
-"use server";
-
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { AllNotificationsType } from "../../../../prisma/types/notification";
+import { NextResponse } from "next/server";
 
-export const getAllNotifications = async (): Promise<{
-  status: "success" | "fail";
-  allNotifications?: AllNotificationsType;
-}> => {
-  console.log("getAllNotifications()...");
+export async function GET(req: Request): Promise<NextResponse> {
+  console.log("getNotifications()...");
+
+  const requestSecret = req.headers.get("request-secret");
+  const userId = req.headers.get("user-id");
+
+  if (!requestSecret || requestSecret !== process.env.REQUEST_SECRET) {
+    return NextResponse.json({ status: "fail" }, { status: 401 });
+  }
+
   try {
-    const user = await currentUser();
-    // if (!user) return { status: "fail" };
-    if (!user) return { status: "success" };
+    if (userId === "null" || !userId)
+      return NextResponse.json({ status: "success" }, { status: 200 });
 
     const allNotifications = await prisma.user.findUnique({
-      where: { userId: user?.id },
+      where: { userId },
       select: {
         postLikeNotifications: {
           include: {
@@ -130,11 +131,15 @@ export const getAllNotifications = async (): Promise<{
       },
     });
 
-    if (!allNotifications) return { status: "fail" };
+    if (!allNotifications)
+      return NextResponse.json({ status: "fail" }, { status: 404 });
 
-    return { status: "success", allNotifications };
+    return NextResponse.json(
+      { status: "success", msg: "Success!", allNotifications },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log(error);
-    return { status: "fail" };
+    console.error(error);
+    return NextResponse.json({ status: "fail" }, { status: 500 });
   }
-};
+}

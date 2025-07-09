@@ -6,7 +6,7 @@ function Media({ index, media }: { index: number; media: PrismaMediaType }) {
   const { type } = media;
 
   return type === "image" ? (
-    <ImageMedia media={media} />
+    <ImageMedia media={media} index={index} />
   ) : (
     <VideoMedia index={index} media={media} />
   );

@@ -10,7 +10,7 @@ const Chevron = ({
   return (
     <svg
       aria-label="Down chevron icon"
-      className="fill-current transition-transform aspect-square"
+      className="fill-current transition-transform duration-[400ms] aspect-square"
       style={{ transform: `rotate(${rotate}deg)`, width: size ? size * 4 : 16 }}
       role="img"
       viewBox="0 0 24 24"

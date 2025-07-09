@@ -1,27 +1,29 @@
 ## App
 
-    - UserModal'ı yeniden yapılandır. Threadi blockluyor uzun süre
+    -
 
 ## Home Page
 
-    - Variant'ların mobil görünümlerini yap
+    -
 
 ## Create Post
 
-    - Userlar ekledikten sonra "Add Collaborators" ve "Tag" özellkilerini ekle.
+    - "Add Colloborators" butonu diabled(görsel ve işlevsel olarak) yap.
 
 ## InfoContainer
 
-    - Hidden more comment'in "style" ile ilgili naapcağna karar ver.
+    - SettingsContainer
+        ** Copy Link butonu işlevselleştir.
+        ** Add to Favorites butonu işlevselleştir.
+        ** Delete butonu işlevselleştir.
+        ** "Hide like count to others" butonu işlevselleştir.
+        ** "Turn off commenting" butonu işlevselleştir.
+        ** Edit butonu işlevselleştir.
+        ** Diğer butonları da yeri gelince işlevselleştir ya da disabled(görsel ve işlevsel olarak) yap.
+
     - Yorumları silme özelliği ekle.
-    - InfoContainer, "/post/[id]" page'te açıkken, settingsten "go to post" butonunu kaldır.
-    - Benim postlarımın settings'lerinde extradan bir kaç buton daha var. Onları da ekle ve işlevselleştir.
-    - "Hide like and view counts" ve "Turn off commentings" propslarına göre postlara hem homepage'de hem InfoContainer'da ayar çek.
-    - Emoji'yi screen-size containerin üzerinde renderle ve containere tıkladığında emoji kapansın (better ux)
-    - "/home"da ve "/post/[id]" page'lerde comment action container'da
-        ** Emojinin yeri farklı
-        ** "/post/[id]"de extradan bir userAvatar var.
-    - Settings ( Diğer button fonksiyonlarını sırası geldikçe yap, yapmıcaklarını açık renk ve disabled yap.)
+
+    - Save butonu işlevselleştir.
 
 ## Notifications
 

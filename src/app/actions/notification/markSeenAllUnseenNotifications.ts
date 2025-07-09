@@ -3,12 +3,14 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import {
+  PrismaFollowNotification,
   PrismaPostCommentLikeNotificationType,
   PrismaPostCommentNotificationType,
   PrismaPostLikeNotificationType,
   PrismaReplyLikeNotificationType,
   PrismaReplyNotificationType,
 } from "../../../../prisma/types/notification";
+import { revalidateTag } from "next/cache";
 
 export const markSeenAllUnseenNotifications = async (
   userId: string,
@@ -16,7 +18,8 @@ export const markSeenAllUnseenNotifications = async (
   postCommentNotifications?: PrismaPostCommentNotificationType[],
   postCommentLikeNotifications?: PrismaPostCommentLikeNotificationType[],
   replyCommentNotifications?: PrismaReplyNotificationType[],
-  replyCommentLikeNotifications?: PrismaReplyLikeNotificationType[]
+  replyCommentLikeNotifications?: PrismaReplyLikeNotificationType[],
+  followNotifications?: PrismaFollowNotification[]
 ) => {
   try {
     const user = await currentUser();
@@ -90,9 +93,22 @@ export const markSeenAllUnseenNotifications = async (
         })
       );
     }
+    if (followNotifications && followNotifications.length > 0) {
+      updates.push(
+        prisma.followNotification.updateMany({
+          where: {
+            id: { in: followNotifications.map((n) => n.id) },
+            isSeen: false,
+          },
+          data: { isSeen: true },
+        })
+      );
+    }
 
     await prisma.$transaction(updates);
   } catch (error) {
     console.log(error);
+  } finally {
+    revalidateTag("notifications");
   }
 };

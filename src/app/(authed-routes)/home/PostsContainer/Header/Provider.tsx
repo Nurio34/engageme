@@ -7,12 +7,14 @@ import { PrismaRecomendationType } from "../../../../../../prisma/types/recomend
 
 function ProviderComponent({
   recomendations,
+  variant,
 }: {
   recomendations: PrismaRecomendationType[];
+  variant: string | undefined;
 }) {
   return (
     <Provider store={store}>
-      <Client recomendations={recomendations} />
+      <Client recomendations={recomendations} variant={variant} />
     </Provider>
   );
 }

@@ -1,10 +1,10 @@
-import { getAllNotifications } from "@/app/actions/notification/getAllNotifications";
 import ProviderComponent from "./Provider";
 import { getRecommendations } from "@/app/api/recomendation/handler/getRecomendations";
+import { getNotifications } from "@/app/api/notification/handler";
 
 async function SideMenu() {
   const { status: notificationsStatus, allNotifications } =
-    await getAllNotifications();
+    await getNotifications();
   const { status: recomendationsStatus, recomendations } =
     await getRecommendations();
 

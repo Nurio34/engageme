@@ -4,6 +4,8 @@ import { PrismaPostCommentType } from "../../../../../../../../../../../../../pr
 import CreatedAt from "../../../_components/CreatedAt";
 import Name from "../../../_components/Name";
 import { Dispatch, RefObject, SetStateAction } from "react";
+import { BsThreeDots } from "react-icons/bs";
+import { useAppSelector } from "@/store/hooks";
 
 function CommentContainer({
   postComment,
@@ -15,6 +17,9 @@ function CommentContainer({
   ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
   const { user, comment, likes, id } = postComment;
+  const { id: userId } = useAppSelector((s) => s.user);
+
+  const isSelfComment = user.userId === userId;
 
   return (
     <div className="overflow-auto">
@@ -37,6 +42,11 @@ function CommentContainer({
           name={user.name}
           isReplyToReply={false}
         />
+        {isSelfComment && (
+          <button type="button">
+            <BsThreeDots />
+          </button>
+        )}
       </div>
     </div>
   );

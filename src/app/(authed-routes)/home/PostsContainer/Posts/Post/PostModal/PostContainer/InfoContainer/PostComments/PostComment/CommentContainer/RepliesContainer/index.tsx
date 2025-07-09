@@ -23,9 +23,7 @@ function RepliesContainer({
   const { repliedCommentId } = useInfoContext();
 
   const [isRepliesVisible, setIsRepliesVisible] = useState(false);
-  const { isMounted, style } = useAnimatedMount(isRepliesVisible, "scaleY");
-  //! uncomment for eslint
-  console.log(`ı dont know what to do with this style:${style}`);
+  const { isMounted } = useAnimatedMount(isRepliesVisible, "scaleY");
 
   const [shownReplies, setShownReplies] = useState<PrismaReplyCommentType[]>(
     []
@@ -53,10 +51,7 @@ function RepliesContainer({
         </div>
         {isMounted && (
           <>
-            <ul
-              className="my-4 space-y-4 transition-all"
-              // style={{ ...style, zIndex: 100 }}
-            >
+            <ul className="my-4 space-y-4 transition-all">
               {shownReplies.map((reply) => (
                 <Reply
                   key={reply.id}

@@ -7,7 +7,7 @@ import {
   deleteFromFollowing,
   resetSkip,
 } from "@/store/slices/following";
-import { togglePostSettingsModal } from "@/store/slices/modals";
+import { closePostSettingsModal } from "@/store/slices/modals";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -47,6 +47,8 @@ function FollowButton({
         dispatch(deleteFromFollowing(userId));
         return;
       }
+      dispatch(closePostSettingsModal());
+      history.back();
 
       const { status: followNotificaionStatus, followNotificaion } =
         await sendFollowNotification(userId, followId);
@@ -54,8 +56,6 @@ function FollowButton({
 
       socket?.emit("followNotification", followNotificaion);
       dispatch(resetSkip());
-      // if (isPostSettingsModalOpen) dispatch(togglePostSettingsModal());
-      dispatch(togglePostSettingsModal());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");
@@ -76,7 +76,8 @@ function FollowButton({
         dispatch(addToFollowing(userId));
       }
       dispatch(resetSkip());
-      // dispatch(togglePostSettingsModal());
+      dispatch(closePostSettingsModal());
+      history.back();
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while unfollowing! Please try again.");

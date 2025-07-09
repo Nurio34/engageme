@@ -16,6 +16,7 @@ export const useNotificationIndicator = () => {
     postCommentLikeNotifications,
     replyCommentNotifications,
     replyCommentLikeNotifications,
+    followNotifications,
   } = useAppSelector((s) => s.notifications);
 
   const [notificationIndicator, setNotificationIndicator] =
@@ -32,6 +33,7 @@ export const useNotificationIndicator = () => {
       ...postCommentLikeNotifications,
       ...replyCommentNotifications,
       ...replyCommentLikeNotifications,
+      ...followNotifications,
     ];
 
     // Accumulate counts using reduce
@@ -56,6 +58,7 @@ export const useNotificationIndicator = () => {
     postCommentLikeNotifications,
     replyCommentNotifications,
     replyCommentLikeNotifications,
+    followNotifications,
   ]);
 
   useEffect(() => {

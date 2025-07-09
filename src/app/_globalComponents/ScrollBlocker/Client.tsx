@@ -15,6 +15,9 @@ function Client() {
 
   const { isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
 
+  const { device } = useAppSelector((s) => s.modals);
+  const isMobile = device.type === "mobile";
+
   useEffect(() => {
     console.log({
       isCreateModalOpen,
@@ -36,7 +39,8 @@ function Client() {
       isSuggestedForYouModalOpen
     ) {
       document.body.style.overflow = "hidden";
-      document.body.style.marginInlineEnd = "16px";
+      if (isMobile) document.body.style.marginInlineEnd = "0px";
+      else document.body.style.marginInlineEnd = "14px";
     } else {
       document.body.style.overflow = "auto";
       document.body.style.marginInlineEnd = "0px";
@@ -49,6 +53,7 @@ function Client() {
     isDrawerMenuOpen,
     isPostSettingsModalOpen,
     isSuggestedForYouModalOpen,
+    isMobile,
   ]);
 
   return <div hidden />;

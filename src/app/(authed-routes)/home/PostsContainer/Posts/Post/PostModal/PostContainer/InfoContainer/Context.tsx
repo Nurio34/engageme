@@ -149,9 +149,6 @@ export const InfoContainerContextProvider = ({
 
   //! *** push history state when "isPostModalOpen === true" ( for mobile native back button manipulation ) ***
   useEffect(() => {
-    if (isPostModalOpen)
-      history.pushState({ isPostModalOpen: true }, "", window.location.href);
-
     const handlePopState = () =>
       dispatch(setPostModal({ isOpen: false, postId: "" }));
 

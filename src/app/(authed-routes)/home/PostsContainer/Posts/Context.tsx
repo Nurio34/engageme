@@ -23,7 +23,6 @@ import { usePostComment } from "./_hooks/usePostComment";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
 import { useReply } from "./_hooks/useReply";
-import { setPostModal } from "@/store/slices/homePage";
 import { resetSkip } from "@/store/slices/following";
 
 export type CommentReplyType = {
@@ -153,17 +152,14 @@ export const PostsProvider = ({
   } = useReply(setPostsState, userId, postsState);
 
   //! *** push history state when "isPostModalOpen === true" ( for mobile native back button manipulation ) ***
-  useEffect(() => {
-    if (isPostModalOpen)
-      history.pushState({ isPostModalOpen: true }, "", window.location.href);
+  // useEffect(() => {
+  //   const handlePopState = () =>
+  //     dispatch(setPostModal({ isOpen: false, postId: "" }));
 
-    const handlePopState = () =>
-      dispatch(setPostModal({ isOpen: false, postId: "" }));
+  //   window.addEventListener("popstate", handlePopState);
 
-    window.addEventListener("popstate", handlePopState);
-
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [isPostModalOpen]);
+  //   return () => window.removeEventListener("popstate", handlePopState);
+  // }, [isPostModalOpen]);
 
   //! ***********************************************************************************************************
 

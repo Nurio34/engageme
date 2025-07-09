@@ -9,6 +9,7 @@ import NotificationsIndicator from "./NotificationsIndicator";
 
 import { useNotificationIndicator } from "./_hooks/useNotificationIndicator";
 import {
+  setFollowNotifications,
   setPostCommentLikeNotifications,
   setPostCommentNotifications,
   setPostLikeNotifications,
@@ -26,6 +27,7 @@ function Notifications() {
     postCommentLikeNotifications,
     replyCommentNotifications,
     replyCommentLikeNotifications,
+    followNotifications,
   } = useAppSelector((s) => s.notifications);
 
   const dispatch = useAppDispatch();
@@ -76,6 +78,14 @@ function Notifications() {
         }))
       )
     );
+    dispatch(
+      setFollowNotifications(
+        followNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
 
     try {
       await markSeenAllUnseenNotifications(
@@ -84,7 +94,8 @@ function Notifications() {
         postCommentNotifications,
         postCommentLikeNotifications,
         replyCommentNotifications,
-        replyCommentLikeNotifications
+        replyCommentLikeNotifications,
+        followNotifications
       );
     } catch (error) {
       console.log(error);
@@ -98,9 +109,11 @@ function Notifications() {
           hover:bg-base-content/10 rounded-lg md:p-[1.25vh] lg:p-3
         "
         onClick={() => {
-          markSeenAllUnseenNotificationsAction();
           if (currentMenu === "notifications") dispatch(setCurrentMenu(path));
-          else dispatch(setCurrentMenu("notifications"));
+          else {
+            markSeenAllUnseenNotificationsAction();
+            dispatch(setCurrentMenu("notifications"));
+          }
         }}
       >
         {currentMenu === "notifications" ? (

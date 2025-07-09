@@ -1,6 +1,9 @@
-import { useAppDispatch } from "@/store/hooks";
-import { togglePostSettingsModal } from "@/store/slices/modals";
-import { Dispatch, SetStateAction } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  closePostSettingsModal,
+  togglePostSettingsModal,
+} from "@/store/slices/modals";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 
 function OpenSettingsModalButton({
@@ -10,6 +13,17 @@ function OpenSettingsModalButton({
 }) {
   const dispatch = useAppDispatch();
 
+  const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
+
+  useEffect(() => {
+    const handlePopstate = () => {
+      if (isPostSettingsModalOpen) dispatch(closePostSettingsModal());
+    };
+
+    window.addEventListener("popstate", handlePopstate);
+    return () => window.removeEventListener("popstate", handlePopstate);
+  }, [isPostSettingsModalOpen]);
+
   return (
     <button
       type="button"
@@ -17,6 +31,11 @@ function OpenSettingsModalButton({
       onClick={() => {
         setIsModelOpen(true);
         dispatch(togglePostSettingsModal());
+        history.pushState(
+          { isPostSettingsModalOpen: true },
+          "",
+          window.location.href
+        );
       }}
     >
       <HiDotsHorizontal />

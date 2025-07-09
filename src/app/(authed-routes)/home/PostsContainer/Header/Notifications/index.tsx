@@ -6,6 +6,7 @@ import {
 import { markSeenAllUnseenNotifications } from "@/app/actions/notification/markSeenAllUnseenNotifications";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+  setFollowNotifications,
   setPostCommentLikeNotifications,
   setPostCommentNotifications,
   setPostLikeNotifications,
@@ -36,6 +37,7 @@ function Notifications({
     postCommentLikeNotifications,
     replyCommentNotifications,
     replyCommentLikeNotifications,
+    followNotifications,
   } = useAppSelector((s) => s.notifications);
 
   const { notificationIndicator, isAnyNotification, isRender } =
@@ -86,6 +88,14 @@ function Notifications({
         }))
       )
     );
+    dispatch(
+      setFollowNotifications(
+        followNotifications.map((notfication) => ({
+          ...notfication,
+          isSeen: true,
+        }))
+      )
+    );
 
     try {
       await markSeenAllUnseenNotifications(
@@ -94,7 +104,8 @@ function Notifications({
         postCommentNotifications,
         postCommentLikeNotifications,
         replyCommentNotifications,
-        replyCommentLikeNotifications
+        replyCommentLikeNotifications,
+        followNotifications
       );
     } catch (error) {
       console.log(error);
@@ -107,11 +118,13 @@ function Notifications({
         <button
           type="button"
           onClick={() => {
-            markSeenAllUnseenNotificationsAction();
             if (currentMenu === "notifications") {
               dispatch(setCurrentMenu(path));
               history.back();
-            } else dispatch(setCurrentMenu("notifications"));
+            } else {
+              markSeenAllUnseenNotificationsAction();
+              dispatch(setCurrentMenu("notifications"));
+            }
           }}
         >
           {currentMenu === "notifications" ? (

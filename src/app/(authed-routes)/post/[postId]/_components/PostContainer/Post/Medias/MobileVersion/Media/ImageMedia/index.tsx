@@ -31,7 +31,7 @@ function ImageMedia({
   return (
     <li ref={LiRef} style={{ minWidth: divWidth }}>
       <figure className="relative w-full" style={{ height: newHeight }}>
-        <Image src={url} alt={altText || "image"} fill />
+        <Image src={url} alt={altText || "image"} fill priority={index === 0} />
       </figure>
     </li>
   );

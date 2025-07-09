@@ -3,9 +3,11 @@ import { PrismaMediaType } from "@/../prisma/types/post";
 
 function ImageMedia({
   index,
+  ind,
   media,
 }: {
   index: number;
+  ind: number;
   media: PrismaMediaType;
 }) {
   const { url, altText, width, height } = media;
@@ -21,7 +23,7 @@ function ImageMedia({
         alt={altText || "image"}
         fill
         sizes="(max-width:1024) 100vw, 50vw"
-        priority={index === 0}
+        priority={index === 0 && ind === 0}
       />
     </figure>
   );

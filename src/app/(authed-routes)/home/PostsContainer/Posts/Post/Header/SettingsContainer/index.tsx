@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import OpenSettingsModalButton from "./OpenSettingsModalButton";
 import SettingsModal from "./SettingsModal";
 import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
+import { useAppSelector } from "@/store/hooks";
 
 function SettingsContainer({ post }: { post: PrismaPostType }) {
+  const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isRender, setIsRender] = useState(false);
   const timeout = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
-    if (isModelOpen) setIsRender(true);
+    if (isModelOpen && isPostSettingsModalOpen) setIsRender(true);
     else
       timeout.current = setTimeout(() => {
         setIsRender(false);
@@ -18,7 +20,7 @@ function SettingsContainer({ post }: { post: PrismaPostType }) {
     return () => {
       if (timeout.current) clearTimeout(timeout.current);
     };
-  }, [isModelOpen]);
+  }, [isModelOpen, isPostSettingsModalOpen]);
 
   return (
     <>
