@@ -12,6 +12,8 @@ import { useSavePost } from "./hooks/useSavePost";
 import AnimatedCheckIcon from "@/app/_globalComponents/Svg/AnimatedCheckIcon";
 import { useAppDispatch } from "@/store/hooks";
 import { addCloudinaryMedias, toggleCreateModal } from "@/store/slices/modals";
+import { setCurrentMenu } from "@/store/slices/sidemenu";
+import { usePathname } from "next/navigation";
 
 export type UpdatedMedia = {
   publicId: string;
@@ -56,12 +58,16 @@ function Sharing() {
   usePost(updatedMediasState, setPost);
   useSavePost(post);
 
+  const path = usePathname();
+  const page = path.split("/")[1];
+
   useEffect(() => {
     if (step.step === "sharing" && isShared) {
       setTimeout(() => {
         dispatch(toggleCreateModal());
         dispatch(addCloudinaryMedias([]));
-      }, 1500);
+        dispatch(setCurrentMenu(page));
+      }, 1400);
     }
   }, [step, isShared]);
 

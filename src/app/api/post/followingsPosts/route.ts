@@ -53,6 +53,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 followerId: true,
               },
             },
+            favoritesReceived: {
+              select: {
+                userId: true,
+              },
+            },
           },
         },
         medias: {

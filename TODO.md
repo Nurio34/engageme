@@ -1,3 +1,18 @@
+## Security
+
+    NEXT.JS
+        - Redis Rate Limit
+        - "requestSecret"
+        - zod validation
+        - validator.js sanitization
+        - domPurify sanitization
+
+    EXPRESS.JS
+        - express-rate-limit
+        - cors
+        - helmet
+        - validator.js
+
 ## App
 
     -
@@ -13,9 +28,6 @@
 ## InfoContainer
 
     - SettingsContainer
-        ** Copy Link butonu işlevselleştir.
-        ** Add to Favorites butonu işlevselleştir.
-        ** Delete butonu işlevselleştir.
         ** "Hide like count to others" butonu işlevselleştir.
         ** "Turn off commenting" butonu işlevselleştir.
         ** Edit butonu işlevselleştir.

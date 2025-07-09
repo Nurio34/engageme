@@ -8,18 +8,21 @@ export const getRecommendations = async (): Promise<{
   try {
     const user = await currentUser();
 
-    const response = await fetch(`${process.env.SITE_URL}/api/recomendation`, {
-      method: "GET",
-      headers: {
-        "request-secret": process.env.REQUEST_SECRET!,
-        "user-id": user?.id || "",
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["recomendations"],
-        revalidate: 60 * 15,
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/recomendation`,
+      {
+        method: "GET",
+        headers: {
+          "request-secret": process.env.REQUEST_SECRET!,
+          "user-id": user?.id || "",
+        },
+        cache: "force-cache",
+        next: {
+          tags: ["recomendations"],
+          revalidate: 60 * 15,
+        },
+      }
+    );
 
     const { status: statusCode, ok } = response;
 

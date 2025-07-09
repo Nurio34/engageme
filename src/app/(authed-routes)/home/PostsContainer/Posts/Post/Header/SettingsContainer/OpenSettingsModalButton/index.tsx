@@ -27,7 +27,7 @@ function OpenSettingsModalButton({
   return (
     <button
       type="button"
-      className="h-full pl-4 col-start-3 col-end-4 justify-self-end ml-auto"
+      // className="h-full pl-4 col-start-3 col-end-4 justify-self-end ml-auto"
       onClick={() => {
         setIsModelOpen(true);
         dispatch(togglePostSettingsModal());

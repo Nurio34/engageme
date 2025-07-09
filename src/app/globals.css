@@ -9,6 +9,11 @@
   }
 } */
 
+body,
+html {
+  scroll-behavior: smooth;
+}
+
 .PreventRefresh {
   overscroll-behavior: none;
 }

@@ -24,6 +24,9 @@ export type PrismaPostType = Post & {
       medias: Media[];
     })[];
     followers: { followerId: string }[];
+    favoritesReceived: {
+      userId: string;
+    }[];
   };
   medias: PrismaMediaType[];
   location?: Location | null;

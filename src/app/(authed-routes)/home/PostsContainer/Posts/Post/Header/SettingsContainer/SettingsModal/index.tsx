@@ -1,13 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closePostSettingsModal } from "@/store/slices/modals";
-import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PrismaPostType } from "../../../../../../../../../../prisma/types/post";
-import { started } from "@/store/slices/routing";
-import { setCurrentMenu } from "@/store/slices/sidemenu";
 import FollowButton from "./_components/FollowButton";
 import AddFavoritesButton from "./_components/AddFavoritesButton";
 import { usePathname } from "next/navigation";
+import CopyLinkButton from "./_components/CopyLinkButton";
+import GoToPostButton from "./_components/GoToPostButton";
+import ReportButton from "./_components/ReportButton";
+import CancelButton from "./_components/CancelButton";
+import ShareToButton from "./_components/ShareToButton";
+import EmbedButton from "./_components/EmbedButton";
+import AboutThisAccountButton from "./_components/AboutThisAccountButton";
+import DeletePostButton from "./_components/DeletePostButton";
 
 function SettingsModal({
   isModelOpen,
@@ -19,7 +24,7 @@ function SettingsModal({
   post: PrismaPostType;
 }) {
   const { id: postId, userId, user } = post;
-  const { followers } = user;
+  const { followers, favoritesReceived } = user;
 
   const { id } = useAppSelector((s) => s.user);
   const dispatch = useAppDispatch();
@@ -30,7 +35,7 @@ function SettingsModal({
   const path = usePathname();
   const isPostPage = path.includes("post");
   const isSelfPost = id === userId;
-  console.log({ isSelfPost });
+  const isUserFavorite = favoritesReceived.some((f) => f.userId === id);
 
   useEffect(() => {
     if (isModelOpen) setIsRender(true);
@@ -56,19 +61,7 @@ function SettingsModal({
             ${isRender ? "opacity-100 scale-100" : "opacity-0 scale-90"}
         `}
       >
-        {isSelfPost && (
-          <li className="py-1 h-12 text-error font-bold border-b">
-            <button
-              type="button"
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              Delete xx
-            </button>
-          </li>
-        )}
+        {isSelfPost && <DeletePostButton userId={id} postId={postId} />}
         {isSelfPost && (
           <li className="py-1 h-12 border-b">
             <button
@@ -108,102 +101,20 @@ function SettingsModal({
             </button>
           </li>
         )}
-        {isSelfPost ? (
-          <div hidden />
-        ) : (
-          <li className="py-1 h-12 text-error font-bold border-b">
-            <button
-              type="button"
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              Report xx
-            </button>
-          </li>
+        {!isSelfPost && <ReportButton />}
+        {!isSelfPost && <FollowButton userId={userId} followers={followers} />}
+        {!isSelfPost && (
+          <AddFavoritesButton userId={userId} isUserFavorite={isUserFavorite} />
         )}
-        {isSelfPost ? (
-          <div hidden />
-        ) : (
-          <FollowButton userId={userId} followers={followers} />
-        )}
-        {isSelfPost ? <div hidden /> : <AddFavoritesButton />}
-        {isPostPage ? (
-          <div hidden />
-        ) : (
-          <li className="py-1 h-12  border-b">
-            <Link
-              href={`/post/${postId}`}
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                dispatch(started());
-                dispatch(setCurrentMenu(""));
-                dispatch(closePostSettingsModal());
-              }}
-              prefetch={true}
-            >
-              Go to post
-            </Link>
-          </li>
-        )}
-        <li className="py-1 h-12 border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Share to... xx
-          </button>
-        </li>
-        <li className="py-1 h-12 border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Copy link xx
-          </button>
-        </li>
-        <li className="py-1 h-12 border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            Embed xx
-          </button>
-        </li>
-        <li className="py-1 h-12 border-b">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            About this account xx
-          </button>
-        </li>
-        <li className="py-1 h-12">
-          <button
-            type="button"
-            className="w-full h-full flex justify-center items-center"
-            onClick={() => {
-              setIsRender(false);
-              setIsModelOpen(false);
-            }}
-          >
-            Cancel
-          </button>
-        </li>
+        {!isPostPage && <GoToPostButton postId={postId} />}
+        <ShareToButton />
+        <CopyLinkButton postId={postId} />
+        <EmbedButton />
+        <AboutThisAccountButton />
+        <CancelButton
+          setIsRender={setIsRender}
+          setIsModelOpen={setIsModelOpen}
+        />
       </ul>
     </div>
   );

@@ -38,7 +38,7 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      url: `${process.env.SITE_URL}/post/${postId}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/post/${postId}`,
       siteName: "Engage Me",
       type: "article",
       ...(isVideo
@@ -77,7 +77,7 @@ export async function generateMetadata(
             alt: post.message || "Engage Me post media",
           }
         : {
-            url: `${process.env.SITE_URL}/placeholders/twitter_meta.png`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/placeholders/twitter_meta.png`,
             alt: "Default placeholder image for Engage Me",
           },
     },

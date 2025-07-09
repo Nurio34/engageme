@@ -8,18 +8,21 @@ export const getNotifications = async (): Promise<{
   try {
     const user = await currentUser();
 
-    const response = await fetch(`${process.env.SITE_URL}/api/notification`, {
-      method: "GET",
-      headers: {
-        "request-secret": process.env.REQUEST_SECRET!,
-        "user-id": user?.id || "null",
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["notifications"],
-        revalidate: 60 * 15,
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/notification`,
+      {
+        method: "GET",
+        headers: {
+          "request-secret": process.env.REQUEST_SECRET!,
+          "user-id": user?.id || "null",
+        },
+        cache: "force-cache",
+        next: {
+          tags: ["notifications"],
+          revalidate: 60 * 15,
+        },
+      }
+    );
 
     const { status: statusCode, ok } = response;
 

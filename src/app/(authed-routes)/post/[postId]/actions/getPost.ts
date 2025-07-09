@@ -35,6 +35,11 @@ export const getPost = async (
                 followerId: true,
               },
             },
+            favoritesReceived: {
+              select: {
+                userId: true,
+              },
+            },
           },
         },
         medias: {

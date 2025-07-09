@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Engage Me | Share Photos, Reels & Connect with Friends",
     description:
       "Engage Me is a modern social media app to share photos, videos, and stories with your friends. Like, comment, follow, and explore trending content—just like Instagram, but better.",
-    url: `${process.env.SITE_URL}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
     siteName: "Apartman Temizliği",
     images: [
       {
