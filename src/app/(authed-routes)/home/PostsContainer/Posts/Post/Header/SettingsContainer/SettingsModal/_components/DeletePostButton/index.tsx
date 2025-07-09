@@ -22,9 +22,9 @@ function DeletePostButton({
       const { status, msg } = await deletePost(userId, postId);
       if (status === "fail") toast.error(msg);
       else {
+        dispatch(resetSkip());
         dispatch(closePostSettingsModal());
         history.back();
-        dispatch(resetSkip());
       }
     } catch (error) {
       toast.error(

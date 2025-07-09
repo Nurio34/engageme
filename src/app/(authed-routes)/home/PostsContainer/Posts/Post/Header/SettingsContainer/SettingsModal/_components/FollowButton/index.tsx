@@ -47,6 +47,7 @@ function FollowButton({
         dispatch(deleteFromFollowing(userId));
         return;
       }
+      dispatch(resetSkip());
       dispatch(closePostSettingsModal());
       history.back();
 
@@ -55,7 +56,6 @@ function FollowButton({
       if (followNotificaionStatus === "fail" || !followNotificaion) return;
 
       socket?.emit("followNotification", followNotificaion);
-      dispatch(resetSkip());
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");

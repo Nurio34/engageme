@@ -19,9 +19,9 @@ function AddFavoritesButton({
       const { status, msg } = await addToFavorites(userId);
       if (status === "fail") toast.error(msg);
       else {
+        dispatch(resetSkip());
         dispatch(closePostSettingsModal());
         history.back();
-        dispatch(resetSkip());
       }
     } catch (error) {
       toast.error(
@@ -36,9 +36,9 @@ function AddFavoritesButton({
       const { status, msg } = await removeFromFavorites(userId);
       if (status === "fail") toast.error(msg);
       else {
+        dispatch(resetSkip());
         dispatch(closePostSettingsModal());
         history.back();
-        dispatch(resetSkip());
       }
     } catch (error) {
       toast.error(
