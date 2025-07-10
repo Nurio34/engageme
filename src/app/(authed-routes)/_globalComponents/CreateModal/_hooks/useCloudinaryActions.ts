@@ -25,6 +25,7 @@ export const useCloudinaryActions = (
   >,
   setEditedMedias: Dispatch<SetStateAction<EditedMedia[]>>
 ) => {
+  const { isEditing } = useAppSelector((s) => s.postEdit);
   const { posterImages } = useAppSelector((s) => s.modals);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ export const useCloudinaryActions = (
       deleteFromCloudinary(publicIds, setCloudinaryMedias);
     }
 
-    if (step.step === "post") {
+    if (step.step === "post" && !isEditing) {
       const editedMedias: EditedMedia[] = cloudinaryMedias.medias.map(
         (mediaObj) => {
           const {

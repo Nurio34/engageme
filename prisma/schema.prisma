@@ -55,7 +55,7 @@ model Post {
 
 model Media {
   id             String    @id @default(cuid())
-  publicId       String
+  publicId       String    @unique()
   url            String
   type           MediaType
   width          Int?

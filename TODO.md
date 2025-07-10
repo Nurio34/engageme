@@ -28,10 +28,7 @@
 ## InfoContainer
 
     - SettingsContainer
-        ** "Hide like count to others" butonu işlevselleştir.
-        ** "Turn off commenting" butonu işlevselleştir.
         ** Edit butonu işlevselleştir.
-        ** Diğer butonları da yeri gelince işlevselleştir ya da disabled(görsel ve işlevsel olarak) yap.
 
     - Yorumları silme özelliği ekle.
 

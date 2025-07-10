@@ -3,8 +3,12 @@ import { PostType } from "..";
 import { savePost } from "../../../../actions/savePost";
 import { useCreateModalContext } from "../../../../Context";
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/store/hooks";
+import { editPost } from "../../../../actions/editPost";
 
 export const useSavePost = (post: PostType) => {
+  const { isEditing, postId } = useAppSelector((s) => s.postEdit);
+
   const { goPrevStep, setIsShared } = useCreateModalContext();
 
   useEffect(() => {
@@ -28,6 +32,23 @@ export const useSavePost = (post: PostType) => {
       }
     };
 
-    savePostAction();
+    const editPostAction = async () => {
+      try {
+        const { status, message } = await editPost(postId, post);
+
+        if (status === "fail") {
+          toast.error(message);
+          goPrevStep();
+        } else {
+          setIsShared(true);
+          console.log("editPostAction() success");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (isEditing) editPostAction();
+    else savePostAction();
   }, [post]);
 };

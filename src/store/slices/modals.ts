@@ -49,6 +49,7 @@ export const modalsSlice = createSlice({
     toggleCreateModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen;
     },
+
     toggle_WannaCloseCreateModal_Modal: (state) => {
       state.isWannaCloseCreateModalOpen = !state.isWannaCloseCreateModalOpen;
     },
@@ -92,6 +93,7 @@ export const modalsSlice = createSlice({
 export const {
   setDevice,
   toggleCreateModal,
+
   toggle_WannaCloseCreateModal_Modal,
   addCloudinaryMedias,
   addPosterImage,

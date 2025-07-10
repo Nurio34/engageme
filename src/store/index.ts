@@ -10,6 +10,7 @@ import socketSlice from "./slices/socket";
 import themeSlice from "./slices/theme";
 import followingSlice from "./slices/following";
 import userModalSlice from "./slices/userModal";
+import postEditSlice from "./slices/postEdit";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     theme: themeSlice,
     following: followingSlice,
     userModal: userModalSlice,
+    postEdit: postEditSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

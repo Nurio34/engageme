@@ -7,16 +7,20 @@ import { useCreateModalContext } from "./Context";
 import { usePreventRefresh } from "@/hooks/usePreventRefresh";
 
 function Client() {
+  const { isEditing } = useAppSelector((s) => s.postEdit);
+
   const { isCreateModalOpen } = useAppSelector((s) => s.modals);
   usePreventRefresh(isCreateModalOpen);
 
   const dispatch = useAppDispatch();
 
-  const { step, cloudinaryMedias } = useCreateModalContext();
+  const { step, cloudinaryMedias, editedMedias } = useCreateModalContext();
   const { medias } = cloudinaryMedias;
 
   const tabRenderCond1 = step.step === "edit" || step.step === "post";
-  const tabRenderCond2 = medias.length > 0;
+  const tabRenderCond2 = isEditing
+    ? editedMedias.length > 0
+    : medias.length > 0;
   const tabRenderCond = tabRenderCond1 && tabRenderCond2;
 
   const askIfWantCreateModal = () =>

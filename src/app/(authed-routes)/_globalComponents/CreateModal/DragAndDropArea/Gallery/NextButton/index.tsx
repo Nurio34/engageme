@@ -1,8 +1,10 @@
 import { IoIosArrowForward } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
 import { useEffect, useState } from "react";
+import { useAppSelector } from "@/store/hooks";
 
 function NextButton() {
+  const { isEditing } = useAppSelector((s) => s.postEdit);
   const {
     setCurrentIndex,
     files,
@@ -10,18 +12,33 @@ function NextButton() {
     baseCanvasContainerWidth,
     canvasContainerSize,
     step,
+    editedMedias,
   } = useCreateModalContext();
-  const totalMedia = files.files!.length;
+  const totalMedia = isEditing ? editedMedias.length : files.files!.length;
   const { width } = canvasContainerSize;
 
   const [padding, setPadding] = useState(0);
 
   useEffect(() => {
-    if (step.step === "crop") {
-      setPadding(width);
-    } else {
-      setPadding(baseCanvasContainerWidth);
-    }
+    const handlePadding = () => {
+      if (step.step === "crop") {
+        setPadding(width);
+      } else {
+        setPadding(
+          baseCanvasContainerWidth > 0
+            ? baseCanvasContainerWidth
+            : innerWidth <= 1023
+            ? innerWidth
+            : 734
+        );
+      }
+    };
+
+    handlePadding();
+
+    window.addEventListener("resize", handlePadding);
+
+    return () => window.removeEventListener("resize", handlePadding);
   }, [step, canvasContainerSize]);
 
   const goNextMedia = () => {

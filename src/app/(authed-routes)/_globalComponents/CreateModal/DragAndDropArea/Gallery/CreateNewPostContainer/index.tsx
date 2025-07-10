@@ -21,6 +21,7 @@ function CreateNewPostContainer() {
   }, []);
 
   const renderCondition = step.step === "post" && isRender;
+
   return (
     renderCondition && (
       <div className="w-full h-full md:flex">

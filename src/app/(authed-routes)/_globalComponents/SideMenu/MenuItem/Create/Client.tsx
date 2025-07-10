@@ -1,6 +1,7 @@
 import { CreateIcon } from "@/app/_globalComponents/Svg/SideMenuSvgs/CreateIcon";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleCreateModal } from "@/store/slices/modals";
+import { toggleIsEditing } from "@/store/slices/postEdit";
 import { setCurrentMenu } from "@/store/slices/sidemenu";
 import { usePathname } from "next/navigation";
 import toast from "react-hot-toast";
@@ -32,6 +33,7 @@ function Client() {
           );
         if (currentMenu === "create") dispatch(setCurrentMenu(path));
         else dispatch(setCurrentMenu("create"));
+        dispatch(toggleIsEditing(false));
         dispatch(toggleCreateModal());
       }}
     >

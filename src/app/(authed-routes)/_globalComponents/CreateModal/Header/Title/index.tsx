@@ -1,10 +1,20 @@
+import { useAppSelector } from "@/store/hooks";
 import { useCreateModalContext } from "../../Context";
+import { useEffect, useState } from "react";
 
 function Title() {
-  const { step, cloudinaryMedias, currentIndex, isShared } =
+  const { isEditing } = useAppSelector((s) => s.postEdit);
+  const { step, cloudinaryMedias, editedMedias, currentIndex, isShared } =
     useCreateModalContext();
 
-  const { isLoading, medias } = cloudinaryMedias;
+  const [type, setType] = useState("image");
+
+  useEffect(() => {
+    if (isEditing) setType(editedMedias[currentIndex].type);
+    else setType(cloudinaryMedias.medias[0]?.resource_type);
+  }, [isEditing, editedMedias, cloudinaryMedias, step]);
+
+  const { isLoading } = cloudinaryMedias;
 
   if (step.step === "new") return "Create New Post";
 
@@ -17,9 +27,13 @@ function Title() {
 
   if (step.step === "post" && isLoading) return "Editing ..";
 
-  if (step.step === "sharing") return isShared ? "Post Shared" : "Sharing";
+  if (step.step === "sharing")
+    return isShared ? "Post Shared" : isEditing ? "Editing" : "Sharing";
 
-  const { resource_type } = medias[currentIndex];
-  return resource_type === "image" ? "Create New Post" : "New Reel";
+  return isEditing
+    ? "Edit info"
+    : type === "image"
+    ? "Create New Post"
+    : "New Reel";
 }
 export default Title;

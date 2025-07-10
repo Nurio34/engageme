@@ -34,6 +34,7 @@ function Media({ media }: { media: EditedMedia }) {
   const isDesktop = device.type === "desktop";
 
   const { baseCanvasContainerWidth } = useCreateModalContext();
+  const [width, setWidth] = useState(baseCanvasContainerWidth);
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -48,12 +49,37 @@ function Media({ media }: { media: EditedMedia }) {
     };
   }, [blob]);
 
+  useEffect(() => {
+    const handleWidth = () => {
+      setWidth(
+        baseCanvasContainerWidth > 0
+          ? baseCanvasContainerWidth
+          : innerWidth <= 1023
+          ? innerWidth
+          : 734
+      );
+    };
+
+    handleWidth();
+
+    window.addEventListener("resize", handleWidth);
+
+    return () => window.removeEventListener("resize", handleWidth);
+  }, [baseCanvasContainerWidth]);
+
   return (
-    <div className="h-full" style={{ width: baseCanvasContainerWidth }}>
+    <div
+      className="h-full"
+      style={{
+        width,
+      }}
+    >
       {type === "image" ? (
         <figure
           className="relative w-full h-full"
-          style={{ width: baseCanvasContainerWidth }}
+          style={{
+            width,
+          }}
         >
           {imageUrl && (
             <Image
@@ -68,7 +94,7 @@ function Media({ media }: { media: EditedMedia }) {
         <div
           className="overflow-hidden"
           style={{
-            width: baseCanvasContainerWidth,
+            width,
             maxHeight: isDesktop ? "734px" : "calc(100vh - 38.31px)",
           }}
         >

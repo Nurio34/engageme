@@ -45,7 +45,7 @@ function DeletePostButton({
         }}
         disabled={isLoading}
       >
-        Delete xx
+        Delete
       </button>
     </li>
   );

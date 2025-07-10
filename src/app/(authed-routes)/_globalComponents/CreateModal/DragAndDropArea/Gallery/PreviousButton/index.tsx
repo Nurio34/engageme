@@ -1,10 +1,12 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useCreateModalContext } from "../../../Context";
+import { useAppSelector } from "@/store/hooks";
 
 function PreviousButton() {
-  const { setCurrentIndex, files, setIsAllModalsClosed, step } =
+  const { isEditing } = useAppSelector((s) => s.postEdit);
+  const { setCurrentIndex, files, setIsAllModalsClosed, step, editedMedias } =
     useCreateModalContext();
-  const totalMedia = files.files!.length;
+  const totalMedia = isEditing ? editedMedias.length : files.files!.length;
 
   const goPreviousMedia = () => {
     setCurrentIndex((prev) => {

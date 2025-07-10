@@ -24,6 +24,7 @@ import { useStep } from "./_hooks/useStep";
 import { TransformationType } from "./DragAndDropArea/Gallery/EditContainer/Medias/MediaContainer/ImageContainer/EditTab/TransformationsTab";
 import { useMessage } from "./_hooks/useMessage";
 import { toggle_WannaCloseCreateModal_Modal } from "@/store/slices/modals";
+import { useEditMode } from "./_hooks/useEditMode";
 
 export type FilesType = {
   files: File[] | null;
@@ -308,6 +309,15 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [isCreateModalOpen, isDesktop]);
 
   //! ************************************************************
+
+  useEditMode(
+    setEditedMedias,
+    setMessage,
+    setLocation,
+    setSettings,
+    setAltTexts,
+    setStep
+  );
 
   //! *** when create modal closed, reset context ***
 

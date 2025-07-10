@@ -13,6 +13,9 @@ import ShareToButton from "./_components/ShareToButton";
 import EmbedButton from "./_components/EmbedButton";
 import AboutThisAccountButton from "./_components/AboutThisAccountButton";
 import DeletePostButton from "./_components/DeletePostButton";
+import HideCountsButton from "./_components/HideCountsButton";
+import TurnOffCommentingButton from "./_components/TurnOffCommentingButton";
+import EditButton from "./_components/EditButton";
 
 function SettingsModal({
   isModelOpen,
@@ -62,45 +65,9 @@ function SettingsModal({
         `}
       >
         {isSelfPost && <DeletePostButton userId={id} postId={postId} />}
-        {isSelfPost && (
-          <li className="py-1 h-12 border-b">
-            <button
-              type="button"
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              Edit xx
-            </button>
-          </li>
-        )}
-        {isSelfPost && (
-          <li className="py-1 h-12 border-b">
-            <button
-              type="button"
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              Hide like count to others xx
-            </button>
-          </li>
-        )}
-        {isSelfPost && (
-          <li className="py-1 h-12 border-b">
-            <button
-              type="button"
-              className="w-full h-full flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              Turn off commenting xx
-            </button>
-          </li>
-        )}
+        {isSelfPost && <EditButton post={post} />}
+        {isSelfPost && <HideCountsButton />}
+        {isSelfPost && <TurnOffCommentingButton />}
         {!isSelfPost && <ReportButton />}
         {!isSelfPost && <FollowButton userId={userId} followers={followers} />}
         {!isSelfPost && (
