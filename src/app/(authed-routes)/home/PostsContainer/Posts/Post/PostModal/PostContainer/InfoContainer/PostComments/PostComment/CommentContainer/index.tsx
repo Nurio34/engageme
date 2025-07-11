@@ -4,8 +4,9 @@ import { PrismaPostCommentType } from "../../../../../../../../../../../../../pr
 import CreatedAt from "../../../_components/CreatedAt";
 import Name from "../../../_components/Name";
 import { Dispatch, RefObject, SetStateAction } from "react";
-import { BsThreeDots } from "react-icons/bs";
 import { useAppSelector } from "@/store/hooks";
+import { useInfoContext } from "../../../Context";
+import CommentSettingsContainer from "./CommentSettingsContainer";
 
 function CommentContainer({
   postComment,
@@ -16,9 +17,12 @@ function CommentContainer({
   setIsContainerHovered: Dispatch<SetStateAction<boolean>>;
   ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
+  const { postsState } = useInfoContext();
+
   const { user, comment, likes, id } = postComment;
   const { id: userId } = useAppSelector((s) => s.user);
 
+  const isSelfPost = postsState[0].userId === userId;
   const isSelfComment = user.userId === userId;
 
   return (
@@ -42,11 +46,11 @@ function CommentContainer({
           name={user.name}
           isReplyToReply={false}
         />
-        {isSelfComment && (
-          <button type="button">
-            <BsThreeDots />
-          </button>
-        )}
+        {isSelfPost ? (
+          <CommentSettingsContainer postComment={postComment} />
+        ) : isSelfComment ? (
+          <CommentSettingsContainer postComment={postComment} />
+        ) : null}
       </div>
     </div>
   );

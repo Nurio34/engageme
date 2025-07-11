@@ -15,10 +15,10 @@ export const getPosts = async (
           "request-secret": process.env.REQUEST_SECRET!,
           "user-id": user?.id || "null",
         },
-        cache: "force-cache",
+        // cache: "force-cache",
         next: {
           tags: ["posts"],
-          revalidate: 60 * 15,
+          // revalidate: 60 * 15,
         },
       }
     );

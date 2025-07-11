@@ -5,7 +5,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { revalidateTag } from "next/cache";
 
 export const unfollow = async (
-  userId: string
+  userId: string,
+  variant?: string
 ): Promise<{ status: "success" | "fail"; msg: string }> => {
   try {
     const user = await currentUser();
@@ -38,9 +39,11 @@ export const unfollow = async (
       msg: "Unexpected error while unfollowing! Please try again..",
     };
   } finally {
-    revalidateTag("posts");
-    revalidateTag("followingsPosts");
-    revalidateTag("favoritesPosts");
-    revalidateTag("recomendations");
+    if (variant === "followings") {
+      revalidateTag("followingsPosts");
+    }
+    // revalidateTag("posts");
+    // revalidateTag("favoritesPosts");
+    // revalidateTag("recomendations");
   }
 };

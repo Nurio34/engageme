@@ -7,6 +7,8 @@ import LikeTheCommentButton from "./LikeTheCommentButton";
 import dynamic from "next/dynamic";
 import { RefObject, useState } from "react";
 import { PrismaRecomendationType } from "../../../../../../../../../../../../prisma/types/recomendation";
+import { useAppSelector } from "@/store/hooks";
+import { useInfoContext } from "../../Context";
 
 const UserModal = dynamic(
   () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
@@ -23,6 +25,10 @@ function PostComment({
   postComment: PrismaPostCommentType;
   ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
+  const { deletedComments } = useAppSelector((s) => s.following);
+  const { postsState } = useInfoContext();
+  const post = postsState[0];
+
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
 
@@ -37,6 +43,12 @@ function PostComment({
     posts,
     followers,
   };
+
+  const isDeletedComment = deletedComments.some(
+    (comment) =>
+      comment.postId === post.id && comment.commentId === postComment.id
+  );
+  if (isDeletedComment) return;
 
   return (
     <li className="py-3">

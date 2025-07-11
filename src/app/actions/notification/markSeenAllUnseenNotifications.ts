@@ -10,7 +10,6 @@ import {
   PrismaReplyLikeNotificationType,
   PrismaReplyNotificationType,
 } from "../../../../prisma/types/notification";
-import { revalidateTag } from "next/cache";
 
 export const markSeenAllUnseenNotifications = async (
   userId: string,
@@ -109,6 +108,6 @@ export const markSeenAllUnseenNotifications = async (
   } catch (error) {
     console.log(error);
   } finally {
-    revalidateTag("notifications");
+    // revalidateTag("notifications");
   }
 };

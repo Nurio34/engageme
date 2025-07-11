@@ -1,46 +1,65 @@
 import toast from "react-hot-toast";
 import { addToFavorites } from "./_actions/addToFavorites";
 import { removeFromFavorites } from "./_actions/removeFromFavorites";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { closePostSettingsModal } from "@/store/slices/modals";
-import { resetSkip } from "@/store/slices/following";
+import {
+  addFavorites,
+  deleteFromFavorites,
+  resetSkip,
+} from "@/store/slices/following";
 
-function AddFavoritesButton({
-  userId,
-  isUserFavorite,
-}: {
-  userId: string;
-  isUserFavorite: boolean;
-}) {
+function AddFavoritesButton({ userId }: { userId: string }) {
+  const { variant } = useAppSelector((s) => s.modals);
+  const { favorites } = useAppSelector((s) => s.following);
+  const isFavorite = favorites.includes(userId);
+
   const dispatch = useAppDispatch();
 
   const addToFavoritesAction = async () => {
     try {
-      const { status, msg } = await addToFavorites(userId);
-      if (status === "fail") toast.error(msg);
-      else {
-        dispatch(resetSkip());
-        dispatch(closePostSettingsModal());
+      dispatch(addFavorites(userId));
+      dispatch(closePostSettingsModal());
+
+      const { status, msg } = await addToFavorites(userId, variant);
+      if (status === "fail") {
+        toast.error(msg);
+        dispatch(deleteFromFavorites(userId));
+      } else {
+        if (variant === "favorites") {
+          dispatch(resetSkip());
+        }
         history.back();
       }
     } catch (error) {
       toast.error(
         "Unexpected error while adding to favorites. Please try again!"
       );
+      dispatch(deleteFromFavorites(userId));
+
       console.log(error);
     }
   };
 
   const removeFromFavoritesAction = async () => {
     try {
-      const { status, msg } = await removeFromFavorites(userId);
-      if (status === "fail") toast.error(msg);
-      else {
-        dispatch(resetSkip());
-        dispatch(closePostSettingsModal());
+      dispatch(deleteFromFavorites(userId));
+      dispatch(closePostSettingsModal());
+
+      const { status, msg } = await removeFromFavorites(userId, variant);
+      if (status === "fail") {
+        dispatch(addFavorites(userId));
+
+        toast.error(msg);
+      } else {
+        if (variant === "favorites") {
+          dispatch(resetSkip());
+        }
         history.back();
       }
     } catch (error) {
+      dispatch(addFavorites(userId));
+
       toast.error(
         "Unexpected error while removing from favorites. Please try again!"
       );
@@ -55,11 +74,11 @@ function AddFavoritesButton({
         className="w-full h-full flex justify-center items-center"
         onClick={(e) => {
           e.stopPropagation();
-          if (isUserFavorite) removeFromFavoritesAction();
+          if (isFavorite) removeFromFavoritesAction();
           else addToFavoritesAction();
         }}
       >
-        {isUserFavorite ? "Remove from favorites" : "Add to favorites"}
+        {isFavorite ? "Remove from favorites" : "Add to favorites"}
       </button>
     </li>
   );

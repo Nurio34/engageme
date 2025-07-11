@@ -3,11 +3,14 @@ import { PostType } from "..";
 import { savePost } from "../../../../actions/savePost";
 import { useCreateModalContext } from "../../../../Context";
 import toast from "react-hot-toast";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { editPost } from "../../../../actions/editPost";
+import { resetPostEdit } from "@/store/slices/postEdit";
+import { toggleCreateModal } from "@/store/slices/modals";
 
 export const useSavePost = (post: PostType) => {
   const { isEditing, postId } = useAppSelector((s) => s.postEdit);
+  const dispatch = useAppDispatch();
 
   const { goPrevStep, setIsShared } = useCreateModalContext();
 
@@ -41,6 +44,8 @@ export const useSavePost = (post: PostType) => {
           goPrevStep();
         } else {
           setIsShared(true);
+          dispatch(resetPostEdit());
+          dispatch(toggleCreateModal());
           console.log("editPostAction() success");
         }
       } catch (error) {

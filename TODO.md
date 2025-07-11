@@ -27,11 +27,6 @@
 
 ## InfoContainer
 
-    - SettingsContainer
-        ** Edit butonu işlevselleştir.
-
-    - Yorumları silme özelliği ekle.
-
     - Save butonu işlevselleştir.
 
 ## Notifications

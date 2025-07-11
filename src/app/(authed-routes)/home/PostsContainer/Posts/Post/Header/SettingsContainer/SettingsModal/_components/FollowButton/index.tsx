@@ -20,6 +20,8 @@ function FollowButton({
     followerId: string;
   }[];
 }) {
+  const { variant } = useAppSelector((s) => s.modals);
+
   const { id } = useAppSelector((s) => s.user);
   const { socket } = useAppSelector((s) => s.socket);
   const { followings } = useAppSelector((s) => s.following);
@@ -33,23 +35,28 @@ function FollowButton({
       (follower) => follower.followerId === id
     );
     if (isFollowed) dispatch(addToFollowing(userId));
-    else dispatch(deleteFromFollowing(userId));
+    // else dispatch(deleteFromFollowing(userId));
   }, [followers]);
 
   const followAction = useCallback(async () => {
     setIsLoading(true);
     dispatch(addToFollowing(userId));
+    dispatch(closePostSettingsModal());
 
     try {
-      const { status: followStatus, msg, id: followId } = await follow(userId);
+      const {
+        status: followStatus,
+        msg,
+        id: followId,
+      } = await follow(userId, variant);
       if (followStatus === "fail") {
         toast.error(msg);
         dispatch(deleteFromFollowing(userId));
         return;
       }
-      dispatch(resetSkip());
-      dispatch(closePostSettingsModal());
-      history.back();
+      if (variant === "followings") {
+        dispatch(resetSkip());
+      } // history.back();
 
       const { status: followNotificaionStatus, followNotificaion } =
         await sendFollowNotification(userId, followId);
@@ -68,16 +75,18 @@ function FollowButton({
   const unfollowAction = useCallback(async () => {
     setIsLoading(true);
     dispatch(deleteFromFollowing(userId));
+    dispatch(closePostSettingsModal());
 
     try {
-      const { status, msg } = await unfollow(userId);
+      const { status, msg } = await unfollow(userId, variant);
       if (status === "fail") {
         toast.error(msg);
         dispatch(addToFollowing(userId));
+        return;
       }
-      dispatch(resetSkip());
-      dispatch(closePostSettingsModal());
-      history.back();
+      if (variant === "followings") {
+        dispatch(resetSkip());
+      } // history.back();
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while unfollowing! Please try again.");

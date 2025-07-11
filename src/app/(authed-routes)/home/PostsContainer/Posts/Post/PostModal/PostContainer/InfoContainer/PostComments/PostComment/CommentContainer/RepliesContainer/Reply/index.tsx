@@ -12,6 +12,10 @@ import { useObserveVisibility } from "@/hooks/useObserveVisibility";
 import { RefObject, useState } from "react";
 import dynamic from "next/dynamic";
 import { PrismaRecomendationType } from "../../../../../../../../../../../../../../../prisma/types/recomendation";
+import { useInfoContext } from "../../../../../Context";
+import CommentSettingsContainer from "./CommentSettingsContainer";
+import { useAppSelector } from "@/store/hooks";
+
 const UserModal = dynamic(
   () => import("@/app/(authed-routes)/_globalComponents/UserModal"),
   {
@@ -29,12 +33,17 @@ function Reply({
   reply: PrismaReplyCommentType;
   ScrollableContainerRef: RefObject<HTMLUListElement | null>;
 }) {
-  const { user, comment, likes, replyToName, commentId } = reply;
+  const { user, comment, likes, replyToName, commentId, userId } = reply;
+
+  const { id } = useAppSelector((s) => s.user);
+  const { deletedReplies } = useAppSelector((s) => s.following);
+
+  const { postsState } = useInfoContext();
 
   const { containerRef, isVisible } = useObserveVisibility();
   const [isContainerHovered, setIsContainerHovered] = useState(false);
 
-  const { userId, name, avatar, fullname, _count, posts, followers } = user;
+  const { name, avatar, fullname, _count, posts, followers } = user;
   const recomendation: PrismaRecomendationType = {
     userId,
     name,
@@ -44,6 +53,12 @@ function Reply({
     posts,
     followers,
   };
+
+  const isSelfPost = postsState[0].userId === id;
+  const isSelfReply = userId === id;
+  const isDeletedReply = deletedReplies.includes(reply.id);
+
+  if (isDeletedReply) return;
 
   return (
     <li className="">
@@ -80,6 +95,17 @@ function Reply({
               isReplyToReply={true}
               reply={reply}
             />
+            {isSelfPost ? (
+              <CommentSettingsContainer
+                postComment={postComment}
+                reply={reply}
+              />
+            ) : isSelfReply ? (
+              <CommentSettingsContainer
+                postComment={postComment}
+                reply={reply}
+              />
+            ) : null}
           </div>
         </div>
         <LikeReplyButton

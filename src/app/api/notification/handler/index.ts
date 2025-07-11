@@ -16,10 +16,10 @@ export const getNotifications = async (): Promise<{
           "request-secret": process.env.REQUEST_SECRET!,
           "user-id": user?.id || "null",
         },
-        cache: "force-cache",
+        // cache: "force-cache",
         next: {
           tags: ["notifications"],
-          revalidate: 60 * 15,
+          // revalidate: 60 * 15,
         },
       }
     );

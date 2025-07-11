@@ -33,7 +33,7 @@ function PostModal({ post }: { post: PrismaPostType }) {
         onClick={() => {
           if (isDesktop) {
             dispatch(setPostModal({ isOpen: false, postId: "" }));
-            history.back();
+            // history.back();
           }
         }}
         onMouseMove={(e) => {

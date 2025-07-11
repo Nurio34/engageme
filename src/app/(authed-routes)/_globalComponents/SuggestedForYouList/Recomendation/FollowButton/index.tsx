@@ -17,6 +17,8 @@ function FollowButton({
   path: "explore" | "home" | undefined;
   userId: string;
 }) {
+  const { variant } = useAppSelector((s) => s.modals);
+
   const { followings } = useAppSelector((s) => s.following);
   const { socket } = useAppSelector((s) => s.socket);
   const dispatch = useAppDispatch();
@@ -29,7 +31,11 @@ function FollowButton({
     dispatch(addToFollowing(userId));
 
     try {
-      const { status: followStatus, msg, id: followId } = await follow(userId);
+      const {
+        status: followStatus,
+        msg,
+        id: followId,
+      } = await follow(userId, variant);
       if (followStatus === "fail") {
         toast.error(msg);
         dispatch(deleteFromFollowing(userId));
@@ -41,7 +47,9 @@ function FollowButton({
       if (followNotificaionStatus === "fail" || !followNotificaion) return;
 
       socket?.emit("followNotification", followNotificaion);
-      dispatch(resetSkip());
+      if (variant === "followings") {
+        dispatch(resetSkip());
+      }
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");
@@ -56,10 +64,14 @@ function FollowButton({
     dispatch(deleteFromFollowing(userId));
 
     try {
-      const { status, msg } = await unfollow(userId);
+      const { status, msg } = await unfollow(userId, variant);
       if (status === "fail") {
         toast.error(msg);
         dispatch(addToFollowing(userId));
+        return;
+      }
+      if (variant === "followings") {
+        dispatch(resetSkip());
       }
     } catch (error) {
       console.error(error);

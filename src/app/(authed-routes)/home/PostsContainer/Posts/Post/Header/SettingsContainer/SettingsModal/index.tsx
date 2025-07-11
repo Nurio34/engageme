@@ -27,7 +27,7 @@ function SettingsModal({
   post: PrismaPostType;
 }) {
   const { id: postId, userId, user } = post;
-  const { followers, favoritesReceived } = user;
+  const { followers } = user;
 
   const { id } = useAppSelector((s) => s.user);
   const dispatch = useAppDispatch();
@@ -38,7 +38,6 @@ function SettingsModal({
   const path = usePathname();
   const isPostPage = path.includes("post");
   const isSelfPost = id === userId;
-  const isUserFavorite = favoritesReceived.some((f) => f.userId === id);
 
   useEffect(() => {
     if (isModelOpen) setIsRender(true);
@@ -70,9 +69,7 @@ function SettingsModal({
         {isSelfPost && <TurnOffCommentingButton />}
         {!isSelfPost && <ReportButton />}
         {!isSelfPost && <FollowButton userId={userId} followers={followers} />}
-        {!isSelfPost && (
-          <AddFavoritesButton userId={userId} isUserFavorite={isUserFavorite} />
-        )}
+        {!isSelfPost && <AddFavoritesButton userId={userId} />}
         {!isPostPage && <GoToPostButton postId={postId} />}
         <ShareToButton />
         <CopyLinkButton postId={postId} />

@@ -45,6 +45,7 @@ export const postEditSlice = createSlice({
     setSettings: (state, action: PayloadAction<SettingsType>) => {
       state.settings = action.payload;
     },
+    resetPostEdit: () => initialState,
   },
 });
 
@@ -55,5 +56,6 @@ export const {
   setMessage,
   setLocation,
   setSettings,
+  resetPostEdit,
 } = postEditSlice.actions;
 export default postEditSlice.reducer;

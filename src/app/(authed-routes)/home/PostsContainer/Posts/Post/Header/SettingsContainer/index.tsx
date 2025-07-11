@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import OpenSettingsModalButton from "./OpenSettingsModalButton";
 import SettingsModal from "./SettingsModal";
 import { PrismaPostType } from "../../../../../../../../../prisma/types/post";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import FavoritedIcon from "@/app/_globalComponents/Svg/FavoritedIcon";
+import { addFavorites } from "@/store/slices/following";
 
 function SettingsContainer({ post }: { post: PrismaPostType }) {
   const { favoritesReceived } = post.user;
@@ -11,11 +12,19 @@ function SettingsContainer({ post }: { post: PrismaPostType }) {
   const { id } = useAppSelector((s) => s.user);
 
   const { isPostSettingsModalOpen } = useAppSelector((s) => s.modals);
+  const { favorites } = useAppSelector((s) => s.following);
+  const dispatch = useAppDispatch();
+
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isRender, setIsRender] = useState(false);
   const timeout = useRef<NodeJS.Timeout>(null);
 
-  const isUserFavorite = favoritesReceived.some((f) => f.userId === id);
+  const isFavorite = favorites.includes(post.userId);
+
+  useEffect(() => {
+    const isUserFavorite = favoritesReceived.some((f) => f.userId === id);
+    if (isUserFavorite) dispatch(addFavorites(post.userId));
+  }, []);
 
   useEffect(() => {
     if (isModelOpen && isPostSettingsModalOpen) setIsRender(true);
@@ -35,7 +44,7 @@ function SettingsContainer({ post }: { post: PrismaPostType }) {
       flex items-center gap-x-4
     "
     >
-      {isUserFavorite && <FavoritedIcon />}
+      {isFavorite && <FavoritedIcon />}
       <OpenSettingsModalButton setIsModelOpen={setIsModelOpen} />
       {isRender && (
         <SettingsModal

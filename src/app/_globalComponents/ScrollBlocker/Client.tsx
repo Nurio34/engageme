@@ -19,16 +19,6 @@ function Client() {
   const isMobile = device.type === "mobile";
 
   useEffect(() => {
-    console.log({
-      isCreateModalOpen,
-      isWannaCloseCreateModalOpen,
-      isPickerOpen,
-      isOpen,
-      isDrawerMenuOpen,
-      isPostSettingsModalOpen,
-      isSuggestedForYouModalOpen,
-    });
-
     if (
       isCreateModalOpen ||
       isWannaCloseCreateModalOpen ||

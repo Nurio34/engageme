@@ -10,6 +10,7 @@ export type DeviceType = {
 };
 
 interface ModalState {
+  variant?: string;
   device: DeviceType;
   isCreateModalOpen: boolean;
   isWannaCloseCreateModalOpen: boolean;
@@ -23,6 +24,7 @@ interface ModalState {
 }
 
 const initialState: ModalState = {
+  variant: undefined,
   device: {
     type: "desktop",
     width: 0,
@@ -43,6 +45,9 @@ export const modalsSlice = createSlice({
   name: "modals",
   initialState,
   reducers: {
+    setVariant: (state, action: PayloadAction<string | undefined>) => {
+      state.variant = action.payload;
+    },
     setDevice: (state, action: PayloadAction<DeviceType>) => {
       state.device = action.payload;
     },
@@ -91,9 +96,9 @@ export const modalsSlice = createSlice({
 });
 
 export const {
+  setVariant,
   setDevice,
   toggleCreateModal,
-
   toggle_WannaCloseCreateModal_Modal,
   addCloudinaryMedias,
   addPosterImage,

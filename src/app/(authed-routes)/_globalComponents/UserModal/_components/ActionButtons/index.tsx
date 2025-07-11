@@ -19,6 +19,8 @@ function ActionButtons({
   }[];
   userId: string;
 }) {
+  const { variant } = useAppSelector((s) => s.modals);
+
   const { id } = useAppSelector((s) => s.user);
   const { socket } = useAppSelector((s) => s.socket);
   const { followings } = useAppSelector((s) => s.following);
@@ -33,7 +35,7 @@ function ActionButtons({
       (follower) => follower.followerId === id
     );
     if (isFollowed) dispatch(addToFollowing(userId));
-    else dispatch(deleteFromFollowing(userId));
+    // else dispatch(deleteFromFollowing(userId));
   }, [followers]);
 
   const followAction = useCallback(async () => {
@@ -41,7 +43,11 @@ function ActionButtons({
     dispatch(addToFollowing(userId));
 
     try {
-      const { status: followStatus, msg, id: followId } = await follow(userId);
+      const {
+        status: followStatus,
+        msg,
+        id: followId,
+      } = await follow(userId, variant);
       if (followStatus === "fail") {
         toast.error(msg);
         dispatch(deleteFromFollowing(userId));
@@ -53,7 +59,9 @@ function ActionButtons({
       if (followNotificaionStatus === "fail" || !followNotificaion) return;
 
       socket?.emit("followNotification", followNotificaion);
-      dispatch(resetSkip());
+      if (variant === "followings") {
+        dispatch(resetSkip());
+      }
     } catch (error) {
       console.error(error);
       toast.error("Unexpected error while following! Please try again.");
@@ -68,10 +76,14 @@ function ActionButtons({
     dispatch(deleteFromFollowing(userId));
 
     try {
-      const { status, msg } = await unfollow(userId);
+      const { status, msg } = await unfollow(userId, variant);
       if (status === "fail") {
         toast.error(msg);
         dispatch(addToFollowing(userId));
+        return;
+      }
+      if (variant === "followings") {
+        dispatch(resetSkip());
       }
     } catch (error) {
       console.error(error);

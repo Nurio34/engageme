@@ -5,7 +5,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { revalidateTag } from "next/cache";
 
 export const removeFromFavorites = async (
-  userId: string
+  userId: string,
+  variant?: string
 ): Promise<{ status: "success" | "fail"; msg: string }> => {
   try {
     const user = await currentUser();
@@ -37,8 +38,10 @@ export const removeFromFavorites = async (
       msg: "Unexpected error while removing from favorites. Please try again!",
     };
   } finally {
-    revalidateTag("posts");
-    revalidateTag("followingsPosts");
-    revalidateTag("favoritesPosts");
+    if (variant === "favorites") {
+      revalidateTag("favoritesPosts");
+    }
+    // revalidateTag("posts");
+    // revalidateTag("followingsPosts");
   }
 };

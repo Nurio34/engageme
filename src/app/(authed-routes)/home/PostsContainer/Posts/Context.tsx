@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { PointerType, useDragAndFade } from "./_hooks/useDragAndFade";
 import { useReply } from "./_hooks/useReply";
 import { resetSkip } from "@/store/slices/following";
+import { setVariant } from "@/store/slices/modals";
 
 export type CommentReplyType = {
   isReply: boolean;
@@ -119,6 +120,7 @@ export const PostsProvider = ({
 
   useEffect(() => {
     dispatch(resetSkip());
+    dispatch(setVariant(variant));
   }, [variant]);
 
   const [postsState, setPostsState] = useState<PrismaPostType[]>([]);
