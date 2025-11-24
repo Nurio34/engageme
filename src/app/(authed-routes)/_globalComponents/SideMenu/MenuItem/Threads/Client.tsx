@@ -1,15 +1,9 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setCurrentMenu } from "@/store/slices/sidemenu";
-import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import { FaCircleInfo, FaThreads } from "react-icons/fa6";
 
 function Client() {
   const { currentMenu, isDrawerMenuOpen } = useAppSelector((s) => s.sideMenu);
-
-  const dispatch = useAppDispatch();
-
-  const path = usePathname()?.slice(1);
 
   return (
     <button
